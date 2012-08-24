@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.1-9) precise; urgency=low
+
+  * Re-added thinclient configuration example (Bug #28031)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 24 Aug 2012 11:36:44 +0200
+
 ucc-image-toolkit (0.9.1-8) precise; urgency=low
 
   * Use ucc-config file instead of .ucc (Bug #28033)
