@@ -1,3 +1,13 @@
+ucc-image-toolkit (0.9.1-10) precise; urgency=low
+
+  * Increase the UCC desktop image size to 7 GB and do not install lirc
+    because the installation failed in the debootstrap chroot
+    (Bug #28032)
+  * Remove network-manager from desktop profile while the network
+    manager will break the network boot (Bug #28321)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 27 Aug 2012 11:55:41 +0200
+
 ucc-image-toolkit (0.9.1-9) precise; urgency=low
 
   * Re-added thinclient configuration example (Bug #28031)

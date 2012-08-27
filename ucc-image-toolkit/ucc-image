@@ -64,6 +64,7 @@ def _cleanup(options, workingdir, logfile_fd):
 		fd = open(cleanup_fd, 'w')
 		fd.write('''#!/bin/sh
 	test -e /etc/init.d/dbus && service dbus stop
+	test -e /etc/init.d/dictd && service dictd stop
 	umount /proc
 
 	# Wait for two seconds, otherwise the umount might fail
@@ -283,7 +284,7 @@ if __name__ == '__main__':
 			package = package.strip()
 			if package:
 				_print_process('Installing package %s' % package)
-				cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', '--no-install-recommends', 'install', '--yes', '--force-yes', package]
+				cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', '--no-install-recommends', 'install', '--yes', '--force-yes', ] + package.split(' ')
 				_run_cmd(cmd_block, logfile_fd)
 				cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'clean']
 				_run_cmd(cmd_block, logfile_fd)
@@ -294,7 +295,7 @@ if __name__ == '__main__':
 			package = package.strip()
 			if package:
 				_print_process('Installing package %s' % package)
-				cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'install', '--yes', '--force-yes', package]
+				cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'install', '--yes', '--force-yes'] + package.split(' ')
 				_run_cmd(cmd_block, logfile_fd)
 				cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'clean']
 				_run_cmd(cmd_block, logfile_fd)
