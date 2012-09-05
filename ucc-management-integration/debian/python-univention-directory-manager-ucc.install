@@ -1,1 +1,1 @@
-modules/ucc_user.py /usr/share/pyshared/univention/admin/handlers/ucc
+modules/ucc_user.py /usr/share/pyshared/univention/admin/handlers/policies

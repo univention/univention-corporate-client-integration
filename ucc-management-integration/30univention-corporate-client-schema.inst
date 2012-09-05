@@ -40,56 +40,6 @@ joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-# univention-directory-manager container/cn create $@ --position "cn=univention,$ldap_base" \
-# 							--ignore_exists \
-# 							--set name="Thin Client"
-
-# univention-directory-manager container/cn create $@ --position "cn=Thin Client,cn=univention,$ldap_base" \
-# 							--ignore_exists \
-# 							--set name="Autostart"
-
-# univention-directory-manager container/cn create $@ --position "cn=Thin Client,cn=univention,$ldap_base" \
-# 							--ignore_exists \
-# 							--set name="Session"
-
-# univention-directory-manager container/cn create $@ \
-# 							--ignore_exists \
-# 							--position="cn=policies,$ldap_base" \
-# 							--set name="Thin Client Autostart" \
-# 							--set policyPath=1
-
-# univention-directory-manager container/cn create $@ \
-# 							--ignore_exists \
-# 							--position="cn=policies,$ldap_base" \
-# 							--set name="Thin Client Session" \
-# 							--set policyPath=1
-
-# univention-directory-manager container/cn create $@ \
-# 							--ignore_exists \
-# 							--position="cn=custom attributes,cn=univention,$ldap_base" \
-# 							--set name="Thin Client"
-
-# univention-directory-manager settings/syntax create $@ --ignore_exists \
-#     						--position "cn=Thin Client,cn=custom attributes,cn=univention,$ldap_base" \
-#     						--set name="thinClientAutostart" \
-#     						--set value="univentionThinClientAutostartCommand" \
-#     						--set attribute="univentionThinClientAutostartName" \
-#     						--set filter='objectClass=univentionThinClientAutostart' \
-#     						--set viewonly=FALSE
-
-# univention-directory-manager settings/syntax create $@ --ignore_exists \
-#     						--position "cn=Thin Client,cn=custom attributes,cn=univention,$ldap_base" \
-#     						--set name="thinClientSession" \
-#     						--set value="univentionThinClientSessionScript" \
-#     						--set attribute="univentionThinClientSessionName" \
-#     						--set filter='objectClass=univentionThinClientSession' \
-#     						--set viewonly=FALSE
-
-# univention-directory-manager settings/thinclient_session create $@ \
-# 							--position "cn=Session,cn=Thin Client,cn=univention,$ldap_base" \
-# 							--set name="None" \
-# 							--set session="None" \
-# 							--set description="No default"
 
 joinscript_save_current_version
 

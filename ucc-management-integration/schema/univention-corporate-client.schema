@@ -19,7 +19,7 @@ attributetype ( 1.3.6.1.4.1.10176.4125.1.4 NAME 'univentionCorporateClientUserWi
 	SUBSTR caseIgnoreIA5SubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
-objectclass ( 1.3.6.1.4.1.10176.4125.1.1 NAME 'univentionPolicyThinClientUser'
+objectclass ( 1.3.6.1.4.1.10176.4125.1.1 NAME 'univentionPolicyCorporateClientUser'
 	DESC 'Thin client user settings'
 	SUP 'univentionPolicy' STRUCTURAL
 	MAY ( univentionCorporateClientUserSession $ univentionCorporateClientUserWindowsDomain $ univentionCorporateClientUserWindowsTerminalserver ))

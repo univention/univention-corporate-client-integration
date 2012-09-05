@@ -20,7 +20,7 @@ Description: Univention Corporate Client - integration in management system
 
 Package: univention-corporate-client-schema
 Architecture: all
-Depends: python-univention-directory-manager-thin-client
+Depends: python-univention-directory-manager-ucc
 Description: Univention Corporate Client - LDAP schema
  This package provides the LDAP schema for the integration of Univention Corporate 
  Client into the UCS management system.
