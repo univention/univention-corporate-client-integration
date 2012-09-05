@@ -1,0 +1,65 @@
+#!/usr/bin/make -f
+#
+# Univention Thinclient
+#  rules script for the debian package
+#
+# Copyright (C) 2004, 2005, 2006 Univention GmbH
+#
+# http://www.univention.de/
+# 
+# All rights reserved.
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License version 2 as
+# published by the Free Software Foundation.
+#
+# Binary versions of this file provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+
+version := $(shell dpkg-parsechangelog | sed -ne 's/^Version: //p')
+copyrightyear := $(shell date +%Y)
+
+PO_FILES := $(shell find modules -name '*.po')
+MO_FILES := $(PO_FILES:%.po=%.mo)
+
+%.mo:	%.po
+	msgfmt --check -o $@ $<
+
+override_dh_auto_build: $(MO_FILES)
+	dh_auto_build
+
+override_dh_auto_test:
+	ucslint
+	dh_auto_test
+
+override_dh_auto_install:
+	dh_auto_install
+	univention-install-config-registry
+
+	@set -e;\
+	for i in $(MO_FILES); do\
+		lang=`basename "$$i" .mo`;\
+		domain=`dirname "$$i" | sed 's,^modules/,,;s,/,-,g'`;\
+		o=debian/python-univention-directory-manager/usr/share/locale/$$lang/LC_MESSAGES/$$domain.mo;\
+		install -d "`dirname "$$o"`";\
+		install -m 644 "$$i" "$$o";\
+	done
+
+override_dh_install:
+	dh_install
+	sed -i "s/@%@package_version@%@/${version}/g;s/@%@copyright_lastyear@%@/${copyrightyear}/" debian/python-univention-directory-manager-cli/usr/share/pyshared/univention/admincli/admin.py
+
+%:
+	dh $@

@@ -1,0 +1,68 @@
+
+# UCC OID: 1.3.6.1.4.1.10176.4125
+
+attributetype ( 1.3.6.1.4.1.10176.4125.1.2 NAME 'univentionCorporateClientUserSession'
+	DESC 'Thin Client user session'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4125.1.3 NAME 'univentionCorporateClientUserWindowsDomain'
+	DESC 'Windows domain for user logon'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4125.1.4 NAME 'univentionCorporateClientUserWindowsTerminalserver'
+	DESC 'Windows terminal server for user logon'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.10176.4125.1.1 NAME 'univentionPolicyThinClientUser'
+	DESC 'Thin client user settings'
+	SUP 'univentionPolicy' STRUCTURAL
+	MAY ( univentionCorporateClientUserSession $ univentionCorporateClientUserWindowsDomain $ univentionCorporateClientUserWindowsTerminalserver ))
+
+
+
+# attributetype ( 1.3.6.1.4.1.10176.4102.1.1 NAME 'univentionThinClientAutostartName'
+# 	DESC 'Name of thin client autostart script'
+# 	EQUALITY caseIgnoreIA5Match
+# 	SUBSTR caseIgnoreIA5SubstringsMatch
+# 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+# attributetype ( 1.3.6.1.4.1.10176.4102.1.2 NAME 'univentionThinClientAutostartCommand'
+# 	DESC 'Command to start autostart session'
+# 	EQUALITY caseIgnoreIA5Match
+# 	SUBSTR caseIgnoreIA5SubstringsMatch
+# 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+# objectclass ( 1.3.6.1.4.1.10176.4102.2.1 NAME 'univentionThinClientAutostart'
+# 	DESC 'Thin client autostart'
+# 	STRUCTURAL
+# 	MUST ( univentionThinClientAutostartName )
+# 	MAY ( description $ univentionThinClientAutostartCommand )
+#     )
+# attributetype ( 1.3.6.1.4.1.10176.4102.1.11 NAME 'univentionThinClientSessionName'
+# 	DESC 'Name of thin client session script'
+# 	EQUALITY caseIgnoreIA5Match
+# 	SUBSTR caseIgnoreIA5SubstringsMatch
+# 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+# attributetype ( 1.3.6.1.4.1.10176.4102.1.12 NAME 'univentionThinClientSessionScript'
+# 	DESC 'Script to start autostart session'
+# 	EQUALITY caseIgnoreIA5Match
+# 	SUBSTR caseIgnoreIA5SubstringsMatch
+# 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+# objectclass ( 1.3.6.1.4.1.10176.4102.2.11 NAME 'univentionThinClientSession'
+# 	DESC 'Thin client autostart'
+# 	STRUCTURAL
+# 	MUST ( univentionThinClientSessionName )
+# 	MAY ( description $ univentionThinClientSessionScript )
+#     )
+
+
+
+

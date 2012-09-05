@@ -1,0 +1,93 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2010-06-15 09:08+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: thinclient_user.py:46
+msgid "Thin Client session for the user"
+msgstr "Thin Client Sitzung für den Benutzer"
+
+#: thinclient_user.py:57
+msgid "Policy: Thin Client Session"
+msgstr "Richtlinie: Thin Client Sitzung"
+
+#: thinclient_user.py:58
+msgid "Thin client Session"
+msgstr "Thin Client Sitzung"
+
+#: thinclient_user.py:64
+msgid "Name"
+msgstr "Name"
+
+#: thinclient_user.py:74
+msgid "Force this session for user login"
+msgstr "Diese Sitzung für die Benutzeranmeldung forcieren"
+
+#: thinclient_user.py:75
+msgid ""
+"This Thin Client session will be used by the Thin Client login. The users "
+"select will be ignored."
+msgstr ""
+"Diese Sitzung wird für die Thin Client Anmeldung verwendet. Dabei wird "
+"die Auswahl des Benutzers ignoriert"
+
+#: thinclient_user.py:84
+msgid "Windows domain"
+msgstr "Windows Domäne"
+
+#: thinclient_user.py:85
+msgid "This windows domain will be used for user logon."
+msgstr "Diese Windows Domäne wird für die Benutzeranmeldung verwendet."
+
+#: thinclient_user.py:94
+msgid "Windows terminal server"
+msgstr "Windows Terminal Server"
+
+#: thinclient_user.py:95
+msgid ""
+"This windows terminal server will be used for user logon to windows domain."
+msgstr "Dieser Windows Terminal Server wird für die Benutzeranmeldung an der Windows Domäne verwendet."
+
+#: thinclient_user.py:104
+msgid "Required object classes"
+msgstr "Benötigte Objektklassen"
+
+#: thinclient_user.py:114
+msgid "Excluded object classes"
+msgstr "Ausgeschlossene Objektklassen"
+
+#: thinclient_user.py:124
+msgid "Fixed attributes"
+msgstr "Festgelegte Attribute"
+
+#: thinclient_user.py:134
+msgid "Empty attributes"
+msgstr "Leere Attribute"
+
+#: thinclient_user.py:155
+msgid "General"
+msgstr "Allgemein"
+
+#: thinclient_user.py:155
+msgid "Thin Client Session"
+msgstr "Thin Client Sitzung"
+
+#: thinclient_user.py:160
+msgid "Object"
+msgstr ""
+
+#~ msgid "Name of Thin Client session for the selected user"
+#~ msgstr "Name der Thin Client Sitzung für den ausgewählten Benutzer"

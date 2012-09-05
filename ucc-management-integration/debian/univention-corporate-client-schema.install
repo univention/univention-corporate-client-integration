@@ -1,0 +1,2 @@
+schema/univention-corporate-client.schema /usr/share/univention-ldap/schema/
+30univention-thin-client-schema.inst /usr/lib/univention-install/
