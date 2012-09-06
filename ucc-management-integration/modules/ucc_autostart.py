@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Corporate Client
-#  UDM policy for thin client session 
+#  UDM policy for auto start sessions
 #
 # Copyright (C) 2010-2012 Univention GmbH
 #
@@ -38,13 +38,13 @@ import univention.admin.syntax
 import univention.admin.localization
 import univention.admin.uexceptions
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings.uccsession')
+translation=univention.admin.localization.translation('univention.admin.handlers.settings.autostart')
 _=translation.translate
 
-module = 'settings/ucc_session'
+module = 'settings/ucc_autostart'
 
 childs = 0
-short_description = _('UCC session script')
+short_description = _('UCC autostart script')
 long_description = ''
 operations = [ 'search', 'edit', 'add', 'remove' ]
 superordinate='settings/cn'
@@ -62,7 +62,7 @@ property_descriptions={
 		),
 	'description': univention.admin.property(
 			short_description= _('Description'),
-			long_description= _('Description of session'),
+			long_description= _('Description of autostart program'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -70,9 +70,9 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'session': univention.admin.property(
-			short_description= _('Session to start'),
-			long_description= _('Session to start by display manager'),
+	'command': univention.admin.property(
+			short_description= _('Autostart program'),
+			long_description= _('Program to start the autostart session '),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -84,20 +84,19 @@ property_descriptions={
 
 
 layout = [
-	Tab(_('General'),_('UCC session script'), layout = [
+	Tab(_('General'),_('UCC autostart script'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
 			'description',
-			'session'
+			'command'
                         ] ),
                 ] )
 ]
 
-
 mapping=univention.admin.mapping.mapping()
-mapping.register('name', 'univentionCorporateClientSessionName', None, univention.admin.mapping.ListToString)
+mapping.register('name', 'univentionCorporateClientAutostartName', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
-mapping.register('session', 'univentionCorporateClientSessionScript', None, univention.admin.mapping.ListToString)
+mapping.register('command', 'univentionCorporateClientAutostartCommand', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
@@ -124,11 +123,11 @@ class object(univention.admin.handlers.simpleLdap):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', [ 'univentionCorporateClientSession' ] ) ]
+		return [ ('objectClass', [ 'univentionCorporateClientAutostart' ] ) ]
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 	filter=univention.admin.filter.conjunction('&', [
-				univention.admin.filter.expression('objectClass', 'univentionCorporateClientSession'),
+				univention.admin.filter.expression('objectClass', 'univentionCorporateClientAutostart'),
 				])
 
 	if filter_s:
@@ -143,5 +142,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 
 def identify(dn, attr, canonical=0):
-	return 'univentionCorporateClientSession' in attr.get('objectClass', [])
+	return 'univentionCorporateClientAutostart' in attr.get('objectClass', [])
 
