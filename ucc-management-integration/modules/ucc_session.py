@@ -89,9 +89,9 @@ layout = [
 			'name',
 			'description',
 			'session'
-		] ),
+                        ] ),
+                ] )
 ]
-
 
 
 mapping=univention.admin.mapping.mapping()

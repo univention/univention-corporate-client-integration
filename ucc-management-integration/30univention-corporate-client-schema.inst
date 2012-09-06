@@ -41,6 +41,79 @@ joinscript_init
 eval "$(univention-config-registry shell)"
 
 
+univention-directory-manager container/cn create "$@" --position "cn=univention,$ldap_base" \
+							--ignore_exists \
+							--set name="UCC"
+
+univention-directory-manager container/cn create "$@" --position "cn=UCC,cn=univention,$ldap_base" \
+							--ignore_exists \
+							--set name="Autostart"
+
+univention-directory-manager container/cn create "$@" --position "cn=UCC,cn=univention,$ldap_base" \
+							--ignore_exists \
+							--set name="Session"
+
+univention-directory-manager container/cn create "$@" \
+							--ignore_exists \
+							--position="cn=policies,$ldap_base" \
+							--set name="UCC autostart sessions" \
+							--set policyPath=1
+
+univention-directory-manager container/cn create "$@" \
+							--ignore_exists \
+							--position="cn=policies,$ldap_base" \
+							--set name="UCC sessions" \
+							--set policyPath=1
+
+univention-directory-manager container/cn create "$@" \
+							--ignore_exists \
+							--position="cn=custom attributes,cn=univention,$ldap_base" \
+							--set name="UCC"
+
+univention-directory-manager settings/syntax create "$@" --ignore_exists \
+     						--position "cn=UCC,cn=custom attributes,cn=univention,$ldap_base" \
+     						--set name="UCCAutostart" \
+     						--set value="univentionCorporateClientAutostartCommand" \
+     						--set attribute="univentionCorporateClientAutostartName" \
+     						--set filter='objectClass=univentionCorporateClientAutostart' \
+     						--set viewonly=FALSE
+
+univention-directory-manager settings/syntax create "$@" --ignore_exists \
+    						--position "cn=UCC,cn=custom attributes,cn=univention,$ldap_base" \
+    						--set name="UCCClientSession" \
+    						--set value="univentionCorporateClientSessionScript" \
+    						--set attribute="univentionCorporateClientSessionName" \
+    						--set filter='objectClass=univentionCorporateClientSession' \
+    						--set viewonly=FALSE
+
+univention-directory-manager settings/thinclient_session create "$@" \
+							--position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
+							--set name="None" \
+							--set session="None" \
+							--set description="No default"
+
+
+# univention-directory-manager policies/autostart create "$@" \
+# 							--position "cn=policies,$ldap_base" \
+#    							--set name="Windows Terminal Server (RDP)" \
+#    							--set autostartScript="RDP"
+
+# univention-directory-manager settings/thinclient_autostart create "$@" --position "cn=Autostart,cn=UCC,cn=univention,$ldap_base" \
+# 							--ignore_exists \
+# 							--set name="Windows Terminal Server (RDP)" \
+# 							--set description="Connect to a Windows Terminal server via RDP" \
+# 							--set command="RDP"
+
+univention-directory-manager settings/ucc_session create "$@" --position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
+							--ignore_exists \
+							--set name="Windows Terminal Server" \
+							--set session="Windows-Terminal-Server" \
+							--set description="Connect to a Windows Terminal Server via RDP"
+
+
+
+
+
 joinscript_save_current_version
 
 exit 0
