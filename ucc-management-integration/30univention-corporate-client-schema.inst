@@ -86,7 +86,7 @@ univention-directory-manager settings/syntax create "$@" --ignore_exists \
     						--set filter='objectClass=univentionCorporateClientSession' \
     						--set viewonly=FALSE
 
-univention-directory-manager settings/thinclient_session create "$@" \
+univention-directory-manager settings/ucc_session create "$@" \
 							--position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
 							--set name="None" \
 							--set session="None" \
@@ -98,7 +98,7 @@ univention-directory-manager settings/thinclient_session create "$@" \
 #    							--set name="Windows Terminal Server (RDP)" \
 #    							--set autostartScript="RDP"
 
-# univention-directory-manager settings/thinclient_autostart create "$@" --position "cn=Autostart,cn=UCC,cn=univention,$ldap_base" \
+# univention-directory-manager settings/ucc_autostart create "$@" --position "cn=Autostart,cn=UCC,cn=univention,$ldap_base" \
 # 							--ignore_exists \
 # 							--set name="Windows Terminal Server (RDP)" \
 # 							--set description="Connect to a Windows Terminal server via RDP" \
