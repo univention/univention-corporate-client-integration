@@ -62,7 +62,7 @@ univention-directory-manager container/cn create "$@" \
 univention-directory-manager container/cn create "$@" \
 							--ignore_exists \
 							--position="cn=policies,$ldap_base" \
-							--set name="UCC sessions" \
+							--set name="ucc" \
 							--set policyPath=1
 
 univention-directory-manager container/cn create "$@" \
