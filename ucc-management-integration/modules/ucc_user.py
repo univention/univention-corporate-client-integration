@@ -32,6 +32,8 @@
 
 import sys, string
 sys.path=['.']+sys.path
+
+from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
 import univention.admin.handlers
@@ -153,16 +155,19 @@ property_descriptions={
 			dontsearch=1
 		)
 }
-layout=[
-	univention.admin.tab(_('General'),_('UCC user session'), [
-		[univention.admin.field('name', hide_in_resultmode=1) ],
-		[univention.admin.field('session') ],
-		[univention.admin.field('windowsDomain'), univention.admin.field('windowsTerminalserver') ],
-	]),
-	univention.admin.tab(_('Object'),_('Object'), [
-		[univention.admin.field('requiredObjectClasses') , univention.admin.field('prohibitedObjectClasses') ],
-		[univention.admin.field('fixedAttributes'), univention.admin.field('emptyAttributes')]
-	], advanced = True),
+layout = [
+	Tab(_('General'),_('UCC user session'), layout = [
+		Group( _( 'General' ), layout = [
+			'name',
+			'session',
+			'windowsDomain',
+			'windowsTerminalserver'
+		] ),
+	] ),
+	Tab(_('Object'),_('Object'), advanced = True, layout = [
+		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
+		[ 'fixedAttributes' , 'emptyAttributes' ]
+	] ),
 ]
 
 mapping=univention.admin.mapping.mapping()
@@ -178,7 +183,7 @@ mapping.register('emptyAttributes', 'emptyAttributes')
 class object(univention.admin.handlers.simplePolicy):
 	module=module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, arg=None):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
