@@ -44,12 +44,6 @@ import univention.debug
 translation=univention.admin.localization.translation('univention.admin.handlers.policies.ucc_user')
 _=translation.translate
 
-class clientDevicesFixedAttributes(univention.admin.syntax.select):
-	name='releaseFixedAttributes'
-	choices=[
-		('univentionCorporateClientUserSession',_('Univention Corporate Client user')),
-		]
-
 module='policies/ucc_user'
 operations=['add','edit','remove','search']
 
@@ -104,46 +98,6 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'requiredObjectClasses': univention.admin.property(
-			short_description=_('Required object classes'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'prohibitedObjectClasses': univention.admin.property(
-			short_description=_('Excluded object classes'),
-			long_description='',
-			syntax=univention.admin.syntax.string,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'fixedAttributes': univention.admin.property(
-			short_description=_('Fixed attributes'),
-			long_description='',
-			syntax=clientDevicesFixedAttributes,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
-	'emptyAttributes': univention.admin.property(
-			short_description=_('Empty attributes'),
-			long_description='',
-			syntax=clientDevicesFixedAttributes,
-			multivalue=1,
-			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
-		),
 	'filler': univention.admin.property(
 			short_description='',
 			long_description='',
@@ -164,10 +118,6 @@ layout = [
 			'windowsTerminalserver'
 		] ),
 	] ),
-	Tab(_('Object'),_('Object'), advanced = True, layout = [
-		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
-		[ 'fixedAttributes' , 'emptyAttributes' ]
-	] ),
 ]
 
 mapping=univention.admin.mapping.mapping()
@@ -175,10 +125,6 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('session', 'univentionCorporateClientUserSession', None, univention.admin.mapping.ListToString)
 mapping.register('windowsDomain', 'univentionCorporateClientUserWindowsDomain', None, univention.admin.mapping.ListToString)
 mapping.register('windowsTerminalserver', 'univentionCorporateClientUserWindowsTerminalserver', None, univention.admin.mapping.ListToString)
-mapping.register('requiredObjectClasses', 'requiredObjectClasses')
-mapping.register('prohibitedObjectClasses', 'prohibitedObjectClasses')
-mapping.register('fixedAttributes', 'fixedAttributes')
-mapping.register('emptyAttributes', 'emptyAttributes')
 
 class object(univention.admin.handlers.simplePolicy):
 	module=module
@@ -187,11 +133,6 @@ class object(univention.admin.handlers.simplePolicy):
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
 		self.mapping=mapping
 		self.descriptions=property_descriptions
 
