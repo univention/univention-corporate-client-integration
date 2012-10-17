@@ -1,0 +1,209 @@
+#: modules/ucc_autostart.py:47 modules/ucc_autostart.py:87
+msgid "UCC autostart script"
+msgstr "UCC Autostart-Skript"
+
+#: modules/ucc_autostart.py:54 modules/ucc_autostart.py:55
+#: modules/ucc_session.py:54 modules/ucc_session.py:55 modules/ucc_user.py:62
+msgid "Name"
+msgstr "Name"
+
+#: modules/ucc_autostart.py:64 modules/ucc_client.py:77
+#: modules/ucc_session.py:64
+msgid "Description"
+msgstr "Beschreibung"
+
+#: modules/ucc_autostart.py:65
+msgid "Description of autostart program"
+msgstr "Beschreibung des automatisch zu startenden Programms"
+
+#: modules/ucc_autostart.py:74
+msgid "Autostart program"
+msgstr "Automatisch zu startendes Programm"
+
+#: modules/ucc_autostart.py:75
+msgid "Program to start the autostart session "
+msgstr "Automatisch zu startendes Programm"
+
+#: modules/ucc_autostart.py:87 modules/ucc_autostart.py:88
+#: modules/ucc_client.py:264 modules/ucc_session.py:87
+#: modules/ucc_session.py:88 modules/ucc_user.py:113 modules/ucc_user.py:114
+msgid "General"
+msgstr "Allgemein"
+
+#: modules/ucc_client.py:53
+msgid "Computer: Univention Corporate Client"
+msgstr "Computer: Univention Corporate Client"
+
+#: modules/ucc_client.py:57
+msgid "Posix account"
+msgstr "POSIX-Konto"
+
+#: modules/ucc_client.py:61
+msgid "Kerberos principal"
+msgstr "Kerberos-Prinzipal"
+
+#: modules/ucc_client.py:67
+msgid "Hostname"
+msgstr "Rechnername"
+
+#: modules/ucc_client.py:86
+msgid "Operating system"
+msgstr "Betriebssystem"
+
+#: modules/ucc_client.py:95
+msgid "Operating system version"
+msgstr "Version des Betriebssystems"
+
+#: modules/ucc_client.py:104
+msgid "Domain"
+msgstr "Domäne"
+
+#: modules/ucc_client.py:113
+msgid "MAC address"
+msgstr "MAC-Adresse"
+
+#: modules/ucc_client.py:123
+msgid "Network"
+msgstr "Netzwerk"
+
+#: modules/ucc_client.py:133
+msgid "IP address"
+msgstr "IP-Adresse"
+
+#: modules/ucc_client.py:143
+msgid "Forward zone for DNS entry"
+msgstr "Forward-Zone für DNS-Eintrag"
+
+#: modules/ucc_client.py:154
+msgid "Reverse zone for DNS entry"
+msgstr "Reverse-Zone für DNS-Eintrag"
+
+#: modules/ucc_client.py:165
+msgid "Zone for DNS alias"
+msgstr "Zone für DNS-Alias"
+
+#: modules/ucc_client.py:176 modules/ucc_client.py:292
+msgid "DNS alias"
+msgstr "DNS-Alias"
+
+#: modules/ucc_client.py:186
+msgid "DHCP service"
+msgstr "DHCP-Service"
+
+#: modules/ucc_client.py:197
+msgid "Password"
+msgstr "Passwort"
+
+#: modules/ucc_client.py:208
+msgid "Unix home directory"
+msgstr "Unix Heimatverzeichnis"
+
+#: modules/ucc_client.py:219
+msgid "Login shell"
+msgstr "Login-Shell"
+
+#: modules/ucc_client.py:230
+msgid "Primary group"
+msgstr "Primäre Gruppe"
+
+#: modules/ucc_client.py:241
+msgid "Inventory number"
+msgstr "Inventarnummer"
+
+#: modules/ucc_client.py:251 modules/ucc_client.py:289
+msgid "Groups"
+msgstr "Gruppen"
+
+#: modules/ucc_client.py:264
+msgid "Basic settings"
+msgstr "Grundeinstelungen"
+
+#: modules/ucc_client.py:265
+msgid "Computer account"
+msgstr "Rechnerkonto"
+
+#: modules/ucc_client.py:270
+msgid "Network settings "
+msgstr "Netzwerkeinstellungen"
+
+#: modules/ucc_client.py:274
+msgid "DNS Forward and Reverse Lookup Zone"
+msgstr "DNS-Forward und Reverse-Zonen"
+
+#: modules/ucc_client.py:278
+msgid "DHCP"
+msgstr "DHCP"
+
+#: modules/ucc_client.py:282
+msgid "Account"
+msgstr "Konto"
+
+#: modules/ucc_client.py:286
+msgid "Unix account"
+msgstr "Unix-Konto"
+
+#: modules/ucc_client.py:286
+msgid "Unix account settings"
+msgstr "Unix-Konto-Einstellungen"
+
+#: modules/ucc_client.py:289
+msgid "Group memberships"
+msgstr "Gruppenmitgliedschaften"
+
+#: modules/ucc_client.py:292
+msgid "Alias DNS entry"
+msgstr "Alias-DNS-Eintrag"
+
+#: modules/ucc_client.py:395
+msgid " At least posix or kerberos is required."
+msgstr "Mindestens POSIX oder Kerbeos werden benötigt"
+
+#: modules/ucc_session.py:47 modules/ucc_session.py:87
+msgid "UCC session script"
+msgstr "UCC-Sitzungsskript"
+
+#: modules/ucc_session.py:65
+msgid "Description of session"
+msgstr "Beschreibung der Sitzung"
+
+#: modules/ucc_session.py:74
+msgid "Session to start"
+msgstr "Zu startende Sitzung"
+
+#: modules/ucc_session.py:75
+msgid "Session to start by display manager"
+msgstr "Vom Loginmanager zu startende Sitzung"
+
+#: modules/ucc_user.py:55
+msgid "Policy: Univention Corporate Client user session"
+msgstr "Richtline: Univention Corporate Client Benutzersitzung"
+
+#: modules/ucc_user.py:56 modules/ucc_user.py:113
+msgid "UCC user session"
+msgstr "UCC Benutzersitzung"
+
+#: modules/ucc_user.py:72
+msgid "Force this session for user logins"
+msgstr "Erzwingen dieser Sitzung für Benutzeranmeldungen"
+
+#: modules/ucc_user.py:73
+msgid "This UCC session will be during login and no user selection is made"
+msgstr "Diese Sitzung wird bei der Anmeldung vorgegeben und keine Benutzerauswahl getroffen"
+
+#: modules/ucc_user.py:82
+msgid "Windows domain"
+msgstr "Windows-Domäne"
+
+#: modules/ucc_user.py:83
+msgid "This windows domain will be used for RDP user logons."
+msgstr "Diese Windows-Domäne wird für RDP-Anmeldungen verwendet"
+
+#: modules/ucc_user.py:92
+msgid "Windows terminal server"
+msgstr "Windows Terminalserver"
+
+#: modules/ucc_user.py:93
+msgid ""
+"This windows terminal server will be used for user logon Windows terminal "
+"servers."
+msgstr "Dieser Windows-Terminalserver wird für Anmeldungen an Windows Terminalservern verwendet"

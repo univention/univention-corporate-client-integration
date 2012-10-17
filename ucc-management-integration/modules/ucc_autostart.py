@@ -38,7 +38,7 @@ import univention.admin.syntax
 import univention.admin.localization
 import univention.admin.uexceptions
 
-translation=univention.admin.localization.translation('univention.admin.handlers.settings.autostart')
+translation=univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
 _=translation.translate
 
 module = 'settings/ucc_autostart'

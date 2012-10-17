@@ -41,7 +41,7 @@ import univention.admin.localization
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.policies.ucc_user')
+translation=univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
 _=translation.translate
 
 module='policies/ucc_user'
