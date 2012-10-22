@@ -1,0 +1,18 @@
+Type: file
+File: etc/univention/ucc-pxe-boot/pxeconfig
+Variables: ucc/pxe/vga
+Variables: ucc/pxe/quiet
+Variables: ucc/pxe/nameserver
+Variables: ucc/pxe/ldapserver
+Variables: ucc/pxe/ldapport
+Variables: ucc/pxe/loglevel
+Variables: ucc/pxe/append
+Variables: ucc/pxe/nfsroot
+Variables: ucc/pxe/initrd
+Variables: ucc/pxe/kernel
+
+Type: module
+Module: uccpxeboot.py
+Variables: ucc/pxe/nameserver
+Variables: ucc/pxe/quiet
+Variables: ucc/pxe/loglevel
