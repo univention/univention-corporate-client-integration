@@ -33,7 +33,7 @@ import re
 from fileinput import *
 from glob import glob
 
-var = 'pxe/nameserver'
+var = 'ucc/pxe/nameserver'
 pattern = '/var/lib/univention-client-boot/pxelinux.cfg/*'
 
 def update_nameserver(line, nameserver):
@@ -71,12 +71,12 @@ def update_quiet(line, quiet):
 				line = line + " quiet"
 	return line
 
-def handler(baseConfig, changes):
-	nameserver = baseConfig.get(var)
+def handler(configRegistry, changes):
+	nameserver = configRegistry.get(var)
 	quiet = False
-	if baseConfig.get('pxe/quiet', "False").lower() in ['yes', 'true', '1']:
+	if configRegistry.is_true('ucc/pxe/quiet', False):
 		quiet = True
-	loglevel = baseConfig.get('pxe/loglevel', False)
+	loglevel = configRegistry.get('ucc/pxe/loglevel', False)
 	for line in input(glob(pattern), inplace = True):
 		if nameserver:
 			line = update_nameserver(line, nameserver)
