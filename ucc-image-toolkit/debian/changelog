@@ -1,3 +1,11 @@
+ucc-image-toolkit (0.9.1-15) precise; urgency=low
+
+  * Use /var/log/univention/ucc-image-toolkit.log as logfile
+    (Bug #28037)
+  * Switch from lightdm to kdm (Bug #28298)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 22 Oct 2012 08:36:57 +0200
+
 ucc-image-toolkit (0.9.1-14) precise; urgency=low
 
   * Support empty ucr_variables settings (Bug #28033)

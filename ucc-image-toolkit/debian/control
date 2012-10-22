@@ -8,10 +8,11 @@ Build-Depends: debhelper (>> 7)
 Package: ucc-image-toolkit
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
+ shell-univention-lib (>= 1.0.23),
  debootstrap ( >= 1.0.39),
  grub-common,
  xorriso
-Provides: ${python:Provides}
+rovides: ${python:Provides}
 Description: Toolkit for creating UCC images
  This package contains tools to create Univention Corporate
  Client images.
