@@ -187,7 +187,6 @@ if __name__ == '__main__':
 	_print_process('Preparing logfile')
 	logfile = os.path.join('/var/log/univention', 'ucc-image-toolkit.log')
 	logfile_fd = open(logfile, 'a+')
-	
 	logfile_fd.write('Started "%s" at %s\n' % (string.join(sys.argv, ' '), time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 	_print_done('done (%s)' % logfile)
 
@@ -455,6 +454,11 @@ menuentry 'Debug Shell' {
 
 	if exitcode == 0:
 		print '\nThe image creation was successful:'
+		ucc_config_file = os.path.join(targetdir, 'ucc-config')
+		if not os.path.exists(ucc_config_file):
+			ucc_config_fd = open(ucc_config_file, 'w')
+			ucc_config_fd.write('image=%s\n' % image_name)
+			ucc_config_fd.close()
 		if bzip_image:
 			print 'Image (compressed): %s' % bzip_image
 		else:
