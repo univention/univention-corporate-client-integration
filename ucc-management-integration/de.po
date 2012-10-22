@@ -1,3 +1,21 @@
+# univention-samba4
+# Copyright (C) 2011-2012
+# This file is distributed under the same license as the univention-samba4 package.
+# <packages@univention.de>, 2012.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0.131-2\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-10-17 12:53+0200\n"
+"PO-Revision-Date: 2012-03-27 14:29+0200\n"
+"Last-Translator: <muehlenhoff@univention.de>\n"
+"Language-Team: DE <packages@univention.de>\n"
+"Language: DE\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
 #: modules/ucc_autostart.py:47 modules/ucc_autostart.py:87
 msgid "UCC autostart script"
 msgstr "UCC Autostart-Skript"
@@ -188,7 +206,9 @@ msgstr "Erzwingen dieser Sitzung für Benutzeranmeldungen"
 
 #: modules/ucc_user.py:73
 msgid "This UCC session will be during login and no user selection is made"
-msgstr "Diese Sitzung wird bei der Anmeldung vorgegeben und keine Benutzerauswahl getroffen"
+msgstr ""
+"Diese Sitzung wird bei der Anmeldung vorgegeben und keine Benutzerauswahl "
+"getroffen"
 
 #: modules/ucc_user.py:82
 msgid "Windows domain"
@@ -206,4 +226,6 @@ msgstr "Windows Terminalserver"
 msgid ""
 "This windows terminal server will be used for user logon Windows terminal "
 "servers."
-msgstr "Dieser Windows-Terminalserver wird für Anmeldungen an Windows Terminalservern verwendet"
+msgstr ""
+"Dieser Windows-Terminalserver wird für Anmeldungen an Windows "
+"Terminalservern verwendet"

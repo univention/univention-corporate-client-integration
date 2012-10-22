@@ -2,4 +2,4 @@ modules/ucc_user.py /usr/share/pyshared/univention/admin/handlers/policies
 modules/ucc_session.py  /usr/share/pyshared/univention/admin/handlers/settings
 modules/ucc_autostart.py  /usr/share/pyshared/univention/admin/handlers/settings
 modules/ucc_client.py  /usr/share/pyshared/univention/admin/handlers/computers
-de.po
+univention-admin-handlers-ucc-policies.mo /usr/share/locale/de/LC_MESSAGES
