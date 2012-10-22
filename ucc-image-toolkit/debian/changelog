@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.1-14) precise; urgency=low
+
+  * Support empty ucr_variables settings (Bug #28033)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 22 Oct 2012 06:27:28 +0200
+
 ucc-image-toolkit (0.9.1-13) precise; urgency=low
 
   * Added support for UCR variables which can be set in the image
