@@ -302,23 +302,23 @@ if __name__ == '__main__':
 				_run_cmd(cmd_block, logfile_fd)
 				_print_done()
 				
-		### TODO: the lightdm.conf should be a UCR template and a ucc-lightdm package could set the UCR variables
-		##lightdm_config = os.path.join(bootstrap_dir, 'etc/lightdm/lightdm.conf')
-		##fd = open(lightdm_config, 'a+')
-		### TODO: make it configurable
-		##if config.getboolean('General', 'automatic_login'):
-		##	# Lightdm:
-		##	fd.write('autologin-guest=true\nautologin-user-timeout=0\n')
-		##	# GDM:
-		##	#fd.write('[daemon]\nTimedLoginEnable=true\nTimedLogin=%s\nTimedLoginDelay=1\n' % config.get('General', 'automatic_login_user'))
-		##	#fd.close()
-		##	#cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'adduser', '--disabled-password', '--system', config.get('General', 'automatic_login_user')]
-		##	#_run_cmd(cmd_block, logfile_fd)
-		##	#if config.get('General', 'automatic_login_password'):
-		##	#	cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'usermod', '-p', config.get('General', 'automatic_login_password'), config.get('General', 'automatic_login_user')]
-		##	#	_run_cmd(cmd_block, logfile_fd)
-		##fd.write('user-session=LXDE\n')
-		##fd.close()
+		# TODO: the lightdm.conf should be a UCR template and a ucc-lightdm package could set the UCR variables
+		lightdm_config = os.path.join(bootstrap_dir, 'etc/lightdm/lightdm.conf')
+		fd = open(lightdm_config, 'a+')
+		# TODO: make it configurable
+		if config.getboolean('General', 'automatic_login'):
+			# Lightdm:
+			fd.write('autologin-guest=true\nautologin-user-timeout=0\n')
+			# GDM:
+			#fd.write('[daemon]\nTimedLoginEnable=true\nTimedLogin=%s\nTimedLoginDelay=1\n' % config.get('General', 'automatic_login_user'))
+			#fd.close()
+			#cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'adduser', '--disabled-password', '--system', config.get('General', 'automatic_login_user')]
+			#_run_cmd(cmd_block, logfile_fd)
+			#if config.get('General', 'automatic_login_password'):
+			#	cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'usermod', '-p', config.get('General', 'automatic_login_password'), config.get('General', 'automatic_login_user')]
+			#	_run_cmd(cmd_block, logfile_fd)
+		fd.write('user-session=LXDE\n')
+		fd.close()
 			
 		if config.has_section('Configuration'):
 			for line in config.get('Configuration', 'ucr_variables', None).split('\n'):

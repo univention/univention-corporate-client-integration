@@ -1,3 +1,12 @@
+ucc-image-toolkit (0.9.1-17) precise; urgency=low
+
+  * Switch back to lxde and lightdm (Bug #28298)
+  * Added a boot partition otherwise a grub boot is not possible
+    (Bug #28841)
+  * Added univention-ucc-grub (Bug #28841)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 23 Oct 2012 16:28:23 +0200
+
 ucc-image-toolkit (0.9.1-16) precise; urgency=low
 
   * Increase size to 1,5 GB for the thin client image (Bug #28037)

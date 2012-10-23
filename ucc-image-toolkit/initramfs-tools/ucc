@@ -376,6 +376,7 @@ _update_local_image ()
 ## compatible with busybox
 _install_grub ()
 {
+	local DEVICE="$1"
 	mount -o move /dev /root/dev
 	if grep -qs "^/boot " /root/etc/fstab; then
 		echo "mount /boot" >>/root/grub-inst.sh
@@ -438,7 +439,7 @@ ucc_installation()
 	_copy_files
 
 	# Install grub
-	_install_grub
+	_install_grub "$DEVICE"
 }
 
 ## Update the local UCC image
