@@ -1,3 +1,11 @@
+ucc-image-toolkit (0.9.1-18) precise; urgency=low
+
+  * Install grub (Bug #28841)
+  * Start the installation mode if the update mode didn't find a valid
+    UCC partition (Bug #28036)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Oct 2012 10:01:24 +0200
+
 ucc-image-toolkit (0.9.1-17) precise; urgency=low
 
   * Switch back to lxde and lightdm (Bug #28298)

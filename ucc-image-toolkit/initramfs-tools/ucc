@@ -6,7 +6,8 @@
 ##		Perform an installation to the local harddisk. WARNING: local
 ##		partitions will be deleted!
 ##  - update
-##		This will update the local installed UCC image.
+##		This will update the local installed UCC image. If no partition has been
+##		found, it will be partitioned
 ##  - local
 ##		This boots an local installed UCC image.
 ##  - overlayfs
@@ -20,10 +21,6 @@
 ##		This setting overwrites the value from the image.
 ##	- force_partition_timeout # TODO
 ##		Timeout in seconds for force_partitions.
-##	- repartition # TODO
-##		By default the update will not re partition the devices. If repartition
-##		is given the harddsik will be partitioned before the update will be
-##		installed
 ##	- root=<device>	# TODO
 ##		Specifies the root partition with the ucc image.
 ##	- image=<image>
@@ -163,16 +160,16 @@ _search_device()
 partition()
 {
 
-	local DEVICE="$1"
+	local partition_device="$1"
 
 	mkdir -p /ucc_tmp
 
 	# Read PT
-	pt="$(/sbin/parted -s ${DEVICE} unit MB print)"
+	pt="$(/sbin/parted -s ${partition_device} unit MB print)"
 	if echo "$pt" | grep -sq "unrecognised disk label"; then
-		echo "Partition table on ${DEVICE} is empty."
-		echo "Creating GPT on ${DEVICE}"
-		parted -s "${DEVICE}" mklabel GPT
+		echo "Partition table on ${partition_device} is empty."
+		echo "Creating GPT on ${partition_device}"
+		parted -s "${partition_device}" mklabel GPT
 	fi
 		
 	if [ -n "$remove_partitions" ]; then
@@ -180,20 +177,20 @@ partition()
 			if [ "$rp" = "auto" ]; then
 				echo "INFO: delete partition: auto determination"
 				# TODO
-				d_name="$(echo $DEVICE | sed -e 's|/dev/||')"
+				d_name="$(echo $partition_device | sed -e 's|/dev/||')"
 				for partition_path in $(ls -d /sys/block/${d_name}/${d_name}* 2>/dev/null); do
 					partition="$(basename $partition_path)"
 					partition_number="$(echo $partition | sed -e "s|${d_name}||")"
-					parted -s "${DEVICE}" rm "$partition_number"
+					parted -s "${partition_device}" rm "$partition_number"
 				done
 			else
 				rp="$(_add_dev $rp)"
-				if echo "$rp" | grep -sq "^${DEVICE}"; then
+				if echo "$rp" | grep -sq "^${partition_device}"; then
 					echo "INFO: delete partition: $rp"
-					number=$(echo $rp | sed -ne "s|^${DEVICE}||p")
+					number=$(echo $rp | sed -ne "s|^${partition_device}||p")
 					if [ -n "$number" ]; then
-						echo "INFO: delete partition: call parted -s ${DEVICE} rm $number"
-						parted -s "${DEVICE}" rm "$number"
+						echo "INFO: delete partition: call parted -s ${partition_device} rm $number"
+						parted -s "${partition_device}" rm "$number"
 						
 					fi
 				else
@@ -203,7 +200,7 @@ partition()
 		done
 	fi
 
-	disk_size=$(/sbin/parted -s "${DEVICE}" unit MB print | sed -ne "s|^Disk ${DEVICE}: ||;s|MB$||p")
+	disk_size=$(/sbin/parted -s "${partition_device}" unit MB print | sed -ne "s|^Disk ${partition_device}: ||;s|MB$||p")
 	# Check 1024 partitons
 	if [ -z "$partition_start" ]; then
 		partition_start=1
@@ -224,26 +221,26 @@ partition()
 			fi
 			end_mb="$((partition_start+size))"
 
-			parted -s "${DEVICE}" mkpart "$name" "$partition_start" "$end_mb"
+			parted -s "${partition_device}" mkpart "$name" "$partition_start" "$end_mb"
 
 			partition_start="$end_mb"
 
 			partition_fs="$(_get_var partition${i}_fs)"
 			if [ -n "$partition_fs" ]; then
 				if [ -e "/sbin/mkfs.$partition_fs" ]; then
-					echo "Creating filesystem on ${DEVICE}${count}"
-					eval "/sbin/mkfs.$partition_fs" "${DEVICE}${count}" > /dev/null 2>&1
+					echo "Creating filesystem on ${partition_device}${count}"
+					eval "/sbin/mkfs.$partition_fs" "${partition_device}${count}" > /dev/null 2>&1
 				elif [ "$partition_fs" = "swap" ]; then
-					/sbin/mkswap "${DEVICE}${count}" > /dev/null 2>&1
+					/sbin/mkswap "${partition_device}${count}" > /dev/null 2>&1
 				elif [ "$partition_fs" = "efi" ]; then
-					parted -s "${DEVICE}" set ${count} bios_grub on > /dev/null 2>&1
+					parted -s "${partition_device}" set ${count} bios_grub on > /dev/null 2>&1
 				fi
 			fi
 			
 			partition_flags="$(_get_var partition${i}_flags)"
 			if [ -n "$partition_flags" ]; then
 				for flag in $partition_flags; do
-					parted -s "${DEVICE}" set ${count} ${flag} on
+					parted -s "${partition_device}" set ${count} ${flag} on
 				done
 			fi
 
@@ -251,7 +248,7 @@ partition()
 			mountpoint="$(_get_var partition${i}_mountpoint)"
 			if [ "$mountpoint" = "/" ]; then
 				mkdir /ucc_tmp/root
-				mount -t $partition_fs "${DEVICE}${count}" /ucc_tmp/root
+				mount -t $partition_fs "${partition_device}${count}" /ucc_tmp/root
 				echo "/dev/loop0	/	$partition_fs	errors=remount-ro	0	1" >>/ucc_tmp/fstab
 
 			elif [ "$image_mount" = "true" ]; then
@@ -259,11 +256,11 @@ partition()
 				mkdir -p "/root/$mountpoint"
 				TYPE=""
 				UUID=""
-				eval "$(blkid -o udev ${DEVICE}${count})"
+				eval "$(blkid -o udev ${partition_device}${count})"
 				if [ -n "$ID_FS_UUID" ]; then
 					D="UUID=$ID_FS_UUID"
 				else
-					D="${DEVICE}${count}"
+					D="${partition_device}${count}"
 				fi
 				if [ "$partition_fs" = "swap" ]; then
 					echo "$D	none	swap	sw	0	0" >>/ucc_tmp/fstab
@@ -274,7 +271,7 @@ partition()
 			fi
 			copy_files="$(_get_var partition${i}_copy_files)"
 			if [ "$copy_files" = "true" ]; then
-				echo "${DEVICE}${count} $partition_fs $mountpoint" >>ucc_tmp/copy_files
+				echo "${partition_device}${count} $partition_fs $mountpoint" >>ucc_tmp/copy_files
 			fi
 			count=$((count+1))
 		fi
@@ -376,30 +373,43 @@ _update_local_image ()
 ## compatible with busybox
 _install_grub ()
 {
-	local DEVICE="$1"
-	mount -o move /dev /root/dev
-	if grep -qs "^/boot " /root/etc/fstab; then
+	local device="$1"
+
+	for d in dev sys proc; do
+		mount -o move /${d} /root/${d}
+	done
+
+	echo "#!bin/sh" >>/root/grub-inst.sh
+	if grep -qs "/boot" /root/etc/fstab; then
 		echo "mount /boot" >>/root/grub-inst.sh
 	fi
-	echo "update-grub " >>/root/grub-inst.sh
-	echo "grub-install $DEVICE" >>/root/grub-inst.sh
-	if grep -qs "^/boot " /root/etc/fstab; then
+	echo "update-grub >>/var/log/ucc-installation.log 2>&1" >>/root/grub-inst.sh
+	echo "grub-install $device >>/var/log/ucc-installation.log 2>&1" >>/root/grub-inst.sh
+	if grep -qs "/boot" /root/etc/fstab; then
 		echo "umount /boot" >>/root/grub-inst.sh
 	fi
-	mount -o move /root/dev /dev
+
+	chmod +x /root/grub-inst.sh
+	chroot root ./grub-inst.sh
+	rm /root/grub-inst.sh
+
+	for d in dev sys proc; do
+		mount -o move /root/${d} /${d}
+	done
+		
 }
 
 ## Ask if the partiton should be done and start the post installation
 ## configuration
 ucc_installation()
 {
-	local DEVICE
+	local partition_device
 
 	clear
 
 	test -e /scripts/ucc-config/partition_info && . /scripts/ucc-config/partition_info
 
-	DEVICE="$(_search_device ${device})"
+	partition_device="$(_search_device ${device})"
 	if [ $? != 0 ]; then
 		echo "ERROR: Failed to search device."
 		panic "Dropping to a shell!"
@@ -416,7 +426,7 @@ ucc_installation()
 				panic
 				break
 			elif [ "$answer" = "yes" ]; then
-				partition "$DEVICE"
+				partition "$partition_device"
 				break
 			else
 				echo "Please insert yes or no"
@@ -426,7 +436,7 @@ ucc_installation()
 	else
 		echo "Starting partitioning in 30 seconds. Press CTRL-C to abort."
 		sleep 30
-		partition "$DEVICE"
+		partition "$partition_device"
 	fi
 
 	# Search image
@@ -438,8 +448,9 @@ ucc_installation()
 	# Copy files from image to local partitions
 	_copy_files
 
+	echo "Install grub"
 	# Install grub
-	_install_grub "$DEVICE"
+	_install_grub "$partition_device"
 }
 
 ## Update the local UCC image
@@ -450,8 +461,9 @@ ucc_update()
 
 	if [ "${ROOT}" = "search" ]; then
 		if ! _mount_local_root_device; then
-			echo "ERROR: local root device was not found. Try kernel commandline argument root=</dev/...>"
-			panic "Dropping to a shell!"
+			echo "A local root device has not been found. Switch to the installation mode!"
+			ucc_installation
+			return
 		fi
 	else
 		mount ${ROOT} /ucc_tmp/root
@@ -627,7 +639,7 @@ mountroot()
 
 	export IMAGE
 
-	if [ "$UCC" = "inst" ] || [ "$UCC" = "update" -a "$repartition" = "true" ]; then 
+	if [ "$UCC" = "inst" ]; then 
 		sleep 1 # Give udevadm one more second
 		ucc_installation
 	elif [ "$UCC" = "update" ]; then

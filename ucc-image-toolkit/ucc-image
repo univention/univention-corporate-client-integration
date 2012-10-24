@@ -397,33 +397,36 @@ if __name__ == '__main__':
 			boot_dir = os.path.join(cd_dir, 'boot')
 			shutil.copytree(os.path.join(bootstrap_dir, 'boot'), boot_dir)
 
+			kernel = os.path.join('/', os.readlink('/vmlinuz'))
+			initrd = os.path.join('/', os.readlink('/initrd.img'))
+
 			grub_cfg = open(os.path.join(boot_dir, 'grub/grub.cfg'), 'w')
 			grub_cfg.write('''
 menuentry 'Univention Corporate Client - Boot UCC from CDROM/USB device (overlayfs)' {
-        linux /boot/vmlinuz-3.2.0-29-generic ro boot=ucc ucc=overlayfs quiet
-        initrd /boot/initrd.img-3.2.0-29-generic
+        linux %(kernel)s ro boot=ucc ucc=overlayfs quiet
+        initrd %(initrd)s
 }
 menuentry 'Univention Corporate Client - Boot UCC from CDROM/USB device (aufs)' {
-        linux /boot/vmlinuz-3.2.0-29-generic ro boot=ucc ucc=aufs quiet
-        initrd /boot/initrd.img-3.2.0-29-generic
+        linux %(kernel)s ro boot=ucc ucc=aufs quiet
+        initrd %(initrd)s
 }
 menuentry 'Univention Corporate Client - Boot UCC from local harddisk installation' {
-        linux /boot/vmlinuz-3.2.0-29-generic ro boot=ucc ucc=local root=search quiet
-        initrd /boot/initrd.img-3.2.0-29-generic
+        linux %(kernel)s ro boot=ucc ucc=local root=search quiet
+        initrd %(initrd)s
 }
 menuentry 'Univention Corporate Client - Install UCC to local harddisk' {
-        linux /boot/vmlinuz-3.2.0-29-generic ro boot=ucc ucc=inst quiet
-        initrd /boot/initrd.img-3.2.0-29-generic
+        linux %(kernel)s ro boot=ucc ucc=inst quiet
+        initrd %(initrd)s
 }
 menuentry 'Univention Corporate Client - Update and boot local UCC installation' {
-        linux /boot/vmlinuz-3.2.0-29-generic ro boot=ucc ucc=update root=search quiet
-        initrd /boot/initrd.img-3.2.0-29-generic
+        linux %(kernel)s ro boot=ucc ucc=update root=search quiet
+        initrd %(initrd)s
 }
 menuentry 'Debug Shell' {
-        linux /boot/vmlinuz-3.2.0-29-generic ro init=/bin/sh rootdelay=3
-        initrd /boot/initrd.img-3.2.0-29-generic
+        linux %(kernel)s ro init=/bin/sh rootdelay=3
+        initrd %(initrd)s
 }
-			''')
+			''' % {'kernel': kernel, 'initrd': initrd})
 			grub_cfg.close()
 			
 			if config.getboolean('Image', 'include_image_on_iso', False):
