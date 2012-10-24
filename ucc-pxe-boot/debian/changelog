@@ -1,3 +1,11 @@
+ucc-pxe-boot (5.0.1-4) precise; urgency=low
+
+  * Added univention-nfs-server to the recommends list (Bug #23974)
+  * Create the NFS share under the share container of the local servwer
+    (Bug #23974)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Oct 2012 20:32:54 +0200
+
 ucc-pxe-boot (5.0.1-3) precise; urgency=low
 
   * Fixed python syntax error in uccpxeboot.py (Bug #23974)

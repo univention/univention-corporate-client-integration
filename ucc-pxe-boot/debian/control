@@ -13,7 +13,8 @@ Depends: ${misc:Depends},
  shell-univention-lib (>= 1.0.6),
  univention-tftp,
  syslinux,
-Recommends: univention-dhcp
+Recommends: univention-dhcp,
+ univention-nfs-server
 Pre-Depends: univention-config-registry (>> 1.54-30)
 Description: UCC - network boot infrastructure (PXE)
  The PreExecution Environment (PXE) allows for computers to

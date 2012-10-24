@@ -43,9 +43,15 @@ if [ -z "$old" -o "$old" = "--set boot_filename=None" ]; then
 	univention-directory-manager policies/dhcp_boot modify "$@" --ignore_exists --dn "cn=default-settings,cn=boot,cn=dhcp,cn=policies,$ldap_base" --set name=default-settings --set boot_filename=pxelinux.0
 fi
 
+univention-directory-manager container/cn create "$@" --ignore_exists \
+	--position "cn=shares,$ldap_base" \
+	--set name=$hostname.$domainname \
+	--set sharePath=1 || die
 
-udm shares/share create "$@" --ignore_exists --position cn=shares,$ldap_base --set name=client-boot \
-    --set path=/var/lib/univention-client-boot --set host=${hostname}.${domainname} --set writeable=0 \
+univention-directory-manager shares/share create "$@" --ignore_exists \
+	--position "cn=$hostname.$domainname,cn=shares,$ldap_base" \
+	--set name=client-boot \
+    --set path=/var/lib/univention-client-boot --set host="${hostname}.${domainname}" --set writeable=0 \
     --option=nfs || die
 
 univention-config-registry set "ucc/pxe/nameserver?$nameserver1"
