@@ -1,3 +1,12 @@
+ucc-image-toolkit (0.9.1-19) precise; urgency=low
+
+  * Added some more univention tools to the default images (Bug #28031
+    and Bug #28032)
+  * Added udhcpc to the initramfs and call udhcpc during the boot to get
+    an IP address (Bug #28036)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 24 Oct 2012 20:05:45 +0200
+
 ucc-image-toolkit (0.9.1-18) precise; urgency=low
 
   * Install grub (Bug #28841)

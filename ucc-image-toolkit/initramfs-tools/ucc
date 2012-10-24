@@ -26,6 +26,8 @@
 ##	- image=<image>
 ##		Specifies the UCC image. This parameter will overwrite the setting via
 ##		ucc-config file
+##	- net_dev=<network device>
+##		For this interface is dhclient called during the boot (default is eth0)
 
 ## Helper function to add /dev/ to a device name
 _add_dev()
@@ -352,7 +354,7 @@ _update_local_image ()
 			fi
 		done
 		if [ ! -e /ucc_tmp/ucc-config ]; then
-			echo "INFO: Did not found image defined in ucc-config on $device. Given image name in ucc-config is \"$image\"."
+			echo "INFO: Did not find image defined in ucc-config on $device. Given image name in ucc-config is \"$image\"."
 		fi
 		umount /ucc_tmp/boot_medium
 	fi
@@ -456,6 +458,7 @@ ucc_installation()
 ## Update the local UCC image
 ucc_update()
 {
+	local net_dev="$1"
 
 	mkdir -p /ucc_tmp/root
 
@@ -468,6 +471,10 @@ ucc_update()
 	else
 		mount ${ROOT} /ucc_tmp/root
 	fi
+
+	# Bring up the network
+	ifconfig "$net_dev" up
+	udhcpc -s /etc/udhcpc/default.script -i "$net_dev"
 
 	_update_local_image
 }
@@ -629,13 +636,14 @@ mountroot()
 		force_partition_timeout=*)
 			force_partition_timeout=${x#force_partition_timeout=}
 			;;
-		repartition)
-			repartition=true
+		net_dev)
+			net_dev={x#net_dev=}
 			;;
 		esac
 	done
 
 	test -z "$ROOT" && ROOT="search"
+	test -z "$net_dev" && net_dev="eth0"
 
 	export IMAGE
 
@@ -643,7 +651,7 @@ mountroot()
 		sleep 1 # Give udevadm one more second
 		ucc_installation
 	elif [ "$UCC" = "update" ]; then
-		ucc_update
+		ucc_update "$net_dev"
 	elif [ "$UCC" = "local" ]; then
 		ucc_image_local
 	elif [ "$UCC" = "overlayfs" ]; then
