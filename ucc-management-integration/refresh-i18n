@@ -35,7 +35,7 @@ po=${lang}.po
 pot=${po}t
 pox=${po}x
 
-xgettext -o $pot modules/*.py
+xgettext -o $pot modules/*/*.py
 
 if grep "Content-Type: text/plain; charset=CHARSET" $pot ; then
 	echo "Rewriting encoding information from CHARSET to UTF-8"
