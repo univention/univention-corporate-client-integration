@@ -327,16 +327,12 @@ if __name__ == '__main__':
 			fd = open(os.path.join(bootstrap_dir, 'etc/initramfs-tools/modules'), 'a+')
 			fd.write(config.get('Image', 'initramfs_modules'))
 			fd.close()
-		# TODO: use a package
-		if os.path.exists('/usr/share/ucc-image-toolkit/initramfs-tools/hooks/ucc'):
-			shutil.copy('/usr/share/ucc-image-toolkit/initramfs-tools/hooks/ucc', os.path.join(bootstrap_dir, 'usr/share/initramfs-tools/hooks'))
-		if os.path.exists('/usr/share/ucc-image-toolkit/initramfs-tools/ucc'):
-			shutil.copy('/usr/share/ucc-image-toolkit/initramfs-tools/ucc', os.path.join(bootstrap_dir, 'usr/share/initramfs-tools/scripts'))
 
+		# Re-create the initramfs
 		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'update-initramfs', '-k', 'all', '-c']
 		_run_cmd(cmd_block, logfile_fd)
 		_print_done()
-				
+
 		# Copy kernel
 		kernel_link = os.path.join(bootstrap_dir, 'vmlinuz')
 		try:
