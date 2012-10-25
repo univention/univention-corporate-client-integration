@@ -1,4 +1,4 @@
-ucc-management-integration (1.0-7ubuntu1) precise; urgency=low
+ucc-management-integration (1.0-8) unstable; urgency=low
 
   * Added a simple boot selection for the UCC clients (Bug #28036)
 
