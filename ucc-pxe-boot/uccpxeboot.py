@@ -3,43 +3,45 @@
 # UCC PXE Boot
 #  Univention Listener Module
 #
-# Copyright (C) 2001, 2002, 2003, 2004, 2005, 2006 Univention GmbH
+# Copyright (C) 2001-2012 Univention GmbH
 #
 # http://www.univention.de/
 #
 # All rights reserved.
 #
-# This program is free software; you can redistribute it and/or modify
-# it under the terms of the GNU General Public License version 2 as
-# published by the Free Software Foundation.
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
 #
-# Binary versions of this file provided by Univention to you as
+# Binary versions of this program provided by Univention to you as
 # well as other copyrighted, protected or trademarked materials like
 # Logos, graphics, fonts, specific documentations and configurations,
 # cryptographic keys etc. are subject to a license agreement between
-# you and Univention.
+# you and Univention and not subject to the GNU AGPL V3.
 #
-# This program is distributed in the hope that it will be useful,
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.	See the
-# GNU General Public License for more details.
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
 #
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA	 02110-1301	 USA
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
 
 __package__=''  # workaround for PEP 366
 
 name='uccpxeboot'
 description='PXE configuration for UCC clients'
 filter='(objectClass=univentionCorporateClient)'
-attributes=['objectClass', 'aRecord', 'cn']
+attributes=[]
 
 import listener
 import os, re, ldap, string, univention.debug
+import univention.config_registry
 
 pxebase = '/var/lib/univention-client-boot/pxelinux.cfg'
-pxeconfig_file = '/etc/univention/ucc-pxe-boot/pxeconfig'
 
 def ip_to_hex(ip):
 	if ip.count('.') != 3:
@@ -49,8 +51,12 @@ def ip_to_hex(ip):
 
 def handler(dn, new, old):
 
+	configRegistry = univention.config_registry.ConfigRegistry()
+	configRegistry.load()
+
+
 	# remove pxe host file
-	if 'univentionCorporateClients' in old.get('objectClass',[]) and old.get('aRecord'):
+	if old and old.get('aRecord'):
 		basename = ip_to_hex(old['aRecord'][0])
 		if not basename:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'PXE: invalid IP address %s' % old['aRecord'][0])
@@ -69,19 +75,65 @@ def handler(dn, new, old):
 		cn = new['cn'][0]
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'PXE: writing configuration for host %s' % cn)
 
+		append  = "root=/dev/ram rw nomodeset "
+		append += "initrd=%s " % configRegistry.get("pxe/installer/initrd", "linux.bin")
+		append += "ramdisk_size=%s " % configRegistry.get("pxe/installer/ramdisksize", "230000")
+		if configRegistry.is_true("pxe/installer/quiet", False):
+			append += "quiet "
+		append += "vga=%s " % configRegistry.get("pxe/installer/vga", "788")
+		append += "loglevel=%s " % configRegistry.get("pxe/installer/loglevel", "0")
+		append += "flavor=linux nfs"
+
+		append = 'root=/dev/nfs '
+		append += 'nfsroot=%s:/var/lib/univention-client-boot ' % configRegistry['ucc/pxe/nfsroot']
+		append += 'DNSSERVER=%s ' % configRegistry['ucc/pxe/nameserver']
+		if configRegistry.get('ucc/pxe/vga'):
+			append += 'vga=%s ' % configRegistry['ucc/pxe/vga']
+		if configRegistry.get('ucc/pxe/initrd', True):
+			append += 'initrd=%s ' % configRegistry.get('ucc/pxe/kernel', 'ucc-thinclient-v1.img.kernel').replace('.kernel', '.initrd')
+		if configRegistry.is_true('ucc/pxe/quiet', False):
+			append += 'quiet '
+		if 'ucc/pxe/ldapserver' in configRegistry.keys():
+			append += 'ldapServer=%s ' % configRegistry['ucc/pxe/ldapserver']
+		if 'ucc/pxe/ldapport' in configRegistry.keys():
+			append += 'ldapPort=%s ' % configRegistry['ucc/pxe/ldapport']
+		if 'ucc/pxe/append' in configRegistry.keys():
+			append += '%s ' % configRegistry['ucc/pxe/append']
+		if configRegistry.get('ucc/pxe/loglevel', False):
+			append += 'loglevel=%s ' % configRegistry['ucc/pxe/loglevel']
+		append += 'boot=ucc '
+		if new.get('univentionCorporateClientBootVariant'):
+			append += 'ucc=%s ' % new.get('univentionCorporateClientBootVariant')[0]
+
+		append += '\n'
+
+		ipappend = configRegistry.get('pxe/ucc/ipappend', "3")
+
+		pxeconfig = \
+'''
+PROMPT 0
+DEFAULT UCC
+IPAPPEND %s
+
+APPEND %s 
+
+LABEL UCC
+	KERNEL %s
+''' % (ipappend, append, configRegistry.get('ucc/pxe/kernel', 'ucc-thinclient-v1.img.kernel'))
+
 		basename = ip_to_hex(new['aRecord'][0])
 		if not basename:
 			univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'PXE: invalid IP address %s' % new['aRecord'][0])
 			return
 		filename = os.path.join(pxebase, basename)
 
-		pxeconfig = open(pxeconfig_file).read()
 		listener.setuid(0)
 		try:
 			f=open(filename, 'w')
 			f.write('# This file is auto generated by the UCS listener module uccpxeboot\n')
-			f.write('# PXE configuration for %s (%s)\n\n' % (new.get('cn', [])[0], new.get('aRecord', [])[0]))
+			f.write('# PXE configuration for %s (%s)\n' % (new.get('cn', [])[0], new.get('aRecord', [])[0]))
 			f.write(pxeconfig)
 			f.close()
 		finally:
 			listener.unsetuid()
+

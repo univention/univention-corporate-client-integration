@@ -1,3 +1,10 @@
+ucc-pxe-boot (5.0.1-5) precise; urgency=low
+
+  * Support the boot selection for UCC clients (Bug #28036)
+  * Remove etc/univention/ucc-pxe-boot/pxeconfig (Bug #28036)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Oct 2012 20:46:41 +0200
+
 ucc-pxe-boot (5.0.1-4) precise; urgency=low
 
   * Added univention-nfs-server to the recommends list (Bug #23974)
