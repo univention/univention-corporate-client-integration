@@ -129,7 +129,7 @@ property_descriptions={
 	'fixedAttributes': univention.admin.property(
 			short_description=_('Fixed attributes'),
 			long_description='',
-			syntax=pwhistoryFixedAttributes,
+			syntax=uccUserFixedAttributes,
 			multivalue=1,
 			options=[],
 			required=0,
@@ -139,12 +139,13 @@ property_descriptions={
 	'emptyAttributes': univention.admin.property(
 			short_description=_('Empty attributes'),
 			long_description='',
-			syntax=pwhistoryFixedAttributes,
+			syntax=uccUserFixedAttributes,
 			multivalue=1,
 			options=[],
 			required=0,
 			may_change=1,
 			identifies=0
+		),
 	'filler': univention.admin.property(
 			short_description='',
 			long_description='',

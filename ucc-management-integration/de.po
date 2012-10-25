@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-25 11:33+0200\n"
+"POT-Creation-Date: 2012-10-25 14:29+0200\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -105,8 +105,8 @@ msgstr "Inventarnummer"
 msgid "Groups"
 msgstr "Gruppen"
 
-#: modules/computers/ucc.py:264 modules/policies/ucc_user.py:113
-#: modules/policies/ucc_user.py:114 modules/settings/ucc_autostart.py:87
+#: modules/computers/ucc.py:264 modules/policies/ucc_user.py:161
+#: modules/policies/ucc_user.py:162 modules/settings/ucc_autostart.py:87
 #: modules/settings/ucc_autostart.py:88 modules/settings/ucc_session.py:87
 #: modules/settings/ucc_session.py:88
 msgid "General"
@@ -156,49 +156,69 @@ msgstr "Alias-DNS-Eintrag"
 msgid " At least posix or kerberos is required."
 msgstr "Mindestens POSIX oder Kerbeos werden benötigt"
 
-#: modules/policies/ucc_user.py:55
+#: modules/policies/ucc_user.py:50 modules/policies/ucc_user.py:80
+msgid "Force this session for user logins"
+msgstr "Erzwingen dieser Sitzung für Benutzeranmeldungen"
+
+#: modules/policies/ucc_user.py:51 modules/policies/ucc_user.py:90
+msgid "Windows domain"
+msgstr "Windows-Domäne"
+
+#: modules/policies/ucc_user.py:52 modules/policies/ucc_user.py:100
+msgid "Windows terminal server"
+msgstr "Windows Terminalserver"
+
+#: modules/policies/ucc_user.py:63
 msgid "Policy: Univention Corporate Client user session"
 msgstr "Richtline: Univention Corporate Client Benutzersitzung"
 
-#: modules/policies/ucc_user.py:56 modules/policies/ucc_user.py:113
+#: modules/policies/ucc_user.py:64 modules/policies/ucc_user.py:161
 msgid "UCC user session"
 msgstr "UCC Benutzersitzung"
 
-#: modules/policies/ucc_user.py:62 modules/settings/ucc_autostart.py:54
+#: modules/policies/ucc_user.py:70 modules/settings/ucc_autostart.py:54
 #: modules/settings/ucc_autostart.py:55 modules/settings/ucc_session.py:54
 #: modules/settings/ucc_session.py:55
 msgid "Name"
 msgstr "Name"
 
-#: modules/policies/ucc_user.py:72
-msgid "Force this session for user logins"
-msgstr "Erzwingen dieser Sitzung für Benutzeranmeldungen"
-
-#: modules/policies/ucc_user.py:73
+#: modules/policies/ucc_user.py:81
 msgid "This UCC session will be during login and no user selection is made"
 msgstr ""
 "Diese Sitzung wird bei der Anmeldung vorgegeben und keine Benutzerauswahl "
 "getroffen"
 
-#: modules/policies/ucc_user.py:82
-msgid "Windows domain"
-msgstr "Windows-Domäne"
-
-#: modules/policies/ucc_user.py:83
+#: modules/policies/ucc_user.py:91
 msgid "This windows domain will be used for RDP user logons."
 msgstr "Diese Windows-Domäne wird für RDP-Anmeldungen verwendet"
 
-#: modules/policies/ucc_user.py:92
-msgid "Windows terminal server"
-msgstr "Windows Terminalserver"
-
-#: modules/policies/ucc_user.py:93
+#: modules/policies/ucc_user.py:101
 msgid ""
 "This windows terminal server will be used for user logon Windows terminal "
 "servers."
 msgstr ""
 "Dieser Windows-Terminalserver wird für Anmeldungen an Windows "
 "Terminalservern verwendet"
+
+#: modules/policies/ucc_user.py:110
+msgid "Required object classes"
+msgstr "Benötigte Objektklassen"
+
+#: modules/policies/ucc_user.py:120
+msgid "Excluded object classes"
+msgstr "Ausgeschlossene Objektklassen"
+
+#: modules/policies/ucc_user.py:130
+msgid "Fixed attributes"
+msgstr "Festgelegte Attribute"
+
+#: modules/policies/ucc_user.py:140
+msgid "Empty attributes"
+msgstr "Leere Attribute"
+
+#: modules/policies/ucc_user.py:169
+msgid "Object"
+msgstr "Objekt"
 
 #: modules/settings/ucc_autostart.py:47 modules/settings/ucc_autostart.py:87
 msgid "UCC autostart script"
