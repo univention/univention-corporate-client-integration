@@ -62,6 +62,15 @@ options={
 			default=1
 		)
 }
+class uccBoot(univention.admin.syntax.select):
+    choices=[
+        ('none', _('None')),
+        ('overlayfs', _('Overlayfs')),
+        ('update', _('Installation / automatic update')),
+        ('rollout', _('Rollout')),
+        ('installation', _('Re-installation')),
+    ]
+
 property_descriptions={
 	'name': univention.admin.property(
 			short_description=_('Hostname'),
@@ -258,6 +267,16 @@ property_descriptions={
 			dontsearch=1,
 			identifies=0
 		),
+	'boot': univention.admin.property(
+			short_description=_('Boot variant'),
+			long_description=_('Boot variant of this client'),
+			syntax=uccBoot,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 }
 
 layout = [
@@ -277,6 +296,11 @@ layout = [
 		] ),
 		Group( _( 'DHCP' ), layout = [
 			'dhcpEntryZone'
+		] ),
+		] ),
+	Tab( _( 'Images' ), _( 'Images' ), advanced = False, layout = [
+		Group( _( 'Images boot' ), layout = [
+			'boot'
 		] ),
 		] ),
 	Tab( _( 'Account' ), _( 'Account' ), advanced = True, layout = [
@@ -305,6 +329,7 @@ mapping.register('unixhome', 'homeDirectory', None, univention.admin.mapping.Lis
 mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToString)
 mapping.register('operatingSystem', 'univentionOperatingSystem', None, univention.admin.mapping.ListToString)
 mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', None, univention.admin.mapping.ListToString)
+mapping.register('boot', 'univentionCorporateClientBootVariant', None, univention.admin.mapping.ListToString)
 
 
 

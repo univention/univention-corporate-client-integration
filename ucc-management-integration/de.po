@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-25 14:29+0200\n"
+"POT-Creation-Date: 2012-10-25 20:18+0200\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -29,130 +29,166 @@ msgid "Kerberos principal"
 msgstr "Kerberos-Prinzipal"
 
 #: modules/computers/ucc.py:67
+msgid "None"
+msgstr "Keins"
+
+#: modules/computers/ucc.py:68
+msgid "Overlayfs"
+msgstr "Live-System"
+
+#: modules/computers/ucc.py:69
+msgid "Installation / automatic update"
+msgstr "Installation & automatische Aktualisierung"
+
+#: modules/computers/ucc.py:70
+msgid "Rollout"
+msgstr "Rollout"
+
+#: modules/computers/ucc.py:71
+msgid "Re-installation"
+msgstr "Re-Installation"
+
+#: modules/computers/ucc.py:76
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: modules/computers/ucc.py:77 modules/settings/ucc_autostart.py:64
+#: modules/computers/ucc.py:86 modules/settings/ucc_autostart.py:64
 #: modules/settings/ucc_session.py:64
 msgid "Description"
 msgstr "Beschreibung"
 
-#: modules/computers/ucc.py:86
+#: modules/computers/ucc.py:95
 msgid "Operating system"
 msgstr "Betriebssystem"
 
-#: modules/computers/ucc.py:95
+#: modules/computers/ucc.py:104
 msgid "Operating system version"
 msgstr "Version des Betriebssystems"
 
-#: modules/computers/ucc.py:104
+#: modules/computers/ucc.py:113
 msgid "Domain"
 msgstr "Domäne"
 
-#: modules/computers/ucc.py:113
+#: modules/computers/ucc.py:122
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: modules/computers/ucc.py:123
+#: modules/computers/ucc.py:132
 msgid "Network"
 msgstr "Netzwerk"
 
-#: modules/computers/ucc.py:133
+#: modules/computers/ucc.py:142
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: modules/computers/ucc.py:143
+#: modules/computers/ucc.py:152
 msgid "Forward zone for DNS entry"
 msgstr "Forward-Zone für DNS-Eintrag"
 
-#: modules/computers/ucc.py:154
+#: modules/computers/ucc.py:163
 msgid "Reverse zone for DNS entry"
 msgstr "Reverse-Zone für DNS-Eintrag"
 
-#: modules/computers/ucc.py:165
+#: modules/computers/ucc.py:174
 msgid "Zone for DNS alias"
 msgstr "Zone für DNS-Alias"
 
-#: modules/computers/ucc.py:176 modules/computers/ucc.py:292
+#: modules/computers/ucc.py:185 modules/computers/ucc.py:316
 msgid "DNS alias"
 msgstr "DNS-Alias"
 
-#: modules/computers/ucc.py:186
+#: modules/computers/ucc.py:195
 msgid "DHCP service"
 msgstr "DHCP-Service"
 
-#: modules/computers/ucc.py:197
+#: modules/computers/ucc.py:206
 msgid "Password"
 msgstr "Passwort"
 
-#: modules/computers/ucc.py:208
+#: modules/computers/ucc.py:217
 msgid "Unix home directory"
 msgstr "Unix Heimatverzeichnis"
 
-#: modules/computers/ucc.py:219
+#: modules/computers/ucc.py:228
 msgid "Login shell"
 msgstr "Login-Shell"
 
-#: modules/computers/ucc.py:230
+#: modules/computers/ucc.py:239
 msgid "Primary group"
 msgstr "Primäre Gruppe"
 
-#: modules/computers/ucc.py:241
+#: modules/computers/ucc.py:250
 msgid "Inventory number"
 msgstr "Inventarnummer"
 
-#: modules/computers/ucc.py:251 modules/computers/ucc.py:289
+#: modules/computers/ucc.py:260 modules/computers/ucc.py:313
 msgid "Groups"
 msgstr "Gruppen"
 
-#: modules/computers/ucc.py:264 modules/policies/ucc_user.py:161
+#: modules/computers/ucc.py:271
+msgid "Boot variant"
+msgstr ""
+
+#: modules/computers/ucc.py:272
+msgid "Boot variant of this client"
+msgstr ""
+
+#: modules/computers/ucc.py:283 modules/policies/ucc_user.py:161
 #: modules/policies/ucc_user.py:162 modules/settings/ucc_autostart.py:87
 #: modules/settings/ucc_autostart.py:88 modules/settings/ucc_session.py:87
 #: modules/settings/ucc_session.py:88
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/computers/ucc.py:264
+#: modules/computers/ucc.py:283
 msgid "Basic settings"
 msgstr "Grundeinstelungen"
 
-#: modules/computers/ucc.py:265
+#: modules/computers/ucc.py:284
 msgid "Computer account"
 msgstr "Rechnerkonto"
 
-#: modules/computers/ucc.py:270
+#: modules/computers/ucc.py:289
 msgid "Network settings "
 msgstr "Netzwerkeinstellungen"
 
-#: modules/computers/ucc.py:274
+#: modules/computers/ucc.py:293
 msgid "DNS Forward and Reverse Lookup Zone"
 msgstr "DNS-Forward und Reverse-Zonen"
 
-#: modules/computers/ucc.py:278
+#: modules/computers/ucc.py:297
 msgid "DHCP"
 msgstr "DHCP"
 
-#: modules/computers/ucc.py:282
+#: modules/computers/ucc.py:301
+msgid "Images"
+msgstr ""
+
+#: modules/computers/ucc.py:302
+msgid "Images boot"
+msgstr ""
+
+#: modules/computers/ucc.py:306
 msgid "Account"
 msgstr "Konto"
 
-#: modules/computers/ucc.py:286
+#: modules/computers/ucc.py:310
 msgid "Unix account"
 msgstr "Unix-Konto"
 
-#: modules/computers/ucc.py:286
+#: modules/computers/ucc.py:310
 msgid "Unix account settings"
 msgstr "Unix-Konto-Einstellungen"
 
-#: modules/computers/ucc.py:289
+#: modules/computers/ucc.py:313
 msgid "Group memberships"
 msgstr "Gruppenmitgliedschaften"
 
-#: modules/computers/ucc.py:292
+#: modules/computers/ucc.py:316
 msgid "Alias DNS entry"
 msgstr "Alias-DNS-Eintrag"
 
-#: modules/computers/ucc.py:395
+#: modules/computers/ucc.py:420
 msgid " At least posix or kerberos is required."
 msgstr "Mindestens POSIX oder Kerbeos werden benötigt"
 
