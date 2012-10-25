@@ -44,6 +44,14 @@ import univention.debug
 translation=univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
 _=translation.translate
 
+class uccUserFixedAttributes(univention.admin.syntax.select):
+	name='slavePackagesFixedAttributes'
+	choices=[
+		('univentionCorporateClientUserSession',_('Force this session for user logins')),
+		('univentionCorporateClientUserWindowsDomain',_('Windows domain')),
+		('univentionCorporateClientUserWindowsTerminalserver',_('Windows terminal server'))
+		]
+
 module='policies/ucc_user'
 operations=['add','edit','remove','search']
 
@@ -98,6 +106,45 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'requiredObjectClasses': univention.admin.property(
+			short_description=_('Required object classes'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'prohibitedObjectClasses': univention.admin.property(
+			short_description=_('Excluded object classes'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'fixedAttributes': univention.admin.property(
+			short_description=_('Fixed attributes'),
+			long_description='',
+			syntax=pwhistoryFixedAttributes,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'emptyAttributes': univention.admin.property(
+			short_description=_('Empty attributes'),
+			long_description='',
+			syntax=pwhistoryFixedAttributes,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
 	'filler': univention.admin.property(
 			short_description='',
 			long_description='',
@@ -117,6 +164,10 @@ layout = [
 			'windowsDomain',
 			'windowsTerminalserver'
 		] ),
+	] ),
+	Tab(_('Object'),_('Object'), advanced = True, layout = [
+		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
+		[ 'fixedAttributes', 'emptyAttributes' ]
 	] ),
 ]
 
