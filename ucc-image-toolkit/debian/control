@@ -3,7 +3,8 @@ Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
 Standards-Version: 3.5.5
-Build-Depends: debhelper (>> 7)
+Build-Depends: debhelper (>> 7),
+ ucslinit
 
 Package: ucc-image-toolkit
 Architecture: all
@@ -12,7 +13,7 @@ Depends: ${misc:Depends}, ${python:Depends},
  debootstrap ( >= 1.0.39),
  grub-common,
  xorriso
-rovides: ${python:Provides}
+Provides: ${python:Provides}
 Description: Toolkit for creating UCC images
  This package contains tools to create Univention Corporate
  Client images.
