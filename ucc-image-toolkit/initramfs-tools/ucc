@@ -450,16 +450,23 @@ ucc_installation()
 	# Copy files from image to local partitions
 	_copy_files
 
-	echo "Install grub"
 	# Install grub
+	echo "Install grub"
 	_install_grub "$partition_device"
+}
+
+_start_network ()
+{
+	local net_dev="$1"
+
+	# Bring up the network
+	ifconfig "$net_dev" up
+	udhcpc -s /etc/udhcpc/default.script -i "$net_dev"
 }
 
 ## Update the local UCC image
 ucc_update()
 {
-	local net_dev="$1"
-
 	mkdir -p /ucc_tmp/root
 
 	if [ "${ROOT}" = "search" ]; then
@@ -471,10 +478,6 @@ ucc_update()
 	else
 		mount ${ROOT} /ucc_tmp/root
 	fi
-
-	# Bring up the network
-	ifconfig "$net_dev" up
-	udhcpc -s /etc/udhcpc/default.script -i "$net_dev"
 
 	_update_local_image
 }
@@ -651,7 +654,8 @@ mountroot()
 		sleep 1 # Give udevadm one more second
 		ucc_installation
 	elif [ "$UCC" = "update" ]; then
-		ucc_update "$net_dev"
+		_start_network "$net_dev"
+		ucc_update
 	elif [ "$UCC" = "local" ]; then
 		ucc_image_local
 	elif [ "$UCC" = "overlayfs" ]; then

@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.1-20) precise; urgency=low
+
+  * Create a function for the network start (Bug #28033)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 25 Oct 2012 06:11:07 +0200
+
 ucc-image-toolkit (0.9.1-19) precise; urgency=low
 
   * Added some more univention tools to the default images (Bug #28031
