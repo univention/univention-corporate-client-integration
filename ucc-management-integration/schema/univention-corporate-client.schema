@@ -76,12 +76,35 @@ attributetype ( 1.3.6.1.4.1.10176.4125.5.1.1 NAME 'univentionCorporateClientBoot
 	SUBSTR caseIgnoreIA5SubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
+attributetype ( 1.3.6.1.4.1.10176.4125.5.1.2 NAME 'univentionCorporateClientBootImage'
+	DESC 'Univention Corporate Client boot image'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 objectclass ( 1.3.6.1.4.1.10176.4125.4.1 NAME 'univentionCorporateClient'
         SUP 'univentionHost' AUXILIARY
         DESC 'Univention Corporate Client'
         MUST ( cn )
-		MAY (univentionCorporateClientBootVariant) )
+		MAY (univentionCorporateClientBootVariant $ univentionCorporateClientBootImage ) )
+
+attributetype ( 1.3.6.1.4.1.10176.4125.6.1.1 NAME 'univentionCorporateClientImageName'
+	DESC 'Name of the Univention Corporate Client image'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 SINGLE-VALUE)
+
+attributetype ( 1.3.6.1.4.1.10176.4125.6.1.2 NAME 'univentionCorporateClientImageServer'
+	DESC 'The Univention Corporate Client image is available on these servers'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+objectclass ( 1.3.6.1.4.1.10176.4125.6.2.1 NAME 'univentionCorporateClientImage'
+		STRUCTURAL
+        DESC 'Univention Corporate Client'
+        MUST ( univentionCorporateClientImageName )
+		MAY (description $ univentionCorporateClientImageServer) )
 
 #attributetype ( 1.3.6.1.4.1.10176.4125.5.1.1 NAME 'univentionCorporateClientBootVariant'
 #	DESC 'Univention Corporate Client boot variant'

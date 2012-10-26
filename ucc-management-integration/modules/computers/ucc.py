@@ -62,14 +62,6 @@ options={
 			default=1
 		)
 }
-class uccBoot(univention.admin.syntax.select):
-    choices=[
-        ('none', _('None')),
-        ('overlayfs', _('Overlayfs')),
-        ('update', _('Installation / automatic update')),
-        ('rollout', _('Rollout')),
-        ('installation', _('Re-installation')),
-    ]
 
 property_descriptions={
 	'name': univention.admin.property(
@@ -270,7 +262,17 @@ property_descriptions={
 	'boot': univention.admin.property(
 			short_description=_('Boot variant'),
 			long_description=_('Boot variant of this client'),
-			syntax=uccBoot,
+			syntax=univention.admin.syntax.uccBoot,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'image': univention.admin.property(
+			short_description=_('Image'),
+			long_description=_('Image to boot'),
+			syntax=univention.admin.syntax.uccImage,
 			multivalue=0,
 			options=[],
 			required=0,
@@ -300,7 +302,8 @@ layout = [
 		] ),
 	Tab( _( 'Images' ), _( 'Images' ), advanced = False, layout = [
 		Group( _( 'Images boot' ), layout = [
-			'boot'
+			'boot',
+			'image'
 		] ),
 		] ),
 	Tab( _( 'Account' ), _( 'Account' ), advanced = True, layout = [
@@ -330,7 +333,7 @@ mapping.register('shell', 'loginShell', None, univention.admin.mapping.ListToStr
 mapping.register('operatingSystem', 'univentionOperatingSystem', None, univention.admin.mapping.ListToString)
 mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', None, univention.admin.mapping.ListToString)
 mapping.register('boot', 'univentionCorporateClientBootVariant', None, univention.admin.mapping.ListToString)
-
+mapping.register('image', 'univentionCorporateClientBootImage', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleComputer):

@@ -43,32 +43,36 @@ eval "$(univention-config-registry shell)"
 
 univention-directory-manager container/cn create "$@" --position "cn=univention,$ldap_base" \
 							--ignore_exists \
-							--set name="UCC"
+							--set name="UCC" || die
 
 univention-directory-manager container/cn create "$@" --position "cn=UCC,cn=univention,$ldap_base" \
 							--ignore_exists \
-							--set name="Autostart"
+							--set name="Autostart" || die
 
 univention-directory-manager container/cn create "$@" --position "cn=UCC,cn=univention,$ldap_base" \
 							--ignore_exists \
-							--set name="Session"
+							--set name="Session" || die
+
+univention-directory-manager container/cn create "$@" --position "cn=UCC,cn=univention,$ldap_base" \
+							--ignore_exists \
+							--set name="Images" || die
 
 univention-directory-manager container/cn create "$@" \
 							--ignore_exists \
 							--position="cn=policies,$ldap_base" \
 							--set name="UCC autostart sessions" \
-							--set policyPath=1
+							--set policyPath=1 || die
 
 univention-directory-manager container/cn create "$@" \
 							--ignore_exists \
 							--position="cn=policies,$ldap_base" \
 							--set name="ucc" \
-							--set policyPath=1
+							--set policyPath=1 || die
 
 univention-directory-manager container/cn create "$@" \
 							--ignore_exists \
 							--position="cn=custom attributes,cn=univention,$ldap_base" \
-							--set name="UCC"
+							--set name="UCC" || die
 
 univention-directory-manager settings/syntax create "$@" --ignore_exists \
      						--position "cn=UCC,cn=custom attributes,cn=univention,$ldap_base" \
@@ -76,7 +80,7 @@ univention-directory-manager settings/syntax create "$@" --ignore_exists \
      						--set value="univentionCorporateClientAutostartCommand" \
      						--set attribute="univentionCorporateClientAutostartName" \
      						--set filter='objectClass=univentionCorporateClientAutostart' \
-     						--set viewonly=FALSE
+     						--set viewonly=FALSE || die
 
 univention-directory-manager settings/syntax create "$@" --ignore_exists \
     						--position "cn=UCC,cn=custom attributes,cn=univention,$ldap_base" \
@@ -84,13 +88,13 @@ univention-directory-manager settings/syntax create "$@" --ignore_exists \
     						--set value="univentionCorporateClientSessionScript" \
     						--set attribute="univentionCorporateClientSessionName" \
     						--set filter='objectClass=univentionCorporateClientSession' \
-    						--set viewonly=FALSE
+    						--set viewonly=FALSE || die
 
-univention-directory-manager settings/ucc_session create "$@" \
+univention-directory-manager settings/ucc_session create "$@" --ignore_exists \
 							--position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
 							--set name="None" \
 							--set session="None" \
-							--set description="No default"
+							--set description="No default" || die
 
 
 # univention-directory-manager policies/autostart create "$@" \
@@ -108,10 +112,7 @@ univention-directory-manager settings/ucc_session create "$@" --position "cn=Ses
 							--ignore_exists \
 							--set name="Windows Terminal Server" \
 							--set session="Windows-Terminal-Server" \
-							--set description="Connect to a Windows Terminal Server via RDP"
-
-
-
+							--set description="Connect to a Windows Terminal Server via RDP" || die
 
 
 joinscript_save_current_version
