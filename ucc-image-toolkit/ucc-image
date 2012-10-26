@@ -356,13 +356,30 @@ if __name__ == '__main__':
 		if os.path.exists(initrd_src):
 			shutil.copy(initrd_src, initrd_dest)
 
-		# TODO: create md5 sum
+		# Create a md5 sum file
 		md5_dest = os.path.join(targetdir, "%s.md5" % image)
 		cmd = 'md5sum "%s" | sed -ne "s| .*||p" > "%s" ' % (image, md5_dest)
 		retcode = subprocess.call(cmd , shell=True)
 		if retcode:
 			msg = 'The command "%s" failed with the error code %d' % (cmd, retcode)
 			raise RuntimeError(msg)
+
+		# Create an UMC register file
+		umc_dest = os.path.join(targetdir, "%s.register.sh" % image)
+		umc_dest_fd = open(umc_dest, 'w')
+		umc_dest_fd.write('''
+#!/bin/sh
+eval "$(ucr shell)"
+udm settings/ucc_image create --ignore_exists \
+	--position "cn=UCC,cn=univention,$ldap_base" \
+	--set name="%(image)s"
+udm settings/ucc_image modify --ignore_exists \
+	--dn "univentionCorporateClientImageName=%(image)s,cn=UCC,cn=univention,$ldap_base" \
+	--append server="$hostname.$domainname"
+''' % {'image': config.get('Image', 'name', 'ucc-image.img')})
+		umc_dest_fd.close()
+
+		os.chmod(umc_dest, 0755)
 
 		# Create ISO image
 		if config.get('Image', 'iso'):
@@ -435,14 +452,15 @@ menuentry 'Debug Shell' {
 	if exitcode == 0:
 		print '\nThe image creation was successful:'
 		if bzip_image:
-			print 'Image (compressed): %s' % bzip_image
+			print 'Image (compressed) : %s' % bzip_image
 		else:
-			print 'Image             : %s' % image
-		print 'MD5sum file       : %s' % md5_dest
-		print 'Kernel            : %s' % kernel_dest
-		print 'Initrd            : %s' % initrd_dest
+			print 'Image              : %s' % image
+		print 'MD5sum file        : %s' % md5_dest
+		print 'UMC Image register : %s' % umc_dest
+		print 'Kernel             : %s' % kernel_dest
+		print 'Initrd             : %s' % initrd_dest
 		if config.get('Image', 'iso'):
-			print 'CDROM ISO Image   : %s' % iso_dest
+			print 'CDROM ISO Image    : %s' % iso_dest
 
 	_cleanup(options, workingdir, logfile_fd)
 
