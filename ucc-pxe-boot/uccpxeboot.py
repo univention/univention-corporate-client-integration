@@ -75,15 +75,6 @@ def handler(dn, new, old):
 		cn = new['cn'][0]
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'PXE: writing configuration for host %s' % cn)
 
-		append  = "root=/dev/ram rw nomodeset "
-		append += "initrd=%s " % configRegistry.get("pxe/installer/initrd", "linux.bin")
-		append += "ramdisk_size=%s " % configRegistry.get("pxe/installer/ramdisksize", "230000")
-		if configRegistry.is_true("pxe/installer/quiet", False):
-			append += "quiet "
-		append += "vga=%s " % configRegistry.get("pxe/installer/vga", "788")
-		append += "loglevel=%s " % configRegistry.get("pxe/installer/loglevel", "0")
-		append += "flavor=linux nfs"
-
 		append = 'root=/dev/nfs '
 		append += 'nfsroot=%s:/var/lib/univention-client-boot ' % configRegistry['ucc/pxe/nfsroot']
 		append += 'DNSSERVER=%s ' % configRegistry['ucc/pxe/nameserver']
@@ -104,6 +95,10 @@ def handler(dn, new, old):
 		append += 'boot=ucc '
 		if new.get('univentionCorporateClientBootVariant'):
 			append += 'ucc=%s ' % new.get('univentionCorporateClientBootVariant')[0]
+		image = new.get('univentionCorporateClientImage', [None])[0]
+		if not image:
+			image = configRegistry.get('ucc/pxe/kernel', 'ucc-thinclient-v1.img.kernel').replace('.kernel', '')
+		append += 'image=%s ' % image
 
 		append += '\n'
 
