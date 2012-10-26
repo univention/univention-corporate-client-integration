@@ -1,3 +1,12 @@
+ucc-image-toolkit (0.9.1-26) precise; urgency=low
+
+  * Re-added the network-manager and manage the eth0 device on thin
+    clients via network/interfaces (Bug #28321)
+  * Remove the ucc-config file
+  * Create md5 sum file for the image
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 26 Oct 2012 09:20:49 +0200
+
 ucc-image-toolkit (0.9.1-25) precise; urgency=low
 
   * Show more informations for the partition and make the dialog
