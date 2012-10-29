@@ -35,8 +35,8 @@ override_dh_auto_test:
 	dh_auto_test
 
 override_dh_auto_build:
-	ucc-image -c /usr/share/doc/ucc-image-toolkit/example/ucc-thinclient.cfg -t .
-	ucc-image -c /usr/share/doc/ucc-image-toolkit/example/ucc-desktop.cfg -t .
+	/usr/sbin/ucc-image -c /usr/share/doc/ucc-image-toolkit/example/ucc-thinclient.cfg -t .
+	/usr/sbin/ucc-image -c /usr/share/doc/ucc-image-toolkit/example/ucc-desktop.cfg -t .
 	cat /var/log/univention/ucc-image-toolkit.log
 	dh_auto_build
 

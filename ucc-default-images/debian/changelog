@@ -1,3 +1,9 @@
+ucc-default-images (0.1.1-2) precise; urgency=low
+
+  * Call ucc-image with full path (Bug #28858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Oct 2012 19:15:53 +0100
+
 ucc-default-images (0.1.1-1) precise; urgency=low
 
   * Initial release (Bug #28858)
