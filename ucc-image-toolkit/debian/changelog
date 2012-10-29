@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.1-30) precise; urgency=low
+
+  * Depend on ucr (Bug #28033)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Oct 2012 19:15:10 +0100
+
 ucc-image-toolkit (0.9.1-29) precise; urgency=low
 
   * Update the image name (Bug #28033)

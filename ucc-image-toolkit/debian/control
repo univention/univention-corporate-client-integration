@@ -9,6 +9,7 @@ Build-Depends: debhelper (>> 7),
 Package: ucc-image-toolkit
 Architecture: all
 Depends: ${misc:Depends}, ${python:Depends},
+ univention-config-registry,
  shell-univention-lib (>= 1.0.23),
  debootstrap ( >= 1.0.39),
  grub-common,
