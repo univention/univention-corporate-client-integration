@@ -1,3 +1,10 @@
+ucc-image-toolkit (0.9.1-39) precise; urgency=low
+
+  * Depend on univention-config instead of univention-config-registry
+    (Bug #28033)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Oct 2012 19:25:37 +0100
+
 ucc-image-toolkit (0.9.1-30) precise; urgency=low
 
   * Depend on ucr (Bug #28033)
