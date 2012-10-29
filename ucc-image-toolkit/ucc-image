@@ -153,6 +153,7 @@ if __name__ == '__main__':
 	parser.add_option("-b", "--workingdir", action="store", dest="workingdir", help="Use a predefined working dirctory, this is helpful if -c has been used in a previous run")
 	parser.add_option("-B", "--skip-bootstrap", action="store_false", dest="bootstrap", default=True, help="Do not call debootstrap again a predefined temp dir, this is helpful if -c has been used in a previous run")
 	parser.add_option("-D", "--debian_package_template", action="store", dest="debian_package_template", default="/usr/share/doc/ucc-image-toolkit/example/package-template", help="Use a different package template for the debian package")
+	parser.add_option("-l", "--logfile", action="store", dest="logfile", default="/var/log/univention/ucc-image-toolkit.log", help="Logfile")
 
 	(options, args) = parser.parse_args()
 
@@ -189,10 +190,9 @@ if __name__ == '__main__':
 	_print_done('done (%s)' % workingdir)
 
 	_print_process('Preparing logfile')
-	logfile = os.path.join('/var/log/univention', 'ucc-image-toolkit.log')
-	logfile_fd = open(logfile, 'a+')
+	logfile_fd = open(options.logfile, 'a+')
 	logfile_fd.write('Started "%s" at %s\n' % (string.join(sys.argv, ' '), time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
-	_print_done('done (%s)' % logfile)
+	_print_done('done (%s)' % options.logfile)
 
 	try:
 		# TODO: call hooks
@@ -411,7 +411,7 @@ menuentry 'Univention Corporate Client - Boot UCC from local harddisk installati
         initrd %(initrd)s
 }
 menuentry 'Univention Corporate Client - Install UCC to local harddisk' {
-        linux %(kernel)s ro boot=ucc ucc=inst quiet image=%(image)s
+        linux %(kernel)s ro boot=ucc ucc=installation quiet image=%(image)s
         initrd %(initrd)s
 }
 menuentry 'Univention Corporate Client - Update and boot local UCC installation' {
