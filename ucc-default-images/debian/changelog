@@ -1,3 +1,10 @@
+ucc-default-images (0.1.1-5) precise; urgency=low
+
+  * Disable ucslint because the ucslint perfromance with big files ist
+    poor (Bug #28858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Oct 2012 21:03:36 +0100
+
 ucc-default-images (0.1.1-4) precise; urgency=low
 
   * Added ucc-pxe-boot and ucc-management-integration to recommends list

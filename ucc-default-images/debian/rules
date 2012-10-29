@@ -31,7 +31,8 @@
 # <http://www.gnu.org/licenses/>.
 
 override_dh_auto_test:                                                                                                                                                                                                               
-	ucslint                                                                                                                                                                                                                      
+	# ucslint performance with big files is very poor
+	# ucslint                                                                                                                                                                                                                      
 	dh_auto_test
 
 override_dh_auto_build:
