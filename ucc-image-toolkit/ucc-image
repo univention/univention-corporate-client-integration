@@ -432,16 +432,6 @@ menuentry 'Debug Shell' {
 			_run_cmd(cmd_block, logfile_fd)
 			_print_done()
 
-		if config.get('Image', 'debian_packages'):
-			params = {}
-			params['date'] = formatdate()
-			params['name'] = config.get('Image', 'name', 'ucc-image.img').split('.')[0]
-			params['image'] = config.get('Image', 'name', 'ucc-image.img')
-			params['kernel'] = config.get('Image', 'name', 'ucc-image.img')
-			params['initrd'] = config.get('Image', 'name', 'ucc-image.img')
-
-			# TODO: tbc
-
 	except RuntimeError,e:
 		print '\nERROR: %s (abort)\n' % e
 		traceback.print_exc(file=logfile_fd)

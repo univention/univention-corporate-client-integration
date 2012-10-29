@@ -1,3 +1,12 @@
+ucc-image-toolkit (0.9.1-40) precise; urgency=low
+
+  * Create /var/log/univention if it does not exist (Bug #28033)
+  * Removed unused config opton install_grub (Bug #28033)
+  * Renmoved debian_package config option. This feature has been moved
+    to ucc-default-images (Bug #28858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Oct 2012 20:40:57 +0100
+
 ucc-image-toolkit (0.9.1-39) precise; urgency=low
 
   * Depend on univention-config instead of univention-config-registry

@@ -34,6 +34,10 @@
 
 #DEBHELPER#
 
+if [ ! -d /var/log/univention ]; then
+	mkdir -p /var/log/univention
+fi
+
 create_logfile_if_missing /var/log/univention/ucc-image-toolkit.log "root:adm" 640
 
 exit 0
