@@ -34,6 +34,8 @@
 from optparse import OptionParser
 import ConfigParser
 
+from email.Utils import formatdate
+
 import os
 import shutil
 import string
@@ -150,6 +152,7 @@ if __name__ == '__main__':
 	parser.add_option("-T", "--tempdir-base", action="store", dest="tempdir_base", help="Use a predefined tempdir for tempfile")
 	parser.add_option("-b", "--workingdir", action="store", dest="workingdir", help="Use a predefined working dirctory, this is helpful if -c has been used in a previous run")
 	parser.add_option("-B", "--skip-bootstrap", action="store_false", dest="bootstrap", default=True, help="Do not call debootstrap again a predefined temp dir, this is helpful if -c has been used in a previous run")
+	parser.add_option("-D", "--debian_package_template", action="store", dest="debian_package_template", default="/usr/share/doc/ucc-image-toolkit/example/package-template", help="Use a different package template for the debian package")
 
 	(options, args) = parser.parse_args()
 
@@ -197,7 +200,6 @@ if __name__ == '__main__':
 		_print_process('Creating debootstrap image')
 		# Create the image
 		image = os.path.join(targetdir, config.get('Image', 'name', 'ucc-image.img'))
-		bzip_image = None
 		image_size = float(config.get('Image', 'size', '20'))
 		cmd_block = ['dd', 'if=/dev/zero', 'of=%s' % (image), 'bs=1M', 'count=1', 'seek=%d' % (image_size*1000)]
 		_run_cmd(cmd_block, logfile_fd)
@@ -391,52 +393,54 @@ udm settings/ucc_image modify --ignore_exists \
 			boot_dir = os.path.join(cd_dir, 'boot')
 			shutil.copytree(os.path.join(bootstrap_dir, 'boot'), boot_dir)
 
-			kernel = os.path.join('/', os.readlink('/vmlinuz'))
-			initrd = os.path.join('/', os.readlink('/initrd.img'))
+			kernel = os.path.join('/', os.readlink(os.path.join(bootstrap_dir, 'vmlinuz')))
+			initrd = os.path.join('/', os.readlink(os.path.join(bootstrap_dir, 'initrd.img')))
 
 			grub_cfg = open(os.path.join(boot_dir, 'grub/grub.cfg'), 'w')
 			grub_cfg.write('''
 menuentry 'Univention Corporate Client - Boot UCC from CDROM/USB device (overlayfs)' {
-        linux %(kernel)s ro boot=ucc ucc=overlayfs quiet
+        linux %(kernel)s ro boot=ucc ucc=overlayfs quiet image=%(image)s
         initrd %(initrd)s
 }
 menuentry 'Univention Corporate Client - Boot UCC from CDROM/USB device (aufs)' {
-        linux %(kernel)s ro boot=ucc ucc=aufs quiet
+        linux %(kernel)s ro boot=ucc ucc=aufs quiet image=%(image)s
         initrd %(initrd)s
 }
 menuentry 'Univention Corporate Client - Boot UCC from local harddisk installation' {
-        linux %(kernel)s ro boot=ucc ucc=local root=search quiet
+        linux %(kernel)s ro boot=ucc ucc=local root=search quiet image=%(image)s
         initrd %(initrd)s
 }
 menuentry 'Univention Corporate Client - Install UCC to local harddisk' {
-        linux %(kernel)s ro boot=ucc ucc=inst quiet
+        linux %(kernel)s ro boot=ucc ucc=inst quiet image=%(image)s
         initrd %(initrd)s
 }
 menuentry 'Univention Corporate Client - Update and boot local UCC installation' {
-        linux %(kernel)s ro boot=ucc ucc=update root=search quiet
+        linux %(kernel)s ro boot=ucc ucc=update root=search quiet image=%(image)s
         initrd %(initrd)s
 }
 menuentry 'Debug Shell' {
         linux %(kernel)s ro init=/bin/sh rootdelay=3
         initrd %(initrd)s
 }
-			''' % {'kernel': kernel, 'initrd': initrd})
+			''' % {'kernel': kernel, 'initrd': initrd, 'image': config.get('Image', 'name', 'ucc-image.img') })
 			grub_cfg.close()
 			
 			if config.getboolean('Image', 'include_image_on_iso', False):
-				if config.getboolean('Image', 'bzip_compressed', False):
-					_print_process('Compress chroot image')
-					bzip_image = image + '.bz2'
-					cmd_block = [ 'bzip2', image]
-					_run_cmd(cmd_block, logfile_fd)
-					shutil.copy(bzip_image, cd_dir)
-					_print_done()
-				else:
-					shutil.copy(image, cd_dir)
+				shutil.copy(image, cd_dir)
 			_print_process('Create ISO image')
 			cmd_block = ['grub-mkrescue', '-o', iso_dest, cd_dir]
 			_run_cmd(cmd_block, logfile_fd)
 			_print_done()
+
+		if config.get('Image', 'debian_packages'):
+			params = {}
+			params['date'] = formatdate()
+			params['name'] = config.get('Image', 'name', 'ucc-image.img').split('.')[0]
+			params['image'] = config.get('Image', 'name', 'ucc-image.img')
+			params['kernel'] = config.get('Image', 'name', 'ucc-image.img')
+			params['initrd'] = config.get('Image', 'name', 'ucc-image.img')
+
+			# TODO: tbc
 
 	except RuntimeError,e:
 		print '\nERROR: %s (abort)\n' % e
@@ -451,10 +455,7 @@ menuentry 'Debug Shell' {
 
 	if exitcode == 0:
 		print '\nThe image creation was successful:'
-		if bzip_image:
-			print 'Image (compressed) : %s' % bzip_image
-		else:
-			print 'Image              : %s' % image
+		print 'Image              : %s' % image
 		print 'MD5sum file        : %s' % md5_dest
 		print 'UMC Image register : %s' % umc_dest
 		print 'Kernel             : %s' % kernel_dest
