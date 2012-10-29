@@ -75,13 +75,23 @@ def handler(dn, new, old):
 		cn = new['cn'][0]
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'PXE: writing configuration for host %s' % cn)
 
+		image = new.get('univentionCorporateClientBootImage', [None])[0]
+		if image == 'none':
+			default_image = configRegistry.get('ucc/pxe/image', 'ucc-thinclient-v1.img')
+			initrd = '%s.initrd' % default_image
+			kernel = '%s.kernel' % default_image
+		else:
+			if not image:
+				image = configRegistry.get('ucc/pxe/image', 'ucc-thinclient-v1.img')
+			initrd = '%s.initrd' % image
+			kernel = '%s.kernel' % image
+
 		append = 'root=/dev/nfs '
 		append += 'nfsroot=%s:/var/lib/univention-client-boot ' % configRegistry['ucc/pxe/nfsroot']
 		append += 'DNSSERVER=%s ' % configRegistry['ucc/pxe/nameserver']
 		if configRegistry.get('ucc/pxe/vga'):
 			append += 'vga=%s ' % configRegistry['ucc/pxe/vga']
-		if configRegistry.get('ucc/pxe/initrd', True):
-			append += 'initrd=%s ' % configRegistry.get('ucc/pxe/kernel', 'ucc-thinclient-v1.img.kernel').replace('.kernel', '.initrd')
+		append += 'initrd=%s ' % initrd
 		if configRegistry.is_true('ucc/pxe/quiet', False):
 			append += 'quiet '
 		if 'ucc/pxe/ldapserver' in configRegistry.keys():
@@ -93,12 +103,8 @@ def handler(dn, new, old):
 		if configRegistry.get('ucc/pxe/loglevel', False):
 			append += 'loglevel=%s ' % configRegistry['ucc/pxe/loglevel']
 		append += 'boot=ucc '
-		if new.get('univentionCorporateClientBootVariant'):
-			append += 'ucc=%s ' % new.get('univentionCorporateClientBootVariant')[0]
-		image = new.get('univentionCorporateClientImage', [None])[0]
-		if not image:
-			image = configRegistry.get('ucc/pxe/kernel', 'ucc-thinclient-v1.img.kernel').replace('.kernel', '')
-		append += 'image=%s ' % image
+		if image != 'none':
+			append += 'image=%s ' % image
 
 		append += '\n'
 
@@ -114,7 +120,7 @@ APPEND %s
 
 LABEL UCC
 	KERNEL %s
-''' % (ipappend, append, configRegistry.get('ucc/pxe/kernel', 'ucc-thinclient-v1.img.kernel'))
+''' % (ipappend, append, kernel)
 
 		basename = ip_to_hex(new['aRecord'][0])
 		if not basename:
