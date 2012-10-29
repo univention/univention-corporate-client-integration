@@ -1,3 +1,9 @@
+ucc-default-images (0.1.1-3) precise; urgency=low
+
+  * Use separate log files (Bug #28858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Oct 2012 19:23:23 +0100
+
 ucc-default-images (0.1.1-2) precise; urgency=low
 
   * Call ucc-image with full path (Bug #28858)
