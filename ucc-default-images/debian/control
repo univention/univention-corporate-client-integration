@@ -11,6 +11,8 @@ Package: ucc-1.0-thinclient-image
 Architecture: all
 Depends: ${misc:Depends},
  shell-univention-lib
+Recommends: ucc-pxe-boot,
+ ucc-management-integration
 Description: Default UCC Thin Client Image
  This package provided the Default UCC Thin
  Client image.
@@ -34,6 +36,8 @@ Package: ucc-1.0-desktop-image
 Architecture: all
 Depends: ${misc:Depends},
  shell-univention-lib
+Recommends: ucc-pxe-boot,
+ ucc-management-integration
 Description: Default UCC Thin Client Image
  This package provided the Default UCC Thin
  Client image.
