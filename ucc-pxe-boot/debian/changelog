@@ -1,3 +1,9 @@
+ucc-pxe-boot (5.0.1-8) precise; urgency=low
+
+  * Readded univentionCorporateClientBootVariant (Bug #28036)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 29 Oct 2012 17:00:20 +0100
+
 ucc-pxe-boot (5.0.1-7) precise; urgency=low
 
   * Make image names dynamic (Bug #28036)
