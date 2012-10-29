@@ -1,0 +1,5 @@
+ucc-default-images (0.1.1-1) precise; urgency=low
+
+  * Initial release (Bug #28858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 16 Aug 2012 09:02:31 +0200

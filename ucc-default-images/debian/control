@@ -1,0 +1,55 @@
+Source: ucc-default-images
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper (>> 7),
+ ucc-image-toolkit,
+ ucslint
+
+Package: ucc-1.0-thinclient-image
+Architecture: all
+Depends: ${misc:Depends},
+ shell-univention-lib
+Description: Default UCC Thin Client Image
+ This package provided the Default UCC Thin
+ Client image.
+ .
+ It is part of Univention Corporate Client (UCC)
+ For more information about UCC refer to:
+ http://www.univention.de/
+
+Package: ucc-1.0-thinclient-image-iso
+Architecture: all
+Depends: ${misc:Depends}
+Description: Default UCC Thin Client Image as ISO
+ This package provided the Default UCC Thin
+ Client image as ISO Image.
+ .
+ It is part of Univention Corporate Client (UCC)
+ For more information about UCC refer to:
+ http://www.univention.de/
+
+Package: ucc-1.0-desktop-image
+Architecture: all
+Depends: ${misc:Depends},
+ shell-univention-lib
+Description: Default UCC Thin Client Image
+ This package provided the Default UCC Thin
+ Client image.
+ .
+ It is part of Univention Corporate Client (UCC)
+ For more information about UCC refer to:
+ http://www.univention.de/
+
+Package: ucc-1.0-desktop-image-iso
+Architecture: all
+Depends: ${misc:Depends}
+Description: Default UCC Thin Client Image as ISO
+ This package provided the Default UCC Thin
+ Client image as ISO Image.
+ .
+ It is part of Univention Corporate Client (UCC)
+ For more information about UCC refer to:
+ http://www.univention.de/
+
