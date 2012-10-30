@@ -1,3 +1,10 @@
+ucc-image-toolkit (0.9.1-41) precise; urgency=low
+
+  * univention-lightdm is now a dependency of univenton-corporate-client
+    (Bug #28037)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Oct 2012 12:15:16 +0100
+
 ucc-image-toolkit (0.9.1-40) precise; urgency=low
 
   * Create /var/log/univention if it does not exist (Bug #28033)
