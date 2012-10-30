@@ -1,3 +1,10 @@
+ucc-default-images (0.1.1-7) precise; urgency=low
+
+  * Install thinclient ISO image to the ucc-1.0-thinclient-image-iso
+    package (Bug #28858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Oct 2012 09:29:58 +0100
+
 ucc-default-images (0.1.1-6) precise; urgency=low
 
   * Use xz compression for this large packages (Bug #28858)
