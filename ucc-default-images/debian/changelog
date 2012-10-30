@@ -1,3 +1,9 @@
+ucc-default-images (0.1.1-8) precise; urgency=low
+
+  * Don't usw xz compression (Bug #28858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Oct 2012 11:57:04 +0100
+
 ucc-default-images (0.1.1-7) precise; urgency=low
 
   * Install thinclient ISO image to the ucc-1.0-thinclient-image-iso
