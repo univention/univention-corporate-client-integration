@@ -1,3 +1,10 @@
+ucc-pxe-boot (5.0.1-9) precise; urgency=low
+
+  * Fixed python syntax error in uccpxeboot listener module
+    (Bug #28036)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Oct 2012 06:15:28 +0100
+
 ucc-pxe-boot (5.0.1-8) precise; urgency=low
 
   * Readded univentionCorporateClientBootVariant (Bug #28036)

@@ -104,7 +104,7 @@ def handler(dn, new, old):
 			append += 'loglevel=%s ' % configRegistry['ucc/pxe/loglevel']
 		append += 'boot=ucc '
 		if new.get('univentionCorporateClientBootVariant'):
-			append += 'ucc=%s ' % new.get('univentionCorporateClientBootVariant')[0
+			append += 'ucc=%s ' % new.get('univentionCorporateClientBootVariant')[0]
 		if image != 'none':
 			append += 'image=%s ' % image
 
