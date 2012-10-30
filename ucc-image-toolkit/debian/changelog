@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.2-1) precise; urgency=low
+
+  * Readded efi partition (Bug #28033)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Oct 2012 20:41:23 +0100
+
 ucc-image-toolkit (0.9.1-41) precise; urgency=low
 
   * univention-lightdm is now a dependency of univenton-corporate-client
