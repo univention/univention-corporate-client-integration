@@ -1,3 +1,9 @@
+ucc-default-images (0.1.1-6) precise; urgency=low
+
+  * Use xz compression for this large packages (Bug #28858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Oct 2012 08:32:59 +0100
+
 ucc-default-images (0.1.1-5) precise; urgency=low
 
   * Disable ucslint because the ucslint perfromance with big files ist
