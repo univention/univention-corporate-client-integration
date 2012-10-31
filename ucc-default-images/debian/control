@@ -10,7 +10,8 @@ Build-Depends: debhelper (>> 7),
 Package: ucc-1.0-thinclient-image
 Architecture: all
 Depends: ${misc:Depends},
- shell-univention-lib
+ shell-univention-lib,
+ python-univention-directory-manager-ucc
 Recommends: ucc-pxe-boot,
  ucc-management-integration
 Description: Default UCC Thin Client Image
@@ -23,7 +24,8 @@ Description: Default UCC Thin Client Image
 
 Package: ucc-1.0-thinclient-image-iso
 Architecture: all
-Depends: ${misc:Depends}
+Depends: ${misc:Depends},
+ python-univention-directory-manager-ucc
 Description: Default UCC Thin Client Image as ISO
  This package provided the Default UCC Thin
  Client image as ISO Image.

@@ -1,10 +1,17 @@
+ucc-default-images (0.1.1-10) precise; urgency=low
+
+  * Depend on python-univention-directory-manager-ucc and add the UCC
+    container (Bug #28858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Oct 2012 13:50:23 +0100
+
 ucc-default-images (0.1.1-9) precise; urgency=low
 
   * Use Image container (Bug #28858)
 
  -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Oct 2012 07:50:22 +0100
 
-ucc-default-images (0.1.1-8ubuntu1) precise; urgency=low
+ucc-default-images (0.1.1-8) precise; urgency=low
 
   * Disable desktop image build (Bug #28975)
 

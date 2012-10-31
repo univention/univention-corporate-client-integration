@@ -40,6 +40,10 @@ eval "$(ucr shell)"
 imagename="ucc-1.0-desktop-image.img"
 
 udm container/cn create "$@" --ignore_exists \
+	--position "cn=univention,$ldap_base" \
+	--set name="UCC" || die
+
+udm container/cn create "$@" --ignore_exists \
 	--position "cn=UCC,cn=univention,$ldap_base" \
 	--set name="Images" || die
 
