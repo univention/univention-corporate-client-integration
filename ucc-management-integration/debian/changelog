@@ -1,3 +1,9 @@
+ucc-management-integration (1.0-10) unstable; urgency=low
+
+  * Make join script executable (Bug #28509)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 31 Oct 2012 09:12:32 +0100
+
 ucc-management-integration (1.0-9) unstable; urgency=low
 
   * Added settings/ucc_image (Bug #28037)
