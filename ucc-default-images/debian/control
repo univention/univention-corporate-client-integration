@@ -11,7 +11,8 @@ Package: ucc-1.0-thinclient-image
 Architecture: all
 Depends: ${misc:Depends},
  shell-univention-lib,
- python-univention-directory-manager-ucc
+ python-univention-directory-manager-ucc,
+ univention-corporate-client-schema
 Recommends: ucc-pxe-boot,
  ucc-management-integration
 Description: Default UCC Thin Client Image

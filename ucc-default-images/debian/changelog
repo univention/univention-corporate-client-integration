@@ -1,3 +1,9 @@
+ucc-default-images (0.1.1-11) precise; urgency=low
+
+  * Also depend on univention-corporate-client-schema (Bug #28858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 31 Oct 2012 16:19:33 +0100
+
 ucc-default-images (0.1.1-10) precise; urgency=low
 
   * Depend on python-univention-directory-manager-ucc and add the UCC
