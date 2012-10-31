@@ -1,7 +1,7 @@
 #! /bin/sh
 #
-# Univention Thin Client Schema
-#  join script for the thin client schema extension
+# Univention UCC LDAP schema 
+#  join script for the UCC management extension
 #
 # Copyright (C) 2010-2012 Univention GmbH
 #
