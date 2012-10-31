@@ -39,12 +39,16 @@ eval "$(ucr shell)"
 
 imagename="ucc-1.0-thinclient-image.img"
 
-udm settings/ucc_image create "$@" --ignore_exists \
+udm container/cn create "$@" --ignore_exists \
 	--position "cn=UCC,cn=univention,$ldap_base" \
+	--set name="Images" || die
+
+udm settings/ucc_image create "$@" --ignore_exists \
+	--position "cn=Images,cn=UCC,cn=univention,$ldap_base" \
 	--set name="$imagename" || die
 
 udm settings/ucc_image modify "$@" --ignore_exists \
-	--dn "univentionCorporateClientImageName=$imagename,cn=UCC,cn=univention,$ldap_base" \
+	--dn "univentionCorporateClientImageName=$imagename,cn=Images,cn=UCC,cn=univention,$ldap_base" \
 	--append server="$hostname.$domainname"
 
 joinscript_save_current_version
