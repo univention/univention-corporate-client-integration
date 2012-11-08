@@ -1,3 +1,9 @@
+ucc-pxe-boot (5.0.2-1) precise; urgency=low
+
+  * Support additional boot parameter (Bug #28973)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Nov 2012 21:12:54 +0100
+
 ucc-pxe-boot (5.0.1-9) precise; urgency=low
 
   * Fixed python syntax error in uccpxeboot listener module
