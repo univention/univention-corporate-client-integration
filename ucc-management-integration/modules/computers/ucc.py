@@ -279,6 +279,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'bootParameter': univention.admin.property(
+			short_description=_('Additional boot parameter'),
+			long_description=_('Additional boot parameter of this client'),
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 }
 
 layout = [
@@ -301,9 +311,10 @@ layout = [
 		] ),
 		] ),
 	Tab( _( 'Images' ), _( 'Images' ), advanced = False, layout = [
-		Group( _( 'Images boot' ), layout = [
+		Group( _( 'Image settings' ), layout = [
 			'boot',
-			'image'
+			'image',
+			'bootParameter',
 		] ),
 		] ),
 	Tab( _( 'Account' ), _( 'Account' ), advanced = True, layout = [
@@ -334,6 +345,7 @@ mapping.register('operatingSystem', 'univentionOperatingSystem', None, univentio
 mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', None, univention.admin.mapping.ListToString)
 mapping.register('boot', 'univentionCorporateClientBootVariant', None, univention.admin.mapping.ListToString)
 mapping.register('image', 'univentionCorporateClientBootImage', None, univention.admin.mapping.ListToString)
+mapping.register('bootParameter', 'univentionCorporateClientBootParameter')
 
 
 class object(univention.admin.handlers.simpleComputer):

@@ -82,11 +82,18 @@ attributetype ( 1.3.6.1.4.1.10176.4125.5.1.2 NAME 'univentionCorporateClientBoot
 	SUBSTR caseIgnoreIA5SubstringsMatch
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
+attributetype ( 1.3.6.1.4.1.10176.4125.5.1.3 NAME 'univentionCorporateClientBootParameter'
+	DESC 'Univention Corporate Client boot parameter'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+
 objectclass ( 1.3.6.1.4.1.10176.4125.4.1 NAME 'univentionCorporateClient'
         SUP 'univentionHost' AUXILIARY
         DESC 'Univention Corporate Client'
         MUST ( cn )
-		MAY (univentionCorporateClientBootVariant $ univentionCorporateClientBootImage ) )
+		MAY (univentionCorporateClientBootVariant $ univentionCorporateClientBootImage $ univentionCorporateClientBootParameter ) )
 
 attributetype ( 1.3.6.1.4.1.10176.4125.6.1.1 NAME 'univentionCorporateClientImageName'
 	DESC 'Name of the Univention Corporate Client image'

@@ -1,3 +1,10 @@
+ucc-management-integration (1.1.0-1) unstable; urgency=low
+
+  * Added support for additional boot parameter (Bug #28973)
+  * Change version schema to UCS standard
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 08 Nov 2012 20:58:17 +0100
+
 ucc-management-integration (1.0-11) unstable; urgency=low
 
   * Make join script executable (Bug #28509)

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-26 06:24+0200\n"
+"POT-Creation-Date: 2012-11-08 21:02+0100\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -28,167 +28,164 @@ msgstr "POSIX-Konto"
 msgid "Kerberos principal"
 msgstr "Kerberos-Prinzipal"
 
-#: modules/computers/ucc.py:67
-msgid "None"
-msgstr "Keins"
-
 #: modules/computers/ucc.py:68
-msgid "Overlayfs"
-msgstr "Live-System"
-
-#: modules/computers/ucc.py:69
-msgid "Installation / automatic update"
-msgstr "Installation & automatische Aktualisierung"
-
-#: modules/computers/ucc.py:70
-msgid "Rollout"
-msgstr "Rollout"
-
-#: modules/computers/ucc.py:71
-msgid "Re-installation"
-msgstr "Re-Installation"
-
-#: modules/computers/ucc.py:76
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: modules/computers/ucc.py:86 modules/settings/ucc_autostart.py:64
-#: modules/settings/ucc_session.py:64
+#: modules/computers/ucc.py:78 modules/settings/ucc_autostart.py:64
+#: modules/settings/ucc_image.py:64 modules/settings/ucc_session.py:64
 msgid "Description"
 msgstr "Beschreibung"
 
-#: modules/computers/ucc.py:95
+#: modules/computers/ucc.py:87
 msgid "Operating system"
 msgstr "Betriebssystem"
 
-#: modules/computers/ucc.py:104
+#: modules/computers/ucc.py:96
 msgid "Operating system version"
 msgstr "Version des Betriebssystems"
 
-#: modules/computers/ucc.py:113
+#: modules/computers/ucc.py:105
 msgid "Domain"
 msgstr "Domäne"
 
-#: modules/computers/ucc.py:122
+#: modules/computers/ucc.py:114
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: modules/computers/ucc.py:132
+#: modules/computers/ucc.py:124
 msgid "Network"
 msgstr "Netzwerk"
 
-#: modules/computers/ucc.py:142
+#: modules/computers/ucc.py:134
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: modules/computers/ucc.py:152
+#: modules/computers/ucc.py:144
 msgid "Forward zone for DNS entry"
 msgstr "Forward-Zone für DNS-Eintrag"
 
-#: modules/computers/ucc.py:163
+#: modules/computers/ucc.py:155
 msgid "Reverse zone for DNS entry"
 msgstr "Reverse-Zone für DNS-Eintrag"
 
-#: modules/computers/ucc.py:174
+#: modules/computers/ucc.py:166
 msgid "Zone for DNS alias"
 msgstr "Zone für DNS-Alias"
 
-#: modules/computers/ucc.py:185 modules/computers/ucc.py:316
+#: modules/computers/ucc.py:177 modules/computers/ucc.py:330
 msgid "DNS alias"
 msgstr "DNS-Alias"
 
-#: modules/computers/ucc.py:195
+#: modules/computers/ucc.py:187
 msgid "DHCP service"
 msgstr "DHCP-Service"
 
-#: modules/computers/ucc.py:206
+#: modules/computers/ucc.py:198
 msgid "Password"
 msgstr "Passwort"
 
-#: modules/computers/ucc.py:217
+#: modules/computers/ucc.py:209
 msgid "Unix home directory"
 msgstr "Unix Heimatverzeichnis"
 
-#: modules/computers/ucc.py:228
+#: modules/computers/ucc.py:220
 msgid "Login shell"
 msgstr "Login-Shell"
 
-#: modules/computers/ucc.py:239
+#: modules/computers/ucc.py:231
 msgid "Primary group"
 msgstr "Primäre Gruppe"
 
-#: modules/computers/ucc.py:250
+#: modules/computers/ucc.py:242
 msgid "Inventory number"
 msgstr "Inventarnummer"
 
-#: modules/computers/ucc.py:260 modules/computers/ucc.py:313
+#: modules/computers/ucc.py:252 modules/computers/ucc.py:327
 msgid "Groups"
 msgstr "Gruppen"
 
-#: modules/computers/ucc.py:271
+#: modules/computers/ucc.py:263
 msgid "Boot variant"
-msgstr ""
+msgstr "Startvariante"
 
-#: modules/computers/ucc.py:272
+#: modules/computers/ucc.py:264
 msgid "Boot variant of this client"
-msgstr ""
+msgstr "Startvariante des Clients"
 
-#: modules/computers/ucc.py:283 modules/policies/ucc_user.py:161
+#: modules/computers/ucc.py:273
+msgid "Image"
+msgstr "Image"
+
+#: modules/computers/ucc.py:274
+msgid "Image to boot"
+msgstr "Startimage"
+
+#: modules/computers/ucc.py:283
+msgid "Additional boot parameter"
+msgstr "Erweiterte Startparameter"
+
+#: modules/computers/ucc.py:284
+msgid "Additional boot parameter of this client"
+msgstr "Erweiterte Startparameter für diesen Client"
+
+#: modules/computers/ucc.py:295 modules/policies/ucc_user.py:161
 #: modules/policies/ucc_user.py:162 modules/settings/ucc_autostart.py:87
-#: modules/settings/ucc_autostart.py:88 modules/settings/ucc_session.py:87
+#: modules/settings/ucc_autostart.py:88 modules/settings/ucc_image.py:87
+#: modules/settings/ucc_image.py:88 modules/settings/ucc_session.py:87
 #: modules/settings/ucc_session.py:88
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/computers/ucc.py:283
+#: modules/computers/ucc.py:295
 msgid "Basic settings"
 msgstr "Grundeinstelungen"
 
-#: modules/computers/ucc.py:284
+#: modules/computers/ucc.py:296
 msgid "Computer account"
 msgstr "Rechnerkonto"
 
-#: modules/computers/ucc.py:289
+#: modules/computers/ucc.py:301
 msgid "Network settings "
 msgstr "Netzwerkeinstellungen"
 
-#: modules/computers/ucc.py:293
+#: modules/computers/ucc.py:305
 msgid "DNS Forward and Reverse Lookup Zone"
 msgstr "DNS-Forward und Reverse-Zonen"
 
-#: modules/computers/ucc.py:297
+#: modules/computers/ucc.py:309
 msgid "DHCP"
 msgstr "DHCP"
 
-#: modules/computers/ucc.py:301
+#: modules/computers/ucc.py:313
 msgid "Images"
-msgstr ""
+msgstr "Images"
 
-#: modules/computers/ucc.py:302
-msgid "Images boot"
-msgstr ""
+#: modules/computers/ucc.py:314
+msgid "Image settings"
+msgstr "Image Einstellungen"
 
-#: modules/computers/ucc.py:306
+#: modules/computers/ucc.py:320
 msgid "Account"
 msgstr "Konto"
 
-#: modules/computers/ucc.py:310
+#: modules/computers/ucc.py:324
 msgid "Unix account"
 msgstr "Unix-Konto"
 
-#: modules/computers/ucc.py:310
+#: modules/computers/ucc.py:324
 msgid "Unix account settings"
 msgstr "Unix-Konto-Einstellungen"
 
-#: modules/computers/ucc.py:313
+#: modules/computers/ucc.py:327
 msgid "Group memberships"
 msgstr "Gruppenmitgliedschaften"
 
-#: modules/computers/ucc.py:316
+#: modules/computers/ucc.py:330
 msgid "Alias DNS entry"
 msgstr "Alias-DNS-Eintrag"
 
-#: modules/computers/ucc.py:420
+#: modules/computers/ucc.py:435
 msgid " At least posix or kerberos is required."
 msgstr "Mindestens POSIX oder Kerbeos werden benötigt"
 
@@ -272,7 +269,32 @@ msgstr "Automatisch zu startendes Programm"
 msgid "Program to start the autostart session "
 msgstr "Automatisch zu startendes Programm"
 
-#: modules/settings/ucc_session.py:47 modules/settings/ucc_session.py:87
+#: modules/settings/ucc_image.py:47
+msgid "UCC images"
+msgstr "UCC Image"
+
+#: modules/settings/ucc_image.py:54
+msgid "Image name"
+msgstr "Image Name"
+
+#: modules/settings/ucc_image.py:55
+msgid "Name of the image"
+msgstr "Name des Image"
+
+#: modules/settings/ucc_image.py:65
+msgid "Description of image"
+msgstr "Beschreibung des Image"
+
+#: modules/settings/ucc_image.py:74
+msgid "Server"
+msgstr "Server"
+
+#: modules/settings/ucc_image.py:75
+msgid "The image is available on these servers"
+msgstr "Das Image ist auf diesen Servern verfügbar"
+
+#: modules/settings/ucc_image.py:87 modules/settings/ucc_session.py:47
+#: modules/settings/ucc_session.py:87
 msgid "UCC session script"
 msgstr "UCC-Sitzungsskript"
 
@@ -287,3 +309,23 @@ msgstr "Zu startende Sitzung"
 #: modules/settings/ucc_session.py:75
 msgid "Session to start by display manager"
 msgstr "Vom Loginmanager zu startende Sitzung"
+
+#: modules/syntax.d/ucc.py:38
+msgid "None"
+msgstr "Keins"
+
+#: modules/syntax.d/ucc.py:39
+msgid "Overlayfs"
+msgstr "Live-System"
+
+#: modules/syntax.d/ucc.py:40
+msgid "Installation / automatic update"
+msgstr "Installation & automatische Aktualisierung"
+
+#: modules/syntax.d/ucc.py:41
+msgid "Rollout"
+msgstr "Rollout"
+
+#: modules/syntax.d/ucc.py:42
+msgid "Re-installation"
+msgstr "Re-Installation"
