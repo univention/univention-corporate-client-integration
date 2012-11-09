@@ -1,3 +1,9 @@
+ucc-management-integration (1.1.1-4) unstable; urgency=low
+
+  * uccTerminalserver multivalue (Bug #28349)  
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Nov 2012 15:16:31 +0100
+
 ucc-management-integration (1.1.1-3) unstable; urgency=low
 
   * fixed join script (Bug #28349) 
