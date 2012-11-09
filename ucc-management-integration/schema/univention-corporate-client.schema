@@ -99,7 +99,7 @@ objectclass ( 1.3.6.1.4.1.10176.4125.4.1 NAME 'univentionCorporateClient'
         SUP 'univentionHost' AUXILIARY
         DESC 'Univention Corporate Client'
         MUST ( cn )
-		MAY (univentionCorporateClientBootVariant $ univentionCorporateClientBootImage $ univentionCorporateClientBootParameter ) )
+		MAY (univentionCorporateClientBootVariant $ univentionCorporateClientBootImage $ univentionCorporateClientBootParameter $ univentionService) )
 
 attributetype ( 1.3.6.1.4.1.10176.4125.6.1.1 NAME 'univentionCorporateClientImageName'
 	DESC 'Name of the Univention Corporate Client image'
