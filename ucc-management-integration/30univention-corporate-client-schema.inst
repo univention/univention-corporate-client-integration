@@ -77,7 +77,7 @@ univention-directory-manager container/cn create "$@" \
 # create default ucc user policy
 univention-directory-manager policies/ucc_user create "$@" \
 	--ignore_exists \
-	--position="cn=ucc,cn=policies,cn=univention,$ldap_base" \
+	--position="cn=ucc,cn=policies,$ldap_base" \
 	--set name="default-settings" || die
 univention-directory-manager container/dc modify "$@" \
 	--ignore_exists \
