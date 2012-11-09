@@ -189,7 +189,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('session', 'univentionCorporateClientUserSession', None, univention.admin.mapping.ListToString)
 mapping.register('windowsDomain', 'univentionCorporateClientUserWindowsDomain', None, univention.admin.mapping.ListToString)
 mapping.register('windowsTerminalserver', 'univentionCorporateClientUserWindowsTerminalserver', None, univention.admin.mapping.ListToString)
-mapping.register('uccTerminalserver', 'univentionCorporateClientUserUccTerminalserver', None, univention.admin.mapping.ListToString)
+mapping.register('uccTerminalserver', 'univentionCorporateClientUserUccTerminalserver')
 
 class object(univention.admin.handlers.simplePolicy):
 	module=module
