@@ -289,6 +289,16 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'service': univention.admin.property(
+			short_description=_('Service'),
+			long_description='',
+			syntax=univention.admin.syntax.Service,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 }
 
 layout = [
@@ -324,6 +334,9 @@ layout = [
 	Tab( _( 'Unix account' ), _( 'Unix account settings' ), advanced = True, layout = [
 		[ 'unixhome', 'shell' ]
 		] ),
+	Tab( _( 'Services' ), _( 'Services' ), advanced = True, layout = [
+		'service',
+		] ),
 	Tab( _( 'Groups' ), _( 'Group memberships' ), advanced = True, layout = [
 		'groups',
 		] ),
@@ -346,6 +359,7 @@ mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', N
 mapping.register('boot', 'univentionCorporateClientBootVariant', None, univention.admin.mapping.ListToString)
 mapping.register('image', 'univentionCorporateClientBootImage', None, univention.admin.mapping.ListToString)
 mapping.register('bootParameter', 'univentionCorporateClientBootParameter')
+mapping.register('service', 'univentionService')
 
 
 class object(univention.admin.handlers.simpleComputer):
