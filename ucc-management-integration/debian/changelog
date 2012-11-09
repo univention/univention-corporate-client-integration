@@ -1,3 +1,9 @@
+ucc-management-integration (1.1.1-1) unstable; urgency=low
+
+  * added ucc terminal server to ucc user policy (Bug #28349) 
+
+ -- Felix Botner <botner@univention.de>  Fri, 09 Nov 2012 14:55:29 +0100
+
 ucc-management-integration (1.1.0-1) unstable; urgency=low
 
   * Added support for additional boot parameter (Bug #28973)

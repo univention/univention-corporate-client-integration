@@ -201,6 +201,14 @@ msgstr "Windows-Domäne"
 msgid "Windows terminal server"
 msgstr "Windows Terminalserver"
 
+#: modules/policies/ucc_user.py:52 modules/policies/ucc_user.py:100
+msgid "UCC terminal server"
+msgstr "UCC Terminalserver"
+
+#: modules/policies/ucc_user.py:52 modules/policies/ucc_user.py:100
+msgid "This UCC terminal server will be used for user logon UCC terminal servers"
+msgstr "Dieser UCC-Terminalserver wird für Anmeldungen an UCC Terminalservern verwendet"
+
 #: modules/policies/ucc_user.py:63
 msgid "Policy: Univention Corporate Client user session"
 msgstr "Richtline: Univention Corporate Client Benutzersitzung"

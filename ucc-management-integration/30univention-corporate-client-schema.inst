@@ -74,6 +74,16 @@ univention-directory-manager container/cn create "$@" \
 							--position="cn=custom attributes,cn=univention,$ldap_base" \
 							--set name="UCC" || die
 
+# create default ucc user policy
+univention-directory-manager policies/ucc_user create "$@" \
+	--ignore_exists \
+	--position="cn=ucc,cn=policies,cn=univention,$ldap_base" \
+	--set name="default-settings" || die
+univention-directory-manager container/dc modify "$@" \
+	--ignore_exists \
+	--dn "$ldap_base" \
+	--policy-reference="cn=default-settings,cn=ucc,cn=policies,cn=univention,$ldap_base" || die
+
 univention-directory-manager settings/syntax create "$@" --ignore_exists \
      						--position "cn=UCC,cn=custom attributes,cn=univention,$ldap_base" \
      						--set name="UCCAutostart" \

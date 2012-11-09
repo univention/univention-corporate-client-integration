@@ -49,7 +49,8 @@ class uccUserFixedAttributes(univention.admin.syntax.select):
 	choices=[
 		('univentionCorporateClientUserSession',_('Force this session for user logins')),
 		('univentionCorporateClientUserWindowsDomain',_('Windows domain')),
-		('univentionCorporateClientUserWindowsTerminalserver',_('Windows terminal server'))
+		('univentionCorporateClientUserWindowsTerminalserver',_('Windows terminal server')),
+		('univentionCorporateClientUserUccTerminalserver',_('UCC terminal server')),
 		]
 
 module='policies/ucc_user'
@@ -99,6 +100,16 @@ property_descriptions={
 	'windowsTerminalserver': univention.admin.property(
 			short_description=_('Windows terminal server'),
 			long_description=_('This windows terminal server will be used for user logon Windows terminal servers.'),
+			syntax=univention.admin.syntax.string,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'uccTerminalserver': univention.admin.property(
+			short_description=_('UCC terminal server'),
+			long_description=_('This UCC terminal server will be used for user logon UCC terminal servers.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -163,7 +174,8 @@ layout = [
 			'name',
 			'session',
 			'windowsDomain',
-			'windowsTerminalserver'
+			'windowsTerminalserver',
+			'uccTerminalserver',
 		] ),
 	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
@@ -177,6 +189,7 @@ mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('session', 'univentionCorporateClientUserSession', None, univention.admin.mapping.ListToString)
 mapping.register('windowsDomain', 'univentionCorporateClientUserWindowsDomain', None, univention.admin.mapping.ListToString)
 mapping.register('windowsTerminalserver', 'univentionCorporateClientUserWindowsTerminalserver', None, univention.admin.mapping.ListToString)
+mapping.register('uccTerminalserver', 'univentionCorporateClientUserUccTerminalserver', None, univention.admin.mapping.ListToString)
 
 class object(univention.admin.handlers.simplePolicy):
 	module=module
