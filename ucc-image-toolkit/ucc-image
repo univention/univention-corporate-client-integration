@@ -258,7 +258,7 @@ if __name__ == '__main__':
 
 		if config.getboolean('Software', 'ucc', False):
 			_print_process('Installing univention-config-registry')
-			cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'install', '--yes', '--force-yes', '--no-install-recommends', 'univention-config-registry', 'bc', 'rsync', 'dosfstools']
+			cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'install', '--yes', '--force-yes', '--no-install-recommends', 'univention-config', 'bc', 'rsync', 'dosfstools']
 			_run_cmd(cmd_block, logfile_fd)
 			cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'ucr', 'set', 'hostname=%s' % config.get_hostname(), 'domainname=%s'% config.get_domainname()]
 			_run_cmd(cmd_block, logfile_fd)
