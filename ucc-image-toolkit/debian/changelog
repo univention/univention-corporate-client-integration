@@ -1,3 +1,10 @@
+ucc-image-toolkit (0.9.2-3) precise; urgency=low
+
+  * Add pulseaudio to the thin client image. It's already present in the desktop
+    image through the kubuntu-full meta package (Bug #22984)	 
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 16 Nov 2012 09:20:36 +0100
+
 ucc-image-toolkit (0.9.2-2.1) precise; urgency=low
 
   * Bootstrap with univention-config instead of univention-config-registry
