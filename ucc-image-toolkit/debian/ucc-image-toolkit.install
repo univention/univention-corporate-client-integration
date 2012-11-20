@@ -1,2 +1,3 @@
 ucc-image usr/sbin/
+ucc-image-root-password usr/sbin/
 example/* usr/share/doc/ucc-image-toolkit/example/

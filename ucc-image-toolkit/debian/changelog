@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.3-1) precise; urgency=low
+
+  * added ucc-image-root-password (Bug #28997)
+
+ -- Felix Botner <botner@univention.de>  Tue, 20 Nov 2012 17:00:56 +0100
+
 ucc-image-toolkit (0.9.2-3) precise; urgency=low
 
   * Add pulseaudio to the thin client image. It's already present in the desktop
