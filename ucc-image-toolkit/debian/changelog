@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-3) precise; urgency=low
+
+  * Fixed typo in help output (Bug #29371)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Nov 2012 10:26:14 +0100
+
 ucc-image-toolkit (0.9.4-2) precise; urgency=low
 
   * Install first the kernel packages because it needs a lot of space
