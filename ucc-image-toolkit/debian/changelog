@@ -1,3 +1,10 @@
+ucc-image-toolkit (0.9.4-1) precise; urgency=low
+
+  * Don't install xserver-xorg-video-geode on the thinclient by default
+    because the installation failed (Bug #28031)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Nov 2012 07:27:23 +0100
+
 ucc-image-toolkit (0.9.3-2) precise; urgency=low
 
   * fixed ucc-image-root-password (Bug #28997) 
