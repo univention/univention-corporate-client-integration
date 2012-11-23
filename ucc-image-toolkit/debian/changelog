@@ -1,3 +1,14 @@
+ucc-image-toolkit (0.9.4-2) precise; urgency=low
+
+  * Install first the kernel packages because it needs a lot of space
+    (Bug #28031)
+  * The lightdm autologin variable has been renamed (Bug #29095)
+  * Use only 0.85 GB for the thinclient image, otherwise a 1 GB flash is
+    not big enough (Bug #28031)
+  * Consider the configured architecture (Bug #29369)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 23 Nov 2012 08:56:50 +0100
+
 ucc-image-toolkit (0.9.4-1) precise; urgency=low
 
   * Don't install xserver-xorg-video-geode on the thinclient by default

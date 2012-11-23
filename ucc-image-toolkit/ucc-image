@@ -221,8 +221,10 @@ if __name__ == '__main__':
 		_print_process('Installing base system (this may take a while)')
 		# Bootstrap the mounted image
 		# debootstrap precise ucc http://ubuntu.knut.univention.de/ubuntu/
+		if not config.get('General', 'arch') in ['host', None]:
+			arch = '--arch=%s' % config.get('General', 'arch')
 		if options.bootstrap:
-			cmd_block = ['/usr/sbin/debootstrap',  config.get_version(), bootstrap_dir , config.get_mirror()]
+			cmd_block = ['/usr/sbin/debootstrap', arch,  config.get_version(), bootstrap_dir , config.get_mirror()]
 			_run_cmd(cmd_block, logfile_fd)
 		_print_done()
 
@@ -283,23 +285,23 @@ if __name__ == '__main__':
 		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'mkdir', '-p', '/usr/share/initramfs-tools/scripts/ucc-config']
 		_run_cmd(cmd_block, logfile_fd)
 
-		for package in config.get('Software', 'packages_no_recommends', '').split('\n'):
-			package = package.split('#')[0]
-			package = package.strip()
-			if package:
-				_print_process('Installing package %s' % package)
-				cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', '--no-install-recommends', 'install', '--yes', '--force-yes', ] + package.split(' ')
-				_run_cmd(cmd_block, logfile_fd)
-				cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'clean']
-				_run_cmd(cmd_block, logfile_fd)
-				_print_done()
-
 		for package in config.get('Software', 'packages', '').split('\n'):
 			package = package.split('#')[0]
 			package = package.strip()
 			if package:
 				_print_process('Installing package %s' % package)
 				cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'install', '--yes', '--force-yes'] + package.split(' ')
+				_run_cmd(cmd_block, logfile_fd)
+				cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'clean']
+				_run_cmd(cmd_block, logfile_fd)
+				_print_done()
+
+		for package in config.get('Software', 'packages_no_recommends', '').split('\n'):
+			package = package.split('#')[0]
+			package = package.strip()
+			if package:
+				_print_process('Installing package %s' % package)
+				cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', '--no-install-recommends', 'install', '--yes', '--force-yes', ] + package.split(' ')
 				_run_cmd(cmd_block, logfile_fd)
 				cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'clean']
 				_run_cmd(cmd_block, logfile_fd)
