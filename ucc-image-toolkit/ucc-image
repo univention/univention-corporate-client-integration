@@ -383,10 +383,10 @@ if __name__ == '__main__':
 #!/bin/sh
 eval "$(ucr shell)"
 udm settings/ucc_image create --ignore_exists \
-	--position "cn=UCC,cn=univention,$ldap_base" \
+	--position "cn=Images,cn=UCC,cn=univention,$ldap_base" \
 	--set name="%(image)s"
 udm settings/ucc_image modify --ignore_exists \
-	--dn "univentionCorporateClientImageName=%(image)s,cn=UCC,cn=univention,$ldap_base" \
+	--dn "univentionCorporateClientImageName=%(image)s,cn=Images,cn=UCC,cn=univention,$ldap_base" \
 	--append server="$hostname.$domainname"
 ''' % {'image': config.get('Image', 'name', 'ucc-image.img')})
 		umc_dest_fd.close()
