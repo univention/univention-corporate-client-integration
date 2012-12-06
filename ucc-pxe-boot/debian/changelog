@@ -1,3 +1,9 @@
+ucc-pxe-boot (5.0.2-3) precise; urgency=low
+
+  * Pass locale in PXE config (Bug #28985)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 06 Dec 2012 12:58:23 +0100
+
 ucc-pxe-boot (5.0.2-2) precise; urgency=low
 
   * Pass keyboard layout in PXE config (Bug #28985)

@@ -98,6 +98,8 @@ def handler(dn, new, old):
 			append += 'ldapServer=%s ' % configRegistry['ucc/pxe/ldapserver']
 		if 'xorg/keyboard/options/XkbLayout' in configRegistry.keys():
 			append += 'keyboard=%s ' % configRegistry['xorg/keyboard/options/XkbLayout']
+		if 'locale/default' in configRegistry.keys():
+			append += 'locale=%s ' % configRegistry['locale/default']
 		if 'ucc/pxe/ldapport' in configRegistry.keys():
 			append += 'ldapPort=%s ' % configRegistry['ucc/pxe/ldapport']
 		if 'ucc/pxe/append' in configRegistry.keys():
