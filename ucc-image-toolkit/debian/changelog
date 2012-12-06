@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-8) precise; urgency=low
+
+  * Also add language packs for KDE to the desktop image (Bug #28032)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 06 Dec 2012 15:04:53 +0100
+
 ucc-image-toolkit (0.9.4-7) precise; urgency=low
 
   * Add German language pack to thin client image (Bug #28032) 
