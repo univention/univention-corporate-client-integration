@@ -7,6 +7,28 @@ Build-Depends: debhelper (>> 7),
  ucc-image-toolkit,
  ucslint
 
+Package: ucc-thinclient-image
+Architecture: all
+Depends: ucc-1.0-thinclient-image,
+Description: Meta package for the UCC Thin Client Image
+ This package provided the Default UCC Thin
+ Client image.
+ .
+ It is part of Univention Corporate Client (UCC)
+ For more information about UCC refer to:
+ http://www.univention.de/
+
+Package: ucc-thinclient-image-iso
+Architecture: all
+Depends: ucc-1.0-thinclient-image-iso,
+Description: Meta package for the UCC Thin Client Image as ISO
+ This package provided the Default UCC Thin
+ Client image as ISO Image.
+ .
+ It is part of Univention Corporate Client (UCC)
+ For more information about UCC refer to:
+ http://www.univention.de/
+
 Package: ucc-1.0-thinclient-image
 Architecture: all
 Depends: ${misc:Depends},

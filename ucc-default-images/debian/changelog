@@ -1,3 +1,9 @@
+ucc-default-images (0.1.1-12) precise; urgency=low
+
+  * Added meta packages for the thinclient image (Bug #28858)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2012 15:22:25 +0100
+
 ucc-default-images (0.1.1-11) precise; urgency=low
 
   * Also depend on univention-corporate-client-schema (Bug #28858)
