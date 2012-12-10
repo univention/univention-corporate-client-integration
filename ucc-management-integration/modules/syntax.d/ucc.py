@@ -48,6 +48,6 @@ class uccImage(UDM_Objects):
 	key = '%(name)s'
 	label = '%(name)s'
 	simple = True
-	empty_value = True
+	empty_value = False
 
 

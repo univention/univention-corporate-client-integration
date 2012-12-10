@@ -267,7 +267,8 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			default=('overlayfs', [])
 		),
 	'image': univention.admin.property(
 			short_description=_('Image'),

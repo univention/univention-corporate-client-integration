@@ -1,3 +1,10 @@
+ucc-management-integration (1.1.1-9) unstable; urgency=low
+
+  * Remove empty value from UCC image list and make overlayfs as default
+    boot variant (Bug #28973)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2012 15:16:37 +0100
+
 ucc-management-integration (1.1.1-8) unstable; urgency=low
 
   * added service to ucc udm module (Bug #28349) 
