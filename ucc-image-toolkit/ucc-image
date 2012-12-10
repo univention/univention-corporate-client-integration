@@ -89,12 +89,13 @@ def _cleanup(options, workingdir, logfile_fd):
 		os.remove(os.path.join(bootstrap_dir, './cleanup-ucc.sh'))
 
 	# Restart nscd again, since the nscd init script will stop the nscd on the UCS system too
-	cmd_block = ['/etc/init.d/nscd',  'restart' ]
-	try:
-		_run_cmd(cmd_block, logfile_fd)
-	except RuntimeError:
-		# Ignore RuntimeErrors in _cleanup
-		pass
+	if os.path.exists('/etc/init.d/nscd'):
+		cmd_block = ['/etc/init.d/nscd',  'restart' ]
+		try:
+			_run_cmd(cmd_block, logfile_fd)
+		except RuntimeError:
+			# Ignore RuntimeErrors in _cleanup
+			pass
 	
 	cmd_block = ['/bin/umount', bootstrap_dir]
 	try:

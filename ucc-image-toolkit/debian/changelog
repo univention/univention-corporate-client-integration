@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-12) precise; urgency=low
+
+  * Check if nscd init script exists (Bug #29050)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2012 19:35:04 +0100
+
 ucc-image-toolkit (0.9.4-11) precise; urgency=low
 
   * Install univention-corporate-client as the last package to prevent
