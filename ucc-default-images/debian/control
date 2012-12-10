@@ -36,7 +36,8 @@ Depends: ${misc:Depends},
  python-univention-directory-manager-ucc,
  univention-corporate-client-schema
 Recommends: ucc-pxe-boot,
- ucc-management-integration
+ ucc-management-integration,
+ ucc-image-toolkit
 Description: Default UCC Thin Client Image
  This package provided the Default UCC Thin
  Client image.
