@@ -1,3 +1,10 @@
+ucc-image-toolkit (0.9.4-11) precise; urgency=low
+
+  * Install univention-corporate-client as the last package to prevent
+    pbuilder installation errors (Bug #28032)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 10 Dec 2012 16:19:09 +0100
+
 ucc-image-toolkit (0.9.4-10) precise; urgency=low
 
   * Integrate univention-ucc-lxde into thin client image (Bug #28031)
