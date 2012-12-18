@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-15) precise; urgency=low
+
+  * Log errors in run_cmd (Bug #29204)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 18 Dec 2012 16:45:53 +0100
+
 ucc-image-toolkit (0.9.4-14) precise; urgency=low
 
   * ucslint fixes (Bug #29102)

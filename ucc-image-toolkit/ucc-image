@@ -52,6 +52,7 @@ def _run_cmd(cmd_block, fd=sys.stdout):
 
 	retcode = subprocess.call(cmd_block , shell=False, env=env, stdout=fd, stderr=fd)
 	if retcode:
+		fd.write('The command "%s" failed with the error code %d' % (string.join(cmd_block), retcode))
 		msg = 'The command "%s" failed with the error code %d' % (string.join(cmd_block), retcode)
 		raise RuntimeError(msg)
 	return retcode
