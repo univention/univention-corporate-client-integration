@@ -131,9 +131,14 @@ univention-directory-manager settings/ucc_session create "$@" --ignore_exists \
 univention-directory-manager settings/ucc_session create "$@" --position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
 							--ignore_exists \
 							--set name="Windows Terminal Server" \
-							--set session="Windows-Terminal-Server" \
+							--set session="RDP" \
 							--set description="Connect to a Windows Terminal Server via RDP" || die
 
+univention-directory-manager settings/ucc_session create "$@" --position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
+							--ignore_exists \
+							--set name="Citrix XenApp" \
+							--set session="XenApp" \
+							--set description="Connect to a Citrix XenApp terminal server" || die
 
 joinscript_save_current_version
 
