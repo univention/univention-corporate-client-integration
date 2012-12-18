@@ -56,7 +56,7 @@ class uccUserFixedAttributes(univention.admin.syntax.select):
 module='policies/ucc_user'
 operations=['add','edit','remove','search']
 
-policy_oc='univentionCorporateClientUserSession'
+policy_oc='univentionPolicyCorporateClientUser'
 policy_apply_to=["users/user"]
 policy_position_dn_prefix="cn=ucc"
 
