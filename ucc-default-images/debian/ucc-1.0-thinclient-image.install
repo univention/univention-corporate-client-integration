@@ -1,6 +1,0 @@
-ucc-1.0-thinclient-image.img var/lib/univention-client-boot/
-ucc-1.0-thinclient-image.img.md5 var/lib/univention-client-boot/
-ucc-1.0-thinclient-image.img.kernel var/lib/univention-client-boot/
-ucc-1.0-thinclient-image.img.initrd var/lib/univention-client-boot/
-51ucc-1.0-thinclient-image.inst usr/lib/univention-install/
-
