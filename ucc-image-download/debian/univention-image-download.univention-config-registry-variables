@@ -1,5 +1,0 @@
-[ucc/image/download/url]
-Description[de]=Die vollständige Download-URL, unter der die UCC-Images abgerufen werden
-Description[en]=The complete download URl, under which the UCC images can be downloaded
-Type=str
-Categories=system-desktop

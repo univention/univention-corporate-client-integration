@@ -1,5 +1,0 @@
-ucc-1.0-desktop-image.img var/lib/univention-client-boot/
-ucc-1.0-desktop-image.img.md5 var/lib/univention-client-boot/
-ucc-1.0-desktop-image.img.kernel var/lib/univention-client-boot/
-ucc-1.0-desktop-image.img.initrd var/lib/univention-client-boot/
-51ucc-1.0-desktop-image.inst usr/lib/univention-install/
