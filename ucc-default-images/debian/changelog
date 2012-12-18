@@ -1,3 +1,9 @@
+ucc-default-images (0.1.1-14) precise; urgency=low
+
+  * Switch meta packages to ucc-image-download (Bug #29102)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 18 Dec 2012 14:48:55 +0100
+
 ucc-default-images (0.1.1-13) precise; urgency=low
 
   * Added ucc-image-toolkit to recommends list (Bug #28858)

@@ -30,10 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-. /usr/share/univention-lib/all.sh
+#. /usr/share/univention-lib/all.sh
 
 #DEBHELPER#
 
-call_joinscript 51ucc-1.0-thinclient-image.inst
+ucc-image-download -s ucc-thinclient-image-1.0-2012-12-18.spec
+
+#call_joinscript 51ucc-1.0-thinclient-image.inst
 
 exit 0
