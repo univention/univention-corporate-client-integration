@@ -40,4 +40,6 @@ fi
 
 create_logfile_if_missing /var/log/univention/ucc-image-toolkit.log "root:adm" 640
 
+ucr set ucc/image/path?ucc/image/path
+
 exit 0

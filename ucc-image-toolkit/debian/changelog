@@ -1,3 +1,10 @@
+ucc-image-toolkit (0.9.4-13) precise; urgency=low
+
+  * New tools ucc-image-download and ucc-image-remove to manage UCC images
+    (Bug #29102)	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 18 Dec 2012 14:08:51 +0100
+
 ucc-image-toolkit (0.9.4-12) precise; urgency=low
 
   * Check if nscd init script exists (Bug #29050)

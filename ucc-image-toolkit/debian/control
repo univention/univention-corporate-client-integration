@@ -14,7 +14,9 @@ Depends: ${misc:Depends}, ${python:Depends},
  debootstrap ( >= 1.0.39),
  grub-common,
  xorriso,
- makepasswd
+ makepasswd,
+ python-yaml,
+ wget
 Provides: ${python:Provides}
 Description: Toolkit for creating UCC images
  This package contains tools to create Univention Corporate
