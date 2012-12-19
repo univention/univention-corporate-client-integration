@@ -457,7 +457,20 @@ menuentry 'Debug Shell' {
 		exitcode = 100
 
 
+	if exitcode == 0:
+		print '\nThe image creation was successful:'
+		print 'Image              : %s.spec' % image
+		print 'MD5sum file        : %s' % md5_dest
+		print 'UMC Image register : %s' % umc_dest
+		print 'Kernel             : %s' % kernel_dest
+		print 'Initrd             : %s' % initrd_dest
+		if config.get('Image', 'iso'):
+			print 'CDROM ISO Image    : %s' % iso_dest
+
+	_cleanup(options, workingdir, logfile_fd)
+
 	# Create the spec file
+	print "Generating spec file"
 	spec_dest = os.path.join(targetdir, "%s.spec" % image)
 	specfd = open(spec_dest, "w")
 	specfd.write("title: " + image + "\n")
@@ -478,19 +491,6 @@ menuentry 'Debug Shell' {
 	specfd.write("hash-reg: " + commands.getoutput("sha256sum " + umc_dest).split(" ")[0].strip() + "\n")
 
 	specfd.close()
-
-	if exitcode == 0:
-		print '\nThe image creation was successful:'
-		print 'Image              : %s.spec' % image
-		print 'MD5sum file        : %s' % md5_dest
-		print 'UMC Image register : %s' % umc_dest
-		print 'Kernel             : %s' % kernel_dest
-		print 'Initrd             : %s' % initrd_dest
-		print 'spec file          : %s' % initrd_dest
-		if config.get('Image', 'iso'):
-			print 'CDROM ISO Image    : %s' % iso_dest
-
-	_cleanup(options, workingdir, logfile_fd)
 
 	logfile_fd.write('Finished %s at %s\n' % (string.join(sys.argv, ' '), time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 	logfile_fd.close()
