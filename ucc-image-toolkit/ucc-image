@@ -470,22 +470,23 @@ menuentry 'Debug Shell' {
 	specfd.write("file-kernel: " + kernel_dest + "\n")
 	specfd.write("file-md5: " + md5_dest + "\n")
 	specfd.write("file-reg: " + umc_dest + "\n")
-	specfd.write("hash-img: " + commands.getoutput("sha256sum " + image) + "\n")
-	specfd.write("hash-initrd: " + commands.getoutput("sha256sum " + initrd_dest)  + "\n")
-	specfd.write("hash-iso: " + commands.getoutput("sha256sum " + iso_dest) + "\n")
-	specfd.write("hash-kernel: " + commands.getoutput("sha256sum " + kernel_dest) + "\n")
-	specfd.write("hash-md5: " + commands.getoutput("sha256sum " + md5_dest) + "\n")
-	specfd.write("hash-reg: " + commands.getoutput("sha256sum " + umc_dest) + "\n")
+	specfd.write("hash-img: " + commands.getoutput("sha256sum " + image).split(" ")[0].strip() + "\n")
+	specfd.write("hash-initrd: " + commands.getoutput("sha256sum " + initrd_dest).split(" ")[0].strip()  + "\n")
+	specfd.write("hash-iso: " + commands.getoutput("sha256sum " + iso_dest).split(" ")[0].strip() + "\n")
+	specfd.write("hash-kernel: " + commands.getoutput("sha256sum " + kernel_dest).split(" ")[0].strip() + "\n")
+	specfd.write("hash-md5: " + commands.getoutput("sha256sum " + md5_dest).split(" ")[0].strip() + "\n")
+	specfd.write("hash-reg: " + commands.getoutput("sha256sum " + umc_dest).split(" ")[0].strip() + "\n")
 
 	specfd.close()
 
 	if exitcode == 0:
 		print '\nThe image creation was successful:'
-		print 'Image              : %s' % image
+		print 'Image              : %s.spec' % image
 		print 'MD5sum file        : %s' % md5_dest
 		print 'UMC Image register : %s' % umc_dest
 		print 'Kernel             : %s' % kernel_dest
 		print 'Initrd             : %s' % initrd_dest
+		print 'spec file          : %s' % initrd_dest
 		if config.get('Image', 'iso'):
 			print 'CDROM ISO Image    : %s' % iso_dest
 
