@@ -1,0 +1,13 @@
+@!@
+if configRegistry.get('ldap/server/type', 'master') == 'master':
+        access = 'write'
+else:
+        access = 'read'
+
+print '''
+access to attrs="univentionCorporateClientBootVariant"
+        by self %(access)s
+        by * none break
+
+''' % { 'access' : access }
+@!@
