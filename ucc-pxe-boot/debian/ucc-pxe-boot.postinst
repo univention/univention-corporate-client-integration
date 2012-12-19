@@ -42,6 +42,7 @@ if [ "$1" = "configure" -a -x /etc/init.d/univention-directory-listener ]; then
 fi
 
 univention-config-registry set	ucc/pxe/nfsroot?$(get_default_ip_address) \
+								ucc/pxe/append?"syslog=y syslogserver=$(get_default_ip_address)" \
 								ucc/pxe/loglevel?"0"
 
 call_joinscript 91ucc-pxe-boot.inst

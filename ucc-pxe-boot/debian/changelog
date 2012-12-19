@@ -1,3 +1,9 @@
+ucc-pxe-boot (5.0.2-4) precise; urgency=low
+
+  * Append syslog parameter to the PXE config (Bug #28973)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 19 Dec 2012 09:52:42 +0100
+
 ucc-pxe-boot (5.0.2-3) precise; urgency=low
 
   * Pass locale in PXE config (Bug #28985)
