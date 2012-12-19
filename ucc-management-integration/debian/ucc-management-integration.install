@@ -1,0 +1,2 @@
+ldap-passwd-to-file.py usr/lib/ucc-management-integration/
+ucc-nss-passwd.py usr/lib/univention-directory-listener/system/
