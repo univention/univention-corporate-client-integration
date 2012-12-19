@@ -44,6 +44,8 @@ import sys
 import tempfile
 import time
 import traceback
+import datetime
+import commands
 
 # Helper function to run a command and give an error message if the command failed
 def _run_cmd(cmd_block, fd=sys.stdout):
@@ -454,6 +456,28 @@ menuentry 'Debug Shell' {
 		traceback.print_exc(file=logfile_fd)
 		exitcode = 100
 
+
+	# Create the spec file
+	spec_dest = os.path.join(targetdir, "%s.spec" % image)
+	specfd = open(spec_dest, "w")
+	specfd.write("title: " + image + "\n")
+	specfd.write("version: " + config.get_version() + " " + str(datetime.date.isoformat(datetime.datetime.now())) + "\n")
+	totalsize = os.stat(image).st_size + os.stat(md5_dest).st_size + os.stat(umc_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size + os.stat(iso_dest).st_size
+	specfd.write("total-size: " + str(totalsize) + "\n")
+	specfd.write("file-img: " + image  + "\n")
+	specfd.write("file-initrd: " + initrd_dest + "\n")
+	specfd.write("file-iso: " + iso_dest + "\n")
+	specfd.write("file-kernel: " + kernel_dest + "\n")
+	specfd.write("file-md5: " + md5_dest + "\n")
+	specfd.write("file-reg: " + umc_dest + "\n")
+	specfd.write("hash-img: " + commands.getoutput("sha256sum " + image) + "\n")
+	specfd.write("hash-initrd: " + commands.getoutput("sha256sum " + initrd_dest)  + "\n")
+	specfd.write("hash-iso: " + commands.getoutput("sha256sum " + iso_dest) + "\n")
+	specfd.write("hash-kernel: " + commands.getoutput("sha256sum " + kernel_dest) + "\n")
+	specfd.write("hash-md5: " + commands.getoutput("sha256sum " + md5_dest) + "\n")
+	specfd.write("hash-reg: " + commands.getoutput("sha256sum " + umc_dest) + "\n")
+
+	specfd.close()
 
 	if exitcode == 0:
 		print '\nThe image creation was successful:'
