@@ -94,7 +94,7 @@ if options.removeimg:
 	finally:
 		stream.close()
 
-	for i in ['file-img', 'file-initrd', 'file-iso', 'file-kernel', 'file-md5', 'file-reg']:
+	for i in ['file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
 		if os.path.exists(os.path.join(configRegistry['ucc/image/path'], spec[i])):
 			print "Removing", os.path.join(configRegistry['ucc/image/path'], spec[i])
 			os.unlink(os.path.join(configRegistry['ucc/image/path'], spec[i]))
