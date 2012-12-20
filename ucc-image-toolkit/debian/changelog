@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-29) precise; urgency=low
+
+  * Prevent automatic KDM start and configure lightdm auto session (Bug #28964)	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 20 Dec 2012 15:31:20 +0100
+
 ucc-image-toolkit (0.9.4-28) precise; urgency=low
 
   * Fix download of join script (Bug #29851)
