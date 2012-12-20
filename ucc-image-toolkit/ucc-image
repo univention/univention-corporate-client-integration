@@ -509,7 +509,7 @@ menuentry 'Debug Shell' {
 
 	if exitcode == 0:
 		print '\nThe image creation was successful:'
-		print 'Image                 : %s.spec' % image
+		print 'Image                 : %s' % image
 		print 'MD5sum file           : %s' % md5_dest
 		print 'UMC Image join script : %s' % umc_dest
 		print 'Kernel                : %s' % kernel_dest

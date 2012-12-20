@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-33) precise; urgency=low
+
+  * Fix variable name (Bug #28964)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 20 Dec 2012 16:47:59 +0100
+
 ucc-image-toolkit (0.9.4-32) precise; urgency=low
 
   * Sync to disk, otherwise not all data is written to the image before the hash is computed (Bug #29851)
