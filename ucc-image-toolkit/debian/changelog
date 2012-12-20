@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-21) precise; urgency=low
+
+  * Install join scripts to /usr/lib/install (Bug #29851)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 20 Dec 2012 10:11:56 +0100
+
 ucc-image-toolkit (0.9.4-20) precise; urgency=low
 
   * Also disable NM in desktop image (Bug #28321)

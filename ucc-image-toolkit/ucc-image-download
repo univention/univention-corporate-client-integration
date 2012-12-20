@@ -62,6 +62,9 @@ def download_file(filename, hashv):
 			print filename, "already exists. Removing it, since reload is requested"
 			os.remove(options.directory + "/" + filename)
 
+	if filename.endswith(".inst"):
+		wget_opts = "-c -P /usr/lib/univention-install "
+
 	ret = subprocess.call("/usr/bin/wget " + wget_opts + base_url + filename, shell=True)
 	if ret != 0:
 		print "An error (", str(ret), ") occured while downloading image", filename
@@ -151,4 +154,3 @@ download_file(spec['file-iso'], spec['hash-iso'])
 download_file(spec['file-md5'], spec['hash-md5'])
 download_file(spec['file-kernel'], spec['hash-kernel'])
 download_file(spec['file-reg'], spec['hash-reg'])
-
