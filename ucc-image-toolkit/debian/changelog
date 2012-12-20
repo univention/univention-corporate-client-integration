@@ -1,3 +1,10 @@
+ucc-image-toolkit (0.9.4-25) precise; urgency=low
+
+  * Don't download the ISO images through the spec files, only creates
+    overhead. These can rather be downloaded manually 	(Bug #29851)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 20 Dec 2012 13:40:47 +0100
+
 ucc-image-toolkit (0.9.4-24) precise; urgency=low
 
   * Handle conditional ISO generation (Bug #29851)

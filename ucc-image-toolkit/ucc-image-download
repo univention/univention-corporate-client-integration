@@ -153,6 +153,3 @@ download_file(spec['file-initrd'], spec['hash-initrd'])
 download_file(spec['file-md5'], spec['hash-md5'])
 download_file(spec['file-kernel'], spec['hash-kernel'])
 download_file(spec['file-reg'], spec['hash-reg'])
-
-if spec.has_key('file-iso'):
-   download_file(spec['file-iso'], spec['hash-iso'])
