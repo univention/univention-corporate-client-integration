@@ -110,11 +110,11 @@ univention-directory-manager settings/syntax create "$@" --ignore_exists \
     						--set filter='objectClass=univentionCorporateClientSession' \
     						--set viewonly=FALSE || die
 
-univention-directory-manager settings/ucc_session create "$@" --ignore_exists \
-							--position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
-							--set name="None" \
-							--set session="None" \
-							--set description="No default" || die
+# univention-directory-manager settings/ucc_session create "$@" --ignore_exists \
+# 							--position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
+# 							--set name="None" \
+# 							--set session="None" \
+# 							--set description="No default" || die
 
 
 # univention-directory-manager policies/autostart create "$@" \
