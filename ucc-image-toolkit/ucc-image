@@ -543,7 +543,7 @@ menuentry 'Debug Shell' {
 	specfd.write("hash-md5: " + commands.getoutput("sha256sum " + md5_dest).split(" ")[0].strip() + "\n")
 	specfd.write("hash-reg: " + commands.getoutput("sha256sum " + umc_dest).split(" ")[0].strip() + "\n")
 
-	if config.get('Image', 'iso'):
+	if iso_dest:
 		specfd.write("file-iso: " + os.path.basename(iso_dest) + "\n")
 		specfd.write("hash-iso: " + commands.getoutput("sha256sum " + iso_dest).split(" ")[0].strip() + "\n")
 

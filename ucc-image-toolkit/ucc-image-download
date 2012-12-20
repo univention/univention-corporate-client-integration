@@ -114,7 +114,7 @@ try:
 finally:
 	stream.close()
 
-for i in ['title', 'version', 'hash-img', 'hash-iso', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-iso', 'file-kernel', 'file-md5', 'file-reg']:
+for i in ['title', 'version', 'hash-img', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
 	if not spec[i]:
 		print 'Malformed spec file, missing entry', i
 
@@ -150,7 +150,9 @@ if ret != 0:
 	print "Warning: root password could not be set!"
 
 download_file(spec['file-initrd'], spec['hash-initrd'])
-download_file(spec['file-iso'], spec['hash-iso'])
 download_file(spec['file-md5'], spec['hash-md5'])
 download_file(spec['file-kernel'], spec['hash-kernel'])
 download_file(spec['file-reg'], spec['hash-reg'])
+
+if spec.has_key('file-iso'):
+   download_file(spec['file-iso'], spec['hash-iso'])
