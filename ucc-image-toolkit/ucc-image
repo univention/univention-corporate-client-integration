@@ -519,6 +519,9 @@ menuentry 'Debug Shell' {
 
 	_cleanup(options, workingdir, logfile_fd)
 
+	# Sync to disk, otherwise not all data is written to the image before the hash is computed
+	subprocess.call("/bin/sync" , shell=False)
+
 	# Create the spec file
 	print "Generating spec file"
 	spec_dest = os.path.join(targetdir, "%s.spec" % image)
