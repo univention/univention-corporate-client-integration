@@ -62,11 +62,6 @@ def download_file(filename, hashv):
 			print filename, "already exists. Removing it, since reload is requested"
 			os.remove(options.directory + "/" + filename)
 
-	if filename.endswith(".inst"):
-		wget_opts = "-c -P /usr/lib/univention-install "
-	else:
-		wget_opts = "-c -P " + options.directory + " " 
-
 	ret = subprocess.call("/usr/bin/wget " + wget_opts + base_url + filename, shell=True)
 	if ret != 0:
 		print "An error (", str(ret), ") occured while downloading image", filename
@@ -154,4 +149,23 @@ if ret != 0:
 download_file(spec['file-initrd'], spec['hash-initrd'])
 download_file(spec['file-md5'], spec['hash-md5'])
 download_file(spec['file-kernel'], spec['hash-kernel'])
-download_file(spec['file-reg'], spec['hash-reg'])
+
+if options.reload:
+	if os.path.exists("/usr/lib/univention-install/" + spec['file-reg']):
+		print spec['file-reg'], "already exists. Removing it, since reload is requested"
+		os.remove("/usr/lib/univention-install/" + spec['file-reg'])
+
+ret = subprocess.call("/usr/bin/wget -c -P /usr/lib/univention-install " + base_url + spec['file-reg'], shell=True)
+if ret != 0:
+	print "An error (", str(ret), ") occured while downloading image", spec['file-reg']
+	print "Terminating"
+	sys.exit(1)
+
+if not options.skiphash:
+	print "Verifying hash value"
+	digest = commands.getoutput("sha256sum /usr/lib/univention-install/" + spec['file-reg']).split(" ")[0].strip()
+	if digest != spec['hash-reg']:
+		print "Incorrect hash value of downloaded file! Quitting"
+		print "Hash expected:", spec['hash-reg']
+		print "Hash received:", digest
+		sys.exit(1)
