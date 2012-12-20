@@ -30,10 +30,13 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import univention.admin.localization
+import univention.admin.syntax
+
 translation=univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
 _=translation.translate
 
-class uccBoot(select):
+class uccBoot(univention.admin.syntax.select):
     choices=[
         ('none', _('None')),
         ('overlayfs', _('Overlayfs')),
@@ -42,7 +45,7 @@ class uccBoot(select):
         ('installation', _('Re-installation')),
     ]
 
-class uccImage(UDM_Objects):
+class uccImage(univention.admin.syntax.UDM_Objects):
 	udm_modules = ( 'settings/ucc_image', )
 	regex = None
 	key = '%(name)s'
@@ -50,4 +53,16 @@ class uccImage(UDM_Objects):
 	simple = True
 	empty_value = False
 
+class uccSessions(univention.admin.syntax.UDM_Objects):
+	udm_modules = ('settings/ucc_session',)
+	empty_value = True
+
+class uccUserFixedAttributes(univention.admin.syntax.select):
+	name='slavePackagesFixedAttributes'
+	choices=[
+		('univentionCorporateClientUserSession',_('Force this session for user logins')),
+		('univentionCorporateClientUserWindowsDomain',_('Windows domain')),
+		('univentionCorporateClientUserWindowsTerminalserver',_('Windows terminal server')),
+		('univentionCorporateClientUserUccTerminalserver',_('UCC terminal server')),
+		]
 
