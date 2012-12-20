@@ -64,6 +64,8 @@ def download_file(filename, hashv):
 
 	if filename.endswith(".inst"):
 		wget_opts = "-c -P /usr/lib/univention-install "
+	else:
+		wget_opts = "-c -P " + options.directory + " " 
 
 	ret = subprocess.call("/usr/bin/wget " + wget_opts + base_url + filename, shell=True)
 	if ret != 0:
