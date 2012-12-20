@@ -1,3 +1,9 @@
+ucc-management-integration (1.1.2-2) unstable; urgency=low
+
+  * Extend and fix schema (duplicated OID) (Bug #28322)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 20 Dec 2012 13:04:21 +0100
+
 ucc-management-integration (1.1.2-1) unstable; urgency=low
 
   * UCC policy's session can be chosen from all UCC sessions (Bug #28976)
