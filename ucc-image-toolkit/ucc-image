@@ -525,20 +525,27 @@ menuentry 'Debug Shell' {
 	specfd = open(spec_dest, "w")
 	specfd.write("title: " + image + "\n")
 	specfd.write("version: " + config.get_version() + " " + str(datetime.date.isoformat(datetime.datetime.now())) + "\n")
-	totalsize = os.stat(image).st_size + os.stat(md5_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size + os.stat(iso_dest).st_size
+
+	if config.get('Image', 'iso'):
+		totalsize = os.stat(image).st_size + os.stat(md5_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size
+	else:
+		totalsize = os.stat(image).st_size + os.stat(md5_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size + os.stat(iso_dest).st_size
+		
 	specfd.write("total-size: " + str(totalsize) + "\n")
 	specfd.write("file-img: " + os.path.basename(image)  + "\n")
 	specfd.write("file-initrd: " + os.path.basename(initrd_dest) + "\n")
-	specfd.write("file-iso: " + os.path.basename(iso_dest) + "\n")
 	specfd.write("file-kernel: " + os.path.basename(kernel_dest) + "\n")
 	specfd.write("file-md5: " + os.path.basename(md5_dest) + "\n")
 	specfd.write("file-reg: " + os.path.basename(umc_dest) + "\n")
 	specfd.write("hash-img: " + commands.getoutput("sha256sum " + image).split(" ")[0].strip() + "\n")
 	specfd.write("hash-initrd: " + commands.getoutput("sha256sum " + initrd_dest).split(" ")[0].strip()  + "\n")
-	specfd.write("hash-iso: " + commands.getoutput("sha256sum " + iso_dest).split(" ")[0].strip() + "\n")
 	specfd.write("hash-kernel: " + commands.getoutput("sha256sum " + kernel_dest).split(" ")[0].strip() + "\n")
 	specfd.write("hash-md5: " + commands.getoutput("sha256sum " + md5_dest).split(" ")[0].strip() + "\n")
 	specfd.write("hash-reg: " + commands.getoutput("sha256sum " + umc_dest).split(" ")[0].strip() + "\n")
+
+	if config.get('Image', 'iso'):
+		specfd.write("file-iso: " + os.path.basename(iso_dest) + "\n")
+		specfd.write("hash-iso: " + commands.getoutput("sha256sum " + iso_dest).split(" ")[0].strip() + "\n")
 
 	specfd.close()
 
