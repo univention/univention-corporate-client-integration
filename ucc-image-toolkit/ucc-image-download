@@ -154,6 +154,7 @@ if options.reload:
 	if os.path.exists("/usr/lib/univention-install/" + spec['file-reg']):
 		print spec['file-reg'], "already exists. Removing it, since reload is requested"
 		os.remove("/usr/lib/univention-install/" + spec['file-reg'])
+		subprocess.call("chmod a+x /usr/lib/univention-install/" + spec['file-reg'], shell=True)
 
 ret = subprocess.call("/usr/bin/wget -c -P /usr/lib/univention-install " + base_url + spec['file-reg'], shell=True)
 if ret != 0:
