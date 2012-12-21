@@ -443,7 +443,7 @@ univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
 			ucs_default_dn='cn=computers,@%@ldap/base@%@',
 			con_default_dn='cn=computers,@%@connector/s4/ldap/base@%@',
 			ucs_module='computers/windows',
-			ucs_module_others=['computers/memberserver'],
+			ucs_module_others=['computers/memberserver', 'computers/ucc'],
 
 			sync_mode='@%@connector/s4/mapping/syncmode@%@',
 
@@ -454,7 +454,7 @@ univention.s4connector.s4.sid_mapping.print_sid_mapping(configRegistry)
 			con_search_filter='(&(objectClass=computer)(userAccountControl:1.2.840.113556.1.4.803:=4096))',
 
 			# ignore_filter='userAccountControl=4096',
-			match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer))',
+			match_filter='(|(&(objectClass=univentionWindows)(!(univentionServerRole=windows_domaincontroller)))(objectClass=computer)(objectClass=univentionMemberServer)(objectClass=univentionCorporateClient))',
 
 			ignore_subtree = global_ignore_subtree,
 @!@
