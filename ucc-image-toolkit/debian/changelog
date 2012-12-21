@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-37) precise; urgency=low
+
+  * Run downloaded join scripts on backup and master (Bug #28964)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 21 Dec 2012 12:43:32 +0100
+
 ucc-image-toolkit (0.9.4-36) precise; urgency=low
 
   * Make downloaded join scripts executable (Bug #28964)

@@ -163,6 +163,10 @@ if ret != 0:
 
 subprocess.call("chmod a+x /usr/lib/univention-install/" + spec['file-reg'], shell=True)
 
+systemrole = configRegistry['server/role']
+if systemrole == "domaincontroller_master" or systemrole == "domaincontroller_backup":
+	subprocess.call("/usr/lib/univention-install/" + spec['file-reg'], shell=True)
+
 if not options.skiphash:
 	print "Verifying hash value"
 	digest = commands.getoutput("sha256sum /usr/lib/univention-install/" + spec['file-reg']).split(" ")[0].strip()
