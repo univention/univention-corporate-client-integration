@@ -155,13 +155,13 @@ if options.reload:
 		print spec['file-reg'], "already exists. Removing it, since reload is requested"
 		os.remove("/usr/lib/univention-install/" + spec['file-reg'])
 
-subprocess.call("chmod a+x /usr/lib/univention-install/" + spec['file-reg'], shell=True)
-
 ret = subprocess.call("/usr/bin/wget -c -P /usr/lib/univention-install " + base_url + spec['file-reg'], shell=True)
 if ret != 0:
 	print "An error (", str(ret), ") occured while downloading image", spec['file-reg']
 	print "Terminating"
 	sys.exit(1)
+
+subprocess.call("chmod a+x /usr/lib/univention-install/" + spec['file-reg'], shell=True)
 
 if not options.skiphash:
 	print "Verifying hash value"
