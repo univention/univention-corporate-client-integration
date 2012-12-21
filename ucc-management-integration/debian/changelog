@@ -1,3 +1,9 @@
+ucc-management-integration (1.1.2-3) unstable; urgency=low
+
+  * Add samba option for UCC clients (Bug #29096)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 21 Dec 2012 08:01:43 +0100
+
 ucc-management-integration (1.1.2-2) unstable; urgency=low
 
   * Extend and fix schema (duplicated OID) (Bug #28322)
