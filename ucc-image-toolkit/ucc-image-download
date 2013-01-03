@@ -56,7 +56,7 @@ if not os.path.exists(configRegistry['ucc/image/path']):
 	print "UCC image path", configRegistry['ucc/image/path'], "does not exist"
 	sys.exit(1)
 
-def download_file(filename, hashv):
+def download_file(filename, hashv, validate_hash):
 	if options.reload:
 		if os.path.exists(options.directory + "/" + filename):
 			print filename, "already exists. Removing it, since reload is requested"
@@ -67,7 +67,7 @@ def download_file(filename, hashv):
 		print "An error (", str(ret), ") occured while downloading image", filename
 		print "Terminating"
 		sys.exit(1)
-	if not options.skiphash:
+	if validate_hash:
 		print "Verifying hash value"
 		digest = commands.getoutput("sha256sum " + options.directory + "/" + filename).split(" ")[0].strip()
 		if digest != hashv:
@@ -94,6 +94,10 @@ if not options.spec:
 	print parser.print_help()
 	sys.exit(1)
 
+if options.skiphash:
+	check_hash = False
+else:
+	check_hash = True
 
 base_url = configRegistry['ucc/image/download/url'] + "/" 
 
@@ -129,11 +133,17 @@ shutil.copy(os.path.join(workingdir, options.spec), configRegistry['ucc/image/pa
 print "Downloading", spec['title'], spec['version']
 
 wget_opts = "-c -P " + options.directory + " " 
-		
-download_file(spec['file-img'], spec['hash-img'])
-
 
 imgname = os.path.join(configRegistry['ucc/image/path'], spec['file-img'])
+img_validation = True
+if os.path.exists(imgname):
+	print imgname, "already exists. Skipping validation of hash value, since the root password is usually altered."
+	img_validation = False
+	
+if img_validation:
+	download_file(spec['file-img'], spec['hash-img'], check_hash)
+else:
+	download_file(spec['file-img'], spec['hash-img'], False)
 
 if options.rootpw:
 	print "Setting root password in the downloaded image. Please enter the password:"
@@ -146,9 +156,9 @@ ret = subprocess.call(cmd, shell=True)
 if ret != 0:
 	print "Warning: root password could not be set!"
 
-download_file(spec['file-initrd'], spec['hash-initrd'])
-download_file(spec['file-md5'], spec['hash-md5'])
-download_file(spec['file-kernel'], spec['hash-kernel'])
+download_file(spec['file-initrd'], spec['hash-initrd'], check_hash)
+download_file(spec['file-md5'], spec['hash-md5'], check_hash)
+download_file(spec['file-kernel'], spec['hash-kernel'], check_hash)
 
 if options.reload:
 	if os.path.exists("/usr/lib/univention-install/" + spec['file-reg']):

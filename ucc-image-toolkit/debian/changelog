@@ -1,3 +1,11 @@
+ucc-image-toolkit (0.9.4-39) precise; urgency=low
+
+  * Skip validation of downloaded image if it already exists, otherwise the
+    root password set in the image will not match the hash from the spec file
+    (Bug #29102)	  
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 03 Jan 2013 16:11:44 +0100
+
 ucc-image-toolkit (0.9.4-38) precise; urgency=low
 
   * Add more language packss (Bug #23020)
