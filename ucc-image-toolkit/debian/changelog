@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-38) precise; urgency=low
+
+  * Add more language packss (Bug #23020)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 03 Jan 2013 10:02:05 +0100
+
 ucc-image-toolkit (0.9.4-37) precise; urgency=low
 
   * Run downloaded join scripts on backup and master (Bug #28964)
