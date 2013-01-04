@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-41) precise; urgency=low
+
+  * Increase thin client image size by one GB (Bug #29102)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 04 Jan 2013 12:52:49 +0100
+
 ucc-image-toolkit (0.9.4-40) precise; urgency=low
 
   * Drop option --imagedirectory, only use ucc/image/path
