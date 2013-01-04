@@ -100,13 +100,11 @@ if options.removeimg:
 			os.unlink(os.path.join(configRegistry['ucc/image/path'], spec[i]))
 
 	specfile = os.path.join(configRegistry['ucc/image/path'], options.removeimg)
-	print specfile
 	if os.path.exists(specfile):
 		print "Removing", specfile
 		os.unlink(specfile)
 
 	joinfile = os.path.join("/usr/lib/univention-install", options.removeimg + ".inst")
-	print joinfile
 	if os.path.exists(joinfile):
 		print "Removing", joinfile
 		os.unlink(joinfile)

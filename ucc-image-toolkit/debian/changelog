@@ -1,3 +1,11 @@
+ucc-image-toolkit (0.9.4-40) precise; urgency=low
+
+  * Drop option --imagedirectory, only use ucc/image/path
+  * Remove debug output
+  * Bug #29102	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 04 Jan 2013 10:56:31 +0100
+
 ucc-image-toolkit (0.9.4-39) precise; urgency=low
 
   * Skip validation of downloaded image if it already exists, otherwise the

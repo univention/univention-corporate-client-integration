@@ -52,15 +52,17 @@ if not configRegistry['ucc/image/path']:
 	print "The UCR variable ucc/image/path must be set"
 	sys.exit(1)
 
-if not os.path.exists(configRegistry['ucc/image/path']):
-	print "UCC image path", configRegistry['ucc/image/path'], "does not exist"
+image_directory = configRegistry['ucc/image/path']
+
+if not os.path.exists(image_directory):
+	print "UCC image path", image_directory, "does not exist"
 	sys.exit(1)
 
 def download_file(filename, hashv, validate_hash):
 	if options.reload:
-		if os.path.exists(options.directory + "/" + filename):
+		if os.path.exists(image_directory + "/" + filename):
 			print filename, "already exists. Removing it, since reload is requested"
-			os.remove(options.directory + "/" + filename)
+			os.remove(image_directory + "/" + filename)
 
 	ret = subprocess.call("/usr/bin/wget " + wget_opts + base_url + filename, shell=True)
 	if ret != 0:
@@ -69,7 +71,7 @@ def download_file(filename, hashv, validate_hash):
 		sys.exit(1)
 	if validate_hash:
 		print "Verifying hash value"
-		digest = commands.getoutput("sha256sum " + options.directory + "/" + filename).split(" ")[0].strip()
+		digest = commands.getoutput("sha256sum " + image_directory + "/" + filename).split(" ")[0].strip()
 		if digest != hashv:
 			print "Incorrect hash value of downloaded file! Quitting"
 			print "Hash expected:", hashv
@@ -82,7 +84,6 @@ parser = OptionParser(usage=usage)
 
 
 parser.add_option("-s", "--specurl", action="store", dest="spec", help="Spec file for the image download (without the URL part of the mirror)")
-parser.add_option("-o", "--imagedirectory", action="store", default="/var/lib/univention-client-boot", dest="directory", help="Download path (/var/lib/univention-client-boot by default)")
 parser.add_option("-r", "--reload", action="store_true", dest="reload", help="Force reloading of file, do not resume downloads")
 parser.add_option("-p", "--set-root-pw-interactive", action="store_true", default=False, dest="rootpw", help="By default the root password from the current system is set in the image. Use this option to set it interactively")
 parser.add_option("--skip-hash", action="store_true", default=False, dest="skiphash", help="Skip validation of downloaded files")
@@ -120,7 +121,7 @@ for i in ['title', 'version', 'hash-img', 'hash-kernel', 'hash-initrd', 'hash-md
 		print 'Malformed spec file, missing entry', i
 
 
-vfs = os.statvfs(options.directory)
+vfs = os.statvfs(image_directory)
 free_diskspace = vfs.f_frsize * vfs.f_bfree
 
 if (free_diskspace < spec['total-size']):
@@ -128,13 +129,13 @@ if (free_diskspace < spec['total-size']):
 	print "Needed: ", spec['total-size']
 	print "Available: ", free_diskspace
 
-shutil.copy(os.path.join(workingdir, options.spec), configRegistry['ucc/image/path'])
+shutil.copy(os.path.join(workingdir, options.spec), image_directory)
 
 print "Downloading", spec['title'], spec['version']
 
-wget_opts = "-c -P " + options.directory + " " 
+wget_opts = "-c -P " + image_directory + " " 
 
-imgname = os.path.join(configRegistry['ucc/image/path'], spec['file-img'])
+imgname = os.path.join(image_directory, spec['file-img'])
 img_validation = True
 if os.path.exists(imgname):
 	print imgname, "already exists. Skipping validation of hash value, since the root password is usually altered."
