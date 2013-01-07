@@ -75,7 +75,7 @@ property_descriptions={
 	'environmentVars': univention.admin.property(
 			short_description=_('UCC desktop environment variables'),
 			long_description='',
-			syntax=univention.admin.syntax.UCR_Variable,
+			syntax=univention.admin.syntax.uccDesktopEnvVar,
 			multivalue=1,
 			options=[],
 			required=0,
