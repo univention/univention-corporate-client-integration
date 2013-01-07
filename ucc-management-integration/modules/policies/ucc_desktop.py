@@ -82,6 +82,26 @@ property_descriptions={
 			may_change=1,
 			identifies=0,
 		),
+	'logonScripts': univention.admin.property(
+			short_description=_('Desktop Logon scripts'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'logoutScripts': univention.admin.property(
+			short_description=_('Desktop Logout scripts'),
+			long_description='',
+			syntax=univention.admin.syntax.string,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'requiredObjectClasses': univention.admin.property(
 			short_description=_('Required object classes'),
 			long_description='',
@@ -139,6 +159,7 @@ layout = [
 		Group( _( 'General' ), layout = [
 			'name',
 			'environmentVars',
+			['logonScripts', 'logoutScripts'],
 		] ),
 	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
@@ -149,6 +170,8 @@ layout = [
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
+mapping.register('logonScripts', 'univentionCorporateClientDesktopLogon')
+mapping.register('logoutScripts', 'univentionCorporateClientDesktopLogout')
 
 class object(univention.admin.handlers.simplePolicy):
 	module=module
@@ -167,8 +190,8 @@ class object(univention.admin.handlers.simplePolicy):
 	def _post_unmap( self, info, values ):
 		info[ 'environmentVars' ] = []
 		for key, value in values.items():
-			if key.startswith( 'univentionCorporateClientEnv;entry-hex-' ):
-				key_name = key.split( 'univentionCorporateClientEnv;entry-hex-', 1 )[ 1 ].decode( 'hex' )
+			if key.startswith( 'univentionCorporateClientDesktopEnv;entry-hex-' ):
+				key_name = key.split( 'univentionCorporateClientDesktopEnv;entry-hex-', 1 )[ 1 ].decode( 'hex' )
 				info[ 'environmentVars' ].append( ( key_name, values[ key ][ 0 ].strip() ) )
 		return info
 
@@ -178,13 +201,13 @@ class object(univention.admin.handlers.simplePolicy):
 				old_dict = dict( old )
 				new_dict = dict( new )
 				for var, value in old_dict.items():
-					attr_name = 'univentionCorporateClientEnv;entry-hex-%s' % var.encode( 'hex' )
+					attr_name = 'univentionCorporateClientDesktopEnv;entry-hex-%s' % var.encode( 'hex' )
 					if not var in new_dict: # variable has been removed
 						modlist.append( ( attr_name, value, None ) )
 					elif value != new_dict[ var ]: # value has been changed
 						modlist.append( ( attr_name, value, new_dict[ var ] ) )
 				for var, value in new_dict.items():
-					attr_name = 'univentionCorporateClientEnv;entry-hex-%s' % var.encode( 'hex' )
+					attr_name = 'univentionCorporateClientDesktopEnv;entry-hex-%s' % var.encode( 'hex' )
 					if var not in old_dict: # variable has been added
 						modlist.append( ( attr_name, None, new_dict[ var ] ) )
 				break
@@ -196,8 +219,8 @@ class object(univention.admin.handlers.simplePolicy):
 		self.polinfo_more[ 'environmentVars' ] = []
 		for attr_name, value_dict in self.policy_attrs.items():
 			values[ attr_name ] = value_dict[ 'value' ]
-			if attr_name.startswith( 'univentionCorporateClientEnv;entry-hex-' ):
-				key_name = attr_name.split( 'univentionCorporateClientEnv;entry-hex-', 1 )[ 1 ].decode( 'hex' )
+			if attr_name.startswith( 'univentionCorporateClientDesktopEnv;entry-hex-' ):
+				key_name = attr_name.split( 'univentionCorporateClientDesktopEnv;entry-hex-', 1 )[ 1 ].decode( 'hex' )
 				value_dict[ 'value' ].insert( 0, key_name )
 				self.polinfo_more[ 'environmentVars' ].append( value_dict )
 			elif attr_name:

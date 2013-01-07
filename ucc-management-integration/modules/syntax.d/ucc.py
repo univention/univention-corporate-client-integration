@@ -71,3 +71,7 @@ class uccDesktopFixedAttributes(univention.admin.syntax.select):
 	choices=[
 		('environmentVars', _('UCC desktop environment variables'))
 		]
+
+class uccDesktopEnvVar(complex):
+        subsyntaxes = ( ( _( 'Environment variable' ), string ), ( _( 'Value' ), string ) )
+

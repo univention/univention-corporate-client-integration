@@ -140,10 +140,21 @@ objectclass ( 1.3.6.1.4.1.10176.4125.7.1 NAME 'univentionPolicyCorporateClientCo
 
 
 # ucc desktop
-attributetype ( 1.3.6.1.4.1.10176.4125.9.2 NAME 'univentionCorporateClientEnv'
-        DESC 'UCC desktop environment variables'
-        EQUALITY caseIgnoreIA5Match
-        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+attributetype ( 1.3.6.1.4.1.10176.4125.9.4 NAME 'univentionCorporateClientDesktopLogon'
+	DESC 'UCC desktop logon scripts'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+attributetype ( 1.3.6.1.4.1.10176.4125.9.3 NAME 'univentionCorporateClientDesktopLogout'
+	DESC 'UCC desktop logout scripts'
+	EQUALITY caseExactMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+
+attributetype ( 1.3.6.1.4.1.10176.4125.9.2 NAME 'univentionCorporateClientDesktopEnv'
+	DESC 'UCC desktop environment variables'
+	EQUALITY caseIgnoreIA5Match
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 objectclass ( 1.3.6.1.4.1.10176.4125.9.1 NAME 'univentionPolicyCorporateClientDesktop'
 	DESC 'UCC desktop settings'

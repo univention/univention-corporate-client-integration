@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-07 14:44+0100\n"
+"POT-Creation-Date: 2013-01-07 15:15+0100\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -141,8 +141,8 @@ msgstr "Dienst"
 msgid "Relative ID"
 msgstr "Relative ID"
 
-#: modules/computers/ucc.py:327 modules/policies/ucc_desktop.py:138
-#: modules/policies/ucc_desktop.py:139 modules/policies/ucc_hardware.py:139
+#: modules/computers/ucc.py:327 modules/policies/ucc_desktop.py:158
+#: modules/policies/ucc_desktop.py:159 modules/policies/ucc_hardware.py:139
 #: modules/policies/ucc_hardware.py:140 modules/policies/ucc_user.py:160
 #: modules/policies/ucc_user.py:161 modules/settings/ucc_autostart.py:87
 #: modules/settings/ucc_autostart.py:88 modules/settings/ucc_image.py:87
@@ -227,31 +227,39 @@ msgstr "UCC Desktop-Einstellungen"
 msgid "Name"
 msgstr "Name"
 
-#: modules/policies/ucc_desktop.py:86 modules/policies/ucc_hardware.py:88
+#: modules/policies/ucc_desktop.py:86
+msgid "Desktop Logon scripts"
+msgstr "Desktop Anmelde-Scripte"
+
+#: modules/policies/ucc_desktop.py:96
+msgid "Desktop Logout scripts"
+msgstr "Desktop Abmelde-Scripte"
+
+#: modules/policies/ucc_desktop.py:106 modules/policies/ucc_hardware.py:88
 #: modules/policies/ucc_user.py:109
 msgid "Required object classes"
 msgstr "Benötigte Objektklassen"
 
-#: modules/policies/ucc_desktop.py:96 modules/policies/ucc_hardware.py:98
+#: modules/policies/ucc_desktop.py:116 modules/policies/ucc_hardware.py:98
 #: modules/policies/ucc_user.py:119
 msgid "Excluded object classes"
 msgstr "Ausgeschlossene Objektklassen"
 
-#: modules/policies/ucc_desktop.py:106 modules/policies/ucc_hardware.py:108
+#: modules/policies/ucc_desktop.py:126 modules/policies/ucc_hardware.py:108
 #: modules/policies/ucc_user.py:129
 msgid "Fixed attributes"
 msgstr "Festgelegte Attribute"
 
-#: modules/policies/ucc_desktop.py:116 modules/policies/ucc_hardware.py:118
+#: modules/policies/ucc_desktop.py:136 modules/policies/ucc_hardware.py:118
 #: modules/policies/ucc_user.py:139
 msgid "Empty attributes"
 msgstr "Leere Attribute"
 
-#: modules/policies/ucc_desktop.py:138
+#: modules/policies/ucc_desktop.py:158
 msgid "Desktop settings"
 msgstr "Desktop-Einstellungen"
 
-#: modules/policies/ucc_desktop.py:144 modules/policies/ucc_hardware.py:145
+#: modules/policies/ucc_desktop.py:165 modules/policies/ucc_hardware.py:145
 #: modules/policies/ucc_user.py:169
 msgid "Object"
 msgstr "Objekt"
@@ -272,8 +280,9 @@ msgstr "UCC Client-Einstellungen"
 msgid ""
 "This settings configures, whether access to local mass storage is enabled if "
 "a UCC system is used as a thin client"
-msgstr "Diese Einstellung gibt an, ob der Zugriff auf lokale Speichermedien "
-"auf UCC Thin-Clients erlaubt ist"
+msgstr ""
+"Diese Einstellung gibt an, ob der Zugriff auf lokale Speichermedien auf UCC "
+"Thin-Clients erlaubt ist"
 
 #: modules/policies/ucc_hardware.py:139 modules/policies/ucc_user.py:53
 #: modules/policies/ucc_user.py:160
@@ -401,3 +410,11 @@ msgstr "Rollout"
 #: modules/syntax.d/ucc.py:45
 msgid "Re-installation"
 msgstr "Re-Installation"
+
+#: modules/syntax.d/ucc.py:76
+msgid "Environment variable"
+msgstr "Umgebungs-Variablen"
+
+#: modules/syntax.d/ucc.py:76
+msgid "Value"
+msgstr "Wert"
