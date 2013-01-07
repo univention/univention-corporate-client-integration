@@ -210,7 +210,7 @@ msgstr "Mindestens POSIX oder Kerbeos werden benötigt"
 #: modules/policies/ucc_desktop.py:47 modules/policies/ucc_desktop.py:76
 #: modules/syntax.d/ucc.py:72
 msgid "UCC desktop environment variables"
-msgstr "UCC Desktop "
+msgstr "UCC Desktop Umgebungs-Variablen"
 
 #: modules/policies/ucc_desktop.py:58
 msgid "Policy: Univention Corporate Client desktop settings"
@@ -412,8 +412,8 @@ msgid "Re-installation"
 msgstr "Re-Installation"
 
 #: modules/syntax.d/ucc.py:76
-msgid "Environment variable"
-msgstr "Umgebungs-Variablen"
+msgid "Variable"
+msgstr "Variable"
 
 #: modules/syntax.d/ucc.py:76
 msgid "Value"

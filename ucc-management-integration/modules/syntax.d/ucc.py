@@ -73,5 +73,5 @@ class uccDesktopFixedAttributes(univention.admin.syntax.select):
 		]
 
 class uccDesktopEnvVar(complex):
-        subsyntaxes = ( ( _( 'Environment variable' ), string ), ( _( 'Value' ), string ) )
+        subsyntaxes = ( ( _( 'Variable' ), string ), ( _( 'Value' ), string ) )
 
