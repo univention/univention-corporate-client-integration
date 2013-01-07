@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-08 21:02+0100\n"
+"POT-Creation-Date: 2013-01-07 14:44+0100\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
-"Language: DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: DE\n"
 
 #: modules/computers/ucc.py:53
 msgid "Computer: Univention Corporate Client"
@@ -28,212 +28,285 @@ msgstr "POSIX-Konto"
 msgid "Kerberos principal"
 msgstr "Kerberos-Prinzipal"
 
-#: modules/computers/ucc.py:68
+#: modules/computers/ucc.py:65
+msgid "Samba account"
+msgstr "Samba-Konto"
+
+#: modules/computers/ucc.py:73
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: modules/computers/ucc.py:78 modules/settings/ucc_autostart.py:64
+#: modules/computers/ucc.py:84 modules/settings/ucc_autostart.py:64
 #: modules/settings/ucc_image.py:64 modules/settings/ucc_session.py:64
 msgid "Description"
 msgstr "Beschreibung"
 
-#: modules/computers/ucc.py:87
+#: modules/computers/ucc.py:94
 msgid "Operating system"
 msgstr "Betriebssystem"
 
-#: modules/computers/ucc.py:96
+#: modules/computers/ucc.py:103
 msgid "Operating system version"
 msgstr "Version des Betriebssystems"
 
-#: modules/computers/ucc.py:105
+#: modules/computers/ucc.py:112
 msgid "Domain"
 msgstr "Domäne"
 
-#: modules/computers/ucc.py:114
+#: modules/computers/ucc.py:122
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: modules/computers/ucc.py:124
+#: modules/computers/ucc.py:133
 msgid "Network"
 msgstr "Netzwerk"
 
-#: modules/computers/ucc.py:134
+#: modules/computers/ucc.py:143
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: modules/computers/ucc.py:144
+#: modules/computers/ucc.py:154
 msgid "Forward zone for DNS entry"
 msgstr "Forward-Zone für DNS-Eintrag"
 
-#: modules/computers/ucc.py:155
+#: modules/computers/ucc.py:165
 msgid "Reverse zone for DNS entry"
 msgstr "Reverse-Zone für DNS-Eintrag"
 
-#: modules/computers/ucc.py:166
+#: modules/computers/ucc.py:176
 msgid "Zone for DNS alias"
 msgstr "Zone für DNS-Alias"
 
-#: modules/computers/ucc.py:177 modules/computers/ucc.py:330
+#: modules/computers/ucc.py:187 modules/computers/ucc.py:365
 msgid "DNS alias"
 msgstr "DNS-Alias"
 
-#: modules/computers/ucc.py:187
+#: modules/computers/ucc.py:197
 msgid "DHCP service"
 msgstr "DHCP-Service"
 
-#: modules/computers/ucc.py:198
+#: modules/computers/ucc.py:208
 msgid "Password"
 msgstr "Passwort"
 
-#: modules/computers/ucc.py:209
+#: modules/computers/ucc.py:219
 msgid "Unix home directory"
 msgstr "Unix Heimatverzeichnis"
 
-#: modules/computers/ucc.py:220
+#: modules/computers/ucc.py:230
 msgid "Login shell"
 msgstr "Login-Shell"
 
-#: modules/computers/ucc.py:231
+#: modules/computers/ucc.py:241
 msgid "Primary group"
 msgstr "Primäre Gruppe"
 
-#: modules/computers/ucc.py:242
+#: modules/computers/ucc.py:252
 msgid "Inventory number"
 msgstr "Inventarnummer"
 
-#: modules/computers/ucc.py:252 modules/computers/ucc.py:327
+#: modules/computers/ucc.py:262 modules/computers/ucc.py:362
 msgid "Groups"
 msgstr "Gruppen"
 
-#: modules/computers/ucc.py:263
+#: modules/computers/ucc.py:273
 msgid "Boot variant"
 msgstr "Startvariante"
 
-#: modules/computers/ucc.py:264
+#: modules/computers/ucc.py:274
 msgid "Boot variant of this client"
 msgstr "Startvariante des Clients"
 
-#: modules/computers/ucc.py:273
+#: modules/computers/ucc.py:284
 msgid "Image"
 msgstr "Image"
 
-#: modules/computers/ucc.py:274
+#: modules/computers/ucc.py:285
 msgid "Image to boot"
 msgstr "Startimage"
 
-#: modules/computers/ucc.py:283
+#: modules/computers/ucc.py:294
 msgid "Additional boot parameter"
 msgstr "Erweiterte Startparameter"
 
-#: modules/computers/ucc.py:284
+#: modules/computers/ucc.py:295
 msgid "Additional boot parameter of this client"
 msgstr "Erweiterte Startparameter für diesen Client"
 
-#: modules/computers/ucc.py:295 modules/policies/ucc_user.py:161
-#: modules/policies/ucc_user.py:162 modules/settings/ucc_autostart.py:87
+#: modules/computers/ucc.py:304
+msgid "Service"
+msgstr "Dienst"
+
+#: modules/computers/ucc.py:314
+msgid "Relative ID"
+msgstr "Relative ID"
+
+#: modules/computers/ucc.py:327 modules/policies/ucc_desktop.py:138
+#: modules/policies/ucc_desktop.py:139 modules/policies/ucc_hardware.py:139
+#: modules/policies/ucc_hardware.py:140 modules/policies/ucc_user.py:160
+#: modules/policies/ucc_user.py:161 modules/settings/ucc_autostart.py:87
 #: modules/settings/ucc_autostart.py:88 modules/settings/ucc_image.py:87
 #: modules/settings/ucc_image.py:88 modules/settings/ucc_session.py:87
 #: modules/settings/ucc_session.py:88
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/computers/ucc.py:295
+#: modules/computers/ucc.py:327
 msgid "Basic settings"
 msgstr "Grundeinstelungen"
 
-#: modules/computers/ucc.py:296
+#: modules/computers/ucc.py:328
 msgid "Computer account"
 msgstr "Rechnerkonto"
 
-#: modules/computers/ucc.py:301
+#: modules/computers/ucc.py:333
 msgid "Network settings "
 msgstr "Netzwerkeinstellungen"
 
-#: modules/computers/ucc.py:305
+#: modules/computers/ucc.py:337
 msgid "DNS Forward and Reverse Lookup Zone"
 msgstr "DNS-Forward und Reverse-Zonen"
 
-#: modules/computers/ucc.py:309
+#: modules/computers/ucc.py:341
 msgid "DHCP"
 msgstr "DHCP"
 
-#: modules/computers/ucc.py:313
+#: modules/computers/ucc.py:345
 msgid "Images"
 msgstr "Images"
 
-#: modules/computers/ucc.py:314
+#: modules/computers/ucc.py:346
 msgid "Image settings"
 msgstr "Image Einstellungen"
 
-#: modules/computers/ucc.py:320
+#: modules/computers/ucc.py:352
 msgid "Account"
 msgstr "Konto"
 
-#: modules/computers/ucc.py:324
+#: modules/computers/ucc.py:356
 msgid "Unix account"
 msgstr "Unix-Konto"
 
-#: modules/computers/ucc.py:324
+#: modules/computers/ucc.py:356
 msgid "Unix account settings"
 msgstr "Unix-Konto-Einstellungen"
 
-#: modules/computers/ucc.py:327
+#: modules/computers/ucc.py:359
+msgid "Services"
+msgstr "Dienste"
+
+#: modules/computers/ucc.py:362
 msgid "Group memberships"
 msgstr "Gruppenmitgliedschaften"
 
-#: modules/computers/ucc.py:330
+#: modules/computers/ucc.py:365
 msgid "Alias DNS entry"
 msgstr "Alias-DNS-Eintrag"
 
-#: modules/computers/ucc.py:435
+#: modules/computers/ucc.py:480
 msgid " At least posix or kerberos is required."
 msgstr "Mindestens POSIX oder Kerbeos werden benötigt"
 
-#: modules/policies/ucc_user.py:50 modules/policies/ucc_user.py:80
-msgid "Force this session for user logins"
-msgstr "Erzwingen dieser Sitzung für Benutzeranmeldungen"
+#: modules/policies/ucc_desktop.py:47 modules/policies/ucc_desktop.py:76
+#: modules/syntax.d/ucc.py:72
+msgid "UCC desktop environment variables"
+msgstr "UCC Desktop "
 
-#: modules/policies/ucc_user.py:51 modules/policies/ucc_user.py:90
-msgid "Windows domain"
-msgstr "Windows-Domäne"
+#: modules/policies/ucc_desktop.py:58
+msgid "Policy: Univention Corporate Client desktop settings"
+msgstr "Richtline: Univention Corporate Client Desktop-Einstellungen"
 
-#: modules/policies/ucc_user.py:52 modules/policies/ucc_user.py:100
-msgid "Windows terminal server"
-msgstr "Windows Terminalserver"
+#: modules/policies/ucc_desktop.py:59
+msgid "UCC desktop settings"
+msgstr "UCC Desktop-Einstellungen"
 
-#: modules/policies/ucc_user.py:52 modules/policies/ucc_user.py:100
-msgid "UCC terminal server"
-msgstr "UCC Terminalserver"
-
-#: modules/policies/ucc_user.py:52 modules/policies/ucc_user.py:100
-msgid "This UCC terminal server will be used for user logon UCC terminal servers"
-msgstr "Dieser UCC-Terminalserver wird für Anmeldungen an UCC Terminalservern verwendet"
-
-#: modules/policies/ucc_user.py:63
-msgid "Policy: Univention Corporate Client user session"
-msgstr "Richtline: Univention Corporate Client Benutzersitzung"
-
-#: modules/policies/ucc_user.py:64 modules/policies/ucc_user.py:161
-msgid "UCC user session"
-msgstr "UCC Benutzersitzung"
-
-#: modules/policies/ucc_user.py:70 modules/settings/ucc_autostart.py:54
+#: modules/policies/ucc_desktop.py:65 modules/policies/ucc_hardware.py:68
+#: modules/policies/ucc_user.py:59 modules/settings/ucc_autostart.py:54
 #: modules/settings/ucc_autostart.py:55 modules/settings/ucc_session.py:54
 #: modules/settings/ucc_session.py:55
 msgid "Name"
 msgstr "Name"
 
-#: modules/policies/ucc_user.py:81
+#: modules/policies/ucc_desktop.py:86 modules/policies/ucc_hardware.py:88
+#: modules/policies/ucc_user.py:109
+msgid "Required object classes"
+msgstr "Benötigte Objektklassen"
+
+#: modules/policies/ucc_desktop.py:96 modules/policies/ucc_hardware.py:98
+#: modules/policies/ucc_user.py:119
+msgid "Excluded object classes"
+msgstr "Ausgeschlossene Objektklassen"
+
+#: modules/policies/ucc_desktop.py:106 modules/policies/ucc_hardware.py:108
+#: modules/policies/ucc_user.py:129
+msgid "Fixed attributes"
+msgstr "Festgelegte Attribute"
+
+#: modules/policies/ucc_desktop.py:116 modules/policies/ucc_hardware.py:118
+#: modules/policies/ucc_user.py:139
+msgid "Empty attributes"
+msgstr "Leere Attribute"
+
+#: modules/policies/ucc_desktop.py:138
+msgid "Desktop settings"
+msgstr "Desktop-Einstellungen"
+
+#: modules/policies/ucc_desktop.py:144 modules/policies/ucc_hardware.py:145
+#: modules/policies/ucc_user.py:169
+msgid "Object"
+msgstr "Objekt"
+
+#: modules/policies/ucc_hardware.py:50 modules/policies/ucc_hardware.py:78
+msgid "Allow access to local mass storage"
+msgstr "Den Zugriff auf lokale Speichermedien zulassen"
+
+#: modules/policies/ucc_hardware.py:61
+msgid "Policy: Univention Corporate Client client settings"
+msgstr "Richtline: Univention Corporate Client-Einstellungen"
+
+#: modules/policies/ucc_hardware.py:62
+msgid "UCC client settings"
+msgstr "UCC Client-Einstellungen"
+
+#: modules/policies/ucc_hardware.py:79
+msgid ""
+"This settings configures, whether access to local mass storage is enabled if "
+"a UCC system is used as a thin client"
+msgstr "Diese Einstellung gibt an, ob der Zugriff auf lokale Speichermedien "
+"auf UCC Thin-Clients erlaubt ist"
+
+#: modules/policies/ucc_hardware.py:139 modules/policies/ucc_user.py:53
+#: modules/policies/ucc_user.py:160
+msgid "UCC user session"
+msgstr "UCC Benutzersitzung"
+
+#: modules/policies/ucc_user.py:52
+msgid "Policy: Univention Corporate Client user session"
+msgstr "Richtline: Univention Corporate Client Benutzersitzung"
+
+#: modules/policies/ucc_user.py:69 modules/syntax.d/ucc.py:63
+msgid "Force this session for user logins"
+msgstr "Erzwingen dieser Sitzung für Benutzeranmeldungen"
+
+#: modules/policies/ucc_user.py:70
 msgid "This UCC session will be during login and no user selection is made"
 msgstr ""
 "Diese Sitzung wird bei der Anmeldung vorgegeben und keine Benutzerauswahl "
 "getroffen"
 
-#: modules/policies/ucc_user.py:91
+#: modules/policies/ucc_user.py:79 modules/syntax.d/ucc.py:64
+msgid "Windows domain"
+msgstr "Windows-Domäne"
+
+#: modules/policies/ucc_user.py:80
 msgid "This windows domain will be used for RDP user logons."
 msgstr "Diese Windows-Domäne wird für RDP-Anmeldungen verwendet"
 
-#: modules/policies/ucc_user.py:101
+#: modules/policies/ucc_user.py:89 modules/syntax.d/ucc.py:65
+msgid "Windows terminal server"
+msgstr "Windows Terminalserver"
+
+#: modules/policies/ucc_user.py:90
 msgid ""
 "This windows terminal server will be used for user logon Windows terminal "
 "servers."
@@ -241,25 +314,16 @@ msgstr ""
 "Dieser Windows-Terminalserver wird für Anmeldungen an Windows "
 "Terminalservern verwendet"
 
-#: modules/policies/ucc_user.py:110
-msgid "Required object classes"
-msgstr "Benötigte Objektklassen"
+#: modules/policies/ucc_user.py:99 modules/syntax.d/ucc.py:66
+msgid "UCC terminal server"
+msgstr "UCC Terminalserver"
 
-#: modules/policies/ucc_user.py:120
-msgid "Excluded object classes"
-msgstr "Ausgeschlossene Objektklassen"
-
-#: modules/policies/ucc_user.py:130
-msgid "Fixed attributes"
-msgstr "Festgelegte Attribute"
-
-#: modules/policies/ucc_user.py:140
-msgid "Empty attributes"
-msgstr "Leere Attribute"
-
-#: modules/policies/ucc_user.py:169
-msgid "Object"
-msgstr "Objekt"
+#: modules/policies/ucc_user.py:100
+msgid ""
+"This UCC terminal server will be used for user logon UCC terminal servers."
+msgstr ""
+"Dieser UCC-Terminalserver wird für Anmeldungen an UCC Terminalservern "
+"verwendet"
 
 #: modules/settings/ucc_autostart.py:47 modules/settings/ucc_autostart.py:87
 msgid "UCC autostart script"
@@ -318,22 +382,22 @@ msgstr "Zu startende Sitzung"
 msgid "Session to start by display manager"
 msgstr "Vom Loginmanager zu startende Sitzung"
 
-#: modules/syntax.d/ucc.py:38
+#: modules/syntax.d/ucc.py:41
 msgid "None"
 msgstr "Keins"
 
-#: modules/syntax.d/ucc.py:39
+#: modules/syntax.d/ucc.py:42
 msgid "Overlayfs"
 msgstr "Live-System"
 
-#: modules/syntax.d/ucc.py:40
+#: modules/syntax.d/ucc.py:43
 msgid "Installation / automatic update"
 msgstr "Installation & automatische Aktualisierung"
 
-#: modules/syntax.d/ucc.py:41
+#: modules/syntax.d/ucc.py:44
 msgid "Rollout"
 msgstr "Rollout"
 
-#: modules/syntax.d/ucc.py:42
+#: modules/syntax.d/ucc.py:45
 msgid "Re-installation"
 msgstr "Re-Installation"

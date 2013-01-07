@@ -139,7 +139,16 @@ objectclass ( 1.3.6.1.4.1.10176.4125.7.1 NAME 'univentionPolicyCorporateClientCo
 	MAY ( univentionCorporateClientComputerLocalStorage))
 
 
+# ucc desktop
+attributetype ( 1.3.6.1.4.1.10176.4125.9.2 NAME 'univentionCorporateClientEnv'
+        DESC 'UCC desktop environment variables'
+        EQUALITY caseIgnoreIA5Match
+        SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
+objectclass ( 1.3.6.1.4.1.10176.4125.9.1 NAME 'univentionPolicyCorporateClientDesktop'
+	DESC 'UCC desktop settings'
+	SUP 'univentionPolicy' STRUCTURAL
+	MAY ( univentionCorporateClientEnv ))
 
 
 

@@ -66,3 +66,8 @@ class uccUserFixedAttributes(univention.admin.syntax.select):
 		('univentionCorporateClientUserUccTerminalserver',_('UCC terminal server')),
 		]
 
+class uccDesktopFixedAttributes(univention.admin.syntax.select):
+	name='uccDesktopFixedAttributes'
+	choices=[
+		('environmentVars', _('UCC desktop environment variables'))
+		]
