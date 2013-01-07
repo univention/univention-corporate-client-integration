@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-43) precise; urgency=low
+
+  * Add xserver-xorg-input-synaptics to enable touchpad support (Bug #29920)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 07 Jan 2013 13:06:43 +0100
+
 ucc-image-toolkit (0.9.4-42) precise; urgency=low
 
   * Add i18n packages for LibreOffice
