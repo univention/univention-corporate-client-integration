@@ -229,11 +229,11 @@ msgstr "Name"
 
 #: modules/policies/ucc_desktop.py:86
 msgid "Desktop Logon scripts"
-msgstr "Desktop Anmelde-Scripte"
+msgstr "Desktop Anmelde-Skripte"
 
 #: modules/policies/ucc_desktop.py:96
 msgid "Desktop Logout scripts"
-msgstr "Desktop Abmelde-Scripte"
+msgstr "Desktop Abmelde-Skripte"
 
 #: modules/policies/ucc_desktop.py:106 modules/policies/ucc_hardware.py:88
 #: modules/policies/ucc_user.py:109
