@@ -159,7 +159,8 @@ layout = [
 		Group( _( 'General' ), layout = [
 			'name',
 			'environmentVars',
-			['logonScripts', 'logoutScripts'],
+			'logonScripts',
+			'logoutScripts',
 		] ),
 	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [

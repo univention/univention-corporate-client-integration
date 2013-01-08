@@ -1,4 +1,10 @@
-ucc-management-integration (1.1.3-6.1) unstable; urgency=low
+ucc-management-integration (1.1.3-8) unstable; urgency=low
+
+  * fixed translation (Bug #28520) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 08 Jan 2013 17:58:00 +0100
+
+ucc-management-integration (1.1.3-7) unstable; urgency=low
 
   * Register the Firefox UCC session (needed for Bug #28322)
 
