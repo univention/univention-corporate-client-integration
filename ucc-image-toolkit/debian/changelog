@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-44) precise; urgency=low
+
+  * Do not generate image files and spec file if an error occurred (Bug #29204)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 08 Jan 2013 14:40:19 +0100
+
 ucc-image-toolkit (0.9.4-43) precise; urgency=low
 
   * Add xserver-xorg-input-synaptics to enable touchpad support (Bug #29920)

@@ -519,6 +519,9 @@ menuentry 'Debug Shell' {
 
 	_cleanup(options, workingdir, logfile_fd)
 
+	if exitcode == 100:
+		sys.exit(100)
+
 	# Sync to disk, otherwise not all data is written to the image before the hash is computed
 	subprocess.call("/bin/sync" , shell=False)
 
