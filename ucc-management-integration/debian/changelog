@@ -1,3 +1,9 @@
+ucc-management-integration (1.1.3-6.1) unstable; urgency=low
+
+  * Register the Firefox UCC session (needed for Bug #28322)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 08 Jan 2013 11:47:03 +0100
+
 ucc-management-integration (1.1.3-6) unstable; urgency=low
 
   * fixed translation (Bug #28520) 

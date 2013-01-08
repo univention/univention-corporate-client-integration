@@ -116,18 +116,6 @@ univention-directory-manager settings/syntax create "$@" --ignore_exists \
 # 							--set session="None" \
 # 							--set description="No default" || die
 
-
-# univention-directory-manager policies/autostart create "$@" \
-# 							--position "cn=policies,$ldap_base" \
-#    							--set name="Windows Terminal Server (RDP)" \
-#    							--set autostartScript="RDP"
-
-# univention-directory-manager settings/ucc_autostart create "$@" --position "cn=Autostart,cn=UCC,cn=univention,$ldap_base" \
-# 							--ignore_exists \
-# 							--set name="Windows Terminal Server (RDP)" \
-# 							--set description="Connect to a Windows Terminal server via RDP" \
-# 							--set command="RDP"
-
 univention-directory-manager settings/ucc_session create "$@" --position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
 							--ignore_exists \
 							--set name="Windows Terminal Server" \
@@ -139,6 +127,12 @@ univention-directory-manager settings/ucc_session create "$@" --position "cn=Ses
 							--set name="Citrix XenApp" \
 							--set session="XenApp" \
 							--set description="Connect to a Citrix XenApp terminal server" || die
+
+univention-directory-manager settings/ucc_session create "$@" --position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
+							--ignore_exists \
+							--set name="Firefox" \
+							--set session="firefox" \
+							--set description="Fullscreen Firefox session" || die
 
 joinscript_save_current_version
 
