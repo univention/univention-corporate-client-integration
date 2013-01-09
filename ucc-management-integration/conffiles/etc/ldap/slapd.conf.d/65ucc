@@ -5,7 +5,7 @@ else:
         access = 'read'
 
 print '''
-access to attrs="univentionCorporateClientBootVariant"
+access to attrs="univentionCorporateClientBootVariant,univentionCorporateClientBootParameter"
         by self %(access)s
         by * none break
 
