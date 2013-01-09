@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-47) precise; urgency=low
+
+  * Use 100 MB for the /boot partiton for the thin client (Bug #29912)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Jan 2013 10:56:50 +0100
+
 ucc-image-toolkit (0.9.4-46) precise; urgency=low
 
   * Disable backports suite in the official UCC images
