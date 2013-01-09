@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-46) precise; urgency=low
+
+  * Disable backports suite in the official UCC images
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 09 Jan 2013 10:03:28 +0100
+
 ucc-image-toolkit (0.9.4-45) precise; urgency=low
 
   * Set ucc/boot/mount to ro in the default thin client config
