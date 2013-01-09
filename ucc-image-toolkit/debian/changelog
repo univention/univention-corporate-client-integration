@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-48) precise; urgency=low
+
+  * Add UCC session scripts (Bug #28349)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 09 Jan 2013 12:25:59 +0100
+
 ucc-image-toolkit (0.9.4-47) precise; urgency=low
 
   * Use 100 MB for the /boot partiton for the thin client (Bug #29912)
