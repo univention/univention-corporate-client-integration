@@ -1,3 +1,10 @@
+ucc-image-toolkit (0.9.4-45) precise; urgency=low
+
+  * Set ucc/boot/mount to ro in the default thin client config
+    (Bug #29912)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Wed, 09 Jan 2013 09:24:08 +0100
+
 ucc-image-toolkit (0.9.4-44) precise; urgency=low
 
   * Do not generate image files and spec file if an error occurred (Bug #29204)
