@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.5-1) precise; urgency=low
+
+  * Added repartitioning option (Bug #29564)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Jan 2013 15:57:12 +0100
+
 ucc-image-toolkit (0.9.4-49) precise; urgency=low
 
   * set lightdm/autologin/session to UCC instead of kde-plasma (Bug #29574)

@@ -466,19 +466,7 @@ menuentry 'Univention Corporate Client - Boot UCC from CDROM/USB device (overlay
         linux %(kernel)s ro boot=ucc ucc=overlayfs quiet image=%(image)s
         initrd %(initrd)s
 }
-menuentry 'Univention Corporate Client - Boot UCC from CDROM/USB device (aufs)' {
-        linux %(kernel)s ro boot=ucc ucc=aufs quiet image=%(image)s
-        initrd %(initrd)s
-}
-menuentry 'Univention Corporate Client - Boot UCC from local harddisk installation' {
-        linux %(kernel)s ro boot=ucc ucc=local root=search quiet image=%(image)s
-        initrd %(initrd)s
-}
-menuentry 'Univention Corporate Client - Install UCC to local harddisk' {
-        linux %(kernel)s ro boot=ucc ucc=installation quiet image=%(image)s
-        initrd %(initrd)s
-}
-menuentry 'Univention Corporate Client - Update and boot local UCC installation' {
+menuentry 'Univention Corporate Client - Image boot with update check / Initial installation' {
         linux %(kernel)s ro boot=ucc ucc=update root=search quiet image=%(image)s
         initrd %(initrd)s
 }
