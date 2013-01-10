@@ -42,7 +42,7 @@ import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.groups.group
 import univention.admin.handlers.networks.network
 
-translation=univention.admin.localization.translation('univention.admin.handlers.computers')
+translation=univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
 _=translation.translate
 
 module='computers/ucc'
@@ -280,6 +280,17 @@ property_descriptions={
 			identifies=0,
 			default=('overlayfs', [])
 		),
+	'repartitioning': univention.admin.property(
+			short_description=_('Repartitioning for installed systems'),
+			long_description=_('Force repartitioning for installed systems'),
+			syntax=univention.admin.syntax.TrueFalseUp,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			default=('FALSE', [])
+		),
 	'image': univention.admin.property(
 			short_description=_('Image'),
 			long_description=_('Image to boot'),
@@ -347,6 +358,7 @@ layout = [
 			'boot',
 			'image',
 			'bootParameter',
+			'repartitioning',
 		] ),
 		] ),
 	Tab( _( 'Account' ), _( 'Account' ), advanced = True, layout = [
@@ -381,6 +393,7 @@ mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', N
 mapping.register('boot', 'univentionCorporateClientBootVariant', None, univention.admin.mapping.ListToString)
 mapping.register('image', 'univentionCorporateClientBootImage', None, univention.admin.mapping.ListToString)
 mapping.register('bootParameter', 'univentionCorporateClientBootParameter')
+mapping.register('repartitioning', 'univentionCorporateClientBootRepartitioning', None, univention.admin.mapping.ListToString)
 mapping.register('service', 'univentionService')
 
 

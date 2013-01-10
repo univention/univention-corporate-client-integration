@@ -38,11 +38,9 @@ _=translation.translate
 
 class uccBoot(univention.admin.syntax.select):
     choices=[
-        ('none', _('None')),
-        ('overlayfs', _('Overlayfs')),
-        ('update', _('Installation / automatic update')),
-        ('rollout', _('Rollout')),
-        ('installation', _('Re-installation')),
+        ('overlayfs', _('Live system')),
+        ('none', _('Image boot without update check')),
+        ('rollout', _('Image boot with update check / Initial installation')),
     ]
 
 class uccImage(univention.admin.syntax.UDM_Objects):

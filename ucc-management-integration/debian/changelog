@@ -1,3 +1,9 @@
+ucc-management-integration (1.1.4-1) unstable; urgency=low
+
+  * Added repartitioning option (Bug #29564)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Jan 2013 15:56:31 +0100
+
 ucc-management-integration (1.1.3-11.1) unstable; urgency=low
 
   * Add support for management of UCC multi monitor settings (Bug #28315)
