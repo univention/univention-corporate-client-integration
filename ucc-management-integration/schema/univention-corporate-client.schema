@@ -125,7 +125,35 @@ objectclass ( 1.3.6.1.4.1.10176.4125.8.1 NAME 'univentionCorporateClientImage'
 
 
 
+attributetype ( 1.3.6.1.4.1.10176.4125.7.7 NAME 'univentionCorporateClientDisplayPosition'
+	DESC 'Display position'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
+attributetype ( 1.3.6.1.4.1.10176.4125.7.6 NAME 'univentionCorporateClientSecondaryDisplayName'
+	DESC 'Name of secondary display'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4125.7.5 NAME 'univentionCorporateClientPrimaryDisplayName'
+	DESC 'Name of primary display'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4125.7.4 NAME 'univentionCorporateClientSecondaryDisplayResolution'
+	DESC 'Resolution of secondary display'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
+
+attributetype ( 1.3.6.1.4.1.10176.4125.7.3 NAME 'univentionCorporateClientPrimaryDisplayResolution'
+	DESC 'Resolution of primary display'
+	EQUALITY caseIgnoreIA5Match
+	SUBSTR caseIgnoreIA5SubstringsMatch
+	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 attributetype ( 1.3.6.1.4.1.10176.4125.7.2 NAME 'univentionCorporateClientComputerLocalStorage'
 	DESC 'Allow passthrough of local mass storage devices'
@@ -136,7 +164,9 @@ attributetype ( 1.3.6.1.4.1.10176.4125.7.2 NAME 'univentionCorporateClientComput
 objectclass ( 1.3.6.1.4.1.10176.4125.7.1 NAME 'univentionPolicyCorporateClientComputer'
 	DESC 'Thin client computer settings'
 	SUP 'univentionPolicy' STRUCTURAL
-	MAY ( univentionCorporateClientComputerLocalStorage))
+	MAY ( univentionCorporateClientComputerLocalStorage $ univentionCorporateClientDisplayPosition $ univentionCorporateClientSecondaryDisplayName $ univentionCorporateClientPrimaryDisplayName $ univentionCorporateClientSecondaryDisplayResolution $ univentionCorporateClientPrimaryDisplayResolution $ univentionCorporateClientComputerLocalStorage ) )
+
+
 
 
 # ucc desktop
