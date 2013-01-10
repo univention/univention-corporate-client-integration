@@ -1,3 +1,9 @@
+ucc-management-integration (1.1.3-10) unstable; urgency=low
+
+  * added UDM module image for computer/ucc (Bug #28959)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 10 Jan 2013 09:10:43 +0100
+
 ucc-management-integration (1.1.3-9) unstable; urgency=low
 
   * Give UCC clients the permission to modify

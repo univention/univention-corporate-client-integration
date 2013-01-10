@@ -1,2 +1,3 @@
 ldap-passwd-to-file.py usr/lib/ucc-management-integration/
 ucc-nss-passwd.py usr/lib/univention-directory-listener/system/
+umc/icons/16x16/udm-computers-ucc.png usr/share/univention-management-console-frontend/js/dijit/themes/umc/icons/16x16/
