@@ -1,3 +1,9 @@
+ucc-pxe-boot (5.0.3-1) precise; urgency=low
+
+  * Added repartitioning option (Bug #29564)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Thu, 10 Jan 2013 15:58:57 +0100
+
 ucc-pxe-boot (5.0.2-4) precise; urgency=low
 
   * Append syslog parameter to the PXE config (Bug #28973)

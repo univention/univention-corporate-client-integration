@@ -111,6 +111,8 @@ def handler(dn, new, old):
 			append += 'ucc=%s ' % new.get('univentionCorporateClientBootVariant')[0]
 		if image != 'none':
 			append += 'image=%s ' % image
+		if new.get('univentionCorporateClientBootRepartitioning', ['FALSE'])[0] == 'TRUE':
+			append += 'repartition=y '
 		if new.get('univentionCorporateClientBootParameter'):
 			append += string.join(new.get('univentionCorporateClientBootParameter', ' '))
 
