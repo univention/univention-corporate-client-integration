@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.4-49) precise; urgency=low
+
+  * set lightdm/autologin/session to UCC instead of kde-plasma (Bug #29574)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 10 Jan 2013 13:34:25 +0100
+
 ucc-image-toolkit (0.9.4-48) precise; urgency=low
 
   * Add UCC session scripts (Bug #28349)
