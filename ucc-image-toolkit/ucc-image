@@ -162,7 +162,7 @@ if __name__ == '__main__':
 	parser.add_option("-C", "--no-cleanup", action="store_false", dest="cleanup", default=True, help="Do not cleanup temporary files")
 	parser.add_option("-t", "--targetdir", action="store", dest="targetdir", help="Copy output files to targetdir")
 	parser.add_option("-T", "--tempdir-base", action="store", dest="tempdir_base", help="Use a predefined tempdir for tempfile")
-	parser.add_option("-b", "--workingdir", action="store", dest="workingdir", help="Use a predefined working dirctory, this is helpful if -c has been used in a previous run")
+	parser.add_option("-b", "--workingdir", action="store", dest="workingdir", help="Use a predefined working dirctory, this is helpful if -C has been used in a previous run")
 	parser.add_option("-B", "--skip-bootstrap", action="store_false", dest="bootstrap", default=True, help="Do not call debootstrap again a predefined temp dir, this is helpful if -C has been used in a previous run")
 	parser.add_option("-D", "--debian_package_template", action="store", dest="debian_package_template", default="/usr/share/doc/ucc-image-toolkit/example/package-template", help="Use a different package template for the debian package")
 	parser.add_option("-l", "--logfile", action="store", dest="logfile", default="/var/log/univention/ucc-image-toolkit.log", help="Logfile")
