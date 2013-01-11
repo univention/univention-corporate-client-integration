@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.5-3) precise; urgency=low
+
+  * Added custom_partiton example script (Bug #29138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Fri, 11 Jan 2013 23:08:29 +0100
+
 ucc-image-toolkit (0.9.5-2) precise; urgency=low
 
   * Clarify -b option in ucc-image (Bug #29371)

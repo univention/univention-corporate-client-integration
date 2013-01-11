@@ -1,0 +1,53 @@
+#!/bin/sh
+#
+# Copy this file to the initrd as /sbin/custom_partition normally with an custom ucc package.
+# To test the script the following steps can be done:
+#   initrd="ucc-1.0-thinclient-image.img.initrd"
+#   mkdir -p /var/lib/univention-client-boot/initrd
+#   cd /var/lib/univention-client-boot/initrd
+#   cp ../${initrd} ../${initrd}.BACKUP
+#   mv ../${initrd} ../${initrd}.gz
+#   gunzip -c ../${initrd}.gz | cpio -id
+#   rm ../${initrd}.gz
+#   cp /usr/share/doc/ucc-image-toolkit/example/custom_partition.example sbin/custom_partition
+#   chmod +x sbin/custom_partition
+#   find . | cpio --create --format='newc' >../${initrd}
+#   gzip ../${initrd}
+#   mv ../${initrd}.gz ../${initrd}
+
+# Get device
+partition_device="$1"
+
+echo "USE CUSTOM PARTITION SCRIPT"
+
+# Create GPT
+parted -s "${partition_device}" mklabel GPT
+disk_size=$(/sbin/parted -s "${partition_device}" unit MB print | sed -ne "s|^Disk ${partition_device}: ||;s|MB$||p")
+type="primary"
+
+# Create partitions
+parted -s "${partition_device}" mkpart "$type" "10" "60"
+parted -s "${partition_device}" set 1 bios_grub on
+parted -s "${partition_device}" mkpart "$type" "61" "161"
+parted -s "${partition_device}" mkpart "$type" "162" "$disk_size"
+
+# Create filesystem
+/sbin/mkfs.ext3 "${partition_device}2"
+/sbin/mkfs.ext3 "${partition_device}3"
+
+# Mount the root filesystem
+mkdir -p /ucc_tmp/root
+mount "${partition_device}3" /ucc_tmp/root
+
+# Mark device as root device
+touch /ucc_tmp/root/ucc_root_device
+
+# Create fstab file
+echo "/dev/loop0    /   ext3   errors=remount-ro   0   1" >>/ucc_tmp/fstab
+echo "${partition_device}2     /boot ext3 defaults    0   2" >>/ucc_tmp/fstab
+
+# Copy files from the image to the boot partition
+echo "${partition_device} ext3 /boot" >> /ucc_tmp/copy_files
+
+return 0
+
