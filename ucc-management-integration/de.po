@@ -213,12 +213,12 @@ msgstr "Alias-DNS-Eintrag"
 
 #: modules/computers/ucc.py:493
 msgid " At least posix or kerberos is required."
-msgstr "Mindestens POSIX oder Kerbeos werden benötigt"
+msgstr "Mindestens POSIX oder Kerberos werden benötigt"
 
 #: modules/policies/ucc_desktop.py:47 modules/policies/ucc_desktop.py:76
 #: modules/syntax.d/ucc.py:70
 msgid "UCC desktop environment variables"
-msgstr "UCC Desktop Umgebungs-Variablen"
+msgstr "UCC Desktop Umgebungsvariablen"
 
 #: modules/policies/ucc_desktop.py:58
 msgid "Policy: Univention Corporate Client desktop settings"
@@ -237,11 +237,11 @@ msgstr "Name"
 
 #: modules/policies/ucc_desktop.py:86
 msgid "Desktop Logon scripts"
-msgstr "Desktop Anmelde-Skripte"
+msgstr "Desktop Anmeldeskripte"
 
 #: modules/policies/ucc_desktop.py:96
 msgid "Desktop Logout scripts"
-msgstr "Desktop Abmelde-Skripte"
+msgstr "Desktop Abmeldeskripte"
 
 #: modules/policies/ucc_desktop.py:106 modules/policies/ucc_hardware.py:139
 #: modules/policies/ucc_user.py:109
@@ -294,13 +294,15 @@ msgstr ""
 
 #: modules/policies/ucc_hardware.py:88
 msgid "Resolution of primary display"
-msgstr ""
+msgstr "Auflösung des primären Anzeigegeräts"
 
 #: modules/policies/ucc_hardware.py:89
 msgid ""
 "The resolution in pixels (XxY) of the primary display, if left blank the "
 "detection is done automatically"
 msgstr ""
+"Die Auflösung des primären Anzeigegerätes in Pixeln ([Breite]x[Höhe]). " 
+"Bleibt diese Einstellung leer wird die Auflösung automatisch ermittelt."
 
 #: modules/policies/ucc_hardware.py:98
 msgid "Resolution of secondary display"
@@ -311,29 +313,34 @@ msgid ""
 "The resolution in pixels (XxY) of the secondary display, if left blank the "
 "detection is done automatically"
 msgstr ""
+"Die Auflösung des sekundären Anzeigegerätes in Pixeln ([Breite]x[Höhe]). " 
+"Bleibt diese Einstellung leer wird die Auflösung automatisch ermittelt."
 
 #: modules/policies/ucc_hardware.py:108
 msgid "Name of primary display"
-msgstr ""
+msgstr "Name des primären Anzeigegerätes"
 
 #: modules/policies/ucc_hardware.py:109
 msgid ""
 "The X name of the primary display device (can be queried with xrandr --list)"
 msgstr ""
+"Der Name des primären Anzeigegerätes unter X (kann mit xrandr --list ermittelt werden)"
 
 #: modules/policies/ucc_hardware.py:118
 msgid "Name of secondary display"
-msgstr ""
+msgstr "Name des sekundären Anzeigegerätes"
 
 #: modules/policies/ucc_hardware.py:119
 msgid ""
 "The X name of the secondary display device (can be queried with xrandr --"
 "list)"
 msgstr ""
+"Der Name des sekundären Anzeigegerätes unter X " 
+"(kann mit xrandr --list ermittelt werden)"
 
 #: modules/policies/ucc_hardware.py:128
 msgid "Position of secondary display relative to the primary"
-msgstr ""
+msgstr "Position des sekundären Anzeigegerätes relativ zum primären."
 
 #: modules/policies/ucc_hardware.py:190
 msgid "UCC client configuration"
@@ -341,11 +348,11 @@ msgstr "UCC Client-Einstellungen"
 
 #: modules/policies/ucc_hardware.py:194
 msgid "Mass storage"
-msgstr ""
+msgstr "Massenspeicher"
 
 #: modules/policies/ucc_hardware.py:197
 msgid "Multi monitor configuration"
-msgstr ""
+msgstr "Multi-Monitor Konfiguration"
 
 #: modules/policies/ucc_user.py:52
 msgid "Policy: Univention Corporate Client user session"
