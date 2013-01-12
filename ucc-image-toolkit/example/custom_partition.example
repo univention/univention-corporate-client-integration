@@ -31,23 +31,56 @@ parted -s "${partition_device}" set 1 bios_grub on
 parted -s "${partition_device}" mkpart "$type" "61" "161"
 parted -s "${partition_device}" mkpart "$type" "162" "$disk_size"
 
-# Create filesystem
-/sbin/mkfs.ext3 "${partition_device}2"
-/sbin/mkfs.ext3 "${partition_device}3"
+# Create luks container
+cryptsetup luksFormat "${partition_device}3"
+ 
+# Open luks container
+cryptsetup luksOpen "${partition_device}3" "crypt"
+ 
+# Create PV
+lvm pvcreate /dev/mapper/crypt
+ 
+# Create volume group
+lvm vgcreate vg_ucs /dev/mapper/crypt
+ 
+# Get Free PE
+## Example:
+## Free PE / Size 8954 / 34.98 GB
+size="$(lvm vgdisplay | grep "Free  PE" | awk '{print $5}')"
+
+# Create logical volume
+lvm lvcreate -l$size -n rootfs vg_ucs
+
+# Create root filesystem
+mkfs.ext4 /dev/mapper/vg_ucs-rootfs
+ 
+# Create boot filesystem
+/sbin/mkfs.ext4 "${partition_device}2"
 
 # Mount the root filesystem
 mkdir -p /ucc_tmp/root
-mount "${partition_device}3" /ucc_tmp/root
+mount /dev/mapper/vg_ucs-rootfs /ucc_tmp/root
 
 # Mark device as root device
 touch /ucc_tmp/root/ucc_root_device
 
 # Create fstab file
-echo "/dev/loop0    /   ext3   errors=remount-ro   0   1" >>/ucc_tmp/fstab
-echo "${partition_device}2     /boot ext3 defaults    0   2" >>/ucc_tmp/fstab
+echo "/dev/loop0    /   ext4   errors=remount-ro   0   1" >>/ucc_tmp/fstab
+echo "${partition_device}2     /boot ext4 defaults    0   2" >>/ucc_tmp/fstab
 
 # Copy files from the image to the boot partition
-echo "${partition_device} ext3 /boot" >> /ucc_tmp/copy_files
+echo "${partition_device}2 ext4 /boot" >> /ucc_tmp/root/copy_files
+
+# Create a script which sets set cryptopts in grub
+cat >/ucc_tmp/root/custonmer.script <<__H1__
+cat >/root/grub_append.sh <<'__H2__'
+#!/bin/sh
+ucr set grub/append="\$(ucr get grub/append) cryptopts=target=crypt,source=${partition_device}3,lvm=vg_ucs-rootfs"
+__H2__
+chmod +x /root/grub_append.sh
+chroot root ./grub_append.sh
+rm /root/grub_append.sh
+__H1__
 
 return 0
 
