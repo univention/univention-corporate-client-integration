@@ -1,3 +1,9 @@
+ucc-default-images (0.1.1-16) precise; urgency=low
+
+  * Set the fallback name in the meta packages (Bug #30018)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 14 Jan 2013 16:40:21 +0100
+
 ucc-default-images (0.1.1-15) precise; urgency=low
 
   * Default to UCC mirror (Bug #28031)
