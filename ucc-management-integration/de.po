@@ -294,7 +294,7 @@ msgstr ""
 
 #: modules/policies/ucc_hardware.py:88
 msgid "Resolution of primary display"
-msgstr "Auflösung des primären Anzeigegeräts"
+msgstr "Auflösung des primären Anzeigegerätes"
 
 #: modules/policies/ucc_hardware.py:89
 msgid ""
@@ -302,11 +302,11 @@ msgid ""
 "detection is done automatically"
 msgstr ""
 "Die Auflösung des primären Anzeigegerätes in Pixeln ([Breite]x[Höhe]). " 
-"Bleibt diese Einstellung leer wird die Auflösung automatisch ermittelt."
+"Bleibt diese Einstellung leer wird die Auflösung automatisch ermittelt"
 
 #: modules/policies/ucc_hardware.py:98
 msgid "Resolution of secondary display"
-msgstr ""
+msgstr "Auflösung des sekundären Anzeigegerätes"
 
 #: modules/policies/ucc_hardware.py:99
 msgid ""
@@ -314,7 +314,7 @@ msgid ""
 "detection is done automatically"
 msgstr ""
 "Die Auflösung des sekundären Anzeigegerätes in Pixeln ([Breite]x[Höhe]). " 
-"Bleibt diese Einstellung leer wird die Auflösung automatisch ermittelt."
+"Bleibt diese Einstellung leer wird die Auflösung automatisch ermittelt"
 
 #: modules/policies/ucc_hardware.py:108
 msgid "Name of primary display"
@@ -340,7 +340,7 @@ msgstr ""
 
 #: modules/policies/ucc_hardware.py:128
 msgid "Position of secondary display relative to the primary"
-msgstr "Position des sekundären Anzeigegerätes relativ zum primären."
+msgstr "Position des sekundären Anzeigegerätes relativ zum primären"
 
 #: modules/policies/ucc_hardware.py:190
 msgid "UCC client configuration"
