@@ -76,15 +76,13 @@ def handler(dn, new, old):
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'PXE: writing configuration for host %s' % cn)
 
 		image = new.get('univentionCorporateClientBootImage', [None])[0]
-		if image == 'none':
-			default_image = configRegistry.get('ucc/pxe/image', 'ucc-thinclient-v1.img')
-			initrd = '%s.initrd' % default_image
-			kernel = '%s.kernel' % default_image
-		else:
+		if not image:
+			image = configRegistry.get('ucc/pxe/image')
 			if not image:
-				image = configRegistry.get('ucc/pxe/image', 'ucc-thinclient-v1.img')
-			initrd = '%s.initrd' % image
-			kernel = '%s.kernel' % image
+				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'PXE: no boot image specified for %s' % cn)
+				return
+		initrd = '%s.initrd' % image
+		kernel = '%s.kernel' % image
 
 		append = 'root=/dev/nfs '
 		append += 'nfsroot=%s:/var/lib/univention-client-boot ' % configRegistry['ucc/pxe/nfsroot']

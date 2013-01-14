@@ -1,3 +1,13 @@
+ucc-pxe-boot (5.0.3-2) precise; urgency=low
+
+  * If no default image is specified write an error to the listener.log
+  * Remove handling for the boot image name "none", it was only present in
+    early UCC development releases	
+  * Stop using a hardcoded fallback value, ucc/pxe/image is not set through
+    the default image packages (Bug #30018)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 14 Jan 2013 16:51:47 +0100
+
 ucc-pxe-boot (5.0.3-1) precise; urgency=low
 
   * Added repartitioning option (Bug #29564)
