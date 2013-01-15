@@ -68,9 +68,9 @@ property_descriptions={
 			may_change=0,
 			identifies=1,
 		),
-	'ucc_update': univention.admin.property(
+	'uccupdate': univention.admin.property(
 			short_description=_('Install available software updates'),
-			long_description=_('If this option is set, all available software updates for this UCC client are installed at the next system start'),
+			long_description=_('If this option is set all available software updates for this UCC client are installed at the next system start'),
 			syntax=univention.admin.syntax.boolean,
 			multivalue=0,
 			options=[],
@@ -78,7 +78,7 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'pkg_remove': univention.admin.property(
+	'pkgremove': univention.admin.property(
 			short_description=_('Packages to be removed'),
 			long_description=_('The packages configured in this policy will be removed on the next system start'),
 			syntax=univention.admin.syntax.string,
@@ -88,7 +88,7 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
-	'pkg_install': univention.admin.property(
+	'pkginstall': univention.admin.property(
 			short_description=_('Packages to be installed'),
 			long_description=_('The packages configured in this policy will be installed on the next system start'),
 			syntax=univention.admin.syntax.string,
@@ -118,6 +118,26 @@ property_descriptions={
 			may_change=1,
 			identifies=0
 		),
+	'fixedAttributes': univention.admin.property(
+			short_description=_('Fixed attributes'),
+			long_description='',
+			syntax=univention.admin.syntax.uccUserFixedAttributes,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
+	'emptyAttributes': univention.admin.property(
+			short_description=_('Empty attributes'),
+			long_description='',
+			syntax=univention.admin.syntax.uccUserFixedAttributes,
+			multivalue=1,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0
+		),
 	'filler': univention.admin.property(
 			short_description='',
 			long_description='',
@@ -135,21 +155,22 @@ layout = [
 			'name',
 		] ),
 		Group( _( 'Software updates' ), layout = [
-			'massstorage',
-			'pkg_install',
-			'pkg_remove',
+			'uccupdate',
+			'pkginstall',
+			'pkgremove',
 		] ),
 	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [
-		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ]
+		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
+		[ 'fixedAttributes', 'emptyAttributes' ]
 	] ),
 ]
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('ucc_update', 'univentionCorporateClientSoftwareUpdateActivate  ', None, univention.admin.mapping.ListToString)
-mapping.register('pkg_remove', 'univentionCorporateClientSoftwareUpdateRemoveList ', None, univention.admin.mapping.ListToString)
-mapping.register('pkg_install', 'univentionCorporateClientSoftwareUpdateInstallList ', None, univention.admin.mapping.ListToString)
+mapping.register('uccupdate', 'univentionCorporateClientSoftwareUpdateActivate  ', None, univention.admin.mapping.ListToString)
+mapping.register('pkgremove', 'univentionCorporateClientSoftwareUpdateRemoveList ')
+mapping.register('pkginstall', 'univentionCorporateClientSoftwareUpdateInstallList ')
 
 
 class object(univention.admin.handlers.simplePolicy):

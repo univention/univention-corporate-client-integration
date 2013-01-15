@@ -206,21 +206,17 @@ objectclass ( 1.3.6.1.4.1.10176.4125.9.1 NAME 'univentionPolicyCorporateClientDe
 # UCC software updates
 attributetype ( 1.3.6.1.4.1.10176.4125.10.4 NAME 'univentionCorporateClientSoftwareUpdateActivate'
 	EQUALITY caseIgnoreIA5Match
-	DESC 'UCC desktop logon scripts'
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 attributetype ( 1.3.6.1.4.1.10176.4125.10.3 NAME 'univentionCorporateClientSoftwareUpdateRemoveList'
-	DESC 'UCC desktop logout scripts'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 attributetype ( 1.3.6.1.4.1.10176.4125.10.2 NAME 'univentionCorporateClientSoftwareUpdateInstallList'
-	DESC 'UCC desktop environment variables'
 	EQUALITY caseIgnoreIA5Match
 	SYNTAX 1.3.6.1.4.1.1466.115.121.1.26 )
 
 objectclass ( 1.3.6.1.4.1.10176.4125.10.1 NAME 'univentionPolicySoftwareupdates'
-	DESC 'UCC software update settings'
 	SUP 'univentionPolicy' STRUCTURAL
 	MAY ( univentionCorporateClientSoftwareUpdateInstallList $ univentionCorporateClientSoftwareUpdateRemoveList $ univentionCorporateClientSoftwareUpdateActivate ))
 
