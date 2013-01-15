@@ -168,9 +168,9 @@ layout = [
 
 mapping=univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
-mapping.register('uccupdate', 'univentionCorporateClientSoftwareUpdateActivate  ', None, univention.admin.mapping.ListToString)
-mapping.register('pkgremove', 'univentionCorporateClientSoftwareUpdateRemoveList ')
-mapping.register('pkginstall', 'univentionCorporateClientSoftwareUpdateInstallList ')
+mapping.register('uccupdate', 'univentionCorporateClientSoftwareUpdateActivate', None, univention.admin.mapping.ListToString)
+mapping.register('pkgremove', 'univentionCorporateClientSoftwareUpdateRemoveList')
+mapping.register('pkginstall', 'univentionCorporateClientSoftwareUpdateInstallList')
 
 
 class object(univention.admin.handlers.simplePolicy):
