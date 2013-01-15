@@ -1,3 +1,9 @@
+ucc-pxe-boot (5.0.4-1) precise; urgency=low
+
+  * Append server timezone as boot parameter (Bug #29909)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 15 Jan 2013 17:28:39 +0100
+
 ucc-pxe-boot (5.0.3-2) precise; urgency=low
 
   * If no default image is specified write an error to the listener.log
