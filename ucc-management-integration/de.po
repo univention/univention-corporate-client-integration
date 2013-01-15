@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-10 15:50+0100\n"
+"POT-Creation-Date: 2013-01-15 13:45+0100\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -151,7 +151,8 @@ msgstr "Relative ID"
 
 #: modules/computers/ucc.py:338 modules/policies/ucc_desktop.py:158
 #: modules/policies/ucc_desktop.py:159 modules/policies/ucc_hardware.py:190
-#: modules/policies/ucc_hardware.py:191 modules/policies/ucc_user.py:160
+#: modules/policies/ucc_hardware.py:191 modules/policies/ucc_software.py:153
+#: modules/policies/ucc_software.py:154 modules/policies/ucc_user.py:160
 #: modules/policies/ucc_user.py:161 modules/settings/ucc_autostart.py:87
 #: modules/settings/ucc_autostart.py:88 modules/settings/ucc_image.py:87
 #: modules/settings/ucc_image.py:88 modules/settings/ucc_session.py:87
@@ -229,9 +230,9 @@ msgid "UCC desktop settings"
 msgstr "UCC Desktop-Einstellungen"
 
 #: modules/policies/ucc_desktop.py:65 modules/policies/ucc_hardware.py:68
-#: modules/policies/ucc_user.py:59 modules/settings/ucc_autostart.py:54
-#: modules/settings/ucc_autostart.py:55 modules/settings/ucc_session.py:54
-#: modules/settings/ucc_session.py:55
+#: modules/policies/ucc_software.py:62 modules/policies/ucc_user.py:59
+#: modules/settings/ucc_autostart.py:54 modules/settings/ucc_autostart.py:55
+#: modules/settings/ucc_session.py:54 modules/settings/ucc_session.py:55
 msgid "Name"
 msgstr "Name"
 
@@ -244,22 +245,22 @@ msgid "Desktop Logout scripts"
 msgstr "Desktop Abmeldeskripte"
 
 #: modules/policies/ucc_desktop.py:106 modules/policies/ucc_hardware.py:139
-#: modules/policies/ucc_user.py:109
+#: modules/policies/ucc_software.py:102 modules/policies/ucc_user.py:109
 msgid "Required object classes"
 msgstr "Benötigte Objektklassen"
 
 #: modules/policies/ucc_desktop.py:116 modules/policies/ucc_hardware.py:149
-#: modules/policies/ucc_user.py:119
+#: modules/policies/ucc_software.py:112 modules/policies/ucc_user.py:119
 msgid "Excluded object classes"
 msgstr "Ausgeschlossene Objektklassen"
 
 #: modules/policies/ucc_desktop.py:126 modules/policies/ucc_hardware.py:159
-#: modules/policies/ucc_user.py:129
+#: modules/policies/ucc_software.py:122 modules/policies/ucc_user.py:129
 msgid "Fixed attributes"
 msgstr "Festgelegte Attribute"
 
 #: modules/policies/ucc_desktop.py:136 modules/policies/ucc_hardware.py:169
-#: modules/policies/ucc_user.py:139
+#: modules/policies/ucc_software.py:132 modules/policies/ucc_user.py:139
 msgid "Empty attributes"
 msgstr "Leere Attribute"
 
@@ -268,7 +269,7 @@ msgid "Desktop settings"
 msgstr "Desktop-Einstellungen"
 
 #: modules/policies/ucc_desktop.py:166 modules/policies/ucc_hardware.py:203
-#: modules/policies/ucc_user.py:169
+#: modules/policies/ucc_software.py:163 modules/policies/ucc_user.py:169
 msgid "Object"
 msgstr "Objekt"
 
@@ -301,7 +302,7 @@ msgid ""
 "The resolution in pixels (XxY) of the primary display, if left blank the "
 "detection is done automatically"
 msgstr ""
-"Die Auflösung des primären Anzeigegerätes in Pixeln ([Breite]x[Höhe]). " 
+"Die Auflösung des primären Anzeigegerätes in Pixeln ([Breite]x[Höhe]). "
 "Bleibt diese Einstellung leer wird die Auflösung automatisch ermittelt"
 
 #: modules/policies/ucc_hardware.py:98
@@ -313,7 +314,7 @@ msgid ""
 "The resolution in pixels (XxY) of the secondary display, if left blank the "
 "detection is done automatically"
 msgstr ""
-"Die Auflösung des sekundären Anzeigegerätes in Pixeln ([Breite]x[Höhe]). " 
+"Die Auflösung des sekundären Anzeigegerätes in Pixeln ([Breite]x[Höhe]). "
 "Bleibt diese Einstellung leer wird die Auflösung automatisch ermittelt"
 
 #: modules/policies/ucc_hardware.py:108
@@ -324,7 +325,8 @@ msgstr "Name des primären Anzeigegerätes"
 msgid ""
 "The X name of the primary display device (can be queried with xrandr --list)"
 msgstr ""
-"Der Name des primären Anzeigegerätes unter X (kann mit xrandr --list ermittelt werden)"
+"Der Name des primären Anzeigegerätes unter X (kann mit xrandr --list "
+"ermittelt werden)"
 
 #: modules/policies/ucc_hardware.py:118
 msgid "Name of secondary display"
@@ -335,14 +337,14 @@ msgid ""
 "The X name of the secondary display device (can be queried with xrandr --"
 "list)"
 msgstr ""
-"Der Name des sekundären Anzeigegerätes unter X " 
-"(kann mit xrandr --list ermittelt werden)"
+"Der Name des sekundären Anzeigegerätes unter X (kann mit xrandr --list "
+"ermittelt werden)"
 
 #: modules/policies/ucc_hardware.py:128
 msgid "Position of secondary display relative to the primary"
 msgstr "Position des sekundären Anzeigegerätes relativ zum primären"
 
-#: modules/policies/ucc_hardware.py:190
+#: modules/policies/ucc_hardware.py:190 modules/policies/ucc_software.py:153
 msgid "UCC client configuration"
 msgstr "UCC Client-Einstellungen"
 
@@ -353,6 +355,48 @@ msgstr "Massenspeicher"
 #: modules/policies/ucc_hardware.py:197
 msgid "Multi monitor configuration"
 msgstr "Multi-Monitor Konfiguration"
+
+#: modules/policies/ucc_software.py:55
+msgid "Policy: Univention Corporate Client software update settings"
+msgstr "Richtline: Univention Corporate Client Softwareaktualisierung"
+
+#: modules/policies/ucc_software.py:56
+msgid "UCC software update settings"
+msgstr "UCC Software-Update-Einstellungen"
+
+#: modules/policies/ucc_software.py:72
+msgid "Install available software updates"
+msgstr "Installiere verfügbare Softwareupdates"
+
+#: modules/policies/ucc_software.py:73
+msgid ""
+"If this option is set all available software updates for this UCC client are "
+"installed at the next system start"
+msgstr "Wenn diese Option aktiviert ist, werden alle verfügbaren Softwareupdates beim nächsten Systemstart installiert"
+
+#: modules/policies/ucc_software.py:82
+msgid "Packages to be removed"
+msgstr "Zu entfernende Pakete"
+
+#: modules/policies/ucc_software.py:83
+msgid ""
+"The packages configured in this policy will be removed on the next system "
+"start"
+msgstr "Die in dieser Richtlinie konfigurierten Pakete werden beim nächsten Systemstart entfernt"
+
+#: modules/policies/ucc_software.py:92
+msgid "Packages to be installed"
+msgstr "Zu installierende Pakete"
+
+#: modules/policies/ucc_software.py:93
+msgid ""
+"The packages configured in this policy will be installed on the next system "
+"start"
+msgstr "Die in dieser Richtlinie konfigurierten Pakete werden beim nächsten Systemstart installiert"
+
+#: modules/policies/ucc_software.py:157
+msgid "Software updates"
+msgstr "Software-Updates"
 
 #: modules/policies/ucc_user.py:52
 msgid "Policy: Univention Corporate Client user session"
@@ -480,20 +524,4 @@ msgstr "Variable"
 msgid "Value"
 msgstr "Wert"
 
-#~ msgid "Force repartitioning"
-#~ msgstr "Erneute Partitionierung forcieren"
 
-#~ msgid "None"
-#~ msgstr "Keins"
-
-#~ msgid "Overlayfs"
-#~ msgstr "Live-System"
-
-#~ msgid "Installation / automatic update"
-#~ msgstr "Installation & automatische Aktualisierung"
-
-#~ msgid "Rollout"
-#~ msgstr "Rollout"
-
-#~ msgid "Re-installation"
-#~ msgstr "Re-Installation"
