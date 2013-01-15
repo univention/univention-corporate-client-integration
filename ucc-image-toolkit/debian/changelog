@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.6-1) precise; urgency=low
+
+  * Set ucr vm writeback variables for thinclient image (Bug #29952)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 15 Jan 2013 10:25:16 +0100
+
 ucc-image-toolkit (0.9.5-5) precise; urgency=low
 
   * Added copyright header to custom_partition example (Bug #29138)
