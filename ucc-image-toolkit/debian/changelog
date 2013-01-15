@@ -1,3 +1,10 @@
+ucc-image-toolkit (0.9.6-3) precise; urgency=low
+
+  * Add LXDE to the UCC thin client image (formerly pulled in through
+    a dep on univention-corporate-client)	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 15 Jan 2013 14:51:04 +0100
+
 ucc-image-toolkit (0.9.6-2) precise; urgency=low
 
   * Activate partner setup to allow installation of Flash
