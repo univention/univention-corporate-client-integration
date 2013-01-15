@@ -1,3 +1,10 @@
+ucc-image-toolkit (0.9.6-5) precise; urgency=low
+
+  * Set the partner repository by directly adding the apt source, see Bug #30035
+    for details.
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 15 Jan 2013 16:44:45 +0100
+
 ucc-image-toolkit (0.9.6-4) precise; urgency=low
 
   * Add the Flash plugin to the desktop image (Bug #30029)
