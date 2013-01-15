@@ -44,7 +44,7 @@ import univention.debug
 translation=univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
 _=translation.translate
 
-module='policies/ucc_computer'
+module='policies/ucc_software'
 operations=['add','edit','remove','search']
 
 policy_oc='univentionPolicySoftwareupdates'
