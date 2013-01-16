@@ -87,11 +87,6 @@ def handler(dn, new, old):
 		append = 'root=/dev/nfs '
 		append += 'nfsroot=%s:/var/lib/univention-client-boot ' % configRegistry['ucc/pxe/nfsroot']
 		append += 'DNSSERVER=%s ' % configRegistry['ucc/pxe/nameserver']
-		try:
-			with open("/etc/timezone", "r") as f:
-				append += 'timezone=%s ' % f.readline().strip()
-		except IOError as e:
-			univention.debug.debug(univention.debug.LISTENER, unvention.debug.WARN, 'Could not open /etc/timezone, no timezone is passed to the client')
 		if configRegistry.get('ucc/pxe/vga'):
 			append += 'vga=%s ' % configRegistry['ucc/pxe/vga']
 		append += 'initrd=%s ' % initrd
@@ -103,6 +98,8 @@ def handler(dn, new, old):
 			append += 'keyboard=%s ' % configRegistry['xorg/keyboard/options/XkbLayout']
 		if 'locale/default' in configRegistry.keys():
 			append += 'locale=%s ' % configRegistry['locale/default']
+		if 'ucc/pxe/timezone' in configRegistry.keys():
+			append += 'timezone=%s ' % configRegistry['ucc/pxe/timezone']
 		if 'ucc/pxe/ldapport' in configRegistry.keys():
 			append += 'ldapPort=%s ' % configRegistry['ucc/pxe/ldapport']
 		if 'ucc/pxe/append' in configRegistry.keys():
