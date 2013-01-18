@@ -16,7 +16,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  xorriso,
  makepasswd,
  python-yaml,
- wget
+ wget,
+ xz-utils
 Provides: ${python:Provides}
 Description: Toolkit for creating UCC images
  This package contains tools to create Univention Corporate

@@ -146,6 +146,11 @@ if img_validation:
 else:
 	download_file(spec['file-img'], spec['hash-img'], False)
 
+subprocess.call("/usr/bin/unxz " + imgname, shell=True)
+
+if imgname.endswith(".xz"):
+	imgname = imgname[:-3]
+
 if options.rootpw:
 	print "Setting root password in the downloaded image. Please enter the password:"
 	cmd = "/usr/sbin/ucc-image-root-password -i " + imgname + " -p"
