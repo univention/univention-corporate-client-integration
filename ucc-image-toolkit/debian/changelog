@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.6-8) precise; urgency=low
+
+  * Add gstreamer0.10-gstreamer0.10-fluendo-mp3 to the desktop image (Bug #30047)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 18 Jan 2013 14:50:45 +0100
+
 ucc-image-toolkit (0.9.6-7) precise; urgency=low
 
   * Handle compressed UCC images (Bug #30016)
