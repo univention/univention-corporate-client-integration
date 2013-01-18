@@ -511,7 +511,7 @@ menuentry 'Debug Shell' {
 	# Sync to disk, otherwise not all data is written to the image before the hash is computed
 	subprocess.call("/bin/sync" , shell=False)
 
-	if not options.compress:
+	if options.compress:
 		print "Compressing image"
 		subprocess.call("/usr/bin/xz " + image, shell=True)
 		image = image + ".xz"
@@ -521,13 +521,17 @@ menuentry 'Debug Shell' {
 	spec_dest = os.path.join(targetdir, "%s.spec" % image)
 	specfd = open(spec_dest, "w")
 	specfd.write("title: " + image + "\n")
+
 	specfd.write("version: " + config.get_version() + " " + str(datetime.date.isoformat(datetime.datetime.now())) + "\n")
 
 	if config.get('Image', 'iso'):
 		totalsize = os.stat(image).st_size + os.stat(md5_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size
 	else:
 		totalsize = os.stat(image).st_size + os.stat(md5_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size + os.stat(iso_dest).st_size
-		
+
+	if options.compress:
+		image = image + ".xz"
+	
 	specfd.write("total-size: " + str(totalsize) + "\n")
 	specfd.write("file-img: " + os.path.basename(image)  + "\n")
 	specfd.write("file-initrd: " + os.path.basename(initrd_dest) + "\n")
