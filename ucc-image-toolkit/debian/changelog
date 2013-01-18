@@ -1,3 +1,11 @@
+ucc-image-toolkit (0.9.6-6) precise; urgency=low
+
+  * Add gstreamer0.10-ffmpeg to the desktop image (Bug #30047)
+  * Shrink thin client image to 1.2 GB 	
+  * Remove broken option to include partner repository (Bug #30035)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 18 Jan 2013 09:43:46 +0100
+
 ucc-image-toolkit (0.9.6-5) precise; urgency=low
 
   * Set the partner repository by directly adding the apt source, see Bug #30035

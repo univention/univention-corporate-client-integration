@@ -256,9 +256,6 @@ if __name__ == '__main__':
 			if config.getboolean('Software', p, False):
 				fd.write('deb %s %s-%s %s\n' % (config.get_mirror(), config.get_version(), p, string.join(parts)))
 
-		if config.getboolean('Software', 'partner', False):
-			fd.write('deb %s %s partner\n' % (config.get_mirror(), config.get_version()))
-
 		if config.get('Software', 'sources_list'):
 			fd.write(config.get('Software', 'sources_list'))
 			fd.write('\n')
