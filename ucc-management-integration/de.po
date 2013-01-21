@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-15 13:45+0100\n"
+"POT-Creation-Date: 2013-01-21 13:02+0100\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -36,8 +36,8 @@ msgstr "Samba-Konto"
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: modules/computers/ucc.py:84 modules/settings/ucc_autostart.py:64
-#: modules/settings/ucc_image.py:64 modules/settings/ucc_session.py:64
+#: modules/computers/ucc.py:84 modules/settings/ucc_image.py:64
+#: modules/settings/ucc_session.py:64
 msgid "Description"
 msgstr "Beschreibung"
 
@@ -153,8 +153,7 @@ msgstr "Relative ID"
 #: modules/policies/ucc_desktop.py:159 modules/policies/ucc_hardware.py:190
 #: modules/policies/ucc_hardware.py:191 modules/policies/ucc_software.py:153
 #: modules/policies/ucc_software.py:154 modules/policies/ucc_user.py:160
-#: modules/policies/ucc_user.py:161 modules/settings/ucc_autostart.py:87
-#: modules/settings/ucc_autostart.py:88 modules/settings/ucc_image.py:87
+#: modules/policies/ucc_user.py:161 modules/settings/ucc_image.py:87
 #: modules/settings/ucc_image.py:88 modules/settings/ucc_session.py:87
 #: modules/settings/ucc_session.py:88
 msgid "General"
@@ -231,7 +230,6 @@ msgstr "UCC Desktop-Einstellungen"
 
 #: modules/policies/ucc_desktop.py:65 modules/policies/ucc_hardware.py:68
 #: modules/policies/ucc_software.py:62 modules/policies/ucc_user.py:59
-#: modules/settings/ucc_autostart.py:54 modules/settings/ucc_autostart.py:55
 #: modules/settings/ucc_session.py:54 modules/settings/ucc_session.py:55
 msgid "Name"
 msgstr "Name"
@@ -278,12 +276,12 @@ msgid "Allow access to local mass storage"
 msgstr "Den Zugriff auf lokale Speichermedien zulassen"
 
 #: modules/policies/ucc_hardware.py:61
-msgid "Policy: Univention Corporate Client client settings"
-msgstr "Richtline: Univention Corporate Client-Einstellungen"
+msgid "Policy: Univention Corporate Client hardware settings"
+msgstr "Richtline: Univention Corporate Client Hardware-Einstellungen"
 
 #: modules/policies/ucc_hardware.py:62
-msgid "UCC client settings"
-msgstr "UCC Client-Einstellungen"
+msgid "UCC hardware settings"
+msgstr "UCC Hardware-Einstellungen"
 
 #: modules/policies/ucc_hardware.py:79
 msgid ""
@@ -372,7 +370,9 @@ msgstr "Installiere verfügbare Softwareupdates"
 msgid ""
 "If this option is set all available software updates for this UCC client are "
 "installed at the next system start"
-msgstr "Wenn diese Option aktiviert ist, werden alle verfügbaren Softwareupdates beim nächsten Systemstart installiert"
+msgstr ""
+"Wenn diese Option aktiviert ist, werden alle verfügbaren Softwareupdates "
+"beim nächsten Systemstart installiert"
 
 #: modules/policies/ucc_software.py:82
 msgid "Packages to be removed"
@@ -382,7 +382,9 @@ msgstr "Zu entfernende Pakete"
 msgid ""
 "The packages configured in this policy will be removed on the next system "
 "start"
-msgstr "Die in dieser Richtlinie konfigurierten Pakete werden beim nächsten Systemstart entfernt"
+msgstr ""
+"Die in dieser Richtlinie konfigurierten Pakete werden beim nächsten "
+"Systemstart entfernt"
 
 #: modules/policies/ucc_software.py:92
 msgid "Packages to be installed"
@@ -392,7 +394,9 @@ msgstr "Zu installierende Pakete"
 msgid ""
 "The packages configured in this policy will be installed on the next system "
 "start"
-msgstr "Die in dieser Richtlinie konfigurierten Pakete werden beim nächsten Systemstart installiert"
+msgstr ""
+"Die in dieser Richtlinie konfigurierten Pakete werden beim nächsten "
+"Systemstart installiert"
 
 #: modules/policies/ucc_software.py:157
 msgid "Software updates"
@@ -446,22 +450,6 @@ msgid ""
 msgstr ""
 "Dieser UCC-Terminalserver wird für Anmeldungen an UCC Terminalservern "
 "verwendet"
-
-#: modules/settings/ucc_autostart.py:47 modules/settings/ucc_autostart.py:87
-msgid "UCC autostart script"
-msgstr "UCC Autostart-Skript"
-
-#: modules/settings/ucc_autostart.py:65
-msgid "Description of autostart program"
-msgstr "Beschreibung des automatisch zu startenden Programms"
-
-#: modules/settings/ucc_autostart.py:74
-msgid "Autostart program"
-msgstr "Automatisch zu startendes Programm"
-
-#: modules/settings/ucc_autostart.py:75
-msgid "Program to start the autostart session "
-msgstr "Automatisch zu startendes Programm"
 
 #: modules/settings/ucc_image.py:47
 msgid "UCC images"

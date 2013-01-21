@@ -1,3 +1,9 @@
+ucc-management-integration (1.1.6-4) unstable; urgency=low
+
+  * Rename ucc hardware policy to match it with the other client policies
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 21 Jan 2013 13:03:44 +0100
+
 ucc-management-integration (1.1.6-3) unstable; urgency=low
 
   * Drop settings/ucc_autostart. Unused; initially imported from TCS, but the
