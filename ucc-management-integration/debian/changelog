@@ -1,3 +1,10 @@
+ucc-management-integration (1.1.6-3) unstable; urgency=low
+
+  * Drop settings/ucc_autostart. Unused; initially imported from TCS, but the
+    configuration is done through Univention Configuration Registry in UCC
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 21 Jan 2013 09:19:38 +0100
+
 ucc-management-integration (1.1.6-2) unstable; urgency=low
 
   * Add a policy to manage software updates (Bug #28838)
