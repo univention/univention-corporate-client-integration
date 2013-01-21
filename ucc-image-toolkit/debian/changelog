@@ -1,3 +1,9 @@
+ucc-image-toolkit (0.9.6-9) precise; urgency=low
+
+  * Add more X drivers (Bug #30086)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 21 Jan 2013 11:45:28 +0100
+
 ucc-image-toolkit (0.9.6-8) precise; urgency=low
 
   * Add gstreamer0.10-gstreamer0.10-fluendo-mp3 to the desktop image (Bug #30047)
