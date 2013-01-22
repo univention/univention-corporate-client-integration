@@ -222,7 +222,7 @@ msgstr "UCC Desktop Umgebungsvariablen"
 
 #: modules/policies/ucc_desktop.py:58
 msgid "Policy: Univention Corporate Client desktop settings"
-msgstr "Richtline: Univention Corporate Client Desktop-Einstellungen"
+msgstr "Richtlinie: Univention Corporate Client Desktop-Einstellungen"
 
 #: modules/policies/ucc_desktop.py:59
 msgid "UCC desktop settings"
@@ -277,7 +277,7 @@ msgstr "Den Zugriff auf lokale Speichermedien zulassen"
 
 #: modules/policies/ucc_hardware.py:61
 msgid "Policy: Univention Corporate Client hardware settings"
-msgstr "Richtline: Univention Corporate Client Hardware-Einstellungen"
+msgstr "Richtlinie: Univention Corporate Client Hardware-Einstellungen"
 
 #: modules/policies/ucc_hardware.py:62
 msgid "UCC hardware settings"
@@ -356,7 +356,7 @@ msgstr "Multi-Monitor Konfiguration"
 
 #: modules/policies/ucc_software.py:55
 msgid "Policy: Univention Corporate Client software update settings"
-msgstr "Richtline: Univention Corporate Client Softwareaktualisierung"
+msgstr "Richtlinie: Univention Corporate Client Softwareaktualisierung"
 
 #: modules/policies/ucc_software.py:56
 msgid "UCC software update settings"
@@ -404,7 +404,7 @@ msgstr "Software-Updates"
 
 #: modules/policies/ucc_user.py:52
 msgid "Policy: Univention Corporate Client user session"
-msgstr "Richtline: Univention Corporate Client Benutzersitzung"
+msgstr "Richtlinie: Univention Corporate Client Benutzersitzung"
 
 #: modules/policies/ucc_user.py:53 modules/policies/ucc_user.py:160
 msgid "UCC user session"
