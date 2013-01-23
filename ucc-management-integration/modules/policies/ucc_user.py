@@ -49,7 +49,7 @@ policy_apply_to=["users/user"]
 policy_position_dn_prefix="cn=ucc"
 
 childs=0
-short_description=_('Policy: Univention Corporate Client user session')
+short_description=_('Policy: UCC user session')
 policy_short_description=_('UCC user session')
 long_description=''
 options={

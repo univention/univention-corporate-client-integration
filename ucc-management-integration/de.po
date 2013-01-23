@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-01-21 13:02+0100\n"
+"POT-Creation-Date: 2013-01-23 14:32+0100\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -221,8 +221,8 @@ msgid "UCC desktop environment variables"
 msgstr "UCC Desktop Umgebungsvariablen"
 
 #: modules/policies/ucc_desktop.py:58
-msgid "Policy: Univention Corporate Client desktop settings"
-msgstr "Richtlinie: Univention Corporate Client Desktop-Einstellungen"
+msgid "Policy: UCC desktop settings"
+msgstr "UCC Desktop-Einstellungen"
 
 #: modules/policies/ucc_desktop.py:59
 msgid "UCC desktop settings"
@@ -276,8 +276,8 @@ msgid "Allow access to local mass storage"
 msgstr "Den Zugriff auf lokale Speichermedien zulassen"
 
 #: modules/policies/ucc_hardware.py:61
-msgid "Policy: Univention Corporate Client hardware settings"
-msgstr "Richtlinie: Univention Corporate Client Hardware-Einstellungen"
+msgid "Policy: UCC hardware settings"
+msgstr "UCC Hardware-Einstellungen"
 
 #: modules/policies/ucc_hardware.py:62
 msgid "UCC hardware settings"
@@ -355,8 +355,8 @@ msgid "Multi monitor configuration"
 msgstr "Multi-Monitor Konfiguration"
 
 #: modules/policies/ucc_software.py:55
-msgid "Policy: Univention Corporate Client software update settings"
-msgstr "Richtlinie: Univention Corporate Client Softwareaktualisierung"
+msgid "Policy: UCC software update settings"
+msgstr "UCC Software-Update-Einstellungen"
 
 #: modules/policies/ucc_software.py:56
 msgid "UCC software update settings"
@@ -403,8 +403,8 @@ msgid "Software updates"
 msgstr "Software-Updates"
 
 #: modules/policies/ucc_user.py:52
-msgid "Policy: Univention Corporate Client user session"
-msgstr "Richtlinie: Univention Corporate Client Benutzersitzung"
+msgid "Policy: UCC user session"
+msgstr "UCC Benutzersitzung"
 
 #: modules/policies/ucc_user.py:53 modules/policies/ucc_user.py:160
 msgid "UCC user session"
@@ -512,4 +512,14 @@ msgstr "Variable"
 msgid "Value"
 msgstr "Wert"
 
+#~ msgid "Policy: Univention Corporate Client desktop settings"
+#~ msgstr "Richtlinie: Univention Corporate Client Desktop-Einstellungen"
 
+#~ msgid "Policy: Univention Corporate Client hardware settings"
+#~ msgstr "Richtlinie: Univention Corporate Client Hardware-Einstellungen"
+
+#~ msgid "Policy: Univention Corporate Client software update settings"
+#~ msgstr "Richtlinie: Univention Corporate Client Softwareaktualisierung"
+
+#~ msgid "Policy: Univention Corporate Client user session"
+#~ msgstr "Richtlinie: Univention Corporate Client Benutzersitzung"

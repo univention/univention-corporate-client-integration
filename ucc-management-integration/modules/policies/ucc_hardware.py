@@ -58,7 +58,7 @@ policy_apply_to=["computers/ucc"]
 policy_position_dn_prefix="cn=ucc"
 
 childs=0
-short_description=_('Policy: Univention Corporate Client hardware settings')
+short_description=_('Policy: UCC hardware settings')
 policy_short_description=_('UCC hardware settings')
 long_description=''
 options={

@@ -55,7 +55,7 @@ policy_apply_to=["users/user"]
 policy_position_dn_prefix="cn=ucc"
 
 childs=0
-short_description=_('Policy: Univention Corporate Client desktop settings')
+short_description=_('Policy: UCC desktop settings')
 policy_short_description=_('UCC desktop settings')
 long_description=''
 options={
