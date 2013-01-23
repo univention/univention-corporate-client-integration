@@ -5,7 +5,15 @@ http://www.univention.de/
 All rights reserved.
 
 This image contains built binaries of various open source components
-of Univention Corporate Server. The source is available in the
-respective source packages, available at FIXME
+of Univention Corporate Client. The source code and the various
+copyright files are available in the respective source packages, 
+available at http://ucc.software-univention.de/
 
+The official UCC images are build with the tool ucc-image (from the
+source package ucc-image-toolkit, also available at the mirror
+above).
 
+To rebuild the UCC images from source you can run the image toolkit
+with the following configurations:
+/usr/share/doc/ucc-image-toolkit/example/ucc-desktop.cfg 
+/usr/share/doc/ucc-image-toolkit/example/ucc-thinclient.cfg

@@ -1,3 +1,11 @@
+ucc-default-images (1.0.0-1) precise; urgency=low
+
+  * Point to the source files and the copyright declarations to satisy the GPL
+    (Bug #28963)	 
+  * Bump version to 1.0.0
+	
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 23 Jan 2013 11:47:11 +0100
+
 ucc-default-images (0.1.1-16) precise; urgency=low
 
   * Set the fallback name in the meta packages (Bug #30018)
