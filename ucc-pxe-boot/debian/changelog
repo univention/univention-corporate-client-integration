@@ -1,3 +1,9 @@
+ucc-pxe-boot (5.0.6-1) precise; urgency=low
+
+  * Updated copyright to 2013 (Bug #30124)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 23 Jan 2013 14:36:47 +0100
+
 ucc-pxe-boot (5.0.5-1) precise; urgency=low
 
   * New ucr variable to configure the timezone of ucc-clients upon installation: 
