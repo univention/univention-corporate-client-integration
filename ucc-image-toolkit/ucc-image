@@ -529,9 +529,6 @@ menuentry 'Debug Shell' {
 	else:
 		totalsize = os.stat(image).st_size + os.stat(md5_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size + os.stat(iso_dest).st_size
 
-	if options.compress:
-		image = image + ".xz"
-	
 	specfd.write("total-size: " + str(totalsize) + "\n")
 	specfd.write("file-img: " + os.path.basename(image)  + "\n")
 	specfd.write("file-initrd: " + os.path.basename(initrd_dest) + "\n")
