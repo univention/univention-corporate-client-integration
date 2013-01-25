@@ -160,7 +160,7 @@ if __name__ == '__main__':
 
 	parser.add_option("-c", "--conf", action="store", dest="config_file", help="Config file for ucc-image-creator")
 	parser.add_option("-C", "--no-cleanup", action="store_false", dest="cleanup", default=True, help="Do not cleanup temporary files")
-	parser.add_option("--compress", action="store_false", dest="compress", default=False, help="Use XZ compression for the image file")
+	parser.add_option("--compress", action="store_true", dest="compress", default=False, help="Use XZ compression for the image file")
 	parser.add_option("-t", "--targetdir", action="store", dest="targetdir", help="Copy output files to targetdir")
 	parser.add_option("-T", "--tempdir-base", action="store", dest="tempdir_base", help="Use a predefined tempdir for tempfile")
 	parser.add_option("-b", "--workingdir", action="store", dest="workingdir", help="Use a predefined working dirctory, this is helpful if -C has been used in a previous run")

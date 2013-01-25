@@ -1,3 +1,9 @@
+ucc-image-toolkit (1.0.0-3) precise; urgency=low
+
+  * Fix default of --compression option (Bug #30016)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 25 Jan 2013 10:08:55 +0100
+
 ucc-image-toolkit (1.0.0-2) precise; urgency=low
 
   * Add German locale to thin client image
