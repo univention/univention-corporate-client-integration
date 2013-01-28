@@ -1,3 +1,9 @@
+ucc-image-toolkit (1.0.0-5) precise; urgency=low
+
+  * Fix spec file generation if ISO generation is disabled (Bug #28033)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 28 Jan 2013 11:09:47 +0100
+
 ucc-image-toolkit (1.0.0-4) precise; urgency=low
 
   * Fix image name in spec file (Bug #30016
