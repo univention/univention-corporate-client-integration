@@ -36,17 +36,18 @@
 
 eval "$(ucr shell)"
 
-
 if [ "$1" = "configure" -a -x /etc/init.d/univention-directory-listener ]; then
 	/etc/init.d/univention-directory-listener crestart
 fi
 
-univention-config-registry set	ucc/pxe/nfsroot?$(get_default_ip_address) \
-								ucc/pxe/append?"syslog=y syslogserver=$(get_default_ip_address)" \
-								ucc/pxe/loglevel?"0" \
-								ucc/pxe/timezone?`cat /etc/timezone`
+univention-config-registry set \
+	ucc/pxe/nfsroot?$(get_default_ip_address) \
+	ucc/pxe/append?"syslog=y syslogserver=$(get_default_ip_address)" \
+	ucc/pxe/loglevel?"0" \
+	ucc/pxe/timezone?$(cat /etc/timezone) \
+	ucc/pxe/bootsplash?true \
+	ucc/pxe/vga?788
 
 call_joinscript 91ucc-pxe-boot.inst
-
 
 exit 0

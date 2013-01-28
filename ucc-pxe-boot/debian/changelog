@@ -1,3 +1,9 @@
+ucc-pxe-boot (5.0.7-1) precise; urgency=low
+
+  * added ucc/pxe/bootsplash?true and ucc/pxe/vga?788 (Bug #28317)
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Jan 2013 11:23:17 +0100
+
 ucc-pxe-boot (5.0.6-1) precise; urgency=low
 
   * Updated copyright to 2013 (Bug #30124)
@@ -7,7 +13,7 @@ ucc-pxe-boot (5.0.6-1) precise; urgency=low
 ucc-pxe-boot (5.0.5-1) precise; urgency=low
 
   * New ucr variable to configure the timezone of ucc-clients upon installation: 
-    ucc/pxe/timezone. Initially set to system timezone. (Bug # 29909)
+    ucc/pxe/timezone. Initially set to system timezone. (Bug #29909)
 
  -- Erik Damrose <damrose@univention.de>  Wed, 16 Jan 2013 09:56:47 +0100
 

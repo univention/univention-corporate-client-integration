@@ -106,6 +106,8 @@ def handler(dn, new, old):
 			append += '%s ' % configRegistry['ucc/pxe/append']
 		if configRegistry.get('ucc/pxe/loglevel', False):
 			append += 'loglevel=%s ' % configRegistry['ucc/pxe/loglevel']
+		if configRegistry.is_true("ucc/pxe/bootsplash", False):
+			append += 'splash '
 		append += 'boot=ucc '
 		if new.get('univentionCorporateClientBootVariant'):
 			append += 'ucc=%s ' % new.get('univentionCorporateClientBootVariant')[0]
