@@ -1,3 +1,10 @@
+ucc-management-integration (1.1.9-1) unstable; urgency=low
+
+  * Set sambaNTPassword when changing the password. This is necessary to
+    sync a changed password to Samba 4 (Bug #30182)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 28 Jan 2013 09:08:23 +0100
+
 ucc-management-integration (1.1.8-1) unstable; urgency=low
 
   * Updated copyright to 2013 (Bug #30124)

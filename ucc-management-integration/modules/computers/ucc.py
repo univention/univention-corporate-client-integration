@@ -535,10 +535,9 @@ class object(univention.admin.handlers.simpleComputer):
 			if 'posix' in self.options:
 				password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
 				al.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-			#The password must be set via net rpc join
-			#if 'samba' in self.options:
-			#	password_nt, password_lm = univention.admin.password.ntlm(self['password'])
-			#	al.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
+			if 'samba' in self.options:
+				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
+				al.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
 			#	al.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 
 			self.modifypassword=0
@@ -654,9 +653,9 @@ class object(univention.admin.handlers.simpleComputer):
 				password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
 				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
 			#The password must be set via net rpc join
-			#if 'samba' in self.options:
-			#	password_nt, password_lm = univention.admin.password.ntlm(self['password'])
-			#	ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
+			if 'samba' in self.options:
+				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
+				ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))
 			#	ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 
 		# add samba option
