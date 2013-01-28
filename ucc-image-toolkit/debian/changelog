@@ -1,3 +1,10 @@
+ucc-image-toolkit (1.0.0-7) precise; urgency=low
+
+  * Use the PAE kernel for the desktop image (since it's also used as a terminal server,
+    where more tha 4 GB are common) (Bug #28032)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 28 Jan 2013 11:42:40 +0100
+
 ucc-image-toolkit (1.0.0-6) precise; urgency=low
 
   * The total-size is only used for the free disk space check and since the ISOs
