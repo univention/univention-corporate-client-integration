@@ -511,6 +511,8 @@ menuentry 'Debug Shell' {
 	# Sync to disk, otherwise not all data is written to the image before the hash is computed
 	subprocess.call("/bin/sync" , shell=False)
 
+	specfilename = image
+
 	if options.compress:
 		print "Compressing image"
 		subprocess.call("/usr/bin/xz " + image, shell=True)
@@ -518,7 +520,7 @@ menuentry 'Debug Shell' {
 
 	# Create the spec file
 	print "Generating spec file"
-	spec_dest = os.path.join(targetdir, "%s.spec" % image)
+	spec_dest = os.path.join(targetdir, "%s.spec" % specfilename)
 	specfd = open(spec_dest, "w")
 	specfd.write("title: " + image + "\n")
 

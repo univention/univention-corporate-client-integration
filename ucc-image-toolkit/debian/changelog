@@ -1,3 +1,9 @@
+ucc-image-toolkit (1.0.0-8) precise; urgency=low
+
+  * Don't alter spec file name when compression is used (Bug #30016)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 28 Jan 2013 12:45:47 +0100
+
 ucc-image-toolkit (1.0.0-7) precise; urgency=low
 
   * Use the PAE kernel for the desktop image (since it's also used as a terminal server,
