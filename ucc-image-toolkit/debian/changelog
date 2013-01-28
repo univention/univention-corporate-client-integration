@@ -1,3 +1,10 @@
+ucc-image-toolkit (1.0.0-6) precise; urgency=low
+
+  * The total-size is only used for the free disk space check and since the ISOs
+    are not downloaded by ucc-image-downloaded, we can always exclude it (Bug #28033)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 28 Jan 2013 11:39:32 +0100
+
 ucc-image-toolkit (1.0.0-5) precise; urgency=low
 
   * Fix spec file generation if ISO generation is disabled (Bug #28033)

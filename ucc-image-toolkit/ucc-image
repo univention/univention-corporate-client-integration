@@ -524,10 +524,7 @@ menuentry 'Debug Shell' {
 
 	specfd.write("version: " + config.get_version() + " " + str(datetime.date.isoformat(datetime.datetime.now())) + "\n")
 
-	if config.get('Image', 'iso'):
-		totalsize = os.stat(image).st_size + os.stat(md5_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size + os.stat(iso_dest).st_size
-	else:
-		totalsize = os.stat(image).st_size + os.stat(md5_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size
+	totalsize = os.stat(image).st_size + os.stat(md5_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size
 
 	specfd.write("total-size: " + str(totalsize) + "\n")
 	specfd.write("file-img: " + os.path.basename(image)  + "\n")
