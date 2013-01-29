@@ -1,3 +1,10 @@
+ucc-image-toolkit (1.0.1-2) precise; urgency=low
+
+  * Added ucc-image-set-join-information. With this script all information
+    needed for an automatic domain join is added to an image (Bug #30141)
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 29 Jan 2013 14:14:01 +0100
+
 ucc-image-toolkit (1.0.1-1) precise; urgency=low
 
   * added continuation_message_top to example files (Bug #28317) 
