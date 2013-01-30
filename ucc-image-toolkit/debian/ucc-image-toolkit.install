@@ -3,3 +3,4 @@ ucc-image-root-password usr/sbin/
 example/* usr/share/doc/ucc-image-toolkit/example/
 ucc-image-download usr/sbin/
 ucc-image-remove usr/sbin/
+ucc-image-set-join-information usr/sbin/
