@@ -1,3 +1,9 @@
+ucc-image-toolkit (1.0.2-4) precise; urgency=low
+
+  * Umount bootstrap dir with -l  (Bug #28033)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 31 Jan 2013 15:26:12 +0100
+
 ucc-image-toolkit (1.0.2-3) precise; urgency=low
 
   * Umount bootstrap dir with -l  (Bug #28033)
