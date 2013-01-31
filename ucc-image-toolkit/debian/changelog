@@ -1,3 +1,9 @@
+ucc-image-toolkit (1.0.2-5) precise; urgency=low
+
+  * Raise root partition size to 18000 
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 31 Jan 2013 15:45:05 +0100
+
 ucc-image-toolkit (1.0.2-4) precise; urgency=low
 
   * Umount bootstrap dir with -l  (Bug #28033)
