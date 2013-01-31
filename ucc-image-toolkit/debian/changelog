@@ -1,3 +1,9 @@
+ucc-image-toolkit (1.0.2-3) precise; urgency=low
+
+  * Umount bootstrap dir with -l  (Bug #28033)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 31 Jan 2013 14:40:25 +0100
+
 ucc-image-toolkit (1.0.2-2) precise; urgency=low
 
   * Raise size of the desktop image to 15 GB to allow installation of more packages

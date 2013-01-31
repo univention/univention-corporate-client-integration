@@ -100,7 +100,7 @@ def _cleanup(options, workingdir, logfile_fd):
 			# Ignore RuntimeErrors in _cleanup
 			pass
 	
-	cmd_block = ['/bin/umount', bootstrap_dir]
+	cmd_block = ['/bin/umount -l', bootstrap_dir]
 	try:
 		_run_cmd(cmd_block)
 	except RuntimeError:
