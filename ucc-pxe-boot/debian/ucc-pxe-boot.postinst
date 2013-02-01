@@ -48,6 +48,8 @@ univention-config-registry set \
 	ucc/pxe/bootsplash?true \
 	ucc/pxe/vga?788
 
+univention-config-registry set security/packetfilter/package/ucc-remotelog/udp/514/all=ACCEPT
+
 call_joinscript 91ucc-pxe-boot.inst
 
 exit 0

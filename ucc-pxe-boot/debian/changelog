@@ -1,3 +1,9 @@
+ucc-pxe-boot (5.0.7-3) precise; urgency=low
+
+  * Add a port exception for Univention Firewall (Bug #30040)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 01 Feb 2013 15:34:11 +0100
+
 ucc-pxe-boot (5.0.7-2) precise; urgency=low
 
   * Install rsyslog config rule to enable the reception of remote logging
