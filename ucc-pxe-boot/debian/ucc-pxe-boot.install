@@ -1,2 +1,3 @@
 uccpxeboot.py /usr/lib/univention-directory-listener/system
 91ucc-pxe-boot.inst /usr/lib/univention-install/
+ucc.conf /etc/rsyslog.d

@@ -1,3 +1,10 @@
+ucc-pxe-boot (5.0.7-2) precise; urgency=low
+
+  * Install rsyslog config rule to enable the reception of remote logging
+    (Bug #30040)	
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 01 Feb 2013 15:14:42 +0100
+
 ucc-pxe-boot (5.0.7-1) precise; urgency=low
 
   * added ucc/pxe/bootsplash?true and ucc/pxe/vga?788 (Bug #28317)
