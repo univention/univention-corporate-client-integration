@@ -1,3 +1,9 @@
+ucc-image-toolkit (1.0.2-9) precise; urgency=low
+
+  * Move univention-lightdm earlier also for the desktop image (occurs after Bug #29906)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 04 Feb 2013 16:14:33 +0100
+
 ucc-image-toolkit (1.0.2-8) precise; urgency=low
 
   * Install univention-lightdm earlier during bootstrap to fix bootstrap error during
