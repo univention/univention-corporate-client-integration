@@ -1,3 +1,10 @@
+ucc-image-toolkit (1.0.2-8) precise; urgency=low
+
+  * Install univention-lightdm earlier during bootstrap to fix bootstrap error during
+    a restart of unity-greeter (occurs after Bug #29906)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 04 Feb 2013 15:53:22 +0100
+
 ucc-image-toolkit (1.0.2-7) precise; urgency=low
 
   * Prefix downloaded join scripts with 95 (Bug #30096)
