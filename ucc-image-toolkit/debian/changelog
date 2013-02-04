@@ -1,3 +1,10 @@
+ucc-image-toolkit (1.0.2-6) precise; urgency=low
+
+  * Prepare the custom partition example script for
+    the user interaction (Bug #29138)
+
+ -- Stefan Gohmann <gohmann@univention.de>  Mon, 04 Feb 2013 14:49:17 +0100
+
 ucc-image-toolkit (1.0.2-5) precise; urgency=low
 
   * Raise root partition size to 18000 

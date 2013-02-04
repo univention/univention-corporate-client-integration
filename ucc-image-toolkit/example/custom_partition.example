@@ -26,6 +26,8 @@
 # License with the Debian GNU/Linux or Univention distribution in file
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
+
+
 # Copy this file to the initrd as /sbin/custom_partition normally with an custom ucc package.
 # To test the script the following steps can be done:
 #   initrd="ucc-1.0-thinclient-image.img.initrd"
@@ -43,6 +45,14 @@
 
 # Get device
 partition_device="$1"
+
+. /scripts/functions
+# Load keyboard drivers
+modprobe i8042
+modprobe atkbd
+
+# Ensure the console is prepared for the user interaction
+run_scripts /scripts/panic
 
 echo "USE CUSTOM PARTITION SCRIPT"
 
