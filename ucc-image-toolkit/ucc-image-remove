@@ -80,31 +80,39 @@ if options.listimg:
 	sys.exit(0)
 
 if options.removeimg:
-	options.removeimg = os.path.join(configRegistry['ucc/image/path'], options.removeimg)
 	if not options.removeimg.endswith(".spec"):
 		options.removeimg = options.removeimg + ".spec"
 
-	if not os.path.exists(options.removeimg):
-		print "UCC image file", options.removeimg, "does not exist, exiting"
+	specfile = os.path.join(configRegistry['ucc/image/path'], options.removeimg)
+	
+	if not os.path.exists(specfile):
+		print "UCC image file", specfile, "does not exist, exiting"
 		sys.exit(0)
 	
-	stream = open(options.removeimg, "r")
+	stream = open(specfile, "r")
 	try:
 		spec = yaml.load(stream)
 	finally:
 		stream.close()
+	
+	for i in ['file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
+		filepath = os.path.join(configRegistry['ucc/image/path'], spec[i])
+		if os.path.exists(filepath):
+			print "Removing", filepath
+			os.unlink(filepath)
+	
+	image_file = os.path.join(configRegistry['ucc/image/path'], spec['file-img'])
+	if image_file.endswith('.xz'):
+		image_file=image_file[0:len(image_file)-3]
 
-	for i in ['file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
-		if os.path.exists(os.path.join(configRegistry['ucc/image/path'], spec[i])):
-			print "Removing", os.path.join(configRegistry['ucc/image/path'], spec[i])
-			os.unlink(os.path.join(configRegistry['ucc/image/path'], spec[i]))
+	if os.path.exists(image_file):
+		print "Removing", image_file
+		os.unlink(image_file)
 
-	specfile = os.path.join(configRegistry['ucc/image/path'], options.removeimg)
-	if os.path.exists(specfile):
-		print "Removing", specfile
-		os.unlink(specfile)
+	print "Removing", specfile
+	os.unlink(specfile)
 
-	joinfile = os.path.join("/usr/lib/univention-install", options.removeimg + ".inst")
+	joinfile = os.path.join("/usr/lib/univention-install", "95" + spec['file-reg'])
 	if os.path.exists(joinfile):
 		print "Removing", joinfile
 		os.unlink(joinfile)
