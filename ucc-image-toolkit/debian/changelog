@@ -1,3 +1,9 @@
+ucc-image-toolkit (1.0.2-7) precise; urgency=low
+
+  * Prefix downloaded join scripts with 95 (Bug #30096)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 04 Feb 2013 15:30:06 +0100
+
 ucc-image-toolkit (1.0.2-6) precise; urgency=low
 
   * Prepare the custom partition example script for
