@@ -1,3 +1,9 @@
+ucc-image-toolkit (1.0.3-3) precise; urgency=low
+
+  * Build images from official UCC mirrors (Bug #28023)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 05 Feb 2013 10:05:12 +0100
+
 ucc-image-toolkit (1.0.3-2) precise; urgency=low
 
   * Move univention-lightdm earlier also for the desktop image (occurs after Bug #29906)
