@@ -137,7 +137,7 @@ class Parser(ConfigParser.ConfigParser):
 		return ConfigParser.ConfigParser.getboolean(self, section, option)
 
 	def get_mirror(self):
-		return self.get('Software', 'mirror', 'http://ubuntu.knut.univention.de/ubuntu/')
+		return self.get('Software', 'mirror', 'http://ucc.software-univention.de/')
 	def get_version(self):
 		return self.get('General', 'version', 'precise')
 	def get_hostname(self):
@@ -233,7 +233,6 @@ if __name__ == '__main__':
 		
 		_print_process('Installing base system (this may take a while)')
 		# Bootstrap the mounted image
-		# debootstrap precise ucc http://ubuntu.knut.univention.de/ubuntu/
 		if not config.get('General', 'arch') in ['host', None]:
 			arch = '--arch=%s' % config.get('General', 'arch')
 		if options.bootstrap:
