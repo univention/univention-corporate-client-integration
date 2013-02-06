@@ -108,7 +108,7 @@ echo "${partition_device}2     /boot ext4 defaults    0   2" >>/ucc_tmp/fstab
 echo "${partition_device}2 ext4 /boot" >> /ucc_tmp/root/copy_files
 
 # Create a script which sets set cryptopts in grub
-cat >/ucc_tmp/root/custonmer.script <<__H1__
+cat >/ucc_tmp/root/customer.script <<__H1__
 cat >/root/grub_append.sh <<'__H2__'
 #!/bin/sh
 ucr set grub/append="\$(ucr get grub/append) cryptopts=target=crypt,source=${partition_device}3,lvm=vg_ucs-rootfs"
