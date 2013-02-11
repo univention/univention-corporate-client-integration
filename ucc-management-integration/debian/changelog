@@ -1,3 +1,9 @@
+ucc-management-integration (1.1.9-2) unstable; urgency=low
+
+  * Fix typo (Bug #30349)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 11 Feb 2013 09:03:25 +0100
+
 ucc-management-integration (1.1.9-1) unstable; urgency=low
 
   * Set sambaNTPassword when changing the password. This is necessary to

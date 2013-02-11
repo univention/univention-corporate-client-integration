@@ -161,7 +161,7 @@ msgstr "Allgemein"
 
 #: modules/computers/ucc.py:338
 msgid "Basic settings"
-msgstr "Grundeinstelungen"
+msgstr "Grundeinstellungen"
 
 #: modules/computers/ucc.py:339
 msgid "Computer account"
