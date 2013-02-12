@@ -102,6 +102,11 @@ if options.removeimg:
 			os.unlink(filepath)
 	
 	image_file = os.path.join(configRegistry['ucc/image/path'], spec['file-img'])
+
+	if os.path.exists(image_file):
+		print "Removing", image_file
+		os.unlink(image_file)
+
 	if image_file.endswith('.xz'):
 		image_file=image_file[0:len(image_file)-3]
 

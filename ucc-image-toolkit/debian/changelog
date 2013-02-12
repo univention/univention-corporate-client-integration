@@ -1,3 +1,9 @@
+ucc-image-toolkit (1.0.6-3) precise; urgency=low
+
+  * Also remove the compressed xz image (Bug #30398)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 12 Feb 2013 10:20:26 +0100
+
 ucc-image-toolkit (1.0.6-2) precise; urgency=low
 
   * Keep the compressed xz files around to ensure that detection of previous
