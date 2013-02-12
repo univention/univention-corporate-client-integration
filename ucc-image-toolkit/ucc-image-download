@@ -128,6 +128,7 @@ if (free_diskspace < spec['total-size']):
 	print "Not enough free diskspace to download the image"
 	print "Needed: ", spec['total-size']
 	print "Available: ", free_diskspace
+	sys.exit(1)
 
 shutil.copy(os.path.join(workingdir, options.spec), image_directory)
 
