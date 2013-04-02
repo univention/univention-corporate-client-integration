@@ -39,6 +39,10 @@ if [ -x "/etc/init.d/univention-directory-listener" ] ; then
         /etc/init.d/univention-directory-listener crestart
 fi
 
+if [ -x "/etc/init.d/univention-management-console-server" ]; then
+	invoke-rc.d univention-management-console-server crestart
+fi
+
 exit 0
 
 
