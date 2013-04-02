@@ -110,12 +110,6 @@ univention-directory-manager settings/syntax create "$@" --ignore_exists \
     						--set filter='objectClass=univentionCorporateClientSession' \
     						--set viewonly=FALSE || die
 
-# univention-directory-manager settings/ucc_session create "$@" --ignore_exists \
-# 							--position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
-# 							--set name="None" \
-# 							--set session="None" \
-# 							--set description="No default" || die
-
 univention-directory-manager settings/ucc_session create "$@" --position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
 							--ignore_exists \
 							--set name="Windows Terminal Server" \
@@ -134,8 +128,24 @@ univention-directory-manager settings/ucc_session create "$@" --position "cn=Ses
 							--set session="firefox" \
 							--set description="Fullscreen Firefox session" || die
 
+univention-directory-manager settings/ucc_session create "$@" --position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
+							--ignore_exists \
+							--set name="UCC" \
+							--set session="UCC" \
+							--set description="UCC desktop session" || die
+
+univention-directory-manager settings/ucc_session create "$@" --position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
+							--ignore_exists \
+							--set name="UCC Terminal Server" \
+							--set session="UCC-remote" \
+							--set description="UCC terminal server session" || die
+
+univention-directory-manager settings/ucc_session create "$@" --position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
+							--ignore_exists \
+							--set name="LXDE" \
+							--set session="LXDE" \
+							--set description="LXDE desktop session" || die
+
 joinscript_save_current_version
 
 exit 0
-
-
