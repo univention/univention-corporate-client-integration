@@ -158,18 +158,22 @@ fi
 # do it
 mountDir="$(mktemp -d)"
 mount -o loop "$IMAGE" "$mountDir"
+
+chroot "$mountDir" sh -c "touch /etc/ucc_join_user; chmod 440 /etc/ucc_join_user"
 chroot "$mountDir" sh -c "echo $username > /etc/ucc_join_user"
 if [ ! $? -eq 0 ]; then
 	"failed to set join username in $IMAGE" | STDERR
 	exit 1
 fi
 
+chroot "$mountDir" sh -c "touch /etc/ucc_join_password; chmod 440 /etc/ucc_join_password"
 chroot "$mountDir" sh -c "echo $password > /etc/ucc_join_password"
 if [ ! $? -eq 0 ]; then
 	"failed to set join password in $IMAGE" | STDERR
 	exit 1
 fi
 
+chroot "$mountDir" sh -c "touch /etc/ucc_join_domain; chmod 440 /etc/ucc_join_domain"
 chroot "$mountDir" sh -c "echo $domain > /etc/ucc_join_domain"
 if [ ! $? -eq 0 ]; then
 	"failed to set join domain in $IMAGE" | STDERR
