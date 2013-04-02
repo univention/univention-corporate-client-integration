@@ -43,6 +43,10 @@ if [ -x "/etc/init.d/univention-management-console-server" ]; then
 	invoke-rc.d univention-management-console-server crestart
 fi
 
+if [ -x "/etc/init.d/univention-s4-connector" ]; then
+	invoke-rc.d univention-s4-connector crestart
+fi
+
 exit 0
 
 
