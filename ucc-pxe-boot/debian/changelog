@@ -1,3 +1,10 @@
+ucc-pxe-boot (5.0.7-4) unstable; urgency=low
+
+  * restart rsyslog and univention-firewall to allow
+    syslog from ucc clients (Bug #30456)
+
+ -- Felix Botner <botner@univention.de>  Wed, 03 Apr 2013 16:35:37 +0200
+
 ucc-pxe-boot (5.0.7-3) precise; urgency=low
 
   * Add a port exception for Univention Firewall (Bug #30040)

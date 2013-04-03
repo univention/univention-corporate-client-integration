@@ -52,4 +52,7 @@ univention-config-registry set security/packetfilter/package/ucc-remotelog/udp/5
 
 call_joinscript 91ucc-pxe-boot.inst
 
+invoke-rc.d rsyslog restart
+invoke-rc.d univention-firewall restart
+
 exit 0
