@@ -1,0 +1,15 @@
+@%@UCRWARNING=# @%@
+
+/var/log/univention/ucc-clients/syslog-*.log
+{
+@!@
+import univention.lib.ucrLogrotate
+settings = univention.lib.ucrLogrotate.getLogrotateConfig('syslog-ucc', configRegistry)
+for setting in settings.values():
+	print '\t%s' % (setting, )
+@!@
+	delaycompress
+	postrotate
+		invoke-rc.d rsyslog reload > /dev/null
+	endscript
+}

@@ -1,0 +1,5 @@
+[logrotate/syslog-ucc/.*]
+Description[de]=Konfigurationsoptionen für das Logging von UCC-Client rsyslog-Meldungen (Für mögliche Optionen siehe Beschreibungen zu ucrv logrotate/*)
+Description[en]=Configuration options for logging UCC-client rsyslog-messages (for possible options see description of ucrv logrotate/*)
+Type=str
+Categories=ucc

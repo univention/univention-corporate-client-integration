@@ -1,3 +1,10 @@
+ucc-pxe-boot (5.0.7-5) unstable; urgency=low
+
+  * Divert syslog entries from ucc clients to seperate files in
+    /var/log/univention/ucc-clients/ for each host (Bug #30040)
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 05 Apr 2013 13:46:13 +0200
+
 ucc-pxe-boot (5.0.7-4) unstable; urgency=low
 
   * restart rsyslog and univention-firewall to allow

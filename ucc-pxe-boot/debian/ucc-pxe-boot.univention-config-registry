@@ -1,0 +1,3 @@
+Type: file
+File: etc/logrotate.d/rsyslog-ucc
+Variables: logrotate/syslog-ucc/.*
