@@ -240,6 +240,14 @@ if __name__ == '__main__':
 			_run_cmd(cmd_block, logfile_fd)
 		_print_done()
 
+		# Disable initctl in the chroot environment before installing or updating packages.
+		# Calling upstart in the chroot environment /w precise does not work without an upstart outside the chroot env.
+		# Bug 31028
+		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'dpkg-divert', '--local', '--add', '--rename', '/sbin/initctl' ]
+                _run_cmd(cmd_block, logfile_fd)
+		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'ln', '-s', '/bin/true', '/sbin/initctl' ]
+                _run_cmd(cmd_block, logfile_fd)
+
 		_print_process('Preparing repository settings')
 		# Modify sources.list
 		sources_list = os.path.join(bootstrap_dir, 'etc/apt/sources.list')
@@ -262,8 +270,12 @@ if __name__ == '__main__':
 
 		fd.close()
 
-		# TODO: export DEBIAN_FRONTEND=noninteractive
 		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'update' ]
+		_run_cmd(cmd_block, logfile_fd)
+		_print_done()
+
+		_print_process('Installing base package updates')
+		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', '-y', '--force-yes', '-u', 'dist-upgrade' ]
 		_run_cmd(cmd_block, logfile_fd)
 		_print_done()
 
@@ -293,7 +305,7 @@ if __name__ == '__main__':
 		
 		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'mkdir', '-p', '/usr/share/initramfs-tools/scripts/ucc-config']
 		_run_cmd(cmd_block, logfile_fd)
-
+		
 		for package in config.get('Software', 'packages', '').split('\n'):
 			package = package.split('#')[0]
 			package = package.strip()
@@ -321,7 +333,17 @@ if __name__ == '__main__':
 				if line:
 					cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'ucr', 'set', line]
 					_run_cmd(cmd_block, logfile_fd)
-			
+		
+		# revert initctl divert
+		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'rm', '/sbin/initctl' ]
+		_run_cmd(cmd_block, logfile_fd)
+		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'dpkg-divert', '--local', '--remove', '--rename', '/sbin/initctl' ]
+		_run_cmd(cmd_block, logfile_fd)
+
+		# create symlink ldap.secret; this is required to not break joined clients during updates from ucc-1.0 Bug#31024
+		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'ln', '-s', '/etc/machine.secret', '/etc/ldap.secret']
+                _run_cmd(cmd_block, logfile_fd)
+
 		# Write the partition settings into the image, this file will be used by
 		# the partition script
 		_print_process('Re-creating initrd')
@@ -459,12 +481,17 @@ exit 0
 
 			grub_cfg = open(os.path.join(boot_dir, 'grub/grub.cfg'), 'w')
 			grub_cfg.write('''
-menuentry 'Univention Corporate Client - Boot UCC from CDROM/USB device (overlayfs)' {
+set timeout=-1
+menuentry 'Univention Corporate Client - Boot from CDROM/USB device (Livesystem)' {
         linux %(kernel)s ro boot=ucc ucc=overlayfs quiet image=%(image)s
         initrd %(initrd)s
 }
-menuentry 'Univention Corporate Client - Image boot with update check / Initial installation' {
-        linux %(kernel)s ro boot=ucc ucc=update root=search quiet image=%(image)s
+menuentry 'Univention Corporate Client - Image update check / Initial installation' {
+        linux %(kernel)s ro boot=ucc ucc=rollout root=search quiet image=%(image)s
+        initrd %(initrd)s
+}
+menuentry 'Univention Corporate Client - Image installation with forced repartition' {
+        linux %(kernel)s ro boot=ucc ucc=rollout root=search quiet image=%(image)s repartition=y
         initrd %(initrd)s
 }
 menuentry 'Debug Shell' {
@@ -475,6 +502,7 @@ menuentry 'Debug Shell' {
 			grub_cfg.close()
 			
 			if config.getboolean('Image', 'include_image_on_iso', False):
+				shutil.copy(md5_dest, cd_dir)
 				shutil.copy(image, cd_dir)
 			_print_process('Create ISO image')
 			cmd_block = ['grub-mkrescue', '-o', iso_dest, cd_dir]
