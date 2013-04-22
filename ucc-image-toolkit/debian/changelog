@@ -1,4 +1,4 @@
-ucc-image-toolkit (1.0.7-2) unstable; urgency=low
+ucc-image-toolkit (1.0.7-3) unstable; urgency=low
 
   * Removed network-manager from ucc-thinclient.cfg, a dependency has been
     added to univention-corporate-client (Bug #30297)
@@ -9,8 +9,9 @@ ucc-image-toolkit (1.0.7-2) unstable; urgency=low
   * Include img.md5 file on .iso if .img file is included (Bug #30464)
   * Create ldap.secret link file in image files (Bug #31024)
   * Dist-upgrade packages during image creation (Bug #31028)
+  * Remove kdm/autostart setting from ucc-desktop.cfg for consistent plymouth-stop handling (Bug #31127)
 
- -- Erik Damrose <damrose@univention.de>  Mon, 15 Apr 2013 17:02:32 +0200
+ -- Erik Damrose <damrose@univention.de>  Mon, 22 Apr 2013 14:59:44 +0200
 
 ucc-image-toolkit (1.0.6-7) precise; urgency=low
 
