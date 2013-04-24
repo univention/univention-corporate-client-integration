@@ -1,3 +1,9 @@
+ucc-default-images (1.0.2-1) unstable; urgency=low
+
+  * new images version rev2 (Bug #31147)
+
+ -- Felix Botner <botner@univention.de>  Wed, 24 Apr 2013 09:54:21 +0200
+
 ucc-default-images (1.0.1-2) precise; urgency=low
 
   * Updated copyright to 2013 (Bug #30124)
@@ -15,7 +21,7 @@ ucc-default-images (1.0.0-1) precise; urgency=low
   * Point to the source files and the copyright declarations to satisy the GPL
     (Bug #28963)	 
   * Bump version to 1.0.0
-	
+
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 23 Jan 2013 11:47:11 +0100
 
 ucc-default-images (0.1.1-16) precise; urgency=low
