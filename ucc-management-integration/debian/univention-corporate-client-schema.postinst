@@ -34,14 +34,8 @@
 
 . /usr/share/univention-lib/all.sh
 
-eval "$(univention-config-registry shell)"
-
-if [ -x /etc/init.d/slapd  ]; then
-	/etc/init.d/slapd crestart
-fi
+ucs_registerLDAPSchema /usr/share/univention-corporate-client-schema/univention-corporate-client.schema
 
 call_joinscript 30univention-corporate-client-schema.inst
 
 exit 0
-
-
