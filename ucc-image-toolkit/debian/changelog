@@ -1,3 +1,12 @@
+ucc-image-toolkit (1.0.7-5) unstable; urgency=low
+
+  * Improved image toolkit support for image joinscripts with sequence
+    numbers. Image joinscripts created since this version will be created
+    with a 95[filename] prefix. (Bug #32136)
+  * Updated example files for rev3 images
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 07 Jan 2014 14:20:53 +0100
+
 ucc-image-toolkit (1.0.7-4) unstable; urgency=low
 
   * new version for default images (Bug #31147) 

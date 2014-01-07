@@ -1,13 +1,13 @@
-title: UCC desktop image
-version: 1.0 2012-12-16
-total-size: 14396512
-hash-img: 9ad0f5beb7d1ca53fe2b3f085aa2dcc0d9eaec4d98f901e6daae558b6b6020be
-hash-initrd: 776951d5060b180af6e2b00033877673d455112d9a2bed1c2e357213df74caf7
-hash-iso: 094f08e22e68ab2d9b0f537f5792fc947708179d2e605c4ad3dfda64410e81af
-hash-kernel: dc608fa78e868cd93402ff42deec315a7a7ab88e1a28a1bf09fe95dfa64a23d0
-hash-md5: 95503064824c3802118945eb790dd0164129a905a511f048b9553c97f3bdec07
-file-img: ucc-1.0-desktop-image.img
-file-initrd: ucc-1.0-desktop-image.img.initrd
-file-iso: ucc-1.0-desktop-image.img.iso
-file-kernel: ucc-1.0-desktop-image.img.kernel
-file-md5: ucc-1.0-desktop-image.img.md5
+title: ./ucc-1.0-rev3-thinclient-image.img
+version: precise 2014-01-07
+total-size: 1287074352
+file-img: ucc-1.0-rev3-thinclient-image.img
+file-initrd: ucc-1.0-rev3-thinclient-image.img.initrd
+file-kernel: ucc-1.0-rev3-thinclient-image.img.kernel
+file-md5: ucc-1.0-rev3-thinclient-image.img.md5
+file-reg: 95ucc-1.0-rev3-thinclient-image.img.inst
+hash-img: 38d1dac19d922b4638da42ba1d24132c9e395e98c93a315662920827508f23e9
+hash-initrd: 38637add80203c77d560b1adb937d87a4aad6f1c848ea21230d37b73c238dacf
+hash-kernel: 861600ac95a6531cece2eb814e030ccd6d6cb0f465319bbcb3e7d6fdc8a44033
+hash-md5: 73702c48b190b6fb234e1ce0baf051dbcd0d8f97eb5c611f4478e2b8843f1abc
+hash-reg: b8ca9837457eaa1c11f7938ac332e648875a896cd6e0385c730cdac3b92c1f65

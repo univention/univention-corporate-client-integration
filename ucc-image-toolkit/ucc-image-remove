@@ -117,7 +117,12 @@ if options.removeimg:
 	print "Removing", specfile
 	os.unlink(specfile)
 
-	joinfile = os.path.join("/usr/lib/univention-install", "95" + spec['file-reg'])
+	# bug#32136 The prefix is needed in case an old spec file is used, where the joinscript name does not start with '95'
+	joinscript_prefix = "95"
+	if spec['file-reg'].startswith(joinscript_prefix):
+		joinscript_prefix = ""
+
+	joinfile = os.path.join("/usr/lib/univention-install", joinscript_prefix + spec['file-reg'])
 	if os.path.exists(joinfile):
 		print "Removing", joinfile
 		os.unlink(joinfile)

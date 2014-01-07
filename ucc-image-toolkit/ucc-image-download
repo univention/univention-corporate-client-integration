@@ -167,28 +167,34 @@ download_file(spec['file-initrd'], spec['hash-initrd'], check_hash)
 download_file(spec['file-md5'], spec['hash-md5'], check_hash)
 download_file(spec['file-kernel'], spec['hash-kernel'], check_hash)
 
+# bug#32136 The prefix is needed in case an old spec file is used, where the joinscript name does not start with '95'
+joinscript_prefix = "95"
+if spec['file-reg'].startswith(joinscript_prefix):
+	joinscript_prefix = ""
+
 if options.reload:
-	if os.path.exists("/usr/lib/univention-install/95" + spec['file-reg']):
+	if os.path.exists("/usr/lib/univention-install/" + joinscript_prefix + spec['file-reg']):
 		print spec['file-reg'], "already exists. Removing it, since reload is requested"
-		os.remove("/usr/lib/univention-install/95" + spec['file-reg'])
+		os.remove("/usr/lib/univention-install/" + joinscript_prefix + spec['file-reg'])
 
 ret = subprocess.call("/usr/bin/wget -c -P /usr/lib/univention-install " + base_url + spec['file-reg'], shell=True)
-os.rename("/usr/lib/univention-install/" + spec['file-reg'], "/usr/lib/univention-install/95" + spec['file-reg'])
+if joinscript_prefix != "":
+	os.rename("/usr/lib/univention-install/" + spec['file-reg'], "/usr/lib/univention-install/" + joinscript_prefix + spec['file-reg'])
 
 if ret != 0:
 	print "An error (", str(ret), ") occured while downloading image", spec['file-reg']
 	print "Terminating"
 	sys.exit(1)
 
-subprocess.call("chmod a+x /usr/lib/univention-install/95" + spec['file-reg'], shell=True)
+subprocess.call("chmod a+x /usr/lib/univention-install/" + joinscript_prefix + spec['file-reg'], shell=True)
 
 systemrole = configRegistry['server/role']
 if systemrole == "domaincontroller_master" or systemrole == "domaincontroller_backup":
-	subprocess.call("/usr/lib/univention-install/95" + spec['file-reg'], shell=True)
+	subprocess.call("/usr/lib/univention-install/" + joinscript_prefix + spec['file-reg'], shell=True)
 
 if not options.skiphash:
 	print "Verifying hash value"
-	digest = commands.getoutput("sha256sum /usr/lib/univention-install/95" + spec['file-reg']).split(" ")[0].strip()
+	digest = commands.getoutput("sha256sum /usr/lib/univention-install/" + joinscript_prefix + spec['file-reg']).split(" ")[0].strip()
 	if digest != spec['hash-reg']:
 		print "Incorrect hash value of downloaded file! Quitting"
 		print "Hash expected:", spec['hash-reg']

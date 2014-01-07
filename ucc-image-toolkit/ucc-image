@@ -400,7 +400,8 @@ if __name__ == '__main__':
 			raise RuntimeError(msg)
 
 		# Create an UMC register file
-		umc_dest = os.path.join(targetdir, "%s.inst" % image)
+		joinscript_prefix = "95"
+		umc_dest = os.path.join(targetdir, "%s%s.inst" % (joinscript_prefix, config.get('Image', 'name', 'ucc-image.img')))
 		umc_dest_fd = open(umc_dest, 'w')
 		umc_dest_fd.write('''
 #! /bin/sh
