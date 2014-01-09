@@ -9,7 +9,7 @@ Build-Depends: debhelper (>> 7),
 
 Package: ucc-thinclient-image
 Architecture: all
-Depends: ucc-1.0-rev2-thinclient-image
+Depends: ucc-1.0-rev3-thinclient-image
 Description: Meta package for the UCC Thin Client Image
  This package provided the Default UCC Thin
  Client image.
@@ -18,7 +18,7 @@ Description: Meta package for the UCC Thin Client Image
  For more information about UCC refer to:
  http://www.univention.de/
 
-Package: ucc-1.0-rev2-thinclient-image
+Package: ucc-1.0-rev3-thinclient-image
 Architecture: all
 Depends: ${misc:Depends},
  shell-univention-lib,
@@ -37,7 +37,7 @@ Description: Default UCC Thin Client Image
 
 Package: ucc-desktop-image
 Architecture: all
-Depends: ucc-1.0-rev2-desktop-image
+Depends: ucc-1.0-rev3-desktop-image
 Description: Meta package for the UCC Desktop Image
  This package provided the Default UCC Desktop image.
  .
@@ -45,7 +45,7 @@ Description: Meta package for the UCC Desktop Image
  For more information about UCC refer to:
  http://www.univention.de/
 
-Package: ucc-1.0-rev2-desktop-image
+Package: ucc-1.0-rev3-desktop-image
 Architecture: all
 Depends: ${misc:Depends},
  shell-univention-lib, ucc-image-toolkit
