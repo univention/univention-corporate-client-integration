@@ -3,7 +3,7 @@
 # UCC 1.0 Desktop Image
 #  postinst file
 #
-# Copyright 2012-2013 Univention GmbH
+# Copyright 2012-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -33,8 +33,8 @@
 #DEBHELPER#
 
 ucr set ucc/image/download/url?"http://download.univention.de/download/ucc-images/"
-ucr set ucc/pxe/image?ucc-1.0-rev2-desktop-image.img
+ucr set ucc/pxe/image?ucc-1.0-rev3-desktop-image.img
 
-ucc-image-download -s ucc-1.0-rev2-desktop-image.img.spec
+ucc-image-download -s ucc-1.0-rev3-desktop-image.img.spec
 
 exit 0
