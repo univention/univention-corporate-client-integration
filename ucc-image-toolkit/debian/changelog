@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.0-1) unstable; urgency=low
+
+  * Bump version for UCC 2.0 (Bug #34310)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 25 Mar 2014 08:06:35 +0100
+
 ucc-image-toolkit (1.0.7-6) unstable; urgency=low
 
   * Add univention-ucc-printerconfig, univention-ucc-proxy-settings and
