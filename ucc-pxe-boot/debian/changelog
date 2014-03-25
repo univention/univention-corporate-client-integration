@@ -1,3 +1,9 @@
+ucc-pxe-boot (6.0.0-1) unstable; urgency=low
+
+  * Bump version for UCC 2.0 (Bug #34310)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 25 Mar 2014 08:07:20 +0100
+
 ucc-pxe-boot (5.0.7-5) unstable; urgency=low
 
   * Divert syslog entries from ucc clients to seperate files in
