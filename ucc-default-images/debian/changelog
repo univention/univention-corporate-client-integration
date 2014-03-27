@@ -1,3 +1,10 @@
+ucc-default-images (2.0.0-1) unstable; urgency=low
+
+  * Bump version for UCC 2.0 (Bug #34310)
+  * Fix description (Bug #32105)
+	
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 27 Mar 2014 08:43:18 +0100
+
 ucc-default-images (1.0.3-1) unstable; urgency=low
 
   * new images version rev3 (Bug #31147)
