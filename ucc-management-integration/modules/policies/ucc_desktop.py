@@ -3,7 +3,7 @@
 # Univention Corporate Client
 #  UDM policy for the ucc desktop settings
 #
-# Copyright 2013 Univention GmbH
+# Copyright 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
 #

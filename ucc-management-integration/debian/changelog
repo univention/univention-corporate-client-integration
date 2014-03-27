@@ -1,3 +1,11 @@
+ucc-management-integration (2.0.0-1) unstable; urgency=low
+
+  * Bump version for UCC 2.0 (Bug #34310)
+  * Update copyright
+  * Fix description (Bug #32433)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 27 Mar 2014 08:56:58 +0100
+
 ucc-management-integration (1.1.11-2) unstable; urgency=low
 
   * Adjust dependencies (Bug #31046)

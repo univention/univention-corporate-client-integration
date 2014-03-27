@@ -3,7 +3,7 @@
 # Univention Corporate Client
 #  UDM policy for thin client session 
 #
-# Copyright (C) 2010-2013 Univention GmbH
+# Copyright (C) 2010-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -84,7 +84,7 @@ property_descriptions={
 
 
 layout = [
-	Tab(_('General'),_('UCC session script'), layout = [
+	Tab(_('General'),_('UCC image'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
 			'description',
