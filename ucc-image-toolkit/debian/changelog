@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.0-2) unstable; urgency=low
+
+  * Add a progress indicator when uncompressing the xz-compressed images (Bug #33933)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 28 Mar 2014 11:11:17 +0100
+
 ucc-image-toolkit (2.0.0-1) unstable; urgency=low
 
   * Bump version for UCC 2.0 (Bug #34310)

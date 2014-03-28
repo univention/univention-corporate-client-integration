@@ -147,7 +147,7 @@ if img_validation:
 else:
 	download_file(spec['file-img'], spec['hash-img'], False)
 
-subprocess.call("/usr/bin/unxz --keep " + imgname, shell=True)
+subprocess.call("/usr/bin/unxz -v --keep " + imgname, shell=True)
 
 if imgname.endswith(".xz"):
 	imgname = imgname[:-3]
