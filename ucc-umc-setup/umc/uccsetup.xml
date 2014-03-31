@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+  <module id="uccsetup" icon="uccsetup" version="1.0">
+	<name>UCC Setup</name>
+	<description>Wizard for configuring and setting up Univention Corporate Client</description>
+	<keywords>dummy</keywords>
+	<categories>
+	  <category name="system"/>
+	</categories>
+
+	<command name="uccsetup/configuration" function="configuration"/>
+	<command name="uccsetup/send" function="send"/>
+  </module>
+</umc>

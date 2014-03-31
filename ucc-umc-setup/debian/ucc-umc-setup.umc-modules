@@ -1,0 +1,6 @@
+Module: uccsetup
+Python: umc/python
+Definition: umc/uccsetup.xml
+Category: umc/categories/uccsetup.xml
+Javascript: umc/js
+Icons: umc/icons
