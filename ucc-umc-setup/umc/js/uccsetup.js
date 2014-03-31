@@ -75,7 +75,7 @@ define([
 				headerText: _('Univention Corporate Client configuration wizard'),
 				helpText: _('<p>Welcome to the setup wizard of Univention Corporate Client (UCC).</p><p>UCC provides support for fully-featured Linux desktop systems running KDE (both stationary and notebooks) as well as support for Linux-based thin clients and access to terminal servers (Windows, Citrix XenApp, XRDP).</p>'),
 				widgets: [{
-					type: RadioButton,
+					type: CheckBox,
 					radioButtonGroup: 'config',
 					name: 'fatclient',
 					label: _('Configure support for Linux desktop systems'),
@@ -86,7 +86,7 @@ define([
 					content: ('Linux desktops are installed via PXE netboot within only a few minutes. For this, 20 GBs of hard disk space and 1 GB RAM are required on the client computers.'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}, {
-					type: RadioButton,
+					type: CheckBox,
 					radioButtonGroup: 'config',
 					name: 'thinclient',
 					label: _('Configure support for terminal services')
@@ -104,7 +104,7 @@ define([
 					type: CheckBox,
 					name: 'download',
 					label: _('Download UCC desktop image'),
-					checked: true
+					value: true
 				}]
 			}, {
 				name: 'download-thinclient',
@@ -114,7 +114,7 @@ define([
 					type: CheckBox,
 					name: 'download',
 					label: _('Download UCC thin client image'),
-					checked: true
+					value: true
 				}]
 			}, {
 				name: 'network',
@@ -294,9 +294,9 @@ define([
 			}, {
 				name: 'done',
 				headerText: _('Configuration finished'),
-				helpText: _('<p>Now you can create one or several desktop clients. The images are rolled out using PXE.</p>')
+				helpText: _('<p>Now you can create one or several clients. The images are rolled out using PXE.</p>')
 					+ _('<p>The BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
-					+ _('<p>After a reboot you can log into the UCC desktop with any user from the UCS management system.</p>')
+					+ _('<p>After a reboot you can log in and access configured services.</p>')
 			}];
 		},
 
@@ -341,13 +341,14 @@ define([
 		},
 
 		_getClientType: function() {
+			var clientTypes = [];
 			if (this.getWidget('start', 'fatclient').get('value')) {
-				return 'fatclient';
+				clientTypes.push('fatclient');
 			}
 			if (this.getWidget('start', 'thinclient').get('value')) {
-				return 'thinclient';
+				clientTypes.push('thinclient');
 			}
-			return null;
+			return clientTypes;
 		},
 
 		_terminalServices: ['rdp', 'citrix', 'browser'],
@@ -358,8 +359,14 @@ define([
 		},
 
 		_isPageForClientType: function(pageName) {
-			var suffix = '-' + this._getClientType();
-			return pageName.indexOf(suffix) >= 0 || pageName.indexOf('-') < 0;
+			if (pageName.indexOf('-') < 0) {
+				return true;
+			}
+			var match = array.filter(this._getClientType(), function(clientType) {
+				var suffix = '-' + clientType;
+				return pageName.indexOf(suffix) >= 0;
+			});
+			return match.length > 0;
 		},
 
 		_isPageForTerminalServiceType: function(pageName) {

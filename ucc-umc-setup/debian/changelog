@@ -1,5 +1,11 @@
+ucc-umc-setup (0.1.1-1) unstable; urgency=low
+
+  * Bug #34360: fine adjustments
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 31 Mar 2014 14:54:19 +0200
+
 ucc-umc-setup (0.1.0-1) unstable; urgency=low
 
-  * Initial release (Bug #XXXXXX)
+  * Bug #34360: Initial release
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 26 Mar 2014 11:50:50 +0100
