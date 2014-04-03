@@ -86,22 +86,17 @@ def handler(dn, new, old):
 
 		append = 'root=/dev/nfs '
 		append += 'nfsroot=%s:/var/lib/univention-client-boot ' % configRegistry['ucc/pxe/nfsroot']
-		append += 'DNSSERVER=%s ' % configRegistry['ucc/pxe/nameserver']
 		if configRegistry.get('ucc/pxe/vga'):
 			append += 'vga=%s ' % configRegistry['ucc/pxe/vga']
 		append += 'initrd=%s ' % initrd
 		if configRegistry.is_true('ucc/pxe/quiet', False):
 			append += 'quiet '
-		if 'ucc/pxe/ldapserver' in configRegistry.keys():
-			append += 'ldapServer=%s ' % configRegistry['ucc/pxe/ldapserver']
 		if 'xorg/keyboard/options/XkbLayout' in configRegistry.keys():
 			append += 'keyboard=%s ' % configRegistry['xorg/keyboard/options/XkbLayout']
 		if 'locale/default' in configRegistry.keys():
 			append += 'locale=%s ' % configRegistry['locale/default']
 		if 'ucc/pxe/timezone' in configRegistry.keys():
 			append += 'timezone=%s ' % configRegistry['ucc/pxe/timezone']
-		if 'ucc/pxe/ldapport' in configRegistry.keys():
-			append += 'ldapPort=%s ' % configRegistry['ucc/pxe/ldapport']
 		if 'ucc/pxe/append' in configRegistry.keys():
 			append += '%s ' % configRegistry['ucc/pxe/append']
 		if configRegistry.get('ucc/pxe/loglevel', False):

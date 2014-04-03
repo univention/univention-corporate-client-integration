@@ -1,3 +1,11 @@
+ucc-pxe-boot (6.0.1-1) unstable; urgency=low
+
+  * removed ucc/pxe/ldapport, ucc/pxe/ldapserver and
+    ucc/pxe/nameserver from listener as they are not
+    used on ucc clients (Bug #30347) 
+
+ -- Felix Botner <botner@univention.de>  Thu, 03 Apr 2014 15:10:04 +0200
+
 ucc-pxe-boot (6.0.0-1) unstable; urgency=low
 
   * Bump version for UCC 2.0 (Bug #34310)

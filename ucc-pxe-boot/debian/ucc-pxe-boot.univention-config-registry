@@ -1,3 +1,9 @@
 Type: file
 File: etc/logrotate.d/rsyslog-ucc
 Variables: logrotate/syslog-ucc/.*
+
+Type: module
+Module: uccpxeboot.py
+Variables: ucc/pxe/*
+Variables: xorg/keyboard/options/XkbLayout
+Variables: locale/default

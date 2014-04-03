@@ -54,8 +54,6 @@ univention-directory-manager shares/share create "$@" --ignore_exists \
     --set path=/var/lib/univention-client-boot --set host="${hostname}.${domainname}" --set writeable=0 \
     --option=nfs || die
 
-univention-config-registry set "ucc/pxe/nameserver?$nameserver1"
-
 joinscript_save_current_version
  
 exit 0
