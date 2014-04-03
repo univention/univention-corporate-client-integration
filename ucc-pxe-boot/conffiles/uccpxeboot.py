@@ -35,36 +35,6 @@ from glob import glob
 
 pattern = '/var/lib/univention-client-boot/pxelinux.cfg/*'
 
-def update_loglevel (line, changes):
-	if type(changes.get('ucc/pxe/loglevel')) == type(()):
-		old, new = changes.get('ucc/pxe/loglevel', (False, False))
-		if not old == new:
-			line = re.sub("(^| )loglevel=[^ ]+($| )", " ", line)
-			if new:
-				line = line.rstrip()
-				line = line + " loglevel=%s" % new
-	return line
-
-def update_quiet (line, changes):
-	if type(changes.get('ucc/pxe/quit')) == type(()):
-		old, new = changes.get('ucc/pxe/quiet', (False, False))
-		if not old == new:
-			line = re.sub("(^| )quiet($| )", " ", line)
-			if new and new.lower() in ['yes', 'true', '1']:
-				line = line.rstrip()
-				line = line + " quiet"
-	return line
-
-def update_vga (line, changes):
-	if type(changes.get('ucc/pxe/vga')) == type(()):
-		old, new = changes.get('ucc/pxe/vga', (False, False))
-		if not old == new:
-			line = re.sub("(^| )vga=[^ ]+($| )", " ", line)
-			if new:
-				line = line.rstrip()
-				line = line + " vga=%s" % new
-	return line
-
 def update_nfs_root (line, changes):
 	if type(changes.get('ucc/pxe/nfsroot')) == type(()):
 		old, new = changes.get('ucc/pxe/nfsroot', (False, False))
@@ -76,13 +46,34 @@ def update_nfs_root (line, changes):
 	return line
 
 def update_append(line, changes):
-	if type(changes.get('pxe/append')) == type(()):
-		old, new = changes.get('pxe/append', ("", ""))
+	if type(changes.get('ucc/pxe/append')) == type(()):
+		old, new = changes.get('ucc/pxe/append', ("", ""))
 		if not old == new:
 			line = re.sub('(^| )%s($| )' % old, " ", line)
 			if new:
+				line = re.sub('(^| )%s($| )' % new, " ", line)
 				line = line.rstrip()
 				line = line + ' %s' % new
+	return line
+
+def update_flag(line, changes, baseConfig, var, flag):
+	if type(changes.get(var)) == type(()):
+		old, new = changes.get(var, ('', ''))
+		if not old == new:
+			line = re.sub("(^| )%s($| )" % flag, " ", line)
+			if baseConfig.is_true(var, False):
+				line = line.rstrip()
+				line = line + " %s" % flag
+	return line
+
+def update_parameter(line, changes, var, parameter):
+	if type(changes.get(var)) == type(()):
+		old, new = changes.get(var, ('', ''))
+		if not old == new:
+			line = re.sub("(^| )%s=[^ ]+($| )" % parameter, " ", line)
+			if new:
+				line = line.rstrip()
+				line = line + ' %s=%s' % (parameter, new)
 	return line
 
 def handler(baseConfig, changes):
@@ -90,14 +81,13 @@ def handler(baseConfig, changes):
 	for line in input(glob(pattern), inplace = True):
 		line = line.strip('\n')
 		if 'APPEND root=' in line:
-			line = update_loglevel(line, changes)
-			line = update_quiet(line, changes)
-			line = update_vga(line, changes)
-			line = update_nfs_root(line, changes)
+			line = update_flag(line, changes, baseConfig, "ucc/pxe/bootsplash", "splash")
+			line = update_flag(line, changes, baseConfig, "ucc/pxe/quiet", "quiet")
+			line = update_parameter(line, changes, "ucc/pxe/timezone", "timezone")
+			line = update_parameter(line, changes, "ucc/pxe/loglevel", "loglevel")
+			line = update_parameter(line, changes, "ucc/pxe/vga", "vga")
+			line = update_parameter(line, changes, "xorg/keyboard/options/XkbLayout", "keyboard")
+			line = update_parameter(line, changes, "locale/default", "locale")
 			line = update_append(line, changes)
-			# xorg/keyboard/options/XkbLayout
-			# locale/default
-			# ucc/pxe/timezone
-			# ucc/pxe/append
-			# ucc/pxe/bootsplash
+			line = update_nfs_root(line, changes)
 		print line
