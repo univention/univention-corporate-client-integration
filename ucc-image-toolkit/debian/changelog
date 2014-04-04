@@ -1,3 +1,10 @@
+ucc-image-toolkit (2.0.0-8) unstable; urgency=low
+
+  * Added language-pack-gnome to ucc-desktop image for all languages
+    that have language packs installed (Bug #31807) 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 04 Apr 2014 15:54:30 +0200
+
 ucc-image-toolkit (2.0.0-7) unstable; urgency=low
 
   * Remove ucc option from config file, base ucc packages are now
