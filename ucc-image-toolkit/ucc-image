@@ -52,6 +52,8 @@ def _run_cmd(cmd_block, fd=sys.stdout):
 	env=os.environ
 	env['DEBIAN_FRONTEND'] = 'noninteractive'
 
+	fd.write('ucc-image cmd: %s\n' % ' '.join(cmd_block))
+	fd.flush()
 	retcode = subprocess.call(cmd_block , shell=False, env=env, stdout=fd, stderr=fd)
 	if retcode:
 		fd.write('The command "%s" failed with the error code %d' % (string.join(cmd_block), retcode))
@@ -102,7 +104,7 @@ def _cleanup(options, workingdir, logfile_fd):
 	
 	cmd_block = ['/bin/umount', '-l', bootstrap_dir]
 	try:
-		_run_cmd(cmd_block)
+		_run_cmd(cmd_block, logfile_fd)
 	except RuntimeError:
 		# Ignore RuntimeErrors in _cleanup
 		pass
@@ -139,7 +141,7 @@ class Parser(ConfigParser.ConfigParser):
 	def get_mirror(self):
 		return self.get('Software', 'mirror', 'http://ucc.software-univention.de/')
 	def get_version(self):
-		return self.get('General', 'version', 'precise')
+		return self.get('General', 'version', 'trusty')
 	def get_hostname(self):
 		return config.get('General', 'hostname', 'ucc')
 	def get_domainname(self):
@@ -212,13 +214,14 @@ if __name__ == '__main__':
 
 		_print_process('Creating debootstrap image')
 		# Create the image
-		image = os.path.join(targetdir, config.get('Image', 'name', 'ucc-image.img'))
+		image_name = config.get('Image', 'name', 'ucc-image.img')
+		image_file= os.path.join(workingdir, image_name)
 		image_size = float(config.get('Image', 'size', '20'))
-		cmd_block = ['dd', 'if=/dev/zero', 'of=%s' % (image), 'bs=1M', 'count=1', 'seek=%d' % (image_size*1000)]
+		cmd_block = ['dd', 'if=/dev/zero', 'of=%s' % (image_file), 'bs=1M', 'count=1', 'seek=%d' % (image_size*1024)]
 		_run_cmd(cmd_block, logfile_fd)
 
 		fs = config.get('Image', 'filesystem', 'ext4')
-		cmd_block = ['mkfs.%s' % fs, '-F', image ]
+		cmd_block = ['mkfs.%s' % fs, '-F', image_file ]
 		_run_cmd(cmd_block, logfile_fd)
 
 		bootstrap_dir = os.path.join(workingdir, 'bootstrap')
@@ -227,7 +230,7 @@ if __name__ == '__main__':
 
 		_print_process('Mounting debootstrap image')
 		# Mount the image
-		cmd_block = ['mount', '-o', 'loop', image, bootstrap_dir]
+		cmd_block = ['mount', '-o', 'loop', image_file, bootstrap_dir]
 		_run_cmd(cmd_block, logfile_fd)
 		_print_done()
 		
@@ -279,16 +282,12 @@ if __name__ == '__main__':
 		_run_cmd(cmd_block, logfile_fd)
 		_print_done()
 
-		if config.getboolean('Software', 'ucc', False):
-			_print_process('Installing univention-config-registry')
-			cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'install', '--yes', '--force-yes', '--no-install-recommends', 'univention-config', 'bc', 'rsync', 'dosfstools']
-			_run_cmd(cmd_block, logfile_fd)
-			cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'ucr', 'set', 'hostname=%s' % config.get_hostname(), 'domainname=%s'% config.get_domainname()]
-			_run_cmd(cmd_block, logfile_fd)
-		else:
-			_print_process('Setting hostname')
-			cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'hostname', config.get_hostname()]
-			_run_cmd(cmd_block, logfile_fd)
+		_print_process('Installing univention-config-registry')
+		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'apt-get', 'install', '--yes', '--force-yes', '--no-install-recommends', 'univention-config', 'bc', 'rsync', 'dosfstools']
+		_run_cmd(cmd_block, logfile_fd)
+		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'ucr', 'set', 'hostname=%s' % config.get_hostname(), 'domainname=%s'% config.get_domainname()]
+		_run_cmd(cmd_block, logfile_fd)
+
 		_print_done()
 
 		# Set root password
@@ -337,10 +336,11 @@ if __name__ == '__main__':
 		# revert initctl divert
 		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'rm', '/sbin/initctl' ]
 		_run_cmd(cmd_block, logfile_fd)
-		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'dpkg-divert', '--local', '--remove', '--rename', '/sbin/initctl' ]
+		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'dpkg-divert', '--local', '--remove', '--rename', '/sbin/initctl']
 		_run_cmd(cmd_block, logfile_fd)
 
 		# create symlink ldap.secret; this is required to not break joined clients during updates from ucc-1.0 Bug#31024
+		# This should still be kept for UCC 2, as users updating from UCC 1 may not have the updated -sync-persistent
 		cmd_block = ['/usr/sbin/chroot',  bootstrap_dir, 'ln', '-s', '/etc/machine.secret', '/etc/ldap.secret']
                 _run_cmd(cmd_block, logfile_fd)
 
@@ -375,7 +375,7 @@ if __name__ == '__main__':
 		except OSError,e:
 			kernel_src = kernel_link
 
-		kernel_dest = os.path.join(targetdir, config.get('Image', 'kernel', 'ucc-image.kernel'))
+		kernel_dest = os.path.join(workingdir, config.get('Image', 'kernel', 'ucc-image.kernel'))
 		if os.path.exists(kernel_src):
 			shutil.copy(kernel_src, kernel_dest)
 		os.chmod(kernel_dest, 0644)
@@ -387,13 +387,13 @@ if __name__ == '__main__':
 		except OSError,e:
 			initrd_src = initrd_link
 
-		initrd_dest = os.path.join(targetdir, config.get('Image', 'initrd', 'ucc-image.initrd'))
+		initrd_dest = os.path.join(workingdir, config.get('Image', 'initrd', 'ucc-image.initrd'))
 		if os.path.exists(initrd_src):
 			shutil.copy(initrd_src, initrd_dest)
 
 		# Create a md5 sum file
-		md5_dest = os.path.join(targetdir, "%s.md5" % image)
-		cmd = 'md5sum "%s" | sed -ne "s| .*||p" > "%s" ' % (image, md5_dest)
+		md5_dest = os.path.join(workingdir, "%s.md5" % image_name)
+		cmd = 'md5sum "%s" | sed -ne "s| .*||p" > "%s" ' % (image_file, md5_dest)
 		retcode = subprocess.call(cmd , shell=True)
 		if retcode:
 			msg = 'The command "%s" failed with the error code %d' % (cmd, retcode)
@@ -401,7 +401,7 @@ if __name__ == '__main__':
 
 		# Create an UMC register file
 		joinscript_prefix = "95"
-		umc_dest = os.path.join(targetdir, "%s%s.inst" % (joinscript_prefix, config.get('Image', 'name', 'ucc-image.img')))
+		umc_dest = os.path.join(workingdir, "%s%s.inst" % (joinscript_prefix, image_name))
 		umc_dest_fd = open(umc_dest, 'w')
 		umc_dest_fd.write('''
 #! /bin/sh
@@ -462,7 +462,7 @@ joinscript_save_current_version
 
 exit 0
 
-''' % {'image': config.get('Image', 'name', 'ucc-image.img')})
+''' % {'image': image_name})
 		umc_dest_fd.close()
 
 		os.chmod(umc_dest, 0755)
@@ -470,7 +470,7 @@ exit 0
 		# Create ISO image
 		if config.get('Image', 'iso'):
 			# TODO: the creation of the ISO image should be done in the chroot environment
-			iso_dest = os.path.join(targetdir, config.get('Image', 'iso'))
+			iso_dest = os.path.join(workingdir, config.get('Image', 'iso'))
 			cd_dir = os.path.join(workingdir, 'cdrom')
 			os.mkdir(cd_dir)
 
@@ -499,12 +499,12 @@ menuentry 'Debug Shell' {
         linux %(kernel)s ro init=/bin/sh rootdelay=3
         initrd %(initrd)s
 }
-			''' % {'kernel': kernel, 'initrd': initrd, 'image': config.get('Image', 'name', 'ucc-image.img') })
+			''' % {'kernel': kernel, 'initrd': initrd, 'image': image_name })
 			grub_cfg.close()
 			
 			if config.getboolean('Image', 'include_image_on_iso', False):
 				shutil.copy(md5_dest, cd_dir)
-				shutil.copy(image, cd_dir)
+				shutil.copy(image_file, cd_dir)
 			_print_process('Create ISO image')
 			cmd_block = ['grub-mkrescue', '-o', iso_dest, cd_dir]
 			_run_cmd(cmd_block, logfile_fd)
@@ -522,54 +522,64 @@ menuentry 'Debug Shell' {
 
 
 	if exitcode == 0:
-		print '\nThe image creation was successful:'
-		print 'Image                 : %s' % image
-		print 'MD5sum file           : %s' % md5_dest
-		print 'UMC Image join script : %s' % umc_dest
-		print 'Kernel                : %s' % kernel_dest
-		print 'Initrd                : %s' % initrd_dest
+		# Sync to disk, otherwise not all data is written to the image before the hash is computed
+		subprocess.call("/bin/sync" , shell=False)
+
+		if options.compress:
+			print "Compressing image"
+			subprocess.call("/usr/bin/xz -v " + image_file, shell=True)
+			image_name = image_name + ".xz"
+			image_file= os.path.join(workingdir, image_name)
+
+		# Create the spec file
+		print "Generating spec file"
+		spec_dest = os.path.join(workingdir, "%s.spec" % image_name)
+		specfd = open(spec_dest, "w")
+		specfd.write("title: " + image_name + "\n")
+
+		specfd.write("version: " + config.get_version() + " " + str(datetime.date.isoformat(datetime.datetime.now())) + "\n")
+
+		totalsize = os.stat(image_file).st_size + os.stat(md5_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size
+
+		specfd.write("total-size: " + str(totalsize) + "\n")
+		specfd.write("file-img: " + os.path.basename(image_name)  + "\n")
+		specfd.write("file-initrd: " + os.path.basename(initrd_dest) + "\n")
+		specfd.write("file-kernel: " + os.path.basename(kernel_dest) + "\n")
+		specfd.write("file-md5: " + os.path.basename(md5_dest) + "\n")
+		specfd.write("file-reg: " + os.path.basename(umc_dest) + "\n")
+		specfd.write("hash-img: " + commands.getoutput("sha256sum " + image_file).split(" ")[0].strip() + "\n")
+		specfd.write("hash-initrd: " + commands.getoutput("sha256sum " + initrd_dest).split(" ")[0].strip()  + "\n")
+		specfd.write("hash-kernel: " + commands.getoutput("sha256sum " + kernel_dest).split(" ")[0].strip() + "\n")
+		specfd.write("hash-md5: " + commands.getoutput("sha256sum " + md5_dest).split(" ")[0].strip() + "\n")
+		specfd.write("hash-reg: " + commands.getoutput("sha256sum " + umc_dest).split(" ")[0].strip() + "\n")
+		specfd.close()
+
+		if not targetdir == workingdir:
+			print 'Moving files to %s' % os.path.abspath(targetdir)
+			files = [image_file, kernel_dest, initrd_dest, umc_dest, md5_dest, spec_dest]
+			if config.get('Image', 'iso'):
+				files.append(iso_dest)
+
+			for curr_file in files:
+				cmd_block = ['mv', '-f', curr_file, targetdir]
+				_run_cmd(cmd_block, logfile_fd)
+
+		print '\nThe image creation was successful: (%s)' % os.path.abspath(targetdir)
+		print 'Image                 : %s' % os.path.basename(image_file)
+		print 'MD5sum file           : %s' % os.path.basename(md5_dest)
+		print 'UMC Image join script : %s' % os.path.basename(umc_dest)
+		print 'Kernel                : %s' % os.path.basename(kernel_dest)
+		print 'Initrd                : %s' % os.path.basename(initrd_dest)
 		if config.get('Image', 'iso'):
-			print 'CDROM ISO Image    : %s' % iso_dest
+			print 'CDROM ISO Image       : %s' % os.path.basename(iso_dest)
 
 	_cleanup(options, workingdir, logfile_fd)
 
 	if exitcode == 100:
-		sys.exit(100)
+		logfile_fd.write('Finished WITH ERROR %s at %s\n' % (string.join(sys.argv, ' '), time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
+	else:
+		logfile_fd.write('Finished successfully %s at %s\n' % (string.join(sys.argv, ' '), time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 
-	# Sync to disk, otherwise not all data is written to the image before the hash is computed
-	subprocess.call("/bin/sync" , shell=False)
-
-	specfilename = image
-
-	if options.compress:
-		print "Compressing image"
-		subprocess.call("/usr/bin/xz " + image, shell=True)
-		image = image + ".xz"
-
-	# Create the spec file
-	print "Generating spec file"
-	spec_dest = os.path.join(targetdir, "%s.spec" % specfilename)
-	specfd = open(spec_dest, "w")
-	specfd.write("title: " + image + "\n")
-
-	specfd.write("version: " + config.get_version() + " " + str(datetime.date.isoformat(datetime.datetime.now())) + "\n")
-
-	totalsize = os.stat(image).st_size + os.stat(md5_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size
-
-	specfd.write("total-size: " + str(totalsize) + "\n")
-	specfd.write("file-img: " + os.path.basename(image)  + "\n")
-	specfd.write("file-initrd: " + os.path.basename(initrd_dest) + "\n")
-	specfd.write("file-kernel: " + os.path.basename(kernel_dest) + "\n")
-	specfd.write("file-md5: " + os.path.basename(md5_dest) + "\n")
-	specfd.write("file-reg: " + os.path.basename(umc_dest) + "\n")
-	specfd.write("hash-img: " + commands.getoutput("sha256sum " + image).split(" ")[0].strip() + "\n")
-	specfd.write("hash-initrd: " + commands.getoutput("sha256sum " + initrd_dest).split(" ")[0].strip()  + "\n")
-	specfd.write("hash-kernel: " + commands.getoutput("sha256sum " + kernel_dest).split(" ")[0].strip() + "\n")
-	specfd.write("hash-md5: " + commands.getoutput("sha256sum " + md5_dest).split(" ")[0].strip() + "\n")
-	specfd.write("hash-reg: " + commands.getoutput("sha256sum " + umc_dest).split(" ")[0].strip() + "\n")
-	specfd.close()
-
-	logfile_fd.write('Finished %s at %s\n' % (string.join(sys.argv, ' '), time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
 	logfile_fd.close()
 
 	sys.exit(exitcode)
