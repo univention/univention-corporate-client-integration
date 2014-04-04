@@ -1,3 +1,11 @@
+ucc-image-toolkit (2.0.0-6) unstable; urgency=low
+
+  * Remove ucc option from config file, base ucc packages are now
+    always installed (Bug #31634)
+  * Fix python version 
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 04 Apr 2014 13:27:27 +0200
+
 ucc-image-toolkit (2.0.0-5) unstable; urgency=low
 
   * Adjust base multiplier to 1024, same as initramfs (Bug #30063)
