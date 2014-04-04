@@ -1,4 +1,4 @@
-ucc-image-toolkit (2.0.0-6) unstable; urgency=low
+ucc-image-toolkit (2.0.0-7) unstable; urgency=low
 
   * Remove ucc option from config file, base ucc packages are now
     always installed (Bug #31634)
