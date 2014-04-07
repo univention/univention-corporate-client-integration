@@ -71,7 +71,7 @@ ASK_USERNAME=true
 ASK_DOMAIN=true
 
 # options
-while getopts 'i:uh' OPTION; do
+while getopts 'i:u:d:h' OPTION; do
 	case "$OPTION" in
 		i)
 			IMAGE="$OPTARG"
