@@ -62,9 +62,7 @@ def _run_cmd(cmd_block, fd=sys.stdout):
 	return retcode
 
 # Do some cleanup stuff
-def _cleanup(options, workingdir, logfile_fd):
-	bootstrap_dir = os.path.join(workingdir, 'bootstrap')
-
+def _umount(options, workingdir, bootstrap_dir, logfile_fd):
 	# Check if a shell exists
 	bash_bin = os.path.join(bootstrap_dir, 'bin/sh')
 	if os.path.exists(bash_bin):
@@ -109,6 +107,7 @@ def _cleanup(options, workingdir, logfile_fd):
 		# Ignore RuntimeErrors in _cleanup
 		pass
 
+def _cleanup(options, workingdir, bootstrap_dir, logfile_fd):
 	if options.cleanup:
 		# Try to remove empty debootstrap directory
 		try:
@@ -390,15 +389,7 @@ if __name__ == '__main__':
 		initrd_dest = os.path.join(workingdir, config.get('Image', 'initrd', 'ucc-image.initrd'))
 		if os.path.exists(initrd_src):
 			shutil.copy(initrd_src, initrd_dest)
-
-		# Create a md5 sum file
-		md5_dest = os.path.join(workingdir, "%s.md5" % image_name)
-		cmd = 'md5sum "%s" | sed -ne "s| .*||p" > "%s" ' % (image_file, md5_dest)
-		retcode = subprocess.call(cmd , shell=True)
-		if retcode:
-			msg = 'The command "%s" failed with the error code %d' % (cmd, retcode)
-			raise RuntimeError(msg)
-
+		
 		# Create an UMC register file
 		joinscript_prefix = "95"
 		umc_dest = os.path.join(workingdir, "%s%s.inst" % (joinscript_prefix, image_name))
@@ -502,6 +493,21 @@ menuentry 'Debug Shell' {
 			''' % {'kernel': kernel, 'initrd': initrd, 'image': image_name })
 			grub_cfg.close()
 			
+		# Sync to disk, otherwise not all data is written to the image before the hash is computed
+		subprocess.call("/bin/sync" , shell=False)
+		# Unmount the image
+		_umount(options, workingdir, bootstrap_dir, logfile_fd)
+
+		# Create a md5 sum file
+		md5_dest = os.path.join(workingdir, "%s.md5" % image_name)
+		cmd = 'md5sum "%s" | sed -ne "s| .*||p" > "%s" ' % (image_file, md5_dest)
+		retcode = subprocess.call(cmd , shell=True)
+		if retcode:
+			msg = 'The command "%s" failed with the error code %d' % (cmd, retcode)
+			raise RuntimeError(msg)
+
+		# Create ISO image
+		if config.get('Image', 'iso'):
 			if config.getboolean('Image', 'include_image_on_iso', False):
 				shutil.copy(md5_dest, cd_dir)
 				shutil.copy(image_file, cd_dir)
@@ -522,9 +528,6 @@ menuentry 'Debug Shell' {
 
 
 	if exitcode == 0:
-		# Sync to disk, otherwise not all data is written to the image before the hash is computed
-		subprocess.call("/bin/sync" , shell=False)
-
 		if options.compress:
 			print "Compressing image"
 			subprocess.call("/usr/bin/xz -v " + image_file, shell=True)
@@ -573,7 +576,7 @@ menuentry 'Debug Shell' {
 		if config.get('Image', 'iso'):
 			print 'CDROM ISO Image       : %s' % os.path.basename(iso_dest)
 
-	_cleanup(options, workingdir, logfile_fd)
+	_cleanup(options, workingdir, bootstrap_dir, logfile_fd)
 
 	if exitcode == 100:
 		logfile_fd.write('Finished WITH ERROR %s at %s\n' % (string.join(sys.argv, ' '), time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())))
