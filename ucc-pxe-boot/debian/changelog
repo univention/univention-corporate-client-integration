@@ -1,3 +1,10 @@
+ucc-pxe-boot (6.0.1-3) unstable; urgency=low
+
+  * ensure that default-settings policies/dhcp_boot policy exists 
+    (Bug #3561)
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Apr 2014 12:19:33 +0200
+
 ucc-pxe-boot (6.0.1-2) unstable; urgency=low
 
   * added ucr module for pxe configs (Bug #29904) 
