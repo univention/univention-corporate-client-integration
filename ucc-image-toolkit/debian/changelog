@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.0-10) unstable; urgency=low
+
+  * Added password paramater to ucc-image-set-join-information (Bug #31784) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 07 Apr 2014 12:47:52 +0200
+
 ucc-image-toolkit (2.0.0-9) unstable; urgency=low
 
   * Fixed parameter handling in ucc-image-set-join-information  (Bug #30601)

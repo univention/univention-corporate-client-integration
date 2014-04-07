@@ -62,29 +62,27 @@ usage () {
 	echo "     join account username, asks if not provided"
 	echo "  -d DOMAIN"
 	echo "     use provided domain name, asks if not provided"
+	echo "  -p PASSWORD"
+	echo "     use this password for domain join, asks if not provided"
 	echo "  -h"
 	echo "     show this message"
 }
 
-IMAGE=""
-ASK_USERNAME=true
-ASK_DOMAIN=true
-
 # options
-while getopts 'i:u:d:h' OPTION; do
+while getopts 'i:u:d:p:h' OPTION; do
 	case "$OPTION" in
 		i)
-			IMAGE="$OPTARG"
+			image="$OPTARG"
 			;;
 		u)
-			ASK_USERNAME=false
 			username="$OPTARG"
 			;;
 		d)
-			ASK_DOMAIN=false
 			domain="$OPTARG"
 			;;
-
+		p)
+			password="$OPTARG"
+			;;
 		h)
 			usage
 			exit 0
@@ -96,87 +94,87 @@ while getopts 'i:u:d:h' OPTION; do
 done
 
 # test
-if [ ! -e "$IMAGE" ]; then
+if [ ! -e "$image" ]; then
 	echo "No image file given" | STDERR
 	exit 1
 fi
-if ! file -b "$IMAGE" | grep -q UUID=; then
-	echo "$IMAGE is not a valid ucc image" | STDERR
+if ! file -b "$image" | grep -q UUID=; then
+	echo "$image is not a valid ucc image" | STDERR
 	exit 1
 fi
 
 # is image already mounted?
-imageUUID="$(blkid -s UUID -o value "$IMAGE")"
+imageUUID="$(blkid -s UUID -o value "$image")"
 if [ -z "$imageUUID" ]; then
-	echo "failed to get uuid from image $IMAGE" | STDERR
+	echo "failed to get uuid from image $image" | STDERR
 fi
 for loop in $(more /etc/mtab | grep '/dev/loop'| awk '{print $1}'); do
 	if [ -b "$loop" ]; then
 		uuid="$(blkid -s UUID -o value "$loop")" 
 		if [ -n "$uuid" -a "$imageUUID" = "$uuid" ]; then
-			echo "image $IMAGE seems to be mounted on $loop" | STDERR
+			echo "image $image seems to be mounted on $loop" | STDERR
 			exit 1
 		fi
 	fi
 done
 
-# get username if needed
-if $ASK_USERNAME; then
-	read -p "Username:" username
-fi
-
+# get username if needed 
 if [ -z "$username" ]; then
-	echo "no username provided" | STDERR
-	exit 1
-fi
-
-# ask for password
-read -s -p "Password:" password
-echo ""
-read -s -p "Verify password:" passwordV2
-echo ""
-if [ ! "$password" = "$passwordV2" ]; then
-	echo "Sorry, passwords do not match." | STDERR
-	exit 1
-fi
-
-if [ -z "$password" ]; then
-	echo "no password to set" | STDERR
-	exit 1
+	read -p "Username:" username
+	if [ -z "$username" ]; then
+		echo "no username provided" | STDERR
+		exit 1
+	fi
 fi
 
 # get domain if needed
-if $ASK_DOMAIN; then
+if [ -z "$domain" ]; then
 	read -p "Domain:" domain
+	if [ -z "$domain" ]; then
+		echo "no username provided" | STDERR
+		exit 1
+	fi
 fi
 
-if [ -z "$domain" ]; then
-	echo "no domain provided" | STDERR
-	exit 1
+# ask for password if needed
+if [ -z "$password" ]; then
+	read -s -p "Password:" password
+	echo ""
+	read -s -p "Verify password:" passwordV2
+	echo ""
+	if [ ! "$password" = "$passwordV2" ]; then
+		echo "Sorry, passwords do not match." | STDERR
+		exit 1
+	fi
+	if [ -z "$password" ]; then
+		echo "no password to set" | STDERR
+		exit 1
+	fi
 fi
+
 
 # do it
 mountDir="$(mktemp -d)"
-mount -o loop "$IMAGE" "$mountDir"
+mount -o loop "$image" "$mountDir"
 
 chroot "$mountDir" sh -c "touch /etc/ucc_join_user; chmod 440 /etc/ucc_join_user"
 chroot "$mountDir" sh -c "echo $username > /etc/ucc_join_user"
 if [ ! $? -eq 0 ]; then
-	"failed to set join username in $IMAGE" | STDERR
+	"failed to set join username in $image" | STDERR
 	exit 1
 fi
 
 chroot "$mountDir" sh -c "touch /etc/ucc_join_password; chmod 440 /etc/ucc_join_password"
 chroot "$mountDir" sh -c "echo $password > /etc/ucc_join_password"
 if [ ! $? -eq 0 ]; then
-	"failed to set join password in $IMAGE" | STDERR
+	"failed to set join password in $image" | STDERR
 	exit 1
 fi
 
 chroot "$mountDir" sh -c "touch /etc/ucc_join_domain; chmod 440 /etc/ucc_join_domain"
 chroot "$mountDir" sh -c "echo $domain > /etc/ucc_join_domain"
 if [ ! $? -eq 0 ]; then
-	"failed to set join domain in $IMAGE" | STDERR
+	"failed to set join domain in $image" | STDERR
 	exit 1
 fi
 
