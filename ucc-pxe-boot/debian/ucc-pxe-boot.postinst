@@ -40,6 +40,17 @@ if [ "$1" = "configure" -a -x /etc/init.d/univention-directory-listener ]; then
 	/etc/init.d/univention-directory-listener crestart
 fi
 
+# update
+if [ "$1" = "configure" -a -n "$2" ]; then
+
+	if dpkg --compare-versions "$2" lt-nl "6.0.1-5"; then
+		univention-config-registry unset \
+			ucc/pxe/ldapserver \
+			ucc/pxe/nameserver \
+			ucc/pxe/ldapport
+	fi
+fi
+
 univention-config-registry set \
 	ucc/pxe/nfsroot?$(get_default_ip_address) \
 	ucc/pxe/append?"syslog=y syslogserver=$(get_default_ip_address)" \
