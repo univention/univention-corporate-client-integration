@@ -39,10 +39,10 @@ def update_nfs_root (line, changes):
 	if type(changes.get('ucc/pxe/nfsroot')) == type(()):
 		old, new = changes.get('ucc/pxe/nfsroot', (False, False))
 		if not old == new:
-			line = re.sub("(^| )nfsroot=[^:]+:/var/lib/univention-client-root($| )", " ", line)
+			line = re.sub("(^| )nfsroot=[^:]+:/var/lib/univention-client-boot($| )", " ", line)
 			if new:
 				line = line.rstrip()
-				line = line + " nfsroot=%s:/var/lib/univention-client-root" % new
+				line = line + " nfsroot=%s:/var/lib/univention-client-boot" % new
 	return line
 
 def update_append(line, changes):
