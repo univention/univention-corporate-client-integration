@@ -1,3 +1,9 @@
+ucc-management-integration (2.0.2-1) unstable; urgency=low
+
+  * added wizard for UCC computer creation (Bug #32942)
+
+ -- Lukas Walter <walter@univention.de>  Wed, 09 Apr 2014 13:58:57 +0200
+
 ucc-management-integration (2.0.1-2) unstable; urgency=low
 
   * Update translation (Bug #32433)
