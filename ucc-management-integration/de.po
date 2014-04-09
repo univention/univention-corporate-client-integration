@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-13 10:43+0100\n"
+"POT-Creation-Date: 2014-04-09 10:04+0200\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -453,7 +453,7 @@ msgstr ""
 
 #: modules/settings/ucc_image.py:47
 msgid "UCC images"
-msgstr "UCC Image"
+msgstr "UCC-Image"
 
 #: modules/settings/ucc_image.py:54
 msgid "Image name"
@@ -475,8 +475,11 @@ msgstr "Server"
 msgid "The image is available on these servers"
 msgstr "Das Image ist auf diesen Servern verfügbar"
 
-#: modules/settings/ucc_image.py:87 modules/settings/ucc_session.py:47
-#: modules/settings/ucc_session.py:87
+#: modules/settings/ucc_image.py:87
+msgid "UCC image"
+msgstr "UCC Image"
+
+#: modules/settings/ucc_session.py:47 modules/settings/ucc_session.py:87
 msgid "UCC session script"
 msgstr "UCC-Sitzungsskript"
 
