@@ -61,7 +61,7 @@ define([
 				widget.type = 'ComboBox';
 				widget.umcpCommand = this.umcpCommand;
 				widget.dynamicValues = 'udm/syntax/choices';
-				widget.dynamicOptions = {'syntax': 'ucc'+widgetName.charAt().toUpperCase()+widgetName.substr(1)};
+				widget.dynamicOptions = {'syntax': {'image':'uccImage', 'boot':'uccBoot'}[widgetName]};
 			}
 			return widget;
 		}
