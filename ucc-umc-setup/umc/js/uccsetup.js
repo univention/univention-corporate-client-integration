@@ -50,7 +50,7 @@ define([
 	"./uccsetup/RadioButton",
 	"umc/i18n!umc/modules/uccsetup"
 ], function(declare, lang, array, on, topic, styles, dialog, tools, Page, Form, ExpandingTitlePane, Module, TextBox, CheckBox, ComboBox, Uploader, Text, Wizard, RadioButton, _) {
-	styles.insertCssRule('.umc-uccsetup-wizard-indent', 'margin-left: 26px;');
+	styles.insertCssRule('.umc-uccsetup-wizard-indent', 'margin-left: 27px;');
 //	var modulePath = require.toUrl('umc/modules/uccsetup');
 //	styles.insertCssRule('.umc-uccsetup-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
 //	styles.insertCssRule('.umc-uccsetup-page .umcLabelPaneCheckBox', 'display: block !important;');
@@ -76,20 +76,19 @@ define([
 				helpText: _('<p>Welcome to the setup wizard of Univention Corporate Client (UCC).</p><p>UCC provides support for fully-featured Linux desktop systems running KDE (both stationary and notebooks) as well as support for Linux-based thin clients and access to terminal servers (Windows, Citrix XenApp, XRDP).</p>'),
 				widgets: [{
 					type: CheckBox,
-					radioButtonGroup: 'config',
 					name: 'fatclient',
-					label: _('Configure support for Linux desktop systems'),
+					label: _('<b>Linux desktop systems configuration</b>'),
 					labelConf: { style: 'margin-top: 0'	}
 				}, {
 					type: Text,
 					name: 'helpFatclient',
-					content: ('Linux desktops are installed via PXE netboot within only a few minutes. For this, 20 GBs of hard disk space and 1 GB RAM are required on the client computers.'),
+					content: ('<p>Linux desktops are installed via PXE netboot within only a few minutes. For this, 20 GBs of hard disk space and 1 GB RAM are required on the client computers.</p>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}, {
 					type: CheckBox,
-					radioButtonGroup: 'config',
 					name: 'thinclient',
-					label: _('Configure support for terminal services')
+					label: _('<b>Terminal services configuration</b>'),
+					labelConf: { style: 'margin-top: 1.25em;' }
 				}, {
 					type: Text,
 					name: 'helpThinclient',
@@ -135,7 +134,7 @@ define([
 				}, {
 					type: ComboBox,
 					name: 'existingNetwork',
-					staticValues: [{id: 'default', label: '10.200.26.2 - 10.200.26.254'}],
+					dynamicValues: 'uccsetup/info/networks',
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}, {
 					type: RadioButton,
@@ -146,23 +145,27 @@ define([
 					type: TextBox,
 					name: 'newNetworkAddress',
 					label: _('Network'),
+					required: true,
 					disabled: true,
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}, {
 					type: TextBox,
 					name: 'newNetmask',
 					label: _('Netmask'),
+					required: true,
 					disabled: true
 				}, {
 					type: TextBox,
 					name: 'newFirstIP',
 					label: _('First IP address'),
+					required: true,
 					disabled: true,
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}, {
 					type: TextBox,
 					name: 'newLastIP',
 					label: _('Last IP address'),
+					required: true,
 					disabled: true
 				}]
 			}, {
@@ -173,7 +176,7 @@ define([
 					type: TextBox,
 					name: 'gateway',
 					label: _('Default gateway'),
-					value: '192.168.0.1'
+					required: true
 				}]
 			}, {
 				name: 'terminalServices-thinclient',
@@ -300,9 +303,11 @@ define([
 			}];
 		},
 
-		buildRendering: function() {
-			this.inherited(arguments);
-			var syncmodeWidget = this.getWidget('start', 'syncmode');
+		_queryDefaultGateway: function() {
+			tools.umcpCommand('uccsetup/info/gateway').then(lang.hitch(this, function(response) {
+				var gatewayWidget = this.getWidget('gateway', 'gateway');
+				gatewayWidget.set('value', response.result);
+			}));
 		},
 
 		_watchNetworkRadioButtons: function() {
@@ -321,6 +326,7 @@ define([
 			}));
 		},
 
+		// apply config properties (esp. CSS styling) to label widgets
 		_setLabelConf: function() {
 			array.forEach(this.pages, function(ipageConf) {
 				array.forEach(ipageConf.widgets, function(iwidgetConf) {
@@ -336,6 +342,7 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
+			this._queryDefaultGateway();
 			this._watchNetworkRadioButtons();
 			this._setLabelConf();
 		},

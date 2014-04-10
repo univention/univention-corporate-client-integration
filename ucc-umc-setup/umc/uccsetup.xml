@@ -8,7 +8,7 @@
 	  <category name="system"/>
 	</categories>
 
-	<command name="uccsetup/configuration" function="configuration"/>
-	<command name="uccsetup/send" function="send"/>
+	<command name="uccsetup/info/networks" function="info_networks"/>
+	<command name="uccsetup/info/gateway" function="info_gateway"/>
   </module>
 </umc>
