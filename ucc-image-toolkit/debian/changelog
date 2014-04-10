@@ -1,3 +1,13 @@
+ucc-image-toolkit (2.0.0-12) unstable; urgency=low
+
+  * Added new option for ucc-image: -e or --external-cache creates tmpfs
+    links to apt cache directories, which reduces used space inside the
+    ucc image during generation. Thereby, smaller image sizes can be created
+    (Bug #31942)
+  * ucc-image cleanup, improved error handling
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 10 Apr 2014 17:23:35 +0200
+
 ucc-image-toolkit (2.0.0-11) unstable; urgency=low
 
   * Fix call order during image generation: Unmount the image at the correct
