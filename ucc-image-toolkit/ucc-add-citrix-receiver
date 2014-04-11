@@ -1,0 +1,125 @@
+#!/usr/bin/python2.6
+# -*- coding: utf-8 -*-
+#
+# Univention Corporate Client
+#  Tool to install the Citrix Receiver into a UCC image
+#
+# Copyright (C) 2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+import optparse, tempfile, subprocess, os, sys, commands
+
+parser = optparse.OptionParser()
+
+# Return codes
+# 0 Success
+# 1 Insufficient arguments
+# 2 Image file not found
+# 3 DEB file not found
+# 4 Image mount failed
+# 5 Installation of Citrix Receiver failed
+# 6 Wrong architecture
+	
+
+
+def chroot_cmd(cmd):
+	return subprocess.call('chroot ' + mntpoint + ' ' + cmd, shell=True, stdout=logfile, stderr=logfile)
+
+def cmd(cmd):
+	return subprocess.call(cmd, shell=True, stdout=logfile, stderr=logfile)
+
+def log(msg):
+	print msg
+	logfile.write(msg + "\n")
+
+def cleanup():
+	log("Cleaning up")
+	if os.path.exists(os.path.join(mntpoint, opt.deb)):
+		os.remove(os.path.join(mntpoint, opt.deb))
+	cmd('umount ' + mntpoint)
+
+# if commands.getoutput('dpkg --print-architecture') != 'i386':
+# 	print "The installation can only occur on a i386 system"
+# 	sys.exit(6)
+
+parser.add_option("-i", "--uccimage", dest="image", action="store", help="The UCC image into which the Debian package should be installed")
+parser.add_option("-d", "--debpackage", dest="deb", action="store", help="The Debian package to be installed into the UCC image")
+
+opt, args = parser.parse_args()
+
+if not opt.image:
+	print 'No image was specified: --uccimage'
+	sys.exit(1)
+
+if not opt.deb:
+	print 'No DEB package was specified: --debpackage'
+	sys.exit(1)
+
+if not os.path.exists(opt.image):
+	print "Image file " + opt.image + ' not found.'
+	sys.exit(2)
+
+if not os.path.exists(opt.deb):
+	print "DEB file file " + opt.deb + ' not found.'
+	sys.exit(3)
+
+mntpoint=tempfile.mkdtemp()
+
+logfile = open("/var/log/univention/citrix-install.log", "w", 0)
+log("Adding Citrix Receiver to the UCC image, see /var/log/univention/citrix-install.log for more details")
+if cmd('mount -o loop /var/lib/univention-client-boot/' + opt.image + ' ' + mntpoint) == 2:
+	log("Mounting the image failed, maybe you don't have free loop devices")
+	sys.exit(4)
+else:
+	log("Mounting image")
+
+f = open(os.path.join(mntpoint, "check-ica-state.sh"), "w")
+f.write("LC_ALL=C dpkg-query -W  -f='${Status}' icaclient | grep -q installed")
+f.close()
+if chroot_cmd('bash ./check-ica-state.sh') == 0:
+	log("Citrix Receiver already installed in chroot")
+	cleanup()
+	sys.exit(0)
+
+log("Copying Receiver package")
+cmd('cp ' + opt.deb + ' ' + mntpoint)
+
+log("Installing dependencies")
+chroot_cmd('apt-get update')
+chroot_cmd('apt-get --force-yes --assume-yes install univention-ucc-session-xenapp')
+
+log("Installing Citrix Receiver")
+chroot_cmd('dpkg -i ' + os.path.basename(opt.deb))
+chroot_cmd('sync')
+
+if chroot_cmd('bash ./check-ica-state.sh') != 0:
+	log("Installation of Citrix Receiver failed, please result the logfile")
+	cleanup()
+	sys.exit(5)
+
+#cleanup()
+
