@@ -36,10 +36,10 @@ override_dh_auto_test:
 	dh_auto_test
 
 override_dh_auto_build:
-#	/usr/sbin/ucc-image -c /usr/share/doc/ucc-image-toolkit/example/ucc-thinclient.cfg -t . -l ucc-thinclient.log
-#	cat ucc-thinclient.log
 	## /usr/sbin/ucc-image -c /usr/share/doc/ucc-image-toolkit/example/ucc-desktop.cfg -t . -l ucc-desktop.log
 	## cat ucc-desktop.log
+	/usr/sbin/ucc-image -c /usr/share/doc/ucc-image-toolkit/example/ucc-thinclient.cfg -t . -l ucc-thinclient.log
+	cat ucc-thinclient.log
 	dh_auto_build
 
 %:
