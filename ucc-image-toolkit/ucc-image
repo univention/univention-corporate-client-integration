@@ -322,6 +322,9 @@ if __name__ == '__main__':
 
 		fd.close()
 
+		cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'mount', '-t', 'proc', 'proc', 'proc']
+		_run_cmd(cmd_block, logfile_fd)
+
 		cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'apt-get', 'update']
 		_run_cmd(cmd_block, logfile_fd)
 		_print_done()
@@ -345,9 +348,6 @@ if __name__ == '__main__':
 			cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'usermod', '-p', config.get('General', 'root_password'), 'root']
 			_run_cmd(cmd_block, logfile_fd)
 			_print_done()
-
-		cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'mount', '-t', 'proc', 'proc', 'proc']
-		_run_cmd(cmd_block, logfile_fd)
 
 		shutil.copy('/etc/resolv.conf', os.path.join(bootstrap_dir, 'etc'))
 

@@ -1,3 +1,11 @@
+ucc-image-toolkit (2.0.0-13) unstable; urgency=low
+
+  * Mount of /proc earlier; if updated packages are installed which required a
+    mounted /proc (e.g. udev), the image build breaks
+  * Add univention-ucc-bootstrap to default configurations (Bug #33782)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 11 Apr 2014 12:49:29 +0200
+
 ucc-image-toolkit (2.0.0-12) unstable; urgency=low
 
   * Added new option for ucc-image: -e or --external-cache creates tmpfs
