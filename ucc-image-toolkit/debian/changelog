@@ -1,3 +1,11 @@
+ucc-image-toolkit (2.0.0-16) unstable; urgency=low
+
+  * Use the new univention-ucc-i18n-* meta packages in the desktop image (Bug #34517)
+  * Remove default-jre, already pulled in through the kubuntu-desktop package
+  * Update Gstreamer dependencies needed for MP3 playback in Amarok
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 14 Apr 2014 10:35:46 +0200
+
 ucc-image-toolkit (2.0.0-15) unstable; urgency=low
 
   * Reenable Flash plugin and bump image version (Bug #34487)
