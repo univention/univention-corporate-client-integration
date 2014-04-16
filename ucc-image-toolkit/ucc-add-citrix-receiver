@@ -60,7 +60,10 @@ def cleanup():
 	log("Cleaning up")
 	if os.path.exists(os.path.join(mntpoint, opt.deb)):
 		os.remove(os.path.join(mntpoint, opt.deb))
-	cmd('umount ' + mntpoint)
+		
+	if os.path.exists(mntpoint):
+		subprocess.call('sync', shell=True)
+		subprocess.call('umount ' + mntpoint, shell=True)
 
 # if commands.getoutput('dpkg --print-architecture') != 'i386':
 # 	print "The installation can only occur on a i386 system"
@@ -97,13 +100,13 @@ if cmd('mount -o loop /var/lib/univention-client-boot/' + opt.image + ' ' + mntp
 else:
 	log("Mounting image")
 
-f = open(os.path.join(mntpoint, "check-ica-state.sh"), "w")
-f.write("LC_ALL=C dpkg-query -W  -f='${Status}' icaclient | grep -q installed")
-f.close()
-if chroot_cmd('bash ./check-ica-state.sh') == 0:
-	log("Citrix Receiver already installed in chroot")
-	cleanup()
-	sys.exit(0)
+# f = open(os.path.join(mntpoint, "check-ica-state.sh"), "w")
+# f.write("LC_ALL=C dpkg-query -W  -f='${Status}' icaclient | grep -q installed")
+# f.close()
+# if chroot_cmd('bash ./check-ica-state.sh') == 0:
+# 	log("Citrix Receiver already installed in chroot")
+# 	cleanup()
+# 	sys.exit(0)
 
 log("Copying Receiver package")
 cmd('cp ' + opt.deb + ' ' + mntpoint)
@@ -113,13 +116,19 @@ chroot_cmd('apt-get update')
 chroot_cmd('apt-get --force-yes --assume-yes install univention-ucc-session-xenapp')
 
 log("Installing Citrix Receiver")
-chroot_cmd('dpkg -i ' + os.path.basename(opt.deb))
-chroot_cmd('sync')
-
-if chroot_cmd('bash ./check-ica-state.sh') != 0:
+if chroot_cmd('dpkg -i ' + os.path.basename(opt.deb)) != 0:
 	log("Installation of Citrix Receiver failed, please result the logfile")
 	cleanup()
 	sys.exit(5)
 
-#cleanup()
+chroot_cmd('sync')
+cmd('sync')
+
+log("Generating hash value")
+cmd = 'md5sum "%s" | sed -ne "s| .*||p" > "%s" ' % (opt.image, opt.image+".md5")
+if subprocess.call(cmd, shell=True):
+	log("Generation of hash value failed")
+	sys.exit(6)
+
+cleanup()
 
