@@ -32,6 +32,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.uldap
+import ldap
 import optparse
 import shutil
 import sys
