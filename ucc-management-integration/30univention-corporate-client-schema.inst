@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 NAME="univention-corporate-client-schema"
 
@@ -145,6 +145,20 @@ univention-directory-manager settings/ucc_session create "$@" --position "cn=Ses
 							--set name="LXDE" \
 							--set session="LXDE" \
 							--set description="LXDE desktop session" || die
+
+if joinscript_check_version_in_range_executed 1 2; then
+	/usr/share/ucc-management-integration/ucc-management-migrate-repartition-flag "$@" -d
+	if [ $? -ne 0 ]; then
+		echo "ERROR: Dry run for migration script did not complete successfully, aborting."
+		echo "       Check for logged errors and call the joinscript again."
+		echo "       Run /usr/share/ucc-management-integration/ucc-management-migrate-repartition-flag -dv"
+		echo "       for more debug output."
+		die
+	fi
+
+	# Migrate partition flag
+	/usr/share/ucc-management-integration/ucc-management-migrate-repartition-flag "$@" -v
+fi
 
 joinscript_save_current_version
 

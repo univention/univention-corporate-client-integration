@@ -40,7 +40,8 @@ class uccBoot(univention.admin.syntax.select):
     choices=[
         ('overlayfs', _('Live system')),
         ('none', _('Image boot without update check')),
-        ('rollout', _('Image boot with update check / Initial installation')),
+        ('rollout', _('Image boot with update check')),
+        ('repartition', _('Installation with repartitioning and image rollout')),
     ]
 
 class uccImage(univention.admin.syntax.UDM_Objects):

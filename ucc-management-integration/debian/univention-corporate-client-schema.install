@@ -1,2 +1,3 @@
 schema/univention-corporate-client.schema /usr/share/univention-corporate-client-schema/
 30univention-corporate-client-schema.inst /usr/lib/univention-install/
+scripts/ucc-management-migrate-repartition-flag usr/share/ucc-management-integration
