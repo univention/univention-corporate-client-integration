@@ -1,4 +1,4 @@
-ucc-management-integration (2.0.4-1) unstable; urgency=low
+ucc-management-integration (2.0.4-2) unstable; urgency=low
 
   * Remove repartition flag from ucc image settings (Bug #30466)
   * Add repartition option as boot variant (Bug #30466)
