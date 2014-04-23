@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-23 10:44+0200\n"
+"POT-Creation-Date: 2014-04-23 14:05+0200\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -501,7 +501,7 @@ msgstr "Image-Boot mit Update-Prüfung"
 
 #: modules/syntax.d/ucc.py:44
 msgid "Installation with repartitioning and image rollout"
-msgstr "Installation mit Neupartitionierung und Image Rollout"
+msgstr "Installation mit Neupartitionierung und Image-Rollout"
 
 #: modules/syntax.d/ucc.py:75
 msgid "Variable"
