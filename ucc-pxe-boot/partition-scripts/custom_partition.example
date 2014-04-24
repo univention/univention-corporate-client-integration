@@ -1,0 +1,129 @@
+#!/bin/sh
+#
+# Copyright (C) 2012-2014 Univention GmbH
+#
+# http://www.univention.de/
+#
+# All rights reserved.
+#
+# The source code of this program is made available
+# under the terms of the GNU Affero General Public License version 3
+# (GNU AGPL V3) as published by the Free Software Foundation.
+#
+# Binary versions of this program provided by Univention to you as
+# well as other copyrighted, protected or trademarked materials like
+# Logos, graphics, fonts, specific documentations and configurations,
+# cryptographic keys etc. are subject to a license agreement between
+# you and Univention and not subject to the GNU AGPL V3.
+#
+# In the case you use this program under the terms of the GNU AGPL V3,
+# the program is provided in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public
+# License with the Debian GNU/Linux or Univention distribution in file
+# /usr/share/common-licenses/AGPL-3; if not, see
+# <http://www.gnu.org/licenses/>.
+
+set -x
+
+# Get device
+partition_device="$1"
+
+password=""
+swap_lvm_size="-L2G"
+root_lvm_size="-L15G"
+home_lvm_size="-l100%FREE"
+
+plymouth --ping && plymouth message --text="Starting partitioning with script custom_partition.example"
+# ask for password
+while true; do
+        pwd1="$(plymouth ask-for-password --prompt="Insert password to use for hard disk encryption:")"
+        pwd2="$(plymouth ask-for-password --prompt="Repeat the password:")"
+        if [ -n "$pwd1" -a -n "$pwd2" -a "$pwd1" = "$pwd2" ]; then
+		password="$pwd1"
+                break
+        fi
+        plymouth message --text="No password or password mismacht"
+done
+plymouth message --text="OK, continuing partitioning"
+
+# remove lvms and crypt device
+lvm vgchange -an
+lvm pvdisplay | sed -n 's/ *PV Name *//p' > /tmp/pvs
+while read line; do
+	lvm pvremove -ff -y $line
+done < /tmp/pvs
+cryptsetup close "crypt"
+
+# Create GPT
+parted --script "${partition_device}" mklabel GPT
+
+# Create msdos partition table
+#parted --script "${partition_device}" mklabel msdos
+
+# Create partitions
+parted --script --align optimal "${partition_device}" mkpart primary 0% 50MB # BIOS boot
+parted --script "${partition_device}" set 1 bios_grub on
+parted --script --align optimal "${partition_device}" mkpart primary 51MB 500MB # /boot
+parted --script --align optimal "${partition_device}" mkpart primary 501MB 100% # LVM
+
+# Create luks container
+echo -n "$password" | cryptsetup --key-file - luksFormat "${partition_device}3"
+ 
+# Open luks container
+echo -n "$password" | cryptsetup --key-file - luksOpen "${partition_device}3" "crypt"
+ 
+# Create PV
+lvm pvcreate /dev/mapper/crypt
+ 
+# Create volume group
+lvm vgcreate vg_ucc /dev/mapper/crypt
+ 
+# Create swap
+lvm lvcreate ${swap_lvm_size} -n swap vg_ucc
+mkswap /dev/mapper/vg_ucc-swap
+
+# Create  /
+lvm lvcreate ${root_lvm_size} -n rootfs vg_ucc
+mkfs.ext4 -q /dev/mapper/vg_ucc-rootfs
+
+# Create /home
+lvm lvcreate ${home_lvm_size} -n home vg_ucc
+mkfs.ext4 -q -m0 /dev/mapper/vg_ucc-home
+ 
+# Create boot filesystem
+/sbin/mkfs.ext4 -q "${partition_device}2"
+
+# Mount the root filesystem
+mkdir -p /ucc_tmp/root
+mount /dev/mapper/vg_ucc-rootfs /ucc_tmp/root
+
+# Mark device as root device
+touch /ucc_tmp/root/ucc_root_device
+
+# Create fstab file
+echo "/dev/loop0    /   ext4   errors=remount-ro   0   1" >>/ucc_tmp/fstab
+echo "${partition_device}2     /boot ext4 defaults    0   2" >>/ucc_tmp/fstab
+echo "/dev/mapper/vg_ucc-swap    swap    swap    0    0" >>/ucc_tmp/fstab
+echo "/dev/mapper/vg_ucc-home    /home    ext4    defaults    0    2" >>/ucc_tmp/fstab
+
+# Copy files from the image to the boot partition
+echo "${partition_device}2 ext4 /boot" >> /ucc_tmp/root/copy_files
+
+# Create a script which sets set cryptopts in grub
+cat >/ucc_tmp/root/customer.script <<__H1__
+cat >/root/grub_append.sh <<'__H2__'
+#!/bin/sh
+ucr set grub/append="\$(ucr get grub/append) cryptopts=target=crypt,source=${partition_device}3,lvm=vg_ucc-rootfs resume=/dev/mapper/vg_ucc-swap"
+__H2__
+chmod +x /root/grub_append.sh
+chroot root ./grub_append.sh
+rm /root/grub_append.sh
+__H1__
+
+return 0
+
+exit 0

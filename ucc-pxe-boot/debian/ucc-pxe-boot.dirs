@@ -1,1 +1,2 @@
 var/log/univention/ucc-clients
+var/lib/univention-client-boot/partition-scripts
