@@ -42,7 +42,6 @@ parser = optparse.OptionParser()
 # 3 DEB file not found
 # 4 Image mount failed
 # 5 Installation of Citrix Receiver failed
-# 6 Wrong architecture
 	
 
 

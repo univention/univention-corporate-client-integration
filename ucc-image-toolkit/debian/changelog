@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.0-18) unstable; urgency=low
+
+  * Switch the UCC configurations to the official Univention mirror
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 24 Apr 2014 08:31:26 +0200
+
 ucc-image-toolkit (2.0.0-17) unstable; urgency=low
 
   * Add ucc-image-add-citrix-receiver. It allows the easy installation of the Citrix
