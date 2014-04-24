@@ -55,17 +55,28 @@ def _run_cmd(cmd_block, fd=sys.stdout):
 	fd.flush()
 	retcode = subprocess.call(cmd_block, shell=False, env=env, stdout=fd, stderr=fd)
 	if retcode:
-		fd.write('The command "%s" failed with the error code %d' % (string.join(cmd_block), retcode))
+		fd.write('The command "%s" failed with the error code %d\n' % (string.join(cmd_block), retcode))
 		msg = 'The command "%s" failed with the error code %d' % (string.join(cmd_block), retcode)
 		raise RuntimeError(msg)
 	return retcode
 
+
 def _mount(options, workingdir, bootstrap_dir, logfile_fd):
 	global _image_is_mounted
+	global _loopback_device
 
 	cmd_block = ['mount', '-o', 'loop', image_file, bootstrap_dir]
 	_run_cmd(cmd_block, logfile_fd)
 	_image_is_mounted = True
+
+	# Find the loopback device
+	try:
+		losetup_output = subprocess.Popen(['losetup', '-j', '%s' % image_file], shell=False, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[0]
+		# losetup out is e.g. '/dev/loop0: [fd00]:3670023 (/tmp/tmp1SpN2Y/ucc-2.0-alpha4-thinclient-image.img)'
+		_loopback_device = losetup_output.split(" ")[0].replace(":", "")
+	except subprocess.CalledProcessError, e:
+		logfile_fd.write("Failed to get the used loopback device: %s" % e)
+		raise RuntimeError(str(e))
 
 	if options.use_cache:
 		# create a ramdisk to use as cache for /var/lib/apt/lists and /var/cache/apt
@@ -81,8 +92,10 @@ def _mount(options, workingdir, bootstrap_dir, logfile_fd):
 		_run_cmd(cmd_block, logfile_fd)
 		os.makedirs(os.path.join(cache_path, 'partial'))
 
+
 def _umount(options, workingdir, bootstrap_dir, logfile_fd):
 	global _image_is_mounted
+	global _loopback_device
 
 	# Check if a shell exists
 	bash_bin = os.path.join(bootstrap_dir, 'bin/sh')
@@ -130,12 +143,22 @@ def _umount(options, workingdir, bootstrap_dir, logfile_fd):
 			cmd_block = ['umount', cache_path]
 			_run_cmd(cmd_block, logfile_fd)
 
+		# Stop all services that may have been started in the chroot
+		# to close all references to the loopback device
+		try:
+			cmd_block = ['fuser', '-k', '-m', '%s' % _loopback_device]
+			_run_cmd(cmd_block, logfile_fd)
+		except RuntimeError:
+			# ignore: If no process uses the loopback devive, fuser return code will be 1
+			pass
+
 		cmd_block = ['/bin/umount', '-l', bootstrap_dir]
 		_run_cmd(cmd_block, logfile_fd)
 		_image_is_mounted = False
 	except RuntimeError:
 		# Ignore RuntimeErrors in _cleanup
 		pass
+
 
 # Do some cleanup stuff
 def _cleanup(options, workingdir, bootstrap_dir, logfile_fd):
@@ -162,6 +185,7 @@ def _cleanup(options, workingdir, bootstrap_dir, logfile_fd):
 			except OSError:
 				pass
 
+
 class Parser(ConfigParser.ConfigParser):
 	def get(self, section, option, default=None):
 		if not self.has_section(section):
@@ -179,16 +203,21 @@ class Parser(ConfigParser.ConfigParser):
 
 	def get_mirror(self):
 		return self.get('Software', 'mirror', 'http://ucc.software-univention.de/')
+
 	def get_version(self):
 		return self.get('General', 'version', 'trusty')
+
 	def get_hostname(self):
 		return config.get('General', 'hostname', 'ucc')
+
 	def get_domainname(self):
 		return config.get('General', 'domainname', 'local')
+
 
 def _print_process(msg):
 	print '%-65s' % msg,
 	sys.stdout.flush()
+
 
 def _print_done(msg='done'):
 	print '%s' % msg
@@ -230,6 +259,7 @@ if __name__ == '__main__':
 	# State variables, used for cleanup
 	_remove_tempdir = False
 	_image_is_mounted = False
+	_loopback_device = ""
 
 	_print_process('Creating working directory')
 
@@ -377,10 +407,13 @@ if __name__ == '__main__':
 				_print_done()
 
 		if config.has_section('Configuration'):
+			_print_process('Applying UCR settings')
 			for line in config.get('Configuration', 'ucr_variables', None).split('\n'):
 				if line:
 					cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'ucr', 'set', line]
 					_run_cmd(cmd_block, logfile_fd)
+
+			_print_done()
 
 		# revert initctl divert
 		cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'rm', '/sbin/initctl']
