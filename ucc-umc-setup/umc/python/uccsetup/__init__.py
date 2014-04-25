@@ -36,18 +36,23 @@ from univention.management.console.modules.decorators import simple_response, sa
 from univention.management.console.modules.sanitizers import StringSanitizer
 
 import univention.admin.modules as udm_modules
-import univention.admin.uldap as udm_uldap
-udm_modules.update()
+import univention.admin.objects as udm_objects
 
 from univention.lib.i18n import Translation
 
+import util
+
 _ = Translation( 'ucc-umc-setup' ).translate
 
+
 class Instance(Base):
+	def init(self):
+		util.set_credentials(self._user_dn, self._password)
+
 	@simple_response
 	def info_networks(self):
-		lo, po = udm_uldap.getMachineConnection()
-		networks = udm_modules.lookup('networks/network', None, lo, base=ucr['ldap/base'], scope='sub')
+		ldap_connection = util.get_ldap_connection()
+		networks = udm_modules.lookup('networks/network', None, ldap_connection, base=ucr['ldap/base'], scope='sub')
 		result = []
 		for inet in networks:
 			ilabel = '{name} ({network})'.format(**inet.info)
@@ -58,5 +63,75 @@ class Instance(Base):
 		return result
 
 	@simple_response
-	def info_gateway(self):
-		return ucr.get('gateway')
+	def info_ucc_images(self):
+		ldap_connection = util.get_ldap_connection()
+		images = udm_modules.lookup('settings/ucc_image', None, ldap_connection, base=ucr['ldap/base'], scope='sub')
+		result = []
+		for iimg in images:
+			result.append({
+				'id': iimg.dn,
+				'label': iimg['name'],
+			})
+		return result
+
+	@simple_response
+	def info(self):
+		ldap_connection = util.get_ldap_connection()
+		dhcp_routing_obj = util.get_dhcp_routing_policy(ldap_connection)
+		ucr_policy_obj = udm_objects.get(udm_modules.get('policies/registry'), None, ldap_connection, None, util.UCR_VARIABLE_POLICY_DN)
+		return {
+			'gateway': ucr.get('gateway'),
+			'dhcp_routing_policy': dhcp_routing_obj and dhcp_routing_obj.dn,
+			'ucr_policy_exists': ucr_policy_obj.exists(),
+			#TODO: return images that already exist
+		}
+
+	@simple_response
+	def upload_deb(self):
+		# TODO: handle upload of .deb package for Xen Retriever
+		pass
+
+	@simple_response
+	def apply(self, gateway=None, rdp={}, citrix={}, thinclient=False, fatclient=False, downloadThinClientImage=False, downloadFatClientImage=False, network={}, browser={}, defaultSession=None):
+		ldap_connection = util.get_ldap_connection()
+
+		#TODO: create network obj
+		#TODO: make sure that the network obj is linked to the DHCP service
+
+		# DHCP routing policy for gateway
+		dhcp_routing_obj = util.get_dhcp_routing_policy(ldap_connection)
+		if not dhcp_routing_obj and gateway:
+			util.set_dhcp_routing(gateway, ldap_connection)
+
+		ucr_variables = {}
+		if rdp:
+			# RDP terminal server + domain name
+			util.set_rdp_values(rdp.get('domain', ''), rdp.get('host', ''), ldap_connection)
+			# RDP configuration -> usb and sound
+			ucr_variables['rdp/redirectdisk'] = util.bool2str(rdp.get('usb'))
+			ucr_variables['rdp/disable-sound'] = util.bool2str(not rdp.get('sound'))
+			#TODO: rdpDefaultLogin...
+
+		if citrix:
+			# Citrix configuration
+			ucr_variables['citrix/webinterface'] = citrix.get('url', '')
+			ucr_variables['citrix/accepteula'] = 'true'
+			if citrix.get('autoLogin'):
+				ucr_variables['lightdm/autologin/session'] = 'XenApp'
+				ucr_variables['lightdm/autologin'] = 'true'
+
+			#TODO: Xitrix deb integration -> https://forge.univention.org/bugzilla/show_bug.cgi?id=34452#c2
+
+		if browser:
+			# web browser access
+			ucr_variables['firefox/startsite'] = browser.get('url', '')
+
+		if defaultSession:
+			#TODO: check for correct session IDs
+			ucr_variables['lightdm/sessiondefault'] = defaultSession
+
+		if ucr_variables:
+			# save UCR variables as policy
+			util.set_ucr_policy_variables(ucr_variables, ldap_connection)
+		return True
+

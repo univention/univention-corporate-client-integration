@@ -9,6 +9,8 @@
 	</categories>
 
 	<command name="uccsetup/info/networks" function="info_networks"/>
-	<command name="uccsetup/info/gateway" function="info_gateway"/>
+	<command name="uccsetup/info/ucc_images" function="info_ucc_images"/>
+	<command name="uccsetup/info" function="info"/>
+	<command name="uccsetup/apply" function="apply"/>
   </module>
 </umc>

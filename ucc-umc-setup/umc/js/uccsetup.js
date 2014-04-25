@@ -34,6 +34,7 @@ define([
 	"dojo/_base/array",
 	"dojo/on",
 	"dojo/topic",
+	"dojo/Deferred",
 	"dojox/html/styles",
 	"umc/dialog",
 	"umc/tools",
@@ -49,7 +50,7 @@ define([
 	"umc/widgets/Wizard",
 	"./uccsetup/RadioButton",
 	"umc/i18n!umc/modules/uccsetup"
-], function(declare, lang, array, on, topic, styles, dialog, tools, Page, Form, ExpandingTitlePane, Module, TextBox, CheckBox, ComboBox, Uploader, Text, Wizard, RadioButton, _) {
+], function(declare, lang, array, on, topic, Deferred, styles, dialog, tools, Page, Form, ExpandingTitlePane, Module, TextBox, CheckBox, ComboBox, Uploader, Text, Wizard, RadioButton, _) {
 	styles.insertCssRule('.umc-uccsetup-wizard-indent', 'margin-left: 27px;');
 //	var modulePath = require.toUrl('umc/modules/uccsetup');
 //	styles.insertCssRule('.umc-uccsetup-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
@@ -68,6 +69,7 @@ define([
 	var _Wizard = declare("umc.modules.uccsetup.Wizard", [ Wizard ], {
 		autoValidate: true,
 		autoFocus: true,
+		initialInfo: {},
 
 		constructor: function() {
 			this.pages = [{
@@ -158,14 +160,12 @@ define([
 					type: TextBox,
 					name: 'newFirstIP',
 					label: _('First IP address'),
-					required: true,
 					disabled: true,
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}, {
 					type: TextBox,
 					name: 'newLastIP',
 					label: _('Last IP address'),
-					required: true,
 					disabled: true
 				}]
 			}, {
@@ -198,7 +198,7 @@ define([
 			}, {
 				name: 'terminalServices-thinclient-rdp',
 				headerText: _('Configure acccess to Windows terminal/XRDP server'),
-				helpText: _('This step allows the configuration of remote terminal server access using the RDP protocol. You can either access a Microsoft Windows terminal server (using a Windows-based desktop) or a XRDP terminal server (using a Linux-based KDE desktop). The setup of a XRDP terminal server is documented in TODODOC.'),
+				helpText: _('<p>This step allows the configuration of remote terminal server access using the RDP protocol.</p><p>You can either access a Microsoft Windows terminal server (using a Windows-based desktop) or a XRDP terminal server (using a Linux-based KDE desktop). The setup of a XRDP terminal server is documented in TODODOC.</p>'),
 				widgets: [{
 					type: TextBox,
 					required: true,
@@ -206,7 +206,6 @@ define([
 					label: _('Host name of terminal server')
 				}, {
 					type: TextBox,
-					required: true,
 					name: 'domain',
 					label: _('Domain name (use xrdp1 for XRDP)')
 				}, {
@@ -219,10 +218,6 @@ define([
 					name: 'usb',
 					label: _('Enable USB storage passthrough'),
 					value: true
-				}, {
-					type: CheckBox,
-					name: 'rdpDefaultLogin',
-					label: _('Make the RDP login the default session')
 				}]
 			}, {
 				name: 'terminalServices-thinclient-citrix-upload',
@@ -231,12 +226,17 @@ define([
 				widgets: [{
 					type: ComboBox,
 					name: 'image',
-					label: _('Please select the image into which Citrix Receiver should be integrated *** Only visible for entries >= 2 ***'),
-					staticValues: ['UCC thin client image', 'Custom Ubuntun image']
+					label: _('Please select the image into which Citrix Receiver should be integrated.'),
+					dynamicValues: 'uccsetup/info/ucc_images',
+					staticValues: [{
+						id: 'default',
+						label: _('UCC default image')
+					}],
+					autoHide: true
 				}, {
 					type: Text,
 					name: 'help',
-					content: _('<p>For the configuration, it is necessary to manually download the i386 DEB version of the <a href="http://www.citrix.de/downloads/citrix-receiver/linux/receiver-for-linux-130.html">Citrix Receiver</a>.</p>')
+					content: _('<p>For the configuration, it is necessary to manually download the i386 DEB version of the <a href="http://www.citrix.de/downloads/citrix-receiver/linux/receiver-for-linux-130.html" target="_blank">Citrix Receiver</a>.</p>')
 				}, {
 					type: Uploader,
 					name: 'upload',
@@ -258,7 +258,7 @@ define([
 					label: _('URL for Citrix farm login')
 				}, {
 					type: CheckBox,
-					name: 'eula',
+					name: 'autoLogin',
 					label: _('Automatic Linux Desktop login')
 				}]
 			}, {
@@ -268,7 +268,7 @@ define([
 				widgets: [{
 					type: TextBox,
 					required: true,
-					name: 'host',
+					name: 'url',
 					label: _('Automatically connect to this web site')
 				}]
 			}, {
@@ -293,6 +293,21 @@ define([
 					name: 'browser',
 					label: _('Direct browser access'),
 					labelConf: { style: 'margin-top: 0'	}
+				}, {
+					type: RadioButton,
+					radioButtonGroup: 'session',
+					name: 'lxde',
+					label: _('LXDE Desktop'),
+					labelConf: { style: 'margin-top: 0'	}
+				}]
+			}, {
+				name: 'confirm',
+				headerText: _('Confirm configuration'),
+				helpText: _('Please confirm the chosen UCC configuration in order to apply them to the system.'),
+				widgets: [{
+					type: Text,
+					name: 'summary',
+					content: _('')
 				}]
 			}, {
 				name: 'done',
@@ -304,9 +319,10 @@ define([
 		},
 
 		_queryDefaultGateway: function() {
-			tools.umcpCommand('uccsetup/info/gateway').then(lang.hitch(this, function(response) {
+			tools.umcpCommand('uccsetup/info').then(lang.hitch(this, function(response) {
+				this.initialInfo = response.result;
 				var gatewayWidget = this.getWidget('gateway', 'gateway');
-				gatewayWidget.set('value', response.result);
+				gatewayWidget.set('value', response.result.gateway);
 			}));
 		},
 
@@ -402,11 +418,201 @@ define([
 			return false;
 		},
 
+		_updateDefaultSessionButtons: function() {
+			var configuredTerminalServices = {
+				lxde: true
+			};
+			array.forEach(this._getTerminalServices(), function(itype) {
+				configuredTerminalServices[itype] = true;
+			}, this);
+
+			var terminalServices = ['lxde'].concat(this._terminalServices);
+			array.forEach(terminalServices, function(itype) {
+				var radioButton = this.getWidget('defaultSession-thinclient', itype);
+				var visible = configuredTerminalServices[itype];
+				radioButton.set('disabled', !visible);
+				radioButton.set('visible', visible);
+			}, this);
+		},
+
+		getValues: function() {
+			var vals = {};
+			vals.fatclient = this.getWidget('start', 'fatclient').get('value');
+			vals.thinclient = this.getWidget('start', 'thinclient').get('value');
+
+			// downloads
+			vals.downloadThinClientImage = this.getWidget('download-thinclient', 'download').get('value');
+			vals.downloadFatClientImage = this.getWidget('download-fatclient', 'download').get('value');
+
+			// network configuration
+			vals.network = {};
+			var useExistingNetwork = this.getWidget('network', 'useExistingNetwork').get('value');
+			if (useExistingNetwork) {
+				vals.network.existingDN = this.getWidget('network', 'existingNetwork').get('value');
+			}
+			else {
+				tools.forIn({
+					address: 'newNetworkAddress',
+					mask: 'newNetmask',
+					firstIP: 'newFirstIP',
+					lastIP: 'newLastIP'
+				}, function(key1, key2) {
+					vals.network[key1] = this.getWidget('network', key2).get('value');
+				}, this);
+			}
+
+			// gateway configuration
+			if (this._isPageVisible('gateway')) {
+				vals.gateway = this.getWidget('gateway', 'gateway').get('value');
+			}
+
+			// thinclient configuration
+			if (vals.thinclient) {
+				var terminalServices = {};
+				array.forEach(this._getTerminalServices(), function(iservice) {
+					terminalServices[iservice] = true;
+				});
+
+				// RDP service configuration
+				if (terminalServices.rdp) {
+					vals.rdp = {};
+					array.forEach(['host', 'domain', 'sound', 'usb'], function(ikey) {
+						vals.rdp[ikey] = this.getWidget('terminalServices-thinclient-rdp', ikey).get('value');
+					}, this);
+				}
+
+				// Citrix configuration
+				if (terminalServices.citrix) {
+					vals.citrix = {
+						image: this.getWidget('terminalServices-thinclient-citrix-upload', 'image').get('value'),
+						url: this.getWidget('terminalServices-thinclient-citrix-login', 'url').get('value'),
+						autoLogin: this.getWidget('terminalServices-thinclient-citrix-login', 'autoLogin').get('value')
+					};
+				}
+
+				// browser configuration
+				if (terminalServices.browser) {
+					vals.browser = {
+						url: this.getWidget('terminalServices-thinclient-browser', 'url').get('value')
+					};
+				}
+			}
+
+			if (this._isPageVisible('defaultSession-thinclient')) {
+				var tmpVals = this.getPage('defaultSession-thinclient')._form.gatherFormValues();
+				tools.forIn(tmpVals, function(ikey, ival) {
+					if (ival) {
+						vals.defaultSession = ikey
+					}
+				}, this);
+			}
+			return vals;
+		},
+
+		_updateConfirmationPage: function() {
+			var vals = this.getValues();
+			var msg = '<ul>';
+			if (vals.fatclient) {
+				msg += '<li>' + _('Support for linux desktop systems will be configured.');
+				if (vals.downloadFatClientImage) {
+					msg += '<ul><li>' + _('A preconfigured UCC desktop image will be downloaded.') + '</li></ul>';
+				}
+				msg += '</li>';
+			}
+			if (vals.thinclient) {
+				msg += '<li>' + _('Support for thin clients will be configured.');
+				msg += '<ul>';
+				if (vals.downloadThinClientImage) {
+					msg += '<li>' + _('A preconfigured UCC thin client image will be downloaded.') + '</li>';
+				}
+
+				if (vals.rdp) {
+					msg += '<li>' + _('Access to RDP terminal server %s will be configured.', vals.rdp.host) + '</li>';
+				}
+				if (vals.citrix) {
+					msg += '<li>' + _('Access to Citrix XenApp server at URL %s will be configured.', vals.citrix.url) + '</li>';
+				}
+				if (vals.browser) {
+					msg += '<li>' + _('Direct browser access to URL %s will be configured.', vals.browser.url) + '</li>';
+				}
+				msg += '</ul></li>';
+			}
+			msg += '<li>';
+			if (vals.network.existingDN) {
+				var existingNetworkWidget = this.getWidget('network', 'existingNetwork');
+				var networkLabel = '';
+				array.forEach(existingNetworkWidget.getAllItems(), function(ientry) {
+					if (ientry.id == vals.network.existingDN) {
+						networkLabel = ientry.label;
+					}
+				});
+				msg += _('Network segment for client IP addresses will be the already existing <i>network %s</i>.', networkLabel);
+			}
+			else {
+				msg += _('Network segment for client IP addresses will be the new network <i>%s</i>.', vals.network.address);
+			}
+			msg += '</li>';
+			if (vals.defaultSession) {
+				var defaultSessionLabel = this.getWidget('defaultSession-thinclient', vals.defaultSession).get('label');
+				msg += '<li>' + _('The default login session will be configured to be %s.', defaultSessionLabel) + '</li>';
+
+			}
+			msg += '</li></ul>';
+			this.getWidget('confirm', 'summary').set('content', msg);
+		},
+
+		_isPageVisible: function(pageName) {
+			// if the gateway is already configured for DHCP, do not show the page
+			// for configuring the gateway
+			if (pageName == 'gateway' && this.initialInfo.dhcp_routing_policy) {
+				return false;
+			}
+
+			// if citrix auto login is checked, do not show the page for configuring
+			// the default session
+			var citrixAutoLogin = this.getWidget('terminalServices-thinclient-citrix-login', 'autoLogin').get('value');
+			if (pageName == 'defaultSession-thinclient' && this._isPageForClientType('terminalServices-thinclient-citrix-login') && citrixAutoLogin) {
+				return false;
+			}
+
+			//TODO: if UCC image already exists, hide download page
+
+			// general check
+			return this._isPageForClientType(pageName) && this._isPageForTerminalServiceType(pageName);
+		},
+
+		_applyConfiguration: function() {
+			var vals = this.getValues();
+			return tools.umcpCommand('uccsetup/apply', vals).then(lang.hitch(this, function(response) {
+				return true;
+			}), lang.hitch(this, function(error) {
+				return false;
+			}));
+			return deferred;
+		},
+
 		next: function(pageName) {
 			var _inheritedNext = lang.hitch(this, this.inherited, arguments);
 			var nextPage = _inheritedNext();
-			while (!(this._isPageForClientType(nextPage) && this._isPageForTerminalServiceType(nextPage))) {
+			while (!this._isPageVisible(nextPage)) {
 				nextPage = _inheritedNext([nextPage]);
+			}
+			if (nextPage == 'defaultSession-thinclient') {
+				this._updateDefaultSessionButtons();
+			}
+			if (nextPage == 'confirm') {
+				this._updateConfirmationPage();
+			}
+			if (pageName == 'confirm') {
+				this.standby(true);
+				return this._applyConfiguration().then(lang.hitch(this, function(success) {
+					this.standby(false);
+					if (success) {
+						return 'done';
+					}
+					//TODO: error page?
+					return 'confirm';
+				}));
 			}
 			return nextPage;
 		},
@@ -414,7 +620,7 @@ define([
 		previous: function(pageName) {
 			var _inheritedNext = lang.hitch(this, this.inherited, arguments);
 			var previousPage = _inheritedNext();
-			while (!(this._isPageForClientType(previousPage) && this._isPageForTerminalServiceType(previousPage))) {
+			while (!this._isPageVisible(previousPage)) {
 				previousPage = _inheritedNext([previousPage]);
 			}
 			return previousPage;
