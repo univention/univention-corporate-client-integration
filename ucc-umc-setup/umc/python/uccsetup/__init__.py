@@ -95,8 +95,13 @@ class Instance(Base):
 	def apply(self, gateway=None, rdp={}, citrix={}, thinclient=False, fatclient=False, downloadThinClientImage=False, downloadFatClientImage=False, network={}, browser={}, defaultSession=None):
 		ldap_connection = util.get_ldap_connection()
 
-		#TODO: create network obj
-		#TODO: make sure that the network obj is linked to the DHCP service
+		# create network obj and make sure that the network obj is linked to the DHCP service
+		if network:
+			if network.get('existingDN'):
+				util.set_dhcp_service_for_network(network.existingDN, ldap_connection)
+			else:
+				#TODO: error handling
+				util.set_network(network.get('address'), network.get('mask'), network.get('firstIP'), network.get('lastIP'), ldap_connection)
 
 		# DHCP routing policy for gateway
 		dhcp_routing_obj = util.get_dhcp_routing_policy(ldap_connection)
@@ -104,34 +109,35 @@ class Instance(Base):
 			util.set_dhcp_routing(gateway, ldap_connection)
 
 		ucr_variables = {}
+		thinclient_ucr_variables = {}
+		fatclient_ucr_variables = {}
+		if browser:
+			# web browser access
+			ucr_variables['firefox/startsite'] = browser.get('url', '')
+			# default session (might be overwritten by RDP or Citrix)
+			thinclient_ucr_variables['lightdm/sessiondefault'] = 'firefox'
+
 		if rdp:
 			# RDP terminal server + domain name
 			util.set_rdp_values(rdp.get('domain', ''), rdp.get('host', ''), ldap_connection)
 			# RDP configuration -> usb and sound
 			ucr_variables['rdp/redirectdisk'] = util.bool2str(rdp.get('usb'))
 			ucr_variables['rdp/disable-sound'] = util.bool2str(not rdp.get('sound'))
-			#TODO: rdpDefaultLogin...
+			# default session (might be overwritten by Citrix)
+			thinclient_ucr_variables['lightdm/sessiondefault'] = 'RDP'
 
 		if citrix:
 			# Citrix configuration
 			ucr_variables['citrix/webinterface'] = citrix.get('url', '')
 			ucr_variables['citrix/accepteula'] = 'true'
+			thinclient_ucr_variables['lightdm/sessiondefault'] = 'XenApp'
 			if citrix.get('autoLogin'):
-				ucr_variables['lightdm/autologin/session'] = 'XenApp'
-				ucr_variables['lightdm/autologin'] = 'true'
+				thinclient_ucr_variables['lightdm/autologin/session'] = 'XenApp'
+				thinclient_ucr_variables['lightdm/autologin'] = 'true'
 
 			#TODO: Xitrix deb integration -> https://forge.univention.org/bugzilla/show_bug.cgi?id=34452#c2
 
-		if browser:
-			# web browser access
-			ucr_variables['firefox/startsite'] = browser.get('url', '')
-
-		if defaultSession:
-			#TODO: check for correct session IDs
-			ucr_variables['lightdm/sessiondefault'] = defaultSession
-
-		if ucr_variables:
-			# save UCR variables as policy
-			util.set_ucr_policy_variables(ucr_variables, ldap_connection)
+		# save UCR variables as policy
+		util.set_ucr_policy_variables(ucr_variables, thinclient_ucr_variables, fatclient_ucr_variables, ldap_connection)
 		return True
 

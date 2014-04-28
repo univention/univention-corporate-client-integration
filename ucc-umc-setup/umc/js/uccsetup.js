@@ -66,11 +66,14 @@ define([
 //		);
 //	});
 
+	var _regIPv4 =  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/;
+
 	var _Wizard = declare("umc.modules.uccsetup.Wizard", [ Wizard ], {
 		autoValidate: true,
 		autoFocus: true,
 		initialInfo: {},
 
+		// taken from: http://stackoverflow.com/a/9221063
 		constructor: function() {
 			this.pages = [{
 				name: 'start',
@@ -149,7 +152,9 @@ define([
 					label: _('Network'),
 					required: true,
 					disabled: true,
-					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
+					labelConf: { 'class': 'umc-uccsetup-wizard-indent' },
+					//regExp: _regIPv4,
+					onChange: lang.hitch(this, '_updateNetworkDefaults')
 				}, {
 					type: TextBox,
 					name: 'newNetmask',
@@ -157,6 +162,7 @@ define([
 					required: true,
 					disabled: true
 				}, {
+					//TODO: error handling
 					type: TextBox,
 					name: 'newFirstIP',
 					label: _('First IP address'),
@@ -270,35 +276,6 @@ define([
 					required: true,
 					name: 'url',
 					label: _('Automatically connect to this web site')
-				}]
-			}, {
-				name: 'defaultSession-thinclient',
-				headerText: _('Default session'),
-				helpText: _('Please configure the default session type.'),
-				widgets: [{
-					type: RadioButton,
-					radioButtonGroup: 'session',
-					name: 'rdp',
-					label: _('Windows/XRDP terminal server'),
-					labelConf: { style: 'margin-top: 0'	}
-				}, {
-					type: RadioButton,
-					radioButtonGroup: 'session',
-					name: 'citrix',
-					label: _('Citrix XenApp server'),
-					labelConf: { style: 'margin-top: 0'	}
-				}, {
-					type: RadioButton,
-					radioButtonGroup: 'session',
-					name: 'browser',
-					label: _('Direct browser access'),
-					labelConf: { style: 'margin-top: 0'	}
-				}, {
-					type: RadioButton,
-					radioButtonGroup: 'session',
-					name: 'lxde',
-					label: _('LXDE Desktop'),
-					labelConf: { style: 'margin-top: 0'	}
 				}]
 			}, {
 				name: 'confirm',
@@ -418,23 +395,6 @@ define([
 			return false;
 		},
 
-		_updateDefaultSessionButtons: function() {
-			var configuredTerminalServices = {
-				lxde: true
-			};
-			array.forEach(this._getTerminalServices(), function(itype) {
-				configuredTerminalServices[itype] = true;
-			}, this);
-
-			var terminalServices = ['lxde'].concat(this._terminalServices);
-			array.forEach(terminalServices, function(itype) {
-				var radioButton = this.getWidget('defaultSession-thinclient', itype);
-				var visible = configuredTerminalServices[itype];
-				radioButton.set('disabled', !visible);
-				radioButton.set('visible', visible);
-			}, this);
-		},
-
 		getValues: function() {
 			var vals = {};
 			vals.fatclient = this.getWidget('start', 'fatclient').get('value');
@@ -498,15 +458,26 @@ define([
 				}
 			}
 
-			if (this._isPageVisible('defaultSession-thinclient')) {
-				var tmpVals = this.getPage('defaultSession-thinclient')._form.gatherFormValues();
-				tools.forIn(tmpVals, function(ikey, ival) {
-					if (ival) {
-						vals.defaultSession = ikey
-					}
-				}, this);
-			}
 			return vals;
+		},
+
+		_updateNetworkDefaults: function(networkAddress) {
+			if (!_regIPv4.test(networkAddress)) {
+				// no valid IP address
+				return;
+			}
+			var subnet = networkAddress.split('.').slice(0, 3).join('.');
+
+			tools.forIn({
+				newNetmask: '24',
+				newFirstIP: '{0}.2',
+				newLastIP: '{0}.254',
+			}, function(ikey, ivalue) {
+				var iwidget = this.getWidget('network', ikey);
+				if (!iwidget.get('value')) {
+					iwidget.set('value', lang.replace(ivalue, [subnet]));
+				}
+			}, this);
 		},
 
 		_updateConfirmationPage: function() {
@@ -552,11 +523,6 @@ define([
 				msg += _('Network segment for client IP addresses will be the new network <i>%s</i>.', vals.network.address);
 			}
 			msg += '</li>';
-			if (vals.defaultSession) {
-				var defaultSessionLabel = this.getWidget('defaultSession-thinclient', vals.defaultSession).get('label');
-				msg += '<li>' + _('The default login session will be configured to be %s.', defaultSessionLabel) + '</li>';
-
-			}
 			msg += '</li></ul>';
 			this.getWidget('confirm', 'summary').set('content', msg);
 		},
@@ -571,10 +537,6 @@ define([
 			// if citrix auto login is checked, do not show the page for configuring
 			// the default session
 			var citrixAutoLogin = this.getWidget('terminalServices-thinclient-citrix-login', 'autoLogin').get('value');
-			if (pageName == 'defaultSession-thinclient' && this._isPageForClientType('terminalServices-thinclient-citrix-login') && citrixAutoLogin) {
-				return false;
-			}
-
 			//TODO: if UCC image already exists, hide download page
 
 			// general check
@@ -597,9 +559,6 @@ define([
 			while (!this._isPageVisible(nextPage)) {
 				nextPage = _inheritedNext([nextPage]);
 			}
-			if (nextPage == 'defaultSession-thinclient') {
-				this._updateDefaultSessionButtons();
-			}
 			if (nextPage == 'confirm') {
 				this._updateConfirmationPage();
 			}
@@ -613,6 +572,16 @@ define([
 					//TODO: error page?
 					return 'confirm';
 				}));
+			}
+			var isAtLeastOneServiceSelected = this._getTerminalServices().length > 0;
+			if (pageName == 'terminalServices-thinclient' && !isAtLeastOneServiceSelected) {
+				dialog.alert(_('At least one terminal service needs to be configured.'));
+				return pageName;
+			}
+			var isAtLeastOneClientTypeSelected = this._getClientType().length > 0;
+			if (pageName == 'start' && !isAtLeastOneClientTypeSelected) {
+				dialog.alert(_('At least one configuration type needs to be selected.'));
+				return pageName;
 			}
 			return nextPage;
 		},
