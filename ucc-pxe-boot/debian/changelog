@@ -1,3 +1,9 @@
+ucc-pxe-boot (6.0.1-8) unstable; urgency=low
+
+  * rename partition-scripts example (Bug #34612) 
+
+ -- Felix Botner <botner@univention.de>  Mon, 28 Apr 2014 10:13:40 +0200
+
 ucc-pxe-boot (6.0.1-7) unstable; urgency=low
 
   * added partition-scripts example (Bug #34612) 
