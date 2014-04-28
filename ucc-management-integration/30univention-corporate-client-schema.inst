@@ -30,7 +30,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=2
+VERSION=3
 
 NAME="univention-corporate-client-schema"
 
@@ -73,6 +73,16 @@ univention-directory-manager container/cn create "$@" \
 							--ignore_exists \
 							--position="cn=custom attributes,cn=univention,$ldap_base" \
 							--set name="UCC" || die
+
+univention-directory-manager container/cn create "$@" --position "cn=computers,$ldap_base" \
+							--ignore_exists \
+							--set computerPath=1 \
+							--set name="ucc-thinclients" || die
+
+univention-directory-manager container/cn create "$@" --position "cn=computers,$ldap_base" \
+							--ignore_exists \
+							--set computerPath=1 \
+							--set name="ucc-desktops" || die
 
 # create default ucc user policy
 univention-directory-manager policies/ucc_user create "$@" --ignore_exists \
