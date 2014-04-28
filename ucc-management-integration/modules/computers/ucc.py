@@ -280,6 +280,17 @@ property_descriptions={
 			identifies=0,
 			default=('overlayfs', [])
 		),
+	'repartitioning': univention.admin.property(
+			short_description=_('Repartitioning for installed systems'),
+			long_description=_('Force repartitioning for installed systems'),
+			syntax=univention.admin.syntax.TrueFalseUp,
+			multivalue=0,
+			options=[],
+			required=0,
+			may_change=1,
+			identifies=0,
+			default=('FALSE', [])
+		),
 	'image': univention.admin.property(
 			short_description=_('Image'),
 			long_description=_('Image to boot'),
@@ -381,6 +392,7 @@ mapping.register('operatingSystemVersion', 'univentionOperatingSystemVersion', N
 mapping.register('boot', 'univentionCorporateClientBootVariant', None, univention.admin.mapping.ListToString)
 mapping.register('image', 'univentionCorporateClientBootImage', None, univention.admin.mapping.ListToString)
 mapping.register('bootParameter', 'univentionCorporateClientBootParameter')
+mapping.register('repartitioning', 'univentionCorporateClientBootRepartitioning', None, univention.admin.mapping.ListToString)
 mapping.register('service', 'univentionService')
 
 
@@ -422,6 +434,16 @@ class object(univention.admin.handlers.simpleComputer):
 
 
 		self.save( )
+
+	def _set_bootvariant_and_partition_flag(self):
+		# boot variant 'repartition' is mapped differently: set repartition flag instead
+		# AND set bootParameter to 'ucc' to stay backwards compatible to ucc 1.0
+		# For repartition + rollout ucc 1.0 initramfs needs 'boot' = 'ucc' AND 'repartition' = 'TRUE'
+		if self['boot'] == 'repartition':
+			self['boot'] = 'rollout'
+			self['repartitioning'] = 'TRUE'
+		else:	# not self['boot'] == repartition: set repartitioning flag to FALSE
+			self['repartitioning'] = 'FALSE'
 
 	def open(self):
 		univention.admin.handlers.simpleComputer.open( self )
@@ -465,14 +487,16 @@ class object(univention.admin.handlers.simpleComputer):
 				if res:
 					self['primaryGroup']=res
 
-
-#		self.save()
+		if 'repartitioning' in self and self['repartitioning'] == 'TRUE':
+			self['boot'] = 'repartition'
 
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 		if not self['password']:
 			self['password']=self.oldattr.get('password',[''])[0]
 			self.modifypassword=0
+
+		self._set_bootvariant_and_partition_flag()
 		univention.admin.handlers.simpleComputer._ldap_pre_create( self )
 
 	def _ldap_addlist(self):
@@ -603,8 +627,9 @@ class object(univention.admin.handlers.simpleComputer):
 				self.modifypassword=0
 			else:
 				self.modifypassword=1
-		univention.admin.handlers.simpleComputer._ldap_pre_modify( self )
 
+		self._set_bootvariant_and_partition_flag()
+		univention.admin.handlers.simpleComputer._ldap_pre_modify( self )
 
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleComputer._ldap_modlist( self )
