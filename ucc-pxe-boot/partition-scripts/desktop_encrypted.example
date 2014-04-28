@@ -34,7 +34,7 @@ partition_device="$1"
 
 password=""
 swap_lvm_size="-L2G"
-root_lvm_size="-L15G"
+root_lvm_size="-L18G"
 home_lvm_size="-l100%FREE"
 
 plymouth --ping && plymouth message --text="Starting partitioning with script custom_partition.example"

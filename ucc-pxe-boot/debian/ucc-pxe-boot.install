@@ -1,4 +1,4 @@
 uccpxeboot.py /usr/lib/univention-directory-listener/system
 91ucc-pxe-boot.inst /usr/lib/univention-install/
 ucc.conf /etc/rsyslog.d
-partition-scripts/custom_partition.example var/lib/univention-client-boot/partition-scripts/
+partition-scripts/desktop_encrypted.example var/lib/univention-client-boot/partition-scripts/
