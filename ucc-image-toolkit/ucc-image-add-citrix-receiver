@@ -123,11 +123,12 @@ if chroot_cmd('dpkg -i ' + os.path.basename(opt.deb)) != 0:
 chroot_cmd('sync')
 cmd('sync')
 
+cleanup()
+
 log("Generating hash value")
 cmd = 'md5sum "%s" | sed -ne "s| .*||p" > "%s" ' % (opt.image, opt.image+".md5")
 if subprocess.call(cmd, shell=True):
 	log("Generation of hash value failed")
 	sys.exit(6)
 
-cleanup()
 
