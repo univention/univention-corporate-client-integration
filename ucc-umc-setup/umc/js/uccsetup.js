@@ -78,7 +78,7 @@ define([
 			this.pages = [{
 				name: 'start',
 				headerText: _('Univention Corporate Client configuration wizard'),
-				helpText: _('<p>Welcome to the setup wizard for Univention Corporate Client (UCC).</p><p>UCC provides support for fully-featured Linux desktop systems running KDE (both stationary and notebooks) as well as support for Linux-based thin clients and access to terminal servers (Windows, Citrix XenApp, XRDP).</p>'),
+				helpText: _('<p>Welcome to the setup wizard for Univention Corporate Client (UCC)!</p><p>UCC provides support for fully-featured Linux desktop systems running KDE (both stationary and notebooks) as well as support for Linux-based thin clients and access to terminal servers (Windows, Citrix XenApp, XRDP).</p>'),
 				widgets: [{
 					type: Text,
 					name: 'warning',
@@ -97,18 +97,18 @@ define([
 				}, {
 					type: CheckBox,
 					name: 'thinclient',
-					label: _('<b>Terminal services configuration</b>'),
+					label: _('<b>Thin client configuration</b>'),
 					labelConf: { style: 'margin-top: 1.25em;' }
 				}, {
 					type: Text,
 					name: 'helpThinclient',
-					content: _('<p>Thin clients require 2 GB of local Compact Flash storage.</p><p>Thin clients can access RDP terminal services (Windows terminal server or xrdp), Citrix Xen App terminal services or configure direct access to a web site.</p>'),
+					content: ('<p>UCC provides a thin client image which is installed on the local Compact Flash storage of thin clients (2 GB are required).</p><p>UCC Thin clients can access RDP terminal services (Windows terminal server or xrdp), Citrix Xen App terminal services or configure a direct browser login to a web site (e.g. for a web service).</p>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}]
 			}, {
 				name: 'download-fatclient',
 				headerText: _('Download preconfigured UCC image'),
-				helpText: _('<p>Univention provides a preconfigured desktop image based on KDE. It is regularly updated and offers a fully-featured KDE desktop environment.<p></p>Note that it is also possible to create custom images. This is documented in DOCREF.</p>'),
+				helpText: _('<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. The image is regularly updated and offers a fully-featured KDE desktop environment.<p></p>Note that it is also possible to create custom images. This is documented in DOCREF.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'download',
@@ -123,7 +123,7 @@ define([
 			}, {
 				name: 'download-thinclient',
 				headerText: _('Download preconfigured UCC image'),
-				helpText: _('<p>Univention provides a preconfigured UCC thin client image which is regularly updated.</p><p>The thin client image allows access to various terminal services (Windows, Citrix XenApp, XRDP) and provides also a minimal local desktop. In addition to this, it is possible to configure a direct browser login to a preconfigured website, e.g, to access cloud-based web services.</p><p>Note that it is also possible to create custom images. This is documented in DOCREF.</p>'),
+				helpText: _('<p>Univention provides a preconfigured UCC thin client image which is regularly updated.</p><p>The thin client image allows access to various terminal services (Windows, Citrix XenApp, XRDP) and provides also a minimal local LXDE desktop. In addition to this, it is possible to configure a direct browser login to a preconfigured website, e.g, to access cloud-based web services.</p><p>Note that it is also possible to create custom images. This is documented in DOCREF.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'download',
@@ -192,7 +192,7 @@ define([
 			}, {
 				name: 'gateway',
 				headerText: _('Configuration of default gateway'),
-				helpText: _('No default gateway is assigned to the subnet via DHCP. Which gateway should be configured for this network?'),
+				helpText: _('No default gateway is currently assigned to the subnet via DHCP. Which gateway should be configured for this network?'),
 				widgets: [{
 					type: TextBox,
 					name: 'gateway',
@@ -202,7 +202,7 @@ define([
 			}, {
 				name: 'terminalServices-thinclient',
 				headerText: _('Configuration of terminal services'),
-				helpText: _('Which terminal service shall be configured?'),
+				helpText: _('Which terminal service(s) shall be configured? In most environments only on terminal service is used.'),
 				widgets: [{
 					type: CheckBox,
 					name: 'rdp',
@@ -210,7 +210,7 @@ define([
 				}, {
 					type: CheckBox,
 					name: 'citrix',
-					label: _('Configure access to a Citrix XenApp server')
+					label: _('Configure access to a Citrix XenApp terminal server')
 				}, {
 					type: CheckBox,
 					name: 'browser',
@@ -311,9 +311,9 @@ define([
 			}, {
 				name: 'done',
 				headerText: _('Configuration finished'),
-				helpText: _('<p>Now you can create one or several clients. The images are rolled out using PXE.</p>')
+				helpText: _('<p>Now you can create one or several clients in the computer management module. The images are rolled out using PXE.</p>')
 					+ _('<p>The BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
-					+ _('<p>After a reboot you can log in and access configured services.</p>')
+					+ _('<p>After successful installation you can log in with any domain user.</p>')
 			}];
 		},
 
