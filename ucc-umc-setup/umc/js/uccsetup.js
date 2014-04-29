@@ -164,11 +164,14 @@ define([
 				}, {
 					type: TextBox,
 					name: 'newNetworkAddress',
-					label: _('Network'),
+					label: _('Network address (e.g., 192.168.10.0)'),
 					required: true,
 					disabled: true,
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' },
 					//regExp: _regIPv4,
+					validator: function(value) {
+						return _regIPv4.test(value);
+					},
 					onChange: lang.hitch(this, '_updateNetworkDefaults')
 				}, {
 					type: TextBox,
@@ -312,7 +315,7 @@ define([
 			}, {
 				name: 'done',
 				headerText: _('Configuration finished'),
-				helpText: _('<p>Now you can create one or several clients with the type <b>Univention Corporate Client</b> in the <a href="javascript:void(0)" onclick="require("umc/app").openModule("udm", "computers/computer")>computer management module</a>. Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected. </p>')
+				helpText: _('<p>Now you can create one or several clients with the type <b>Univention Corporate Client</b> in the <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'computers/computer\')">computer management module</a>. Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected. </p>')
 					+ _('<p> When selecting <b>Network</b> created earlier, a free IP address is proposed. The MAC address of the client needs to be specified for a working DHCP configuration.</p>')
 					+ _('<p> <i>Installation with repartitioning and image rollout</i> should be selected as the <b>Boot variant</b> along with the designated image. Warning: All data on that system is lost! </p>')
 					+ _('<p> If you only want to try UCC without installing it on the hard drive, you can alternatively select <i>Live boot</i>. </p>')
@@ -364,6 +367,8 @@ define([
 			this._queryDefaultGateway();
 			this._watchNetworkRadioButtons();
 			this._setLabelConf();
+			var networkAddressWidget = this.getWidget('network', 'newNetworkAddress');
+			networkAddressWidget.on('keyup', lang.hitch(this, '_updateNetworkDefaults'));
 		},
 
 		_getClientType: function() {
@@ -487,7 +492,8 @@ define([
 			return vals;
 		},
 
-		_updateNetworkDefaults: function(networkAddress) {
+		_updateNetworkDefaults: function() {
+			var networkAddress = this.getWidget('network', 'newNetworkAddress').get('value');
 			if (!_regIPv4.test(networkAddress)) {
 				// no valid IP address
 				return;
@@ -500,9 +506,7 @@ define([
 				newLastIP: '{0}.254',
 			}, function(ikey, ivalue) {
 				var iwidget = this.getWidget('network', ikey);
-				if (!iwidget.get('value')) {
-					iwidget.set('value', lang.replace(ivalue, [subnet]));
-				}
+				iwidget.set('value', lang.replace(ivalue, [subnet]));
 			}, this);
 		},
 
