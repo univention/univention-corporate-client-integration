@@ -447,8 +447,6 @@ if __name__ == '__main__':
 					fd.write('%s="%s"\n' % (option, config.get('Partitioning', option)))
 			fd.close()
 
-			if config.get('Partitioning', 'script'):
-				shutil.copy(config.get('Partitioning', 'script'), os.path.join(initrd_config_dir, 'custom_script'))
 		if config.get('Image', 'initramfs_modules'):
 			fd = open(os.path.join(bootstrap_dir, 'etc/initramfs-tools/modules'), 'a+')
 			fd.write(config.get('Image', 'initramfs_modules'))

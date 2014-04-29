@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.0-25) unstable; urgency=low
+
+  * Remove dead code (Bug #34453)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 29 Apr 2014 14:57:46 +0200
+
 ucc-image-toolkit (2.0.0-24) unstable; urgency=low
 
   * Some fixes for ucc-image-add-citrix-receiver (Bug #34452)
