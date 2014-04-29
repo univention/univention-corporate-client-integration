@@ -104,22 +104,25 @@ def _get_default_network(ldap_connection):
 		return network_obj
 
 def set_network(address, mask, first_ip, last_ip, ldap_connection):
-	# try to open the policy with the given DN
+	# open network object
 	network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, None, UCC_NETWORK_DN)
-	if not network_obj.exists():
-		# create network
-		name = udm_uldap.explodeDn(UCC_NETWORK_DN, True)[0]
-		path = UCC_NETWORK_DN.split(',', 1)[1]
-		network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, udm_uldap.position(path))
-		network_obj.open()
-		network_obj['name'] = name
+
+	if network_obj.exists():
+		# remove network object if already existing
+		network_obj.remove()
+		network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, None, UCC_NETWORK_DN)
+
+	# create network
+	name = udm_uldap.explodeDn(UCC_NETWORK_DN, True)[0]
+	path = UCC_NETWORK_DN.split(',', 1)[1]
+	network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, udm_uldap.position(path))
+	network_obj.open()
 
 	# set network values
 	#TODO: error handling
-	#TODO: currently address and mask cannot be modified if network obj already exists... delete it?
-	if not network_obj.exists():
-		network_obj['network'] = address
-		network_obj['netmask'] = mask
+	network_obj['name'] = name
+	network_obj['network'] = address
+	network_obj['netmask'] = mask
 	if first_ip and last_ip:
 		network_obj['ipRange'] = [[first_ip, last_ip]]
 
@@ -139,10 +142,8 @@ def set_network(address, mask, first_ip, last_ip, ldap_connection):
 			network_obj['dnsEntryZoneReverse'] = reverse_zone_obj.dn
 
 	# save changes
-	if network_obj.exists():
-		network_obj.modify()
-	else:
-		network_obj.create()
+	print '# network:', network_obj.info
+	network_obj.create()
 
 def set_dhcp_service_for_network(network_dn, ldap_connection):
 	network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, None, network_dn)

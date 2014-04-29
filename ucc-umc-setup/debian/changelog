@@ -1,3 +1,9 @@
+ucc-umc-setup (0.1.8-1) unstable; urgency=low
+
+  * Bug #34360: text changes, recreate default ucc network object if existing
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 29 Apr 2014 11:32:45 +0200
+
 ucc-umc-setup (0.1.7-1) unstable; urgency=low
 
   * Bug #34360: added warnings for preview version

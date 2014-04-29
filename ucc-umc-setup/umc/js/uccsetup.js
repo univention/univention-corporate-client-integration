@@ -107,7 +107,7 @@ define([
 				}]
 			}, {
 				name: 'download-fatclient',
-				headerText: _('Download preconfigured UCC image'),
+				headerText: _('Download preconfigured UCC desktop image'),
 				helpText: _('<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. The image is regularly updated and offers a fully-featured KDE desktop environment.<p></p>Note that it is also possible to create custom images. This is documented in DOCREF.</p>'),
 				widgets: [{
 					type: CheckBox,
@@ -122,7 +122,7 @@ define([
 				}]
 			}, {
 				name: 'download-thinclient',
-				headerText: _('Download preconfigured UCC image'),
+				headerText: _('Download preconfigured UCC thinclient image'),
 				helpText: _('<p>Univention provides a preconfigured UCC thin client image which is regularly updated.</p><p>The thin client image allows access to various terminal services (Windows, Citrix XenApp, XRDP) and provides also a minimal local LXDE desktop. In addition to this, it is possible to configure a direct browser login to a preconfigured website, e.g, to access cloud-based web services.</p><p>Note that it is also possible to create custom images. This is documented in DOCREF.</p>'),
 				widgets: [{
 					type: CheckBox,
@@ -287,7 +287,8 @@ define([
 				}, {
 					type: CheckBox,
 					name: 'autoLogin',
-					label: _('Automatic Linux Desktop login')
+					label: _('Automatic Linux Desktop login'),
+					value: true
 				}]
 			}, {
 				name: 'terminalServices-thinclient-browser',
@@ -311,7 +312,7 @@ define([
 			}, {
 				name: 'done',
 				headerText: _('Configuration finished'),
-				helpText: _('<p>Now you can create one or several clients in the computer management module. The images are rolled out using PXE.</p>')
+				helpText: _('<p>Now you can create one or several clients in the <a href="javascript:void(0)" onclick="require("umc/app").openModule("udm", "compters/computer")>computer management module</a>. The images are rolled out using PXE.</p>')
 					+ _('<p>The BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
 					+ _('<p>After successful installation you can log in with any domain user.</p>')
 			}];
