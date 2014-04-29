@@ -1,6 +1,7 @@
 ucc-image-toolkit (2.0.0-25) unstable; urgency=low
 
   * Remove dead code (Bug #34453)
+  * Re-enable local apt sources for image build
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 29 Apr 2014 14:57:46 +0200
 
