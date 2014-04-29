@@ -312,8 +312,11 @@ define([
 			}, {
 				name: 'done',
 				headerText: _('Configuration finished'),
-				helpText: _('<p>Now you can create one or several clients via the <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'computers/computer\')">computer management module</a>. The images are rolled out using PXE.</p>')
-					+ _('<p>The BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
+				helpText: _('<p>Now you can create one or several clients with the type <b>Univention Corporate Client</b> in the <a href="javascript:void(0)" onclick="require("umc/app").openModule("udm", "computers/computer")>computer management module</a>. Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected. </p>')
+					+ _('<p> When selecting <b>Network</b> created earlier, a free IP address is proposed. The MAC address of the client needs to be specified for a working DHCP configuration.</p>')
+					+ _('<p> <i>Installation with repartitioning and image rollout</i> should be selected as the <b>Boot variant</b> along with the designated image. Warning: All data on that system is lost! </p>')
+					+ _('<p> If you only want to try UCC without installing it on the hard drive, you can alternatively select <i>Live boot</i>. </p>')
+					+ _('<p> The images are rolled out using PXE. Thus, the BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
 					+ _('<p>After successful installation you can log in with any domain user.</p>')
 			}];
 		},
