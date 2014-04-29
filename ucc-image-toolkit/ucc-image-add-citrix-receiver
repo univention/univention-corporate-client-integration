@@ -57,8 +57,6 @@ def log(msg):
 
 def cleanup():
 	log("Cleaning up")
-	if os.path.exists(os.path.join(mntpoint, opt.deb)):
-		os.remove(os.path.join(mntpoint, opt.deb))
 		
 	if os.path.exists(mntpoint):
 		subprocess.call('sync', shell=True)
@@ -93,7 +91,7 @@ mntpoint=tempfile.mkdtemp()
 
 logfile = open("/var/log/univention/citrix-install.log", "w", 0)
 log("Adding Citrix Receiver to the UCC image, see /var/log/univention/citrix-install.log for more details")
-if cmd('mount -o loop /var/lib/univention-client-boot/' + opt.image + ' ' + mntpoint) == 2:
+if cmd('mount -o loop /var/lib/univention-client-boot/' + os.path.basename(opt.image) + ' ' + mntpoint) != 0:
 	log("Mounting the image failed, maybe you don't have free loop devices")
 	sys.exit(4)
 else:
