@@ -312,7 +312,7 @@ define([
 			}, {
 				name: 'done',
 				headerText: _('Configuration finished'),
-				helpText: _('<p>Now you can create one or several clients in the <a href="javascript:void(0)" onclick="require("umc/app").openModule("udm", "compters/computer")>computer management module</a>. The images are rolled out using PXE.</p>')
+				helpText: _('<p>Now you can create one or several clients via the <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'computers/computer\')">computer management module</a>. The images are rolled out using PXE.</p>')
 					+ _('<p>The BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
 					+ _('<p>After successful installation you can log in with any domain user.</p>')
 			}];
