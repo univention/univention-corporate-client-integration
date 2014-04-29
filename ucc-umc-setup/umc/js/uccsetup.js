@@ -78,7 +78,7 @@ define([
 			this.pages = [{
 				name: 'start',
 				headerText: _('Univention Corporate Client configuration wizard'),
-				helpText: _('<p>Welcome to the setup wizard of Univention Corporate Client (UCC).</p><p>UCC provides support for fully-featured Linux desktop systems running KDE (both stationary and notebooks) as well as support for Linux-based thin clients and access to terminal servers (Windows, Citrix XenApp, XRDP).</p>'),
+				helpText: _('<p>Welcome to the setup wizard for Univention Corporate Client (UCC).</p><p>UCC provides support for fully-featured Linux desktop systems running KDE (both stationary and notebooks) as well as support for Linux-based thin clients and access to terminal servers (Windows, Citrix XenApp, XRDP).</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'fatclient',
@@ -97,7 +97,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpThinclient',
-					content: ('<p>Thin clients require 2 GB of local Compact Flash storage.</p><p>In case thin clients terminal server access shall be configured with a native RDP or Citrix on the thin clients, please refer to the manual TODO-DOC-LINK.</p>'),
+					content: ('<p>Thin clients require 2 GB of local Compact Flash storage.</p><p>Thin clients can access RDP terminal services (Windows terminal server or xrdp), Citrix Xen App terminal services or configure direct access to a web site.</p>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}]
 			}, {
@@ -123,7 +123,7 @@ define([
 			}, {
 				name: 'network',
 				headerText: _('Network configuration'),
-				helpText: _('Please specify the segment for client IP addresses.'),
+				helpText: _('UCS uses so-called network objects for managing IP adresses and the DNS/DHCP configuration of the clients. A list of IP addresses is configured and the next available address is then automatically selected when creating a computer. You can either use an existing network object or create a new one.'),
 				layout: [
 					'useExistingNetwork', 'existingNetwork', 'createNewNetwork',
 					['newNetworkAddress', 'newNetmask'],
@@ -177,7 +177,7 @@ define([
 			}, {
 				name: 'gateway',
 				headerText: _('Configuration of default gateway'),
-				helpText: _('No default gateway is assigned to the subnet. Which gateway should be configured for this network?'),
+				helpText: _('No default gateway is assigned to the subnet via DHCP. Which gateway should be configured for this network?'),
 				widgets: [{
 					type: TextBox,
 					name: 'gateway',
