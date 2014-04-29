@@ -80,10 +80,15 @@ define([
 				headerText: _('Univention Corporate Client configuration wizard'),
 				helpText: _('<p>Welcome to the setup wizard for Univention Corporate Client (UCC).</p><p>UCC provides support for fully-featured Linux desktop systems running KDE (both stationary and notebooks) as well as support for Linux-based thin clients and access to terminal servers (Windows, Citrix XenApp, XRDP).</p>'),
 				widgets: [{
+					type: Text,
+					name: 'warning',
+					content: _('<b>Warning:</b> This is version of the UCC configuration wizard is a preview. Incomplete functionalities are marked where applicable.'),
+					labelConf: { style: 'margin-top: 0'	}
+				}, {
 					type: CheckBox,
 					name: 'fatclient',
 					label: _('<b>Linux desktop systems configuration</b>'),
-					labelConf: { style: 'margin-top: 0'	}
+					labelConf: { style: 'margin-top: 1.25em;' }
 				}, {
 					type: Text,
 					name: 'helpFatclient',
@@ -97,7 +102,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpThinclient',
-					content: ('<p>Thin clients require 2 GB of local Compact Flash storage.</p><p>Thin clients can access RDP terminal services (Windows terminal server or xrdp), Citrix Xen App terminal services or configure direct access to a web site.</p>'),
+					content: _('<p>Thin clients require 2 GB of local Compact Flash storage.</p><p>Thin clients can access RDP terminal services (Windows terminal server or xrdp), Citrix Xen App terminal services or configure direct access to a web site.</p>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}]
 			}, {
@@ -108,7 +113,12 @@ define([
 					type: CheckBox,
 					name: 'download',
 					label: _('Download UCC desktop image'),
-					value: true
+					value: true,
+					disabled: true
+				}, {
+					type: Text,
+					name: 'warning',
+					content: _('<p><b>Warning:</b> The download is not yet implemented in this preview of the UCC configuration wizard. Please use the following command to download the UCC desktop image manually:</p><pre>ucc-image-download -s ucc-2.0-ms1-desktop-image.img.xz.spec</pre>')
 				}]
 			}, {
 				name: 'download-thinclient',
@@ -118,7 +128,12 @@ define([
 					type: CheckBox,
 					name: 'download',
 					label: _('Download UCC thin client image'),
-					value: true
+					value: true,
+					disabled: true
+				}, {
+					type: Text,
+					name: 'warning',
+					content: _('<p><b>Warning:</b> The download is not yet implemented in this preview of the UCC configuration wizard. Please use the following command to download the UCC desktop image manually:</p><pre>ucc-image-download -s ucc-2.0-ms1-thinclient-image.img.xz.spec</pre>')
 				}]
 			}, {
 				name: 'network',
@@ -230,6 +245,11 @@ define([
 				headerText: _('Configure access to Citrix XenApp server'),
 				helpText: _('This step allows the configuration of a XenApp terminal server using the Citrix protocol. For this, Citrix Receiver will be integrated into the UCC thin client image.'),
 				widgets: [{
+					type: Text,
+					name: 'warning',
+					content: _('<b>Warning:</b> The integration of the Citrix receiver is not yet implemented in this preview version of the UCC configuration wizard.'),
+					labelConf: { style: 'margin-bottom: 1.25em;' }
+				}, {
 					type: ComboBox,
 					name: 'image',
 					label: _('Please select the image into which Citrix Receiver should be integrated.'),
@@ -246,12 +266,14 @@ define([
 				}, {
 					type: Uploader,
 					name: 'upload',
-					label: _('<p>After the download has completed, please upload the Citrix Receiver DEB file to proceed.</p>')
+					label: _('<p>After the download has completed, please upload the Citrix Receiver DEB file to proceed.</p>'),
+					disabled: true
 				}, {
 					type: CheckBox,
 					name: 'eula',
-					label: _('Confirm the End User License Agreement of Citrix Receiver [link].'),
-					labelConf: { style: 'margin-top: 1.25em;' }
+					label: _('Confirm the End User License Agreement of Citrix Receiver (as presented during the download of the Citrix Receiver).'),
+					labelConf: { style: 'margin-top: 1.25em;' },
+					disabled: true
 				}]
 			}, {
 				name: 'terminalServices-thinclient-citrix-login',
