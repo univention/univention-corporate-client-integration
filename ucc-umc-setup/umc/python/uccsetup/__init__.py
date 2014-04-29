@@ -98,7 +98,7 @@ class Instance(Base):
 		# create network obj and make sure that the network obj is linked to the DHCP service
 		if network:
 			if network.get('existingDN'):
-				util.set_dhcp_service_for_network(network.existingDN, ldap_connection)
+				util.set_dhcp_service_for_network(network.get('existingDN'), ldap_connection)
 			else:
 				#TODO: error handling
 				util.set_network(network.get('address'), network.get('mask'), network.get('firstIP'), network.get('lastIP'), ldap_connection)

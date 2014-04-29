@@ -116,6 +116,7 @@ def set_network(address, mask, first_ip, last_ip, ldap_connection):
 
 	# set network values
 	#TODO: error handling
+	#TODO: currently address and mask cannot be modified if network obj already exists... delete it?
 	if not network_obj.exists():
 		network_obj['network'] = address
 		network_obj['netmask'] = mask
