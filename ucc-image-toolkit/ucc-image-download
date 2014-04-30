@@ -45,6 +45,10 @@ import yaml
 import hashlib
 import commands
 
+import urllib
+import hashlib
+import lzma
+
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
@@ -58,20 +62,93 @@ if not os.path.exists(image_directory):
 	print "UCC image path", image_directory, "does not exist"
 	sys.exit(1)
 
+DEFAULT_CHUNK_SIZE = 2**23
+
+def _download_file(url, filepath, callback=None):
+	# make sure that proxy settings are used
+	proxies = {}
+	proxy_http = configRegistry.get('proxy/http')
+	if proxy_http:
+		proxies = {'http': proxy_http, 'https': proxy_http}
+
+	_callback_wrapper = None
+	if callback:
+		def _callback_wrapper(nblocks, block_size, total_size):
+			callback(min(100.0, 100.0 * nblocks * block_size / total_size))
+	
+	urlopener = urllib.FancyURLopener(proxies=proxies)
+	urlopener.retrieve(url, filepath, _callback_wrapper)
+
+def _sha256(filepath, callback=None):
+	file_size = os.path.getsize(filepath)
+	file_hash = hashlib.sha256()
+	with open(filepath, 'rb') as infile:
+		while True:
+			data = infile.read(DEFAULT_CHUNK_SIZE)
+			if not data:
+				break
+
+			file_hash.update(data)
+
+			if callback:
+				percent = (100.0 * infile.tell()) / file_size
+				callback(percent)
+
+	return file_hash.hexdigest()
+
+def _unxz(infile, callback=None):
+	assert infile.endswith('.xz')
+	outfile = infile[:-3]
+	total_size = os.path.getsize(infile)
+	decompressor = lzma.LZMADecompressor()
+
+	with open(infile, 'rb') as fin:
+		with open(outfile, 'wb') as fout:
+			while True:
+				compressed_data = fin.read(DEFAULT_CHUNK_SIZE)
+				if not compressed_data:
+					uncompressed_data = decompressor.flush()
+					break
+
+				uncompressed_data = decompressor.decompress(compressed_data)
+				fout.write(uncompressed_data)
+
+				if callback:
+					percent = (100.0 * fin.tell()) / total_size
+					callback(percent)
+	
+
+def _dummy_callback(percent):
+	sys.stdout.write('\r% 6.1f%%' % percent)
+	sys.stdout.flush()
+
 def download_file(filename, hashv, validate_hash):
 	if options.reload:
 		if os.path.exists(image_directory + "/" + filename):
 			print filename, "already exists. Removing it, since reload is requested"
 			os.remove(image_directory + "/" + filename)
 
-	ret = subprocess.call("/usr/bin/wget " + wget_opts + base_url + filename, shell=True)
-	if ret != 0:
-		print "An error (", str(ret), ") occured while downloading image", filename
-		print "Terminating"
+	try:
+		url = '%s%s' % (base_url, filename)
+		outfile = os.path.join(image_directory, filename)
+		print 'Downloading %s' % url
+		_download_file(url, outfile, _dummy_callback)
+		print ' ... done'
+	except IOError as exc:
+		print "An error occured while downloading image %s:\n%s\n\n... terminating" % (url, exc)
 		sys.exit(1)
+
+#	ret = subprocess.call("/usr/bin/wget " + wget_opts + base_url + filename, shell=True)
+#	if ret != 0:
+#		print "An error (", str(ret), ") occured while downloading image", filename
+#		print "Terminating"
+#		sys.exit(1)
+
 	if validate_hash:
-		print "Verifying hash value"
-		digest = commands.getoutput("sha256sum " + image_directory + "/" + filename).split(" ")[0].strip()
+		print "Verifying hash value of file %s" % outfile
+#		digest = commands.getoutput("sha256sum " + image_directory + "/" + filename).split(" ")[0].strip()
+		digest = _sha256(outfile, _dummy_callback)
+		print ' ... done'
 		if digest != hashv:
 			print "Incorrect hash value of downloaded file! Quitting"
 			print "Hash expected:", hashv
@@ -102,12 +179,22 @@ else:
 
 base_url = configRegistry['ucc/image/download/url'] + "/" 
 
-workingdir = tempfile.mkdtemp()
-ret = subprocess.call("/usr/bin/wget -P " + workingdir + " " + base_url + options.spec, shell=True)
-if ret != 0:
-	print "Could not download spec file, error code " + str(ret)
-	print "Terminating"
+try:
+	workingdir = tempfile.mkdtemp()
+	url = '%s%s' % (base_url, options.spec)
+	outfile = os.path.join(workingdir, options.spec)
+	print 'Downloading %s' % url
+	_download_file(url, outfile, _dummy_callback)
+	print ' ... done'
+except IOError as exc:
+	print "An error occured while downloading the spec file %s:\n%s\n\n... terminating" % (url, exc)
 	sys.exit(1)
+
+#ret = subprocess.call("/usr/bin/wget -P " + workingdir + " " + base_url + options.spec, shell=True)
+#if ret != 0:
+#	print "Could not download spec file, error code " + str(ret)
+#	print "Terminating"
+#	sys.exit(1)
 
 
 stream = open(os.path.join(workingdir, options.spec), "r")
@@ -134,7 +221,7 @@ shutil.copy(os.path.join(workingdir, options.spec), image_directory)
 
 print "Downloading", spec['title'], spec['version']
 
-wget_opts = "-c -P " + image_directory + " " 
+#wget_opts = "-c -P " + image_directory + " " 
 
 imgname = os.path.join(image_directory, spec['file-img'])
 img_validation = True
@@ -147,7 +234,10 @@ if img_validation:
 else:
 	download_file(spec['file-img'], spec['hash-img'], False)
 
-subprocess.call("/usr/bin/unxz -v --keep " + imgname, shell=True)
+#subprocess.call("/usr/bin/unxz -v --keep " + imgname, shell=True)
+print 'Unpacking file %s' % imgname
+_unxz(imgname, _dummy_callback)
+print ' ... done'
 
 if imgname.endswith(".xz"):
 	imgname = imgname[:-3]
@@ -177,24 +267,37 @@ if options.reload:
 		print spec['file-reg'], "already exists. Removing it, since reload is requested"
 		os.remove("/usr/lib/univention-install/" + joinscript_prefix + spec['file-reg'])
 
-ret = subprocess.call("/usr/bin/wget -c -P /usr/lib/univention-install " + base_url + spec['file-reg'], shell=True)
+try:
+	url = '%s%s' % (base_url, spec['file-reg'])
+	outfile = os.path.join('/usr/lib/univention-install', spec['file-reg'])
+	print 'Downloading %s' % url
+	_download_file(url, outfile, _dummy_callback)
+	print ' ... done'
+except IOError as exc:
+	print "An error occured while downloading the file %s:\n%s\n\n... terminating" % (url, exc)
+	sys.exit(1)
+
+#ret = subprocess.call("/usr/bin/wget -c -P /usr/lib/univention-install " + base_url + spec['file-reg'], shell=True)
+#if ret != 0:
+#	print "An error (", str(ret), ") occured while downloading image", spec['file-reg']
+#	print "Terminating"
+#	sys.exit(1)
+
 if joinscript_prefix != "":
 	os.rename("/usr/lib/univention-install/" + spec['file-reg'], "/usr/lib/univention-install/" + joinscript_prefix + spec['file-reg'])
 
-if ret != 0:
-	print "An error (", str(ret), ") occured while downloading image", spec['file-reg']
-	print "Terminating"
-	sys.exit(1)
-
-subprocess.call("chmod a+x /usr/lib/univention-install/" + joinscript_prefix + spec['file-reg'], shell=True)
+join_file = os.path.join('/usr/lib/univention-install/', joinscript_prefix, spec['file-reg'], )
+subprocess.call("chmod a+x %s" % join_file, shell=True)
 
 systemrole = configRegistry['server/role']
 if systemrole == "domaincontroller_master" or systemrole == "domaincontroller_backup":
 	subprocess.call("/usr/lib/univention-install/" + joinscript_prefix + spec['file-reg'], shell=True)
 
 if not options.skiphash:
-	print "Verifying hash value"
-	digest = commands.getoutput("sha256sum /usr/lib/univention-install/" + joinscript_prefix + spec['file-reg']).split(" ")[0].strip()
+	print "Verifying hash value of file %s" % join_file
+	#digest = commands.getoutput("sha256sum /usr/lib/univention-install/" + joinscript_prefix + spec['file-reg']).split(" ")[0].strip()
+	digest = _sha256(join_file, _dummy_callback)
+	print ' ... done'
 	if digest != spec['hash-reg']:
 		print "Incorrect hash value of downloaded file! Quitting"
 		print "Hash expected:", spec['hash-reg']
