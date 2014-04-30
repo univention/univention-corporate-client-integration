@@ -62,17 +62,11 @@ def _run_cmd(cmd_block, fd=sys.stdout):
 
 def _copy_system_to_image(options, image_file, bootstrap_dir, workingdir, logfile_fd):
 
-	print image_file
-	print bootstrap_dir
-	print workingdir
-
-
 	mount_dir = bootstrap_dir + "-img"
 	if not os.path.exists(mount_dir):
 		os.mkdir(mount_dir)
 
 	# Stop all services that may have been started in the chroot
-	# to close all references to the loopback device
 	try:
 		cmd_block = ['fuser', '-k', bootstrap_dir]
 		_run_cmd(cmd_block, logfile_fd)
