@@ -37,6 +37,7 @@ import univention.admin.password
 import univention.admin.allocators
 import univention.admin.localization
 import univention.admin.uldap
+import univention.admin.nagios as nagios
 import univention.admin.handlers.dns.forward_zone
 import univention.admin.handlers.dns.reverse_zone
 import univention.admin.handlers.groups.group
@@ -395,8 +396,11 @@ mapping.register('bootParameter', 'univentionCorporateClientBootParameter')
 mapping.register('repartitioning', 'univentionCorporateClientBootRepartitioning', None, univention.admin.mapping.ListToString)
 mapping.register('service', 'univentionService')
 
+# add Nagios extension
+nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
 
-class object(univention.admin.handlers.simpleComputer):
+
+class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
@@ -430,6 +434,8 @@ class object(univention.admin.handlers.simpleComputer):
 		else:
 			self._define_options( options )
 
+		nagios.Support.__init__(self)
+
 		self.modifypassword=0
 
 
@@ -447,6 +453,7 @@ class object(univention.admin.handlers.simpleComputer):
 
 	def open(self):
 		univention.admin.handlers.simpleComputer.open( self )
+		self.nagios_open()
 
 		# if not self.dn:
 		#	return
@@ -596,6 +603,8 @@ class object(univention.admin.handlers.simpleComputer):
 				if self.dn in groupObjects[i]['users']:
 					groupObjects[i]['users'].remove(self.dn)
 					groupObjects[i].modify(ignore_license=1)
+
+		self.nagios_ldap_post_remove()
 		univention.admin.handlers.simpleComputer._ldap_post_remove( self )
 		# Need to clean up oldinfo. If remove was invoked, because the
 		# creation of the object has failed, the next try will result in
@@ -615,6 +624,7 @@ class object(univention.admin.handlers.simpleComputer):
 		univention.admin.handlers.simpleComputer.primary_group( self )
 		univention.admin.handlers.simpleComputer.update_groups( self )
 		univention.admin.handlers.simpleComputer._ldap_post_modify( self )
+		self.nagios_ldap_post_modify()
 
 	def _ldap_pre_modify(self):
 		if self.hasChanged('password'):
@@ -626,12 +636,15 @@ class object(univention.admin.handlers.simpleComputer):
 				self.modifypassword=0
 			else:
 				self.modifypassword=1
+		self.nagios_ldap_pre_modify()
 
 		self._set_bootvariant_and_partition_flag()
 		univention.admin.handlers.simpleComputer._ldap_pre_modify( self )
 
 	def _ldap_modlist(self):
 		ml=univention.admin.handlers.simpleComputer._ldap_modlist( self )
+
+		self.nagios_ldap_modlist(ml)
 
 		if self.hasChanged('name'):
 			if 'posix' in self.options:
@@ -701,6 +714,7 @@ class object(univention.admin.handlers.simpleComputer):
 
 	def cleanup(self):
 		self.open()
+		self.nagios_cleanup()
 		univention.admin.handlers.simpleComputer.cleanup( self )
 
 	def cancel(self):
