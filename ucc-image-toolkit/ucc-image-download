@@ -33,6 +33,7 @@
 
 from optparse import OptionParser
 import univention.config_registry as ucr
+import univention.debug as ud
 
 import os
 import shutil
@@ -48,38 +49,65 @@ import commands
 import urllib
 import hashlib
 import lzma
+import httplib
+import urlparse
+import contextlib
+
+# short cuts for logging
+def log_warn(msg):
+	ud.debug(ud.MODULE, ud.WARN, msg)
+
+def log_error(msg):
+	ud.debug(ud.MODULE, ud.ERROR, msg)
+
+def log_process(msg):
+	ud.debug(ud.MODULE, ud.PROCESS, msg)
+
+def log_info(msg):
+	ud.debug(ud.MODULE, ud.INFO, msg)
+
+def _exit(msg):
+	if __name__ != "__main__":
+		log_error(msg)
+		sys.exit(1)
+	else:
+		raise RuntimeError(msg)
 
 configRegistry = ucr.ConfigRegistry()
 configRegistry.load()
 
-if not configRegistry['ucc/image/path']:
-	print "The UCR variable ucc/image/path must be set"
-	sys.exit(1)
 
+if not configRegistry['ucc/image/path']:
+	_exit("The UCR variable ucc/image/path must be set!", True)
+
+base_url = configRegistry['ucc/image/download/url'] + "/" 
 image_directory = configRegistry['ucc/image/path']
+workingdir = tempfile.mkdtemp()
 
 if not os.path.exists(image_directory):
-	print "UCC image path", image_directory, "does not exist"
-	sys.exit(1)
+	_exit("UCC image path %s does not exists!" % image_directory, True)
 
 DEFAULT_CHUNK_SIZE = 2**23
 
-def _download_file(url, filepath, callback=None):
-	# make sure that proxy settings are used
-	proxies = {}
-	proxy_http = configRegistry.get('proxy/http')
-	if proxy_http:
-		proxies = {'http': proxy_http, 'https': proxy_http}
+def _dummy_callback(current_size, total_size):
+	percent = min(100.0, (100.0 * current_size) / total_size)
+	sys.stdout.write('\r% 6.1f%%' % percent)
+	if current_size >= total_size:
+		sys.stdout.write(' ... done\n')
+	sys.stdout.flush()
 
-	_callback_wrapper = None
-	if callback:
-		def _callback_wrapper(nblocks, block_size, total_size):
-			callback(min(100.0, 100.0 * nblocks * block_size / total_size))
-	
-	urlopener = urllib.FancyURLopener(proxies=proxies)
-	urlopener.retrieve(url, filepath, _callback_wrapper)
 
-def _sha256(filepath, callback=None):
+def _free_disk_space(path):
+	'''Returns the free disk space for a given path.'''
+	vfs = os.statvfs(path)
+	free_diskspace = vfs.f_frsize * vfs.f_bfree
+	return free_diskspace
+
+
+def _sha256(filepath, callback=_dummy_callback):
+	'''Computes the sha256 sum for the given file. Optionally with a callback
+	function that receives the parameters (bytes_processed, bytes_total).'''
+
 	file_size = os.path.getsize(filepath)
 	file_hash = hashlib.sha256()
 	with open(filepath, 'rb') as infile:
@@ -89,21 +117,22 @@ def _sha256(filepath, callback=None):
 				break
 
 			file_hash.update(data)
-
-			if callback:
-				percent = (100.0 * infile.tell()) / file_size
-				callback(percent)
+			callback(infile.tell(), file_size)
 
 	return file_hash.hexdigest()
 
-def _unxz(infile, callback=None):
+
+def _unxz(infile, callback=_dummy_callback):
+	'''Decompresses the given .xz file. Optionally with a callback
+	function that receives the parameters (bytes_processed, bytes_total).'''
+
 	assert infile.endswith('.xz')
 	outfile = infile[:-3]
 	total_size = os.path.getsize(infile)
 	decompressor = lzma.LZMADecompressor()
 
-	with open(infile, 'rb') as fin:
-		with open(outfile, 'wb') as fout:
+	try:
+		with contextlib.nested(open(infile, 'rb'), open(outfile, 'wb')) as (fin, fout):
 			while True:
 				compressed_data = fin.read(DEFAULT_CHUNK_SIZE)
 				if not compressed_data:
@@ -112,194 +141,217 @@ def _unxz(infile, callback=None):
 
 				uncompressed_data = decompressor.decompress(compressed_data)
 				fout.write(uncompressed_data)
+				percent = (100.0 * fin.tell()) / total_size
+				callback(fin.tell(), total_size)
+	except IOError as exc:
+		# remove extracted file in case we do not have enough space
+		if os.path.exists(outfile):
+			os.remove(outfile)
 
-				if callback:
-					percent = (100.0 * fin.tell()) / total_size
-					callback(percent)
+	return outfile
+
+
+def _get_size(filename):
+	'''Get the file size (in byte) for the given file at the URL specified by
+	ucc/image/path via a HTTP HEAD request.'''
+
+	url = '%s%s' % (base_url, filename)
+	parts = urlparse.urlparse(url)
+	if parts.scheme == 'http':
+		connection = httplib.HTTPConnection(parts.hostname)
+	elif parts.scheme == 'https':
+		connection = httplib.HTTPSConnection(parts.hostname)
+	else:
+		raise ValueError('Uknown protocol %s.' % parts.scheme)
+	connection.request('HEAD', parts.path)
+	response = connection.getresponse()
+	headers = dict(response.getheaders())
+	size = int(headers.get('content-length', '0'))
+	return size
+
+
+def _download_url(url, filepath, callback=_dummy_callback):
+	'''Download specified URL to the given location on the hard disk.
+	Optionally with a callback function that receives the parameters (bytes_downloaded, bytes_total).'''
+
+	# make sure that proxy settings are used
+	proxies = {}
+	proxy_http = configRegistry.get('proxy/http')
+	if proxy_http:
+		proxies = {'http': proxy_http, 'https': proxy_http}
+
+	def _callback_wrapper(nblocks, block_size, total_size):
+		callback(min(total_size, nblocks * block_size), total_size)
 	
+	urlopener = urllib.FancyURLopener(proxies=proxies)
+	urlopener.retrieve(url, filepath, _callback_wrapper)
 
-def _dummy_callback(percent):
-	sys.stdout.write('\r% 6.1f%%' % percent)
-	sys.stdout.flush()
 
-def download_file(filename, hashv, validate_hash):
-	if options.reload:
-		if os.path.exists(image_directory + "/" + filename):
-			print filename, "already exists. Removing it, since reload is requested"
-			os.remove(image_directory + "/" + filename)
+def _download_file(filename, hash_value=None):
+	'''Download the file at the URL specified by ucc/image/path.
+	Optionally the sha256 hash sum is validated, if hash_value is specified.'''
+
+	# remove existing file
+	if os.path.exists(image_directory + "/" + filename):
+		log_info("File %s already exists, removing it for new download." % filename)
+		os.remove(image_directory + "/" + filename)
 
 	try:
 		url = '%s%s' % (base_url, filename)
 		outfile = os.path.join(image_directory, filename)
-		print 'Downloading %s' % url
-		_download_file(url, outfile, _dummy_callback)
-		print ' ... done'
+		log_process('Downloading %s' % url)
+		_download_url(url, outfile, _dummy_callback)
 	except IOError as exc:
-		print "An error occured while downloading image %s:\n%s\n\n... terminating" % (url, exc)
-		sys.exit(1)
+		_exit("An error occured while downloading image %s:\n%s\n\n... terminating" % (url, exc))
 
-#	ret = subprocess.call("/usr/bin/wget " + wget_opts + base_url + filename, shell=True)
-#	if ret != 0:
-#		print "An error (", str(ret), ") occured while downloading image", filename
-#		print "Terminating"
-#		sys.exit(1)
-
-	if validate_hash:
-		print "Verifying hash value of file %s" % outfile
-#		digest = commands.getoutput("sha256sum " + image_directory + "/" + filename).split(" ")[0].strip()
+	if hash_value:
+		log_process("Verifying hash value of file %s" % outfile)
 		digest = _sha256(outfile, _dummy_callback)
-		print ' ... done'
-		if digest != hashv:
-			print "Incorrect hash value of downloaded file! Quitting"
-			print "Hash expected:", hashv
-			print "Hash received:", digest
-			sys.exit(1)
+		if digest != hash_value:
+			_exit("Incorrect hash value of downloaded file! Quitting!\nHash expected: %s\nHash received: %s" % (hash_value, digest))
 
 
-usage = '''%s [options] -c config_file ''' % sys.argv[0]
-parser = OptionParser(usage=usage)
+def _download_spec_file(spec_file):
+	'''Download the spec file at the URL specified by ucc/image/path.'''
+	url = '%s%s' % (base_url, spec_file)
+	outfile = os.path.join(workingdir, spec_file)
+	log_process('Downloading %s' % url)
+	_download_url(url, outfile, _dummy_callback)
 
 
-parser.add_option("-s", "--specurl", action="store", dest="spec", help="Spec file for the image download (without the URL part of the mirror)")
-parser.add_option("-r", "--reload", action="store_true", dest="reload", help="Force reloading of file, do not resume downloads")
-parser.add_option("-p", "--set-root-pw-interactive", action="store_true", default=False, dest="rootpw", help="By default the root password from the current system is set in the image. Use this option to set it interactively")
-parser.add_option("--skip-hash", action="store_true", default=False, dest="skiphash", help="Skip validation of downloaded files")
+def _read_spec_file(spec_file):
+	'''Download and read the content of the spec file from the URL specified by
+	ucc/image/path. The correct content of the spec file is verified and free
+	disk spaces is ensured, as well.'''
 
-(options, args) = parser.parse_args()
+	_download_spec_file(spec_file)
+	with open(os.path.join(workingdir, spec_file), "r") as stream:
+		spec = yaml.load(stream)
 
-if not options.spec:
-	print 'ERROR: Missing argument -s spec_file.'
-	print parser.print_help()
-	sys.exit(1)
+	for i in ['title', 'version', 'hash-img', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
+		if not spec.get(i):
+			raise ValueError('Malformed spec file, missing entry "%s"' % i)
 
-if options.skiphash:
-	check_hash = False
-else:
-	check_hash = True
+	#TODO: get via HEAD request
+	free_diskspace = _free_disk_space(image_directory)
+	if (free_diskspace < spec['total-size']):
+		raise ValueError("Not enough free diskspace to download the image!\nNeeded: %s\nAvailable: %s" % (spec['total-size'], free_diskspace))
 
-base_url = configRegistry['ucc/image/download/url'] + "/" 
-
-try:
-	workingdir = tempfile.mkdtemp()
-	url = '%s%s' % (base_url, options.spec)
-	outfile = os.path.join(workingdir, options.spec)
-	print 'Downloading %s' % url
-	_download_file(url, outfile, _dummy_callback)
-	print ' ... done'
-except IOError as exc:
-	print "An error occured while downloading the spec file %s:\n%s\n\n... terminating" % (url, exc)
-	sys.exit(1)
-
-#ret = subprocess.call("/usr/bin/wget -P " + workingdir + " " + base_url + options.spec, shell=True)
-#if ret != 0:
-#	print "Could not download spec file, error code " + str(ret)
-#	print "Terminating"
-#	sys.exit(1)
+	shutil.copy(os.path.join(workingdir, spec_file), image_directory)
+	return spec
 
 
-stream = open(os.path.join(workingdir, options.spec), "r")
-try:
-	spec = yaml.load(stream)
-finally:
-	stream.close()
+def _set_rootpw(imgname, interactive_rootpw=False):
+	'''Calls ucc-image-root-password for the image'''
+	cmd = ["/usr/sbin/ucc-image-root-password", "-i", imgname]
+	if interactive_rootpw:
+		print "Setting root password in the downloaded image. Please enter the password:"
+		cmd += ["-p"]
+	else:
+		log_process("Setting root password in the image to the root password of the current system")
 
-for i in ['title', 'version', 'hash-img', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
-	if not spec[i]:
-		print 'Malformed spec file, missing entry', i
+	ret = subprocess.call(cmd)
+	if ret != 0:
+		log_warn("Root password could not be set!")
 
 
-vfs = os.statvfs(image_directory)
-free_diskspace = vfs.f_frsize * vfs.f_bfree
+def _run_join_script(join_script):
+	'''Calls the specified join script on a DC master.'''
 
-if (free_diskspace < spec['total-size']):
-	print "Not enough free diskspace to download the image"
-	print "Needed: ", spec['total-size']
-	print "Available: ", free_diskspace
-	sys.exit(1)
+	# make sure that the join script is executable
+	join_script_path = os.path.join('/usr/lib/univention-install/', join_script)
+	subprocess.call(["/bin/chmod", "a+x", join_script_path])
 
-shutil.copy(os.path.join(workingdir, options.spec), image_directory)
+	# only run join script directly on master
+	systemrole = configRegistry['server/role']
+	if systemrole == "domaincontroller_master" or systemrole == "domaincontroller_backup":
+		try:
+			log_process('Run join script %s' % join_script)
+			subprocess.call([join_script_path])
+		except OSError as exc:
+			log_error('Could not run join script %s: %s' % (join_script_path, exc))
+			log_error('... ignoring')
 
-print "Downloading", spec['title'], spec['version']
 
-#wget_opts = "-c -P " + image_directory + " " 
+def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False):
+	'''Convenience function, given a spec file, downloads all associated files and unpacks the image.'''
 
-imgname = os.path.join(image_directory, spec['file-img'])
-img_validation = True
-if os.path.exists(imgname):
-	print imgname, "already exists. Skipping validation of hash value, since the root password is usually altered."
-	img_validation = False
-	
-if img_validation:
-	download_file(spec['file-img'], spec['hash-img'], check_hash)
-else:
-	download_file(spec['file-img'], spec['hash-img'], False)
+	# download spec file
+	try:
+		spec = _read_spec_file(spec_file)
+	except IOError as exc:
+		_exit("An error occured while downloading the spec file %s:\n%s\n\n... terminating" % (spec_file, exc))
+	except ValueError as exc:
+		_exit("An error occurred while processing the spec file %s:\n%s" % (spec_file, exc))
 
-#subprocess.call("/usr/bin/unxz -v --keep " + imgname, shell=True)
-print 'Unpacking file %s' % imgname
-_unxz(imgname, _dummy_callback)
-print ' ... done'
+	log_process("Download of UCC image: %(title)s %(version)s" % spec)
 
-if imgname.endswith(".xz"):
-	imgname = imgname[:-3]
+	#TODO: compute file size
+	file_keys = ('img', 'initrd', 'md5', 'kernel', 'reg')
+	sizes = {}
+	for ikey in file_keys:
+		file_key = 'file-%s' % ikey
+		sizes[ikey] = _get_size(spec[file_key])
+	total_size = sum(sizes.values())
 
-if options.rootpw:
-	print "Setting root password in the downloaded image. Please enter the password:"
-	cmd = "/usr/sbin/ucc-image-root-password -i " + imgname + " -p"
-else:
-	print "Setting root password in the image to the root password of the current system"
-	cmd = "/usr/sbin/ucc-image-root-password -i " + imgname
+	# download all files
+	for ikey in file_keys:
+		file_key = 'file-%s' % ikey
+		hash_value = None
+		if validate_hash:
+			hash_key = 'hash-%s' % ikey
+			hash_value = spec[hash_key]
+		_download_file(spec[file_key], hash_value)
 
-ret = subprocess.call(cmd, shell=True)
-if ret != 0:
-	print "Warning: root password could not be set!"
+	# place join script into correct directory
+	join_script_src_path = os.path.join(image_directory, spec['file-reg'])
+	join_script_dest_path = os.path.join('/usr/lib/univention-install/', spec['file-reg'])
+	log_info('Copy join script to %s' % join_script_dest_path)
+	shutil.copy(join_script_src_path, join_script_dest_path)
 
-download_file(spec['file-initrd'], spec['hash-initrd'], check_hash)
-download_file(spec['file-md5'], spec['hash-md5'], check_hash)
-download_file(spec['file-kernel'], spec['hash-kernel'], check_hash)
+	# unpack UCC image
+	imgname = os.path.join(image_directory, spec['file-img'])
+	log_process('Unpacking file %s' % imgname)
+	imgname = _unxz(imgname, _dummy_callback)
 
-# bug#32136 The prefix is needed in case an old spec file is used, where the joinscript name does not start with '95'
-joinscript_prefix = "95"
-if spec['file-reg'].startswith(joinscript_prefix):
-	joinscript_prefix = ""
+	_set_rootpw(imgname, interactive_rootpw)
+	_run_join_script(spec['file-reg'])
 
-if options.reload:
-	if os.path.exists("/usr/lib/univention-install/" + joinscript_prefix + spec['file-reg']):
-		print spec['file-reg'], "already exists. Removing it, since reload is requested"
-		os.remove("/usr/lib/univention-install/" + joinscript_prefix + spec['file-reg'])
 
-try:
-	url = '%s%s' % (base_url, spec['file-reg'])
-	outfile = os.path.join('/usr/lib/univention-install', spec['file-reg'])
-	print 'Downloading %s' % url
-	_download_file(url, outfile, _dummy_callback)
-	print ' ... done'
-except IOError as exc:
-	print "An error occured while downloading the file %s:\n%s\n\n... terminating" % (url, exc)
-	sys.exit(1)
+def init_logging(level = 2):
+	fd = ud.init('/dev/stdout', ud.FLUSH, ud.NO_FUNCTION)
+	ud.set_level(ud.MODULE, level)
 
-#ret = subprocess.call("/usr/bin/wget -c -P /usr/lib/univention-install " + base_url + spec['file-reg'], shell=True)
-#if ret != 0:
-#	print "An error (", str(ret), ") occured while downloading image", spec['file-reg']
-#	print "Terminating"
-#	sys.exit(1)
 
-if joinscript_prefix != "":
-	os.rename("/usr/lib/univention-install/" + spec['file-reg'], "/usr/lib/univention-install/" + joinscript_prefix + spec['file-reg'])
+def parse_args():
+	usage = '''%s [options] -s config_file ''' % sys.argv[0]
+	parser = OptionParser(usage=usage)
 
-join_file = os.path.join('/usr/lib/univention-install/', joinscript_prefix, spec['file-reg'], )
-subprocess.call("chmod a+x %s" % join_file, shell=True)
+	parser.add_option("-s", "--specurl", action="store", dest="spec", help="Spec file for the image download (without the URL part of the mirror)")
+	#parser.add_option("-r", "--reload", action="store_true", dest="reload", help="Force reloading of file, do not resume downloads")
+	parser.add_option("-p", "--set-root-pw-interactive", action="store_true", default=False, dest="rootpw", help="By default the root password from the current system is set in the image. Use this option to set it interactively")
+	parser.add_option("--skip-hash", action="store_true", default=False, dest="skiphash", help="Skip validation of downloaded files")
+	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = 2, 
+		help = 'if given than debugging is activated and set to the specified level [default: %default]' )
 
-systemrole = configRegistry['server/role']
-if systemrole == "domaincontroller_master" or systemrole == "domaincontroller_backup":
-	subprocess.call("/usr/lib/univention-install/" + joinscript_prefix + spec['file-reg'], shell=True)
+	(options, args) = parser.parse_args()
 
-if not options.skiphash:
-	print "Verifying hash value of file %s" % join_file
-	#digest = commands.getoutput("sha256sum /usr/lib/univention-install/" + joinscript_prefix + spec['file-reg']).split(" ")[0].strip()
-	digest = _sha256(join_file, _dummy_callback)
-	print ' ... done'
-	if digest != spec['hash-reg']:
-		print "Incorrect hash value of downloaded file! Quitting"
-		print "Hash expected:", spec['hash-reg']
-		print "Hash received:", digest
+	if not options.spec:
+		print 'ERROR: Missing argument -s spec_file.'
+		print parser.print_help()
 		sys.exit(1)
+
+	if options.skiphash:
+		validate_hash = False
+	else:
+		validate_hash = True
+
+	return (options.spec, validate_hash, options.rootpw, options.debug)
+
+
+if __name__ == "__main__":
+	# call from the command line
+	spec_file, validate_hash, interactive_rootpw, debug_level = parse_args()
+	init_logging(debug_level)
+	download_ucc_image(spec_file, validate_hash, interactive_rootpw)
+
