@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.0-31) unstable; urgency=low
+
+  * Bug #30379: refactored python functions for image download in lib module
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 06 May 2014 17:26:38 +0200
+
 ucc-image-toolkit (2.0.0-30) unstable; urgency=low
 
   * Avoid empty line at the beginning of the generated join scripts (Bug #34746)
@@ -912,7 +918,7 @@ ucc-image-toolkit (0.9.2-1) precise; urgency=low
 
 ucc-image-toolkit (0.9.1-41) precise; urgency=low
 
-  * univention-lightdm is now a dependency of univenton-corporate-client
+  * univention-lightdm is now a dependency of univention-corporate-client
     (Bug #28037)
 
  -- Stefan Gohmann <gohmann@univention.de>  Tue, 30 Oct 2012 12:15:16 +0100

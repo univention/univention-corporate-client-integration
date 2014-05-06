@@ -32,290 +32,13 @@
 # <http://www.gnu.org/licenses/>.
 
 from optparse import OptionParser
-import univention.config_registry as ucr
-import univention.debug as ud
-
-import os
-import shutil
-import subprocess
 import sys
-import tempfile
-import time
-import traceback
-import yaml
-import hashlib
-import commands
 
-import urllib
-import hashlib
-import lzma
-import httplib
-import urlparse
-import contextlib
+import univention.debug as ud
+import ucc.images as ucc
 
-# short cuts for logging
-def log_warn(msg):
-	ud.debug(ud.MODULE, ud.WARN, msg)
-
-def log_error(msg):
-	ud.debug(ud.MODULE, ud.ERROR, msg)
-
-def log_process(msg):
-	ud.debug(ud.MODULE, ud.PROCESS, msg)
-
-def log_info(msg):
-	ud.debug(ud.MODULE, ud.INFO, msg)
-
-def _exit(msg):
-	if __name__ != "__main__":
-		log_error(msg)
-		sys.exit(1)
-	else:
-		raise RuntimeError(msg)
-
-configRegistry = ucr.ConfigRegistry()
-configRegistry.load()
-
-
-if not configRegistry['ucc/image/path']:
-	_exit("The UCR variable ucc/image/path must be set!", True)
-
-base_url = configRegistry['ucc/image/download/url'] + "/" 
-image_directory = configRegistry['ucc/image/path']
-workingdir = tempfile.mkdtemp()
-
-if not os.path.exists(image_directory):
-	_exit("UCC image path %s does not exists!" % image_directory, True)
-
-DEFAULT_CHUNK_SIZE = 2**23
-
-def _dummy_callback(current_size, total_size):
-	percent = min(100.0, (100.0 * current_size) / total_size)
-	sys.stdout.write('\r% 6.1f%%' % percent)
-	if current_size >= total_size:
-		sys.stdout.write(' ... done\n')
-	sys.stdout.flush()
-
-
-def _free_disk_space(path):
-	'''Returns the free disk space for a given path.'''
-	vfs = os.statvfs(path)
-	free_diskspace = vfs.f_frsize * vfs.f_bfree
-	return free_diskspace
-
-
-def _sha256(filepath, callback=_dummy_callback):
-	'''Computes the sha256 sum for the given file. Optionally with a callback
-	function that receives the parameters (bytes_processed, bytes_total).'''
-
-	file_size = os.path.getsize(filepath)
-	file_hash = hashlib.sha256()
-	with open(filepath, 'rb') as infile:
-		while True:
-			data = infile.read(DEFAULT_CHUNK_SIZE)
-			if not data:
-				break
-
-			file_hash.update(data)
-			callback(infile.tell(), file_size)
-
-	return file_hash.hexdigest()
-
-
-def _unxz(infile, callback=_dummy_callback):
-	'''Decompresses the given .xz file. Optionally with a callback
-	function that receives the parameters (bytes_processed, bytes_total).'''
-
-	assert infile.endswith('.xz')
-	outfile = infile[:-3]
-	total_size = os.path.getsize(infile)
-	decompressor = lzma.LZMADecompressor()
-
-	try:
-		with contextlib.nested(open(infile, 'rb'), open(outfile, 'wb')) as (fin, fout):
-			while True:
-				compressed_data = fin.read(DEFAULT_CHUNK_SIZE)
-				if not compressed_data:
-					uncompressed_data = decompressor.flush()
-					break
-
-				uncompressed_data = decompressor.decompress(compressed_data)
-				fout.write(uncompressed_data)
-				percent = (100.0 * fin.tell()) / total_size
-				callback(fin.tell(), total_size)
-	except IOError as exc:
-		# remove extracted file in case we do not have enough space
-		if os.path.exists(outfile):
-			os.remove(outfile)
-
-	return outfile
-
-
-def _get_size(filename):
-	'''Get the file size (in byte) for the given file at the URL specified by
-	ucc/image/path via a HTTP HEAD request.'''
-
-	url = '%s%s' % (base_url, filename)
-	parts = urlparse.urlparse(url)
-	if parts.scheme == 'http':
-		connection = httplib.HTTPConnection(parts.hostname)
-	elif parts.scheme == 'https':
-		connection = httplib.HTTPSConnection(parts.hostname)
-	else:
-		raise ValueError('Uknown protocol %s.' % parts.scheme)
-	connection.request('HEAD', parts.path)
-	response = connection.getresponse()
-	headers = dict(response.getheaders())
-	size = int(headers.get('content-length', '0'))
-	return size
-
-
-def _download_url(url, filepath, callback=_dummy_callback):
-	'''Download specified URL to the given location on the hard disk.
-	Optionally with a callback function that receives the parameters (bytes_downloaded, bytes_total).'''
-
-	# make sure that proxy settings are used
-	proxies = {}
-	proxy_http = configRegistry.get('proxy/http')
-	if proxy_http:
-		proxies = {'http': proxy_http, 'https': proxy_http}
-
-	def _callback_wrapper(nblocks, block_size, total_size):
-		callback(min(total_size, nblocks * block_size), total_size)
-	
-	urlopener = urllib.FancyURLopener(proxies=proxies)
-	urlopener.retrieve(url, filepath, _callback_wrapper)
-
-
-def _download_file(filename, hash_value=None):
-	'''Download the file at the URL specified by ucc/image/path.
-	Optionally the sha256 hash sum is validated, if hash_value is specified.'''
-
-	# remove existing file
-	if os.path.exists(image_directory + "/" + filename):
-		log_info("File %s already exists, removing it for new download." % filename)
-		os.remove(image_directory + "/" + filename)
-
-	try:
-		url = '%s%s' % (base_url, filename)
-		outfile = os.path.join(image_directory, filename)
-		log_process('Downloading %s' % url)
-		_download_url(url, outfile, _dummy_callback)
-	except IOError as exc:
-		_exit("An error occured while downloading image %s:\n%s\n\n... terminating" % (url, exc))
-
-	if hash_value:
-		log_process("Verifying hash value of file %s" % outfile)
-		digest = _sha256(outfile, _dummy_callback)
-		if digest != hash_value:
-			_exit("Incorrect hash value of downloaded file! Quitting!\nHash expected: %s\nHash received: %s" % (hash_value, digest))
-
-
-def _download_spec_file(spec_file):
-	'''Download the spec file at the URL specified by ucc/image/path.'''
-	url = '%s%s' % (base_url, spec_file)
-	outfile = os.path.join(workingdir, spec_file)
-	log_process('Downloading %s' % url)
-	_download_url(url, outfile, _dummy_callback)
-
-
-def _read_spec_file(spec_file):
-	'''Download and read the content of the spec file from the URL specified by
-	ucc/image/path. The correct content of the spec file is verified and free
-	disk spaces is ensured, as well.'''
-
-	_download_spec_file(spec_file)
-	with open(os.path.join(workingdir, spec_file), "r") as stream:
-		spec = yaml.load(stream)
-
-	for i in ['title', 'version', 'hash-img', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
-		if not spec.get(i):
-			raise ValueError('Malformed spec file, missing entry "%s"' % i)
-
-	#TODO: get via HEAD request
-	free_diskspace = _free_disk_space(image_directory)
-	if (free_diskspace < spec['total-size']):
-		raise ValueError("Not enough free diskspace to download the image!\nNeeded: %s\nAvailable: %s" % (spec['total-size'], free_diskspace))
-
-	shutil.copy(os.path.join(workingdir, spec_file), image_directory)
-	return spec
-
-
-def _set_rootpw(imgname, interactive_rootpw=False):
-	'''Calls ucc-image-root-password for the image'''
-	cmd = ["/usr/sbin/ucc-image-root-password", "-i", imgname]
-	if interactive_rootpw:
-		print "Setting root password in the downloaded image. Please enter the password:"
-		cmd += ["-p"]
-	else:
-		log_process("Setting root password in the image to the root password of the current system")
-
-	ret = subprocess.call(cmd)
-	if ret != 0:
-		log_warn("Root password could not be set!")
-
-
-def _run_join_script(join_script):
-	'''Calls the specified join script on a DC master.'''
-
-	# make sure that the join script is executable
-	join_script_path = os.path.join('/usr/lib/univention-install/', join_script)
-	subprocess.call(["/bin/chmod", "a+x", join_script_path])
-
-	# only run join script directly on master
-	systemrole = configRegistry['server/role']
-	if systemrole == "domaincontroller_master" or systemrole == "domaincontroller_backup":
-		try:
-			log_process('Run join script %s' % join_script)
-			subprocess.call([join_script_path])
-		except OSError as exc:
-			log_error('Could not run join script %s: %s' % (join_script_path, exc))
-			log_error('... ignoring')
-
-
-def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False):
-	'''Convenience function, given a spec file, downloads all associated files and unpacks the image.'''
-
-	# download spec file
-	try:
-		spec = _read_spec_file(spec_file)
-	except IOError as exc:
-		_exit("An error occured while downloading the spec file %s:\n%s\n\n... terminating" % (spec_file, exc))
-	except ValueError as exc:
-		_exit("An error occurred while processing the spec file %s:\n%s" % (spec_file, exc))
-
-	log_process("Download of UCC image: %(title)s %(version)s" % spec)
-
-	#TODO: compute file size
-	file_keys = ('img', 'initrd', 'md5', 'kernel', 'reg')
-	sizes = {}
-	for ikey in file_keys:
-		file_key = 'file-%s' % ikey
-		sizes[ikey] = _get_size(spec[file_key])
-	total_size = sum(sizes.values())
-
-	# download all files
-	for ikey in file_keys:
-		file_key = 'file-%s' % ikey
-		hash_value = None
-		if validate_hash:
-			hash_key = 'hash-%s' % ikey
-			hash_value = spec[hash_key]
-		_download_file(spec[file_key], hash_value)
-
-	# place join script into correct directory
-	join_script_src_path = os.path.join(image_directory, spec['file-reg'])
-	join_script_dest_path = os.path.join('/usr/lib/univention-install/', spec['file-reg'])
-	log_info('Copy join script to %s' % join_script_dest_path)
-	shutil.copy(join_script_src_path, join_script_dest_path)
-
-	# unpack UCC image
-	imgname = os.path.join(image_directory, spec['file-img'])
-	log_process('Unpacking file %s' % imgname)
-	imgname = _unxz(imgname, _dummy_callback)
-
-	_set_rootpw(imgname, interactive_rootpw)
-	_run_join_script(spec['file-reg'])
+from univention.lib.i18n import Translation
+_ = Translation('ucc-image-lib').translate
 
 
 def init_logging(level = 2):
@@ -341,17 +64,33 @@ def parse_args():
 		print parser.print_help()
 		sys.exit(1)
 
-	if options.skiphash:
-		validate_hash = False
-	else:
-		validate_hash = True
+	return (options.spec, not options.skiphash, options.rootpw, options.debug)
 
-	return (options.spec, validate_hash, options.rootpw, options.debug)
+
+class CLIProgress(ucc.Progress):
+	def step_handler(self, steps, component_steps=0):
+		self.steps = steps
+		self.component_steps = component_steps
+
+		percent = min(100.0, (100.0 * steps) / self.max_steps)
+		if component_steps:
+			percent_component = min(100.0, (100.0 * component_steps) / self.max_steps)
+			sys.stdout.write('\r% 6.1f%%  [overall: % 6.1f%%]' % (percent_component, percent))
+			if component_steps >= self.max_steps:
+				sys.stdout.write(' ... done\n')
+			sys.stdout.flush()
+		else:
+			ucc.log_process('Overall: % 6.1f%%' % percent)
+
+
+	def critical_handler(self, critical):
+		if critical:
+			sys.exit(1)
 
 
 if __name__ == "__main__":
 	# call from the command line
 	spec_file, validate_hash, interactive_rootpw, debug_level = parse_args()
 	init_logging(debug_level)
-	download_ucc_image(spec_file, validate_hash, interactive_rootpw)
+	ucc.download_ucc_image(spec_file, validate_hash, interactive_rootpw, CLIProgress())
 

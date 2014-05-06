@@ -5,3 +5,4 @@ ucc-image-download usr/sbin/
 ucc-image-remove usr/sbin/
 ucc-image-set-join-information usr/sbin/
 ucc-image-add-citrix-receiver usr/sbin/
+src/*	usr/share/pyshared/ucc
