@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.0-30) unstable; urgency=low
+
+  * Avoid empty line at the beginning of the generated join scripts (Bug #34746)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 06 May 2014 10:16:18 +0200
+
 ucc-image-toolkit (2.0.0-29) unstable; urgency=low
 
   * Bug #30379: refactor ucc-image-download for lib usage
