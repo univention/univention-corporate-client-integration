@@ -1,0 +1,6 @@
+Module: uccimages
+Python: umc/python
+Definition: umc/uccimages.xml
+Category: umc/categories/uccimages.xml
+Javascript: umc/js
+Icons: umc/icons

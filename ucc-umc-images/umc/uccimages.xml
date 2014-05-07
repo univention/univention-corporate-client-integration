@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<umc version="2.0">
+	<module id="uccimages" icon="uccimages" version="1.0">
+	<name>UCC Images</name>
+	<description>Download and management of UCC client images</description>
+	<keywords>dummy</keywords>
+	<categories>
+		<category name="system"/>
+	</categories>
+	<command name="uccimages/query" function="query" />
+	<command name="uccimages/colors" function="colors" />
+	<command name="uccimages/get" function="get" />
+	</module>
+</umc>
