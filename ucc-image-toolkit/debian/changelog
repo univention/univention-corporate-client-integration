@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.1-32) unstable; urgency=low
+
+  * Bug #30379: added methods to query available and installed UCC images
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 07 May 2014 19:27:43 +0200
+
 ucc-image-toolkit (2.0.0-31) unstable; urgency=low
 
   * Bug #30379: refactored python functions for image download in lib module

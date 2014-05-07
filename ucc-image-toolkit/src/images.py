@@ -43,6 +43,7 @@ import lzma
 import httplib
 import urlparse
 import contextlib
+import re
 
 import univention.config_registry as ucr
 import univention.debug as ud
@@ -79,6 +80,7 @@ if UCC_BASE_URL.endswith('/'):
 	# remove trailing '/'
 	UCC_BASE_URL = UCC_BASE_URL[:-1]
 UCC_IMAGE_DIRECTORY = configRegistry['ucc/image/path']
+UCC_IMAGE_INDEX_URL = '%s/%s' % (UCC_BASE_URL, 'image-index.txt')
 DEFAULT_CHUNK_SIZE = 2**23
 
 
@@ -411,3 +413,35 @@ def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, 
 		progress.critical_handler(True)
 
 
+def get_installed_ucc_images():
+	'''Get a list of all locally installed UCC images represented by a dict with the spec-file content.'''
+	def _read(spec_file):
+		file_path = os.path.join(UCC_IMAGE_DIRECTORY, spec_file)
+		with open(file_path, 'r') as infile:
+			spec = yaml.load(infile)
+		spec['id'] = spec_file
+		return spec
+
+	all_files = os.listdir(UCC_IMAGE_DIRECTORY)
+	specs = [_read(i) for i in all_files if i.endswith('.spec')]
+	return specs
+
+
+_regWhiteSpace = re.compile(r'\s+')
+def get_available_ucc_images():
+	'''Get a list of all images that are available online.'''
+	stream = urllib.urlopen(UCC_IMAGE_INDEX_URL, proxies=_get_proxies())
+	index = []
+	try:
+		for line in stream:
+			line = line.strip()
+			parts = _regWhiteSpace.split(line, 1)  #TODO: should be 4 later
+			if len(parts) != 2:
+				continue
+			index.append({
+				'id': parts[0],
+				'title': parts[1],
+			})
+	finally:
+		stream.close()
+	return index
