@@ -126,7 +126,7 @@ property_descriptions={
 			multivalue=1,
 			include_in_default_search=1,
 			options=[],
-			required=0,
+			required=1,
 			may_change=1,
 			identifies=0
 		),
