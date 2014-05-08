@@ -180,7 +180,7 @@ def _sha256(filepath, progress=_dummy_progress):
 	return file_hash.hexdigest()
 
 
-def _unxz(infile, progress=_dummy_progress):
+def _unxz(infile, keep_src_file=False, progress=_dummy_progress):
 	'''Decompresses the given .xz file. Optionally with a callback
 	function that receives the parameters (bytes_processed, bytes_total).'''
 
@@ -205,7 +205,11 @@ def _unxz(infile, progress=_dummy_progress):
 				progress(fin.tell(), total_size)
 				del compressed_data
 				del uncompressed_data
-	except IOError as exc:
+
+		if not keep_src_file:
+			# successful decompression -> remove compressed source file
+			os.remove(infile)
+	finally:
 		# remove extracted file in case we do not have enough space
 		if os.path.exists(outfile):
 			os.remove(outfile)
@@ -411,7 +415,8 @@ def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, 
 		# unpack UCC image -> 20%
 		progress.component_handler(_('Unpacking image file %s') % spec['file-img'])
 		imgname = os.path.join(UCC_IMAGE_DIRECTORY, spec['file-img'])
-		imgname = _unxz(imgname, _step_handler(20.0))
+		if imgname.endswith('.xz'):
+			imgname = _unxz(imgname, False, _step_handler(20.0))
 		progress.step_handler(96.0)
 
 		# set root password -> 2%

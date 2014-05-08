@@ -1,3 +1,10 @@
+ucc-image-toolkit (2.0.1-35) unstable; urgency=low
+
+  * Bug #30379: allow for uncompressed images, remove originating file after
+    decompression
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 08 May 2014 14:36:26 +0200
+
 ucc-image-toolkit (2.0.1-34) unstable; urgency=low
 
   * Bug #30379: use a smaller chunksize for decompression in order to avoid
