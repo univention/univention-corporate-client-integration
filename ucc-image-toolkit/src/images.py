@@ -44,6 +44,7 @@ import httplib
 import urlparse
 import contextlib
 import re
+import psutil
 
 import univention.config_registry as ucr
 import univention.debug as ud
@@ -81,7 +82,7 @@ if UCC_BASE_URL.endswith('/'):
 	UCC_BASE_URL = UCC_BASE_URL[:-1]
 UCC_IMAGE_DIRECTORY = configRegistry['ucc/image/path']
 UCC_IMAGE_INDEX_URL = '%s/%s' % (UCC_BASE_URL, 'image-index.txt')
-DEFAULT_CHUNK_SIZE = 2**23
+DEFAULT_CHUNK_SIZE = 2**13
 
 
 class Progress(object):
@@ -139,6 +140,15 @@ class Progress(object):
 			log_process('Overall: % 6.1f%%  Component: % 6.1f%%' % (percent, percent_component))
 
 
+class UCCImage(object):
+	def __init__(self, spec_file):
+		self._read_spec_file(spec_file)
+
+	def _read_spec_file(self, spec_file):
+		pass
+
+
+
 def _dummy_progress(*args):
 	pass
 
@@ -149,6 +159,8 @@ def _free_disk_space(path):
 	free_diskspace = vfs.f_frsize * vfs.f_bfree
 	return free_diskspace
 
+def _physical_memory():
+	return (psutil.used_phymem() + psutil.avail_phymem())
 
 def _sha256(filepath, progress=_dummy_progress):
 	'''Computes the sha256 sum for the given file. Optionally with a callback
@@ -175,7 +187,9 @@ def _unxz(infile, progress=_dummy_progress):
 	assert infile.endswith('.xz')
 	outfile = infile[:-3]
 	total_size = os.path.getsize(infile)
+	mem_limit = _physical_memory() / 4  # only take at maximum 25% of the physical memory!
 	decompressor = lzma.LZMADecompressor()
+	decompressor.reset(max_length=0, memlimit=mem_limit)
 
 	try:
 		with contextlib.nested(open(infile, 'rb'), open(outfile, 'wb')) as (fin, fout):
@@ -189,6 +203,8 @@ def _unxz(infile, progress=_dummy_progress):
 				fout.write(uncompressed_data)
 				percent = (100.0 * fin.tell()) / total_size
 				progress(fin.tell(), total_size)
+				del compressed_data
+				del uncompressed_data
 	except IOError as exc:
 		# remove extracted file in case we do not have enough space
 		if os.path.exists(outfile):

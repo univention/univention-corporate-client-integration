@@ -18,7 +18,8 @@ Depends: ${misc:Depends}, ${python:Depends},
  python-yaml,
  wget,
  xz-utils,
- python-lzma
+ python-lzma,
+ python-psutil
 Provides: ${python:Provides}
 Description: Toolkit for creating UCC images
  This package contains tools to create Univention Corporate
