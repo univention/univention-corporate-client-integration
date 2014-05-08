@@ -1,7 +1,7 @@
 #!/bin/sh
 #
 # Univention Corporate Client
-#  postinst script
+#  prerm script
 #
 # Copyright (C) 2010-2014 Univention GmbH
 #
@@ -34,18 +34,9 @@
 
 . /usr/share/univention-lib/all.sh
 
-
-if [ "$1" = "configure" ]
+if [ "$1" = "remove" ]
 then
-	uinst="/usr/lib/univention-install/30univention-coporate-client-schema.uinst"
-	[ -e "$uinst" ] && rm "$uinst"
+	call_unjoinscript 30univention-corporate-client-schema.uinst
 fi
-
-ucs_registerLDAPSchema /usr/share/univention-corporate-client-schema/univention-corporate-client.schema
-
-call_joinscript 30univention-corporate-client-schema.inst
-
-
-
 
 exit 0
