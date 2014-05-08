@@ -1,5 +1,12 @@
 ucc-image-toolkit (2.0.1-33) unstable; urgency=low
 
+  * added bash-completition to "install" segment of desktop image spec
+  (Bug #30254)
+
+ -- Lukas Walter <walter@univention.de>  Thu, 08 May 2014 13:47:12 +0200
+
+ucc-image-toolkit (2.0.1-33) unstable; urgency=low
+
   * Update image names to "rc" (Bug #34310)
   * Add ID and description to image build (needed for image UMC module)
   * Remove the Ubuntu release name from the version string
