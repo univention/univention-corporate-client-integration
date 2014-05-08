@@ -138,7 +138,7 @@ define([
 			}, {
 				name: 'network',
 				headerText: _('Network configuration'),
-				helpText: _('UCS uses so-called network objects for managing IP adresses and the DNS/DHCP configuration of the clients. A list of IP addresses is configured and the next available address is then automatically selected when creating a computer. You can either use an existing network object or create a new one.'),
+				helpText: _('<p>UCS uses so-called network objects for managing IP adresses and the DNS/DHCP configuration of the clients. A list of IP addresses is configured and the next available address is then automatically selected when creating a computer.</p> </p>You can either use an existing network object or create a new one. The <b>default</b> network is created during the installation of the UCS master domain controller. If you want to separate the IP addresses of the UCS servers and the UCC clients it is recommended to create a new network object.'),
 				layout: [
 					'useExistingNetwork', 'existingNetwork', 'createNewNetwork',
 					['newNetworkAddress', 'newNetmask'],
@@ -195,7 +195,7 @@ define([
 			}, {
 				name: 'gateway',
 				headerText: _('Configuration of default gateway'),
-				helpText: _('No default gateway is currently assigned to the subnet via DHCP. Which gateway should be configured for this network?'),
+				helpText: _('No default gateway is currently assigned to the subnet via DHCP. Which gateway should be configured for this network? (in most cases the default gateway of the UCS server can be used)'),
 				widgets: [{
 					type: TextBox,
 					name: 'gateway',
@@ -315,10 +315,13 @@ define([
 			}, {
 				name: 'done',
 				headerText: _('Configuration finished'),
-				helpText: _('<p>Now you can create one or several clients with the type <b>Univention Corporate Client</b> in the <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'computers/computer\')">computer management module</a>. Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected. </p>')
-					+ _('<p> When selecting <b>Network</b> created earlier, a free IP address is proposed. The MAC address of the client needs to be specified for a working DHCP configuration.</p>')
-					+ _('<p> <i>Installation with repartitioning and image rollout</i> should be selected as the <b>Boot variant</b> along with the designated image. Warning: All data on that system is lost! </p>')
-					+ _('<p> If you only want to try UCC without installing it on the hard drive, you can alternatively select <i>Live boot</i>. </p>')
+				helpText: _('<p>Now you can create one or several clients in the <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'computers/computer\')">computer management module</a> by clicking on <b>Add</b> </p>')
+					+ _('<p> 1. Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected. </p>')
+					+ _('<p> 2. Select <i>Univention Corporate Client</i> as the <b>Type</b> of computer. </p>')
+					+ _('<p> 3. Enter the <i>Hostname</i> of the client. </p>')
+					+ _('<p> 4. When selecting <b>Network</b> created earlier, a free IP address is proposed. The MAC address of the client needs to be specified for a working DHCP configuration. </p>')
+					+ _('<p> 5. Now click <i>Next</i>. </p>')
+					+ _('<p> 6. <i>Installation with repartitioning and image rollout</i> should be selected as the <b>Boot variant</b> along with the designated image. Warning: All data on that system is lost! If you only want to try UCC without installing it on the hard drive, you can alternatively select <i>Live boot</i>. </p>')
 					+ _('<p> The images are rolled out using PXE. Thus, the BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
 					+ _('<p>After successful installation you can log in with any domain user.</p>')
 			}];
