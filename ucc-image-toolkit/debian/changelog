@@ -1,6 +1,8 @@
 ucc-image-toolkit (2.0.1-33) unstable; urgency=low
 
   * Update image names to "rc" (Bug #34310)
+  * Add ID and description to image build (needed for image UMC module)
+  * Remove the Ubuntu release name from the version string
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 08 May 2014 10:13:14 +0200
 

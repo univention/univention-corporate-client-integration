@@ -183,6 +183,8 @@ if __name__ == '__main__':
 	parser.add_option("-C", "--no-cleanup", action="store_false", dest="cleanup", default=True, help="Do not cleanup temporary files")
 	parser.add_option("--compress", action="store_true", dest="compress", default=False, help="Use XZ compression for the image file")
 	parser.add_option("-t", "--targetdir", action="store", dest="targetdir", help="Copy output files to targetdir")
+	parser.add_option("-d", "--description", action="store", dest="description", help="Description for the UCC image")
+	parser.add_option("-i", "--imageid", action="store", dest="imageid", help="Image ID, needed to track updated versions of UCC image")
 	parser.add_option("-T", "--tempdir-base", action="store", dest="tempdir_base", help="Use a predefined tempdir for tempfile")
 	parser.add_option("-b", "--workingdir", action="store", dest="workingdir", help="Use a predefined working dirctory, this is helpful if -C has been used in a previous run")
 	parser.add_option("-B", "--skip-bootstrap", action="store_false", dest="bootstrap", default=True, help="Do not call debootstrap again a predefined temp dir, this is helpful if -C has been used in a previous run")
@@ -193,6 +195,16 @@ if __name__ == '__main__':
 
 	if not options.config_file:
 		print 'ERROR: Missing argument -c config_file.'
+		print parser.print_help()
+		sys.exit(1)
+
+	if not options.description:
+		print 'ERROR: Missing argument -d description.'
+		print parser.print_help()
+		sys.exit(1)
+
+	if not options.imageid:
+		print 'ERROR: Missing argument -i imageid.'
 		print parser.print_help()
 		sys.exit(1)
 
@@ -560,11 +572,13 @@ menuentry 'Debug Shell' {
 			specfd = open(spec_dest, "w")
 			specfd.write("title: " + image_name + "\n")
 
-			specfd.write("version: " + config.get_version() + " " + str(datetime.date.isoformat(datetime.datetime.now())) + "\n")
+			specfd.write("version: " + str(datetime.date.isoformat(datetime.datetime.now())) + "\n")
 
 			totalsize = os.stat(image_file).st_size + os.stat(md5_dest).st_size + os.stat(kernel_dest).st_size + os.stat(initrd_dest).st_size
 
 			specfd.write("total-size: " + str(totalsize) + "\n")
+			specfd.write("description: " + options.description + "\n")
+			specfd.write("id: " + options.imageid + "\n")
 			specfd.write("file-img: " + os.path.basename(image_name) + "\n")
 			specfd.write("file-initrd: " + os.path.basename(initrd_dest) + "\n")
 			specfd.write("file-kernel: " + os.path.basename(kernel_dest) + "\n")
