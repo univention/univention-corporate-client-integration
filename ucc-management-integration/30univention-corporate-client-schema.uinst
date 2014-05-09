@@ -31,23 +31,26 @@
 # <http://www.gnu.org/licenses/>.
 
 VERSION=1
-
 NAME="univention-corporate-client-schema"
+SERVICE="UCC"
 
 . /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/ldap.sh
 
 joinscript_init
 
 eval "$(univention-config-registry shell)"
 
-images=$(udm settings/ucc_image list |awk "0 == (NR + 1) % 6" |awk -F": " '{print $2}')
+ucs_removeServiceFromLocalhost "${SERVICE}" "$@"
 
-for image in $images
-do
-	udm settings/ucc_image remove --dn "univentionCorporateClientImageName=$image,cn=Images,cn=UCC,cn=univention,$ldap_base" ||die
-done
-
-
+if ucs_isServiceUnused "${SERVICE}" "$@"
+then
+	images="$(univention-directory-manager settings/ucc_image list |awk '0 == (NR + 1) % 6' |awk -F ': ' '{print $2}')"
+	for image in $images
+	do
+		univention-directory-manager settings/ucc_image remove "$@" --dn "univentionCorporateClientImageName=${image},cn=Images,cn=UCC,cn=univention,${ldap_base}" || die
+	done
+fi
 
 joinscript_remove_script_from_status_file 30univention-corporate-client-schema.uinst
 

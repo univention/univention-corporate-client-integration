@@ -30,11 +30,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-VERSION=3
-
+VERSION=4
 NAME="univention-corporate-client-schema"
+SERVICE="UCC"
 
 . /usr/share/univention-join/joinscripthelper.lib
+. /usr/share/univention-lib/ldap.sh
 
 joinscript_init
 
@@ -155,6 +156,8 @@ univention-directory-manager settings/ucc_session create "$@" --position "cn=Ses
 							--set name="LXDE" \
 							--set session="LXDE" \
 							--set description="LXDE desktop session" || die
+
+ucs_addServiceToLocalhost "${SERVICE}" "$@"
 
 joinscript_save_current_version
 
