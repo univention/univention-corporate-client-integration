@@ -1,4 +1,4 @@
-ucc-default-images (1.0.0-1) unstable; urgency=low
+ucc-server (1.0.0-1) unstable; urgency=low
 
   * Initial release (Bug #34310)
 
