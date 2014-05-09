@@ -32,19 +32,20 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/on",
+	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Grid",
 	"umc/widgets/Page",
 	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Module",
-	"umc/widgets/TextBox",
-	"umc/widgets/ComboBox",
+	"umc/widgets/ProgressBar",
 	"umc/i18n!umc/modules/uccimages"
-], function(declare, lang, on, dialog, Grid, Page, ExpandingTitlePane, Module, TextBox, ComboBox, _) {
+], function(declare, lang, on, tools, dialog, Grid, Page, ExpandingTitlePane, Module, ProgressBar, _) {
 	return declare("umc.modules.uccimages", [ Module ], {
-		idProperty: 'id',
+		idProperty: 'file',
 		_grid: null,
 		_searchPage: null,
+		_progressBar: null,
 
 		buildRendering: function() {
 			this.inherited(arguments);
@@ -52,6 +53,9 @@ define([
 		},
 
 		renderSearchPage: function(containers, superordinates) {
+			this._progressBar = new ProgressBar();
+			this.own(this._progressBar);
+
 			this._searchPage = new Page({
 				headerText: this.description,
 				helpText: ''
@@ -74,34 +78,31 @@ define([
 
 			// define grid actions
 			var actions = [{
-				name: 'add',
-				label: _('Add object'),
+				name: 'download',
+				label: _('Download'),
 				description: _('Create a new object'),
 				iconClass: 'umcIconAdd',
-				isContextAction: false,
 				isStandardAction: true,
-				callback: lang.hitch(this, '_addObject')
+				callback: lang.hitch(this, '_download'),
+				canExecute: function(item) {
+					return item.location == 'online';
+				}
 			}, {
-				name: 'edit',
-				label: _('Edit'),
-				description: _('Edit the selected object'),
-				iconClass: 'umcIconEdit',
-				isStandardAction: true,
-				isMultiAction: false,
-				callback: lang.hitch(this, '_editObject')
-			}, {
-				name: 'delete',
-				label: _('Delete'),
-				description: _('Deleting the selected objects.'),
+				name: 'remove',
+				label: _('Remove'),
+				description: _('.'),
 				isStandardAction: true,
 				isMultiAction: true,
 				iconClass: 'umcIconDelete',
-				callback: lang.hitch(this, '_deleteObjects')
+				callback: lang.hitch(this, '_remove'),
+				canExecute: function(item) {
+					return item.location == 'local';
+				}
 			}];
 
 			// define the grid columns
 			var columns = [{
-				name: 'title',
+				name: 'description',
 				label: _('Image name'),
 				width: '55%'
 			}, {
@@ -119,8 +120,18 @@ define([
 				actions: actions,
 				columns: columns,
 				moduleStore: this.moduleStore,
-				query: { pattern: '' }
+				query: { pattern: '' },
+				sortIndex: null
 			});
+
+			// set sorting options
+			this._grid._grid.set('sortFields', [{
+				attribute: 'id',
+				descending: false
+			}, {
+				attribute: 'version',
+				descending: true
+			}]);
 
 			// add the grid to the title pane
 			titlePane.addChild(this._grid);
@@ -136,18 +147,35 @@ define([
 
 		},
 
-		_addObject: function() {
-			dialog.alert(_('Feature not yet implemented'));
+		_download: function(spec_files, items) {
+			tools.umcpCommand('uccimages/download', {
+				image: items[0].spec_file
+			}).then(lang.hitch(this, '_startProgress'));
 		},
 
-		_editObject: function(ids, items) {
-			if (ids.length != 1) {
-				// should not happen
-				return;
-			}
+		_startProgress: function() {
+			this.standby(false);
+			this.standby(true, this._progressBar);
+			this._progressBar.auto(
+				'uccimages/progress',
+				{},
+				lang.hitch(this, function() {
+					this.standby(false);
+					this._grid.filter(this._grid.query);
+					var errors = this._progressBar.getErrors();
+					if (errors.errors.length) {
+						var err = errors.errors[0];
+						err = err.replace(/\n/g, '<br>');
+						dialog.alert(err, _('Download error'));
+					}
+				}),
+				undefined,
+				undefined,
+				true
+			);
 		},
 
-		_deleteObjects: function(ids, items) {
+		_remove: function(ids, items) {
 			dialog.alert(_('Feature not yet implemented'));
 		}
 	});

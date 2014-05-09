@@ -1,5 +1,11 @@
+ucc-umc-images (0.1.1-1) unstable; urgency=low
+
+  * Bug #30379: integrated UCCImage class, added download functionality
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 09 May 2014 12:54:42 +0200
+
 ucc-umc-images (0.1.0-1) unstable; urgency=low
 
-  * Bug #30379: [WIP] Initial release 
+  * Bug #30379: [WIP] Initial release
 
  -- Alexander Kläser <klaeser@univention.de>  Wed, 07 May 2014 17:35:14 +0200

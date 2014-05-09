@@ -31,7 +31,10 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import uuid
+from threading import Thread
+import time
+import traceback
+import sys
 
 from univention.lib.i18n import Translation
 from univention.management.console.modules import UMC_OptionTypeError, Base
@@ -42,22 +45,66 @@ import ucc.images as ucc_images
 
 _ = Translation('ucc-umc-images').translate
 
+class Progress(ucc_images.Progress):
+	pass
+
 class Instance(Base):
+	def init(self):
+		self.progress_state = Progress()
+
+	@simple_response
+	def progress(self):
+		time.sleep(1)
+		return self.progress_state.poll()
+
 	@simple_response
 	def query(self):
-		images_installed = ucc_images.get_installed_ucc_images()
-		MODULE.info('Locally installed images: %s' % ([i['id'] for i in images_installed], ))
-		images_online = ucc_images.get_available_ucc_images()
-		MODULE.info('Available images online: %s' % ([i['id'] for i in images_online], ))
-		images = []
-		for i in images_installed:
-			i['status'] = 'installed'
-			images.append(i)
-		for i in images_online:
-			i['status'] = 'available'
-			images.append(i)
+		images = ucc_images.get_local_ucc_images()
+		images += ucc_images.get_online_ucc_images()
+		MODULE.info('Images: %s' % images)
 
-		return images
+		# if an image is installed, remove its online equivalent
+		image_files_local = set([i.file for i in images if i.location == 'local'])
+		images = [i for i in images if i.location == 'local' or i.file not in image_files_local]
 
-	def get(self, request):
-		pass
+		# group images by id and sort by their version
+		images_grouped_by_id = {}
+		for i in images:
+			images_grouped_by_id.setdefault(i.id, []).append(i)
+		for iimages in images_grouped_by_id.itervalues():
+			iimages.sort(cmp=lambda x, y: -cmp(x.version, y.version))
+
+		result = []
+		for i in images:
+			idict = i.to_dict()
+
+			# set status
+			is_deprecated = images_grouped_by_id[i.id][0] != i
+			if is_deprecated:
+				idict['status'] = 'deprecated'
+			elif i.location == 'local':
+				idict['status'] = 'installed'
+			else:
+				idict['status'] = 'available'
+
+			result.append(idict)
+
+		return result
+
+	@simple_response
+	def download(self, image=''):
+		# start download process in a thread
+		def _run():
+			try:
+				ucc_images.download_ucc_image(image, username=self._username, password=self._password, progress=self.progress_state)
+			except Exception as exc:
+				# be sure to log any error that might occur (albeit it should not)
+				# ... otherwise the Thread will let disappear any exception
+				self.progress_state.error_handler(_('Unexpected error: %s') % exc)
+				self.progress_state.critical_handler(True)
+				MODULE.error('Unexpected error:\n%s' % ''.join(traceback.format_tb(sys.exc_info()[2])))
+
+		thread = Thread(target=_run)
+		thread.start()
+		return True
+

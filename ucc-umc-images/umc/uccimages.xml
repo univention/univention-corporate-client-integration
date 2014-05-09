@@ -8,7 +8,8 @@
 		<category name="system"/>
 	</categories>
 	<command name="uccimages/query" function="query" />
-	<command name="uccimages/colors" function="colors" />
-	<command name="uccimages/get" function="get" />
+	<command name="uccimages/remove" function="remove" />
+	<command name="uccimages/download" function="download" />
+	<command name="uccimages/progress" function="progress" />
 	</module>
 </umc>
