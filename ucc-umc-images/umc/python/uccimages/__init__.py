@@ -52,10 +52,13 @@ class Instance(Base):
 	def init(self):
 		self.progress_state = Progress()
 
-	@simple_response
-	def progress(self):
-		time.sleep(1)
-		return self.progress_state.poll()
+	def progress(self, request):
+		def _run():
+			time.sleep(1)
+			self.finished(request.id, self.progress_state.poll())
+
+		thread = Thread(target=_run)
+		thread.start()
 
 	@simple_response
 	def query(self):
@@ -83,7 +86,7 @@ class Instance(Base):
 
 			# set status
 			is_deprecated = images_grouped_by_id[i.id][0] != i
-			if is_deprecated and i.location == 'local':
+			if is_deprecated and i.location == 'local' and i.id:
 				idict['status'] = 'deprecated'
 			elif i.location == 'local':
 				idict['status'] = 'installed'
