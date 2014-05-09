@@ -547,10 +547,10 @@ def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, 
 		img = UCCImage(spec_url)
 		img.download(validate_hash, progress)
 
-		progress.component_handler(_('Setting root password for image %s') % self.file)
+		progress.component_handler(_('Setting root password for image %s') % img.file)
 		img.set_root_password(interactive_rootpw)
 
-		progress.component_handler(_('Running join script %s') % self.join_script)
+		progress.component_handler(_('Running join script %s') % img.join_script)
 		img.run_join_script(username, password)
 
 		progress.component_handler(_('Finished.'))
