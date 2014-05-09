@@ -339,6 +339,9 @@ class Progress(object):
 
 class UCCImage(object):
 	def __init__(self, spec_url):
+		if not spec_url.endswith(".spec"):
+			spec_url += '.spec'
+
 		self._base = os.path.dirname(spec_url)
 		self._spec_file = os.path.basename(spec_url)
 		self._spec_url = spec_url
@@ -455,7 +458,7 @@ class UCCImage(object):
 			img_path = os.path.join(UCC_IMAGE_DIRECTORY, img_file)
 			_unxz(img_path, False, progress)
 
-	def _remove_files(self):
+	def remove_files(self):
 		def _remove(filename):
 			path = os.path.join(UCC_IMAGE_DIRECTORY, filename)
 			if os.path.exists(path):
@@ -466,11 +469,21 @@ class UCCImage(object):
 					log_warn('Ignoring removal failure of file %s: %s' % (path, exc))
 
 		log_process('Removing all files related to image...')
-		_remove(self.spec_file)
 		for ikey, ivalue in self.spec.iteritems():
 			if not ikey.startswith('file-'):
 				continue
 			_remove(ivalue)
+
+		# remove iamge and compressed, left over image file
+		_remove(self.file)
+		_remove('%s.xz' % self.file)
+
+		# remove installed join script
+		join_script_path = os.path.join('/usr/lib/univention-install/', self.join_script)
+		_remove(join_script_path)
+
+		# remove spec file itself
+		_remove(self.spec_file)
 
 
 	def download(self, validate_hash=True, progress=Progress()):
@@ -511,7 +524,7 @@ class UCCImage(object):
 			progress.finish()
 		except Exception as exc:
 			# remove already partly downloaded files
-			self._remove_files()
+			self.remove_files()
 			# re-raise exception
 			raise
 
@@ -532,15 +545,19 @@ class UCCImage(object):
 		return _run_join_script(self.join_script, username, password)
 
 
+def _check_ucr_variables():
+	if not configRegistry['ucc/image/path']:
+		_exit('The UCR variable ucc/image/path must be set!', True)
+
+	if not os.path.exists(UCC_IMAGE_DIRECTORY):
+		_exit('UCC image path %s does not exists!' % UCC_IMAGE_DIRECTORY, True)
+
+
 def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, username=None, password=None, progress=Progress()):
 	'''Convenience function, given a spec file, downloads all associated files and unpacks the image.'''
 	try:
 		progress.reset()
-		if not configRegistry['ucc/image/path']:
-			_exit('The UCR variable ucc/image/path must be set!', True)
-
-		if not os.path.exists(UCC_IMAGE_DIRECTORY):
-			_exit('UCC image path %s does not exists!' % UCC_IMAGE_DIRECTORY, True)
+		_check_ucr_variables()
 
 		progress.component_handler(_('Downloading and reading img file %s') % spec_file)
 		spec_url = '%s/%s' % (UCC_BASE_URL, spec_file)
@@ -562,6 +579,9 @@ def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, 
 
 def get_local_ucc_images():
 	'''Get a list of all locally installed UCC images represented by a dict with the spec-file content.'''
+
+	_check_ucr_variables()
+
 	def _read(spec_file):
 		file_path = os.path.join(UCC_IMAGE_DIRECTORY, spec_file)
 		return UCCImage(file_path)
@@ -574,6 +594,8 @@ def get_local_ucc_images():
 _regWhiteSpace = re.compile(r'\s+')
 def get_online_ucc_images():
 	'''Get a list of all images that are available online.'''
+
+	_check_ucr_variables()
 	index = []
 	stream = None
 	try:
@@ -594,4 +616,29 @@ def get_online_ucc_images():
 		if stream:
 			stream.close()
 	return index
+
+
+def remove_ucc_image(spec_file):
+	'''Remove the specified UCC image.'''
+
+	_check_ucr_variables()
+	log_process('Removing image %s' % spec_file)
+	spec_file_path = os.path.join(UCC_IMAGE_DIRECTORY, spec_file)
+	img = UCCImage(spec_file_path)
+	img.remove_files()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

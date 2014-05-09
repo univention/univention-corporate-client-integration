@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.4-1) unstable; urgency=low
+
+  * Bug #30379: adapted and refactored ucc-image-remove
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 09 May 2014 15:10:03 +0200
+
 ucc-image-toolkit (2.0.3-1) unstable; urgency=low
 
   * Bug #30379: fixed typo

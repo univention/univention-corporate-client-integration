@@ -32,97 +32,39 @@
 # <http://www.gnu.org/licenses/>.
 
 from optparse import OptionParser
-import univention.config_registry as ucr
+import univention.debug as ud
+import ucc.images as ucc_images
 
-import os
-import shutil
-import subprocess
-import sys
-import tempfile
-import time
-import traceback
-import yaml
-import hashlib
-import commands
-import glob
+def init_logging(level = 2):
+	fd = ud.init('/dev/stdout', ud.FLUSH, ud.NO_FUNCTION)
+	ud.set_level(ud.MODULE, level)
 
-configRegistry = ucr.ConfigRegistry()
-configRegistry.load()
 
-if not configRegistry['ucc/image/path']:
-	print "The UCR variable ucc/image/path must be set"
-	sys.exit(1)
+def parse_args():
+	parser = OptionParser()
+	parser.add_option("-l", "--list-images", action="store_true", dest="listimg", help="List all UCC images currently stored")
+	parser.add_option("-r", "--remove-image", action="store", dest="removeimg", help="Name of UCC image to be removed (name of spec file in dir, e.g. ucc-desktop.spec")
+	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = 2,
+		help = 'if given than debugging is activated and set to the specified level [default: %default]' )
+	(options, args) = parser.parse_args()
+	return (options.listimg, options.removeimg, options.debug)
 
-if not os.path.exists(configRegistry['ucc/image/path']):
-	print "UCC image path", configRegistry['ucc/image/path'], "does not exist"
-	sys.exit(1)
 
-parser = OptionParser()
-parser.add_option("-l", "--list-images", action="store_true", dest="listimg", help="List all UCC images currently stored")
-parser.add_option("-r", "--remove-image", action="store", dest="removeimg", help="Name of UCC image to be removed (name of spec file in dir, e.g. ucc-desktop.spec")
-
-(options, args) = parser.parse_args()
-
-if not options.listimg and not options.removeimg:
-	print "You need to specify either -l or -r"
-	print "Run with --help for details"
-	sys.exit(0)
-
-if options.listimg:
-	images = glob.glob(os.path.join(configRegistry['ucc/image/path'], "*spec"))
-	for i in images:
-		stream = open(i, "r")
+if __name__ == "__main__":
+	# call from the command line
+	listimg, removeimg, debug_level = parse_args()
+	init_logging(debug_level)
+	if not listimg and not removeimg:
+		ucc_images._exit('You need to specify either -l or -r. Run with --help for details.')
+	if listimg:
+		images = ucc_images.get_local_ucc_images()
+		for iimg in images:
+			print '%s: %s (%s)' % (iimg.spec_file, iimg.description, iimg.version)
+	elif removeimg:
 		try:
-			spec = yaml.load(stream)
-		finally:
-			stream.close()
-		print os.path.basename(i), ":", spec['title'], "(" +  spec['version'] + ")"
-	sys.exit(0)
+			ucc_images.remove_ucc_image(removeimg)
+			print 'Finished.'
+		except (IOError, OSError) as exc:
+			ucc_images.log_error('Image data could not be removed: %s' % exc)
 
-if options.removeimg:
-	if not options.removeimg.endswith(".spec"):
-		options.removeimg = options.removeimg + ".spec"
 
-	specfile = os.path.join(configRegistry['ucc/image/path'], options.removeimg)
-	
-	if not os.path.exists(specfile):
-		print "UCC image file", specfile, "does not exist, exiting"
-		sys.exit(0)
-	
-	stream = open(specfile, "r")
-	try:
-		spec = yaml.load(stream)
-	finally:
-		stream.close()
-	
-	for i in ['file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
-		filepath = os.path.join(configRegistry['ucc/image/path'], spec[i])
-		if os.path.exists(filepath):
-			print "Removing", filepath
-			os.unlink(filepath)
-	
-	image_file = os.path.join(configRegistry['ucc/image/path'], spec['file-img'])
-
-	if os.path.exists(image_file):
-		print "Removing", image_file
-		os.unlink(image_file)
-
-	if image_file.endswith('.xz'):
-		image_file=image_file[0:len(image_file)-3]
-
-	if os.path.exists(image_file):
-		print "Removing", image_file
-		os.unlink(image_file)
-
-	print "Removing", specfile
-	os.unlink(specfile)
-
-	# bug#32136 The prefix is needed in case an old spec file is used, where the joinscript name does not start with '95'
-	joinscript_prefix = "95"
-	if spec['file-reg'].startswith(joinscript_prefix):
-		joinscript_prefix = ""
-
-	joinfile = os.path.join("/usr/lib/univention-install", joinscript_prefix + spec['file-reg'])
-	if os.path.exists(joinfile):
-		print "Removing", joinfile
-		os.unlink(joinfile)
