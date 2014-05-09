@@ -82,7 +82,8 @@ if UCC_BASE_URL.endswith('/'):
 	# remove trailing '/'
 	UCC_BASE_URL = UCC_BASE_URL[:-1]
 UCC_IMAGE_DIRECTORY = configRegistry['ucc/image/path']
-UCC_IMAGE_INDEX_URL = '%s/%s' % (UCC_BASE_URL, 'image-index.txt')
+UCC_IMAGE_INDEX_FILE = 'image-index.txt'
+UCC_IMAGE_INDEX_URL = '%s/%s' % (UCC_BASE_URL, UCC_IMAGE_INDEX_FILE)
 DEFAULT_CHUNK_SIZE = 2**13
 
 
@@ -355,14 +356,20 @@ class UCCImage(object):
 			self.spec['location'] = 'local'
 
 	def _read_spec_file(self, spec_url):
-		_get_file_size(self.spec_file)  # raises an error if file does not exist
+		if self._spec_url.startswith('http://') or self._spec_url.startswith('https://'):
+			_get_file_size(self.spec_file)  # raises an error if file does not exist
 		stream = urllib.urlopen(spec_url, proxies=_get_proxies())
 		self.spec = yaml.load(stream)
 		stream.close()
 
-		for i in ['version', 'description', 'id', 'hash-img', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
+		# following fields are not required to allow backwards compatibility with UCC 1.0 spec-files:
+		#   description, id
+		for i in ['version', 'hash-img', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
 			if i not in self.spec:
-				raise ValueError('Malformed spec file, missing entry %s' % i)
+				raise ValueError(_('Malformed spec file %s, missing entry %s') % (self.spec_file, i))
+		for i in ['description', 'id']:
+			if i not in self.spec:
+				log_warn('Entry %s not specified in spec file %s ... ignoring' % (i, self.spec_file))
 
 	@property
 	def id(self):
@@ -374,7 +381,7 @@ class UCCImage(object):
 
 	@property
 	def description(self):
-		return self.get('description')
+		return self.spec.get('description', self.file)
 
 	@property
 	def file(self):
@@ -599,6 +606,11 @@ def get_online_ucc_images():
 	index = []
 	stream = None
 	try:
+		_get_file_size(UCC_IMAGE_INDEX_FILE)  # throws a HTTPException if URL does not exist
+	except httplib.HTTPException as exc:
+		raise ValueError(_('No valid UCC server specified via UCR variable ucc/image/download/url. The image index file could not be opened!'))
+
+	try:
 		stream = urllib.urlopen(UCC_IMAGE_INDEX_URL, proxies=_get_proxies())
 		for line in stream:
 			line = line.strip()
@@ -626,19 +638,5 @@ def remove_ucc_image(spec_file):
 	spec_file_path = os.path.join(UCC_IMAGE_DIRECTORY, spec_file)
 	img = UCCImage(spec_file_path)
 	img.remove_files()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
