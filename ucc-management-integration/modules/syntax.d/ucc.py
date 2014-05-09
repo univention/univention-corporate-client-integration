@@ -39,6 +39,7 @@ _=translation.translate
 class uccBoot(univention.admin.syntax.select):
     choices=[
         ('overlayfs', _('Live system')),
+        ('localboot', _('Local boot')),
         ('none', _('Image boot without update check')),
         ('rollout', _('Image boot with update check')),
         ('repartition', _('Installation with repartitioning and image rollout')),
