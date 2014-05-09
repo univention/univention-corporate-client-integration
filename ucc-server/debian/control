@@ -1,0 +1,20 @@
+Source: ucc-server
+Section: univention
+Priority: optional
+Maintainer: Univention GmbH <packages@univention.de>
+Standards-Version: 3.5.5
+Build-Depends: debhelper (>> 7),
+ ucslint
+
+Package: ucc-server
+Architecture: all
+Depends: python-univention-directory-manager-ucc, ucc-image-toolkit, ucc-pxe-boot
+Recommends: ucc-umc-setup
+Description: Meta package for the UCC components installed on UCC servers
+ This package installs the packages for a UCS server distributing UCC images.
+ .
+ It is part of Univention Corporate Client (UCC)
+ For more information about UCC refer to:
+ http://www.univention.de/
+
+

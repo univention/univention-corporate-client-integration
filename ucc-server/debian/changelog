@@ -1,0 +1,5 @@
+ucc-default-images (1.0.0-1) unstable; urgency=low
+
+  * Initial release (Bug #34310)
+
+ -- Moritz Muehlenhoff <muehlenhoff@univention.de>  Thu, 16 Aug 2012 09:02:31 +0200
