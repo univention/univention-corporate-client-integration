@@ -74,50 +74,59 @@ def handler(dn, new, old):
 
 		cn = new['cn'][0]
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'PXE: writing configuration for host %s' % cn)
-
-		image = new.get('univentionCorporateClientBootImage', [None])[0]
-		if not image:
-			image = configRegistry.get('ucc/pxe/image')
+		
+		if 'univentionCorporateClientBootVariant' in new \
+				and new.get('univentionCorporateClientBootVariant')[0] == "localboot":
+			pxeconfig = \
+'''
+DEFAULT local
+LABEL local
+LOCALBOOT 0
+''' 
+		else:
+			image = new.get('univentionCorporateClientBootImage', [None])[0]
 			if not image:
-				univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'PXE: no boot image specified for %s' % cn)
-				return
-		initrd = '%s.initrd' % image
-		kernel = '%s.kernel' % image
+				image = configRegistry.get('ucc/pxe/image')
+				if not image:
+					univention.debug.debug(univention.debug.LISTENER, univention.debug.ERROR, 'PXE: no boot image specified for %s' % cn)
+					return
+			initrd = '%s.initrd' % image
+			kernel = '%s.kernel' % image
 
-		append = 'root=/dev/nfs '
-		append += 'nfsroot=%s:/var/lib/univention-client-boot ' % configRegistry['ucc/pxe/nfsroot']
-		if configRegistry.get('ucc/pxe/vga'):
-			append += 'vga=%s ' % configRegistry['ucc/pxe/vga']
-		append += 'initrd=%s ' % initrd
-		if configRegistry.is_true('ucc/pxe/quiet', False):
-			append += 'quiet '
-		if 'xorg/keyboard/options/XkbLayout' in configRegistry.keys():
-			append += 'keyboard=%s ' % configRegistry['xorg/keyboard/options/XkbLayout']
-		if 'locale/default' in configRegistry.keys():
-			append += 'locale=%s ' % configRegistry['locale/default']
-		if 'ucc/pxe/timezone' in configRegistry.keys():
-			append += 'timezone=%s ' % configRegistry['ucc/pxe/timezone']
-		if 'ucc/pxe/append' in configRegistry.keys():
-			append += '%s ' % configRegistry['ucc/pxe/append']
-		if configRegistry.get('ucc/pxe/loglevel', False):
-			append += 'loglevel=%s ' % configRegistry['ucc/pxe/loglevel']
-		if configRegistry.is_true("ucc/pxe/bootsplash", False):
-			append += 'splash '
-		append += 'boot=ucc '
-		if new.get('univentionCorporateClientBootVariant'):
-			append += 'ucc=%s ' % new.get('univentionCorporateClientBootVariant')[0]
-		if image != 'none':
-			append += 'image=%s ' % image
-		if new.get('univentionCorporateClientBootRepartitioning', ['FALSE'])[0] == 'TRUE':
-			append += 'repartition=y '
-		if new.get('univentionCorporateClientBootParameter'):
-			append += string.join(new.get('univentionCorporateClientBootParameter', ' '))
+			append = 'root=/dev/nfs '
+			append += 'nfsroot=%s:/var/lib/univention-client-boot ' % configRegistry['ucc/pxe/nfsroot']
+			if configRegistry.get('ucc/pxe/vga'):
+				append += 'vga=%s ' % configRegistry['ucc/pxe/vga']
+			append += 'initrd=%s ' % initrd
+			if configRegistry.is_true('ucc/pxe/quiet', False):
+				append += 'quiet '
+			if 'xorg/keyboard/options/XkbLayout' in configRegistry.keys():
+				append += 'keyboard=%s ' % configRegistry['xorg/keyboard/options/XkbLayout']
+			if 'locale/default' in configRegistry.keys():
+				append += 'locale=%s ' % configRegistry['locale/default']
+			if 'ucc/pxe/timezone' in configRegistry.keys():
+				append += 'timezone=%s ' % configRegistry['ucc/pxe/timezone']
+			if 'ucc/pxe/append' in configRegistry.keys():
+				append += '%s ' % configRegistry['ucc/pxe/append']
+			if configRegistry.get('ucc/pxe/loglevel', False):
+				append += 'loglevel=%s ' % configRegistry['ucc/pxe/loglevel']
+			if configRegistry.is_true("ucc/pxe/bootsplash", False):
+				append += 'splash '
+			append += 'boot=ucc '
+			if new.get('univentionCorporateClientBootVariant'):
+				append += 'ucc=%s ' % new.get('univentionCorporateClientBootVariant')[0]
+			if image != 'none':
+				append += 'image=%s ' % image
+			if new.get('univentionCorporateClientBootRepartitioning', ['FALSE'])[0] == 'TRUE':
+				append += 'repartition=y '
+			if new.get('univentionCorporateClientBootParameter'):
+				append += string.join(new.get('univentionCorporateClientBootParameter', ' '))
 
-		append += '\n'
+			append += '\n'
 
-		ipappend = configRegistry.get('pxe/ucc/ipappend', "3")
+			ipappend = configRegistry.get('pxe/ucc/ipappend', "3")
 
-		pxeconfig = \
+			pxeconfig = \
 '''
 PROMPT 0
 DEFAULT UCC
