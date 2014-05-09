@@ -37,7 +37,7 @@ import traceback
 import sys
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import UMC_OptionTypeError, Base
+from univention.management.console.modules import UMC_OptionTypeError, Base, UMC_CommandError
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response
 
@@ -59,9 +59,12 @@ class Instance(Base):
 
 	@simple_response
 	def query(self):
-		images = ucc_images.get_local_ucc_images()
-		images += ucc_images.get_online_ucc_images()
-		MODULE.info('Images: %s' % images)
+		try:
+			images = ucc_images.get_local_ucc_images()
+			images += ucc_images.get_online_ucc_images()
+			MODULE.info('Images: %s' % images)
+		except ValueError as exc:
+			raise UMC_CommandError(str(exc))
 
 		# if an image is installed, remove its online equivalent
 		image_files_local = set([i.file for i in images if i.location == 'local'])
@@ -80,7 +83,7 @@ class Instance(Base):
 
 			# set status
 			is_deprecated = images_grouped_by_id[i.id][0] != i
-			if is_deprecated:
+			if is_deprecated and i.location == 'local':
 				idict['status'] = 'deprecated'
 			elif i.location == 'local':
 				idict['status'] = 'installed'
@@ -106,5 +109,16 @@ class Instance(Base):
 
 		thread = Thread(target=_run)
 		thread.start()
+		return True
+
+
+	@simple_response
+	def remove(self, image=''):
+		try:
+			ucc_images.remove_ucc_image(image)
+		except Exception as exc:
+			MODULE.error('Unexpected error:\n%s' % ''.join(traceback.format_tb(sys.exc_info()[2])))
+			raise UMC_CommandError(_('Unexpected error: %s') % exc)
+
 		return True
 

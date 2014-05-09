@@ -31,7 +31,9 @@
 define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
+	"dojo/_base/array",
 	"dojo/on",
+	"dojo/Deferred",
 	"umc/tools",
 	"umc/dialog",
 	"umc/widgets/Grid",
@@ -40,7 +42,7 @@ define([
 	"umc/widgets/Module",
 	"umc/widgets/ProgressBar",
 	"umc/i18n!umc/modules/uccimages"
-], function(declare, lang, on, tools, dialog, Grid, Page, ExpandingTitlePane, Module, ProgressBar, _) {
+], function(declare, lang, array, on, Deferred, tools, dialog, Grid, Page, ExpandingTitlePane, Module, ProgressBar, _) {
 	return declare("umc.modules.uccimages", [ Module ], {
 		idProperty: 'file',
 		_grid: null,
@@ -80,7 +82,7 @@ define([
 			var actions = [{
 				name: 'download',
 				label: _('Download'),
-				description: _('Create a new object'),
+				description: _('Download a UCC image'),
 				iconClass: 'umcIconAdd',
 				isStandardAction: true,
 				callback: lang.hitch(this, '_download'),
@@ -90,7 +92,7 @@ define([
 			}, {
 				name: 'remove',
 				label: _('Remove'),
-				description: _('.'),
+				description: _('Remove a UCC image'),
 				isStandardAction: true,
 				isMultiAction: true,
 				iconClass: 'umcIconDelete',
@@ -148,14 +150,20 @@ define([
 		},
 
 		_download: function(spec_files, items) {
+			if (items.length != 1) {
+				// should not happen
+				return;
+			}
 			tools.umcpCommand('uccimages/download', {
 				image: items[0].spec_file
-			}).then(lang.hitch(this, '_startProgress'));
+			}).then(lang.hitch(this, '_startDownloadProgress'));
 		},
 
-		_startProgress: function() {
+		_startDownloadProgress: function() {
 			this.standby(false);
+			this._progressBar.reset(_('Preparing download...'))
 			this.standby(true, this._progressBar);
+
 			this._progressBar.auto(
 				'uccimages/progress',
 				{},
@@ -176,7 +184,37 @@ define([
 		},
 
 		_remove: function(ids, items) {
-			dialog.alert(_('Feature not yet implemented'));
+			var deferred_progress = new Deferred();
+			var deferred_chain = new Deferred();
+			deferred_chain.resolve();
+
+			this.standby(false);
+			this._progressBar.feedFromDeferred(deferred_progress, _('Removing images...'));
+			this.standby(true, this._progressBar);
+
+			var remove = function(spec_file) {
+				return tools.umcpCommand('uccimages/remove', {
+					image: spec_file
+				});
+			};
+
+			array.forEach(items, function(item, idx) {
+				deferred_chain = deferred_chain.then(lang.hitch(this, function() {
+					deferred_progress.progress({
+						component: _('Removing image %s of %s', idx + 1, items.length),
+						percentage: 100.0 * idx / items.length
+					});
+					return remove(item.spec_file);
+				}));
+			}, this);
+
+			deferred_chain.then(lang.hitch(this, function() {
+				this.standby(false);
+				this._grid.filter(this._grid.query);
+			}), lang.hitch(this, function() {
+				this.standby(false)
+				this._grid.filter(this._grid.query);
+			}));
 		}
 	});
 });
