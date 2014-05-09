@@ -67,7 +67,7 @@ def log_info(msg):
 	ud.debug(ud.MODULE, ud.INFO, msg)
 
 def _exit(msg):
-	if __name__ != '__main__':
+	if __name__ == '__main__':
 		log_error(msg)
 		sys.exit(1)
 	else:
@@ -240,7 +240,7 @@ def _download_file(filename, hash_value=None, progress=_dummy_progress):
 		log_info('Validating hash value of file %s' % filename)
 		digest = _sha256(outfile, _progress)
 		if digest != hash_value:
-			_exit('Invalid hash value for downloaded file %s! Quitting!\nHash expected: %s\nHash received: %s' % (filename, hash_value, digest))
+			_exit('Invalid hash value for downloaded file %s!\nHash expected: %s\nHash received: %s' % (filename, hash_value, digest))
 
 
 def _run_join_script(join_script, username=None, password=None):
@@ -373,7 +373,7 @@ class UCCImage(object):
 
 	@property
 	def id(self):
-		return self.get('id')
+		return self.spec.get('id', '')
 
 	@property
 	def version(self):
@@ -508,10 +508,7 @@ class UCCImage(object):
 			# download all files -> 70%
 			for ikey, isize in sizes.iteritems():
 				ifile = self.get('file-%s' % ikey)
-				if validate_hash:
-					progress.component_handler(_('Downloading and validating file %s [%.1f MB]') % (ifile, sizes[ikey] / 1000**2))
-				else:
-					progress.component_handler(_('Downloading file %s [%.1f MB]') % (ifile, isize / 1000**2))
+				progress.component_handler(_('Downloading file %s [%.1f MB]') % (ifile, isize / 1000**2))
 
 				file_percent = (70.0 * isize) / self.total_download_size
 				self._download_file(ikey, validate_hash, _step_handler_wrapper(file_percent, total_progress, progress))

@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.6-1) unstable; urgency=low
+
+  * Bug #30379: minor adjustments for error handling and logging
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 09 May 2014 17:54:58 +0200
+
 ucc-image-toolkit (2.0.5-1) unstable; urgency=low
 
   * Bug #30379: enhanced error handling
