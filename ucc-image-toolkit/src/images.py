@@ -45,6 +45,7 @@ import urlparse
 import contextlib
 import re
 import psutil
+import traceback
 
 import univention.config_registry as ucr
 import univention.debug as ud
@@ -66,7 +67,7 @@ def log_info(msg):
 	ud.debug(ud.MODULE, ud.INFO, msg)
 
 def _exit(msg):
-	if __name__ != "__main__":
+	if __name__ != '__main__':
 		log_error(msg)
 		sys.exit(1)
 	else:
@@ -85,72 +86,19 @@ UCC_IMAGE_INDEX_URL = '%s/%s' % (UCC_BASE_URL, 'image-index.txt')
 DEFAULT_CHUNK_SIZE = 2**13
 
 
-class Progress(object):
-	def __init__(self, max_steps=100):
-		self.reset(max_steps)
-
-	def reset(self, max_steps=100):
-		self.max_steps = max_steps
-		self.finished = False
-		self.steps = 0
-		self.component = _('Initializing')
-		self.component_steps = 0
-		self.info = ''
-		self.errors = []
-		self.critical = False
-
-	def poll(self):
-		return dict(
-			finished=self.finished,
-			steps=100 * float(self.steps) / self.max_steps,
-			component=self.component,
-			info=self.info,
-			errors=self.errors,
-			critical=self.critical,
-		)
-
-	def finish(self):
-		self.finished = True
-
-	def info_handler(self, info):
-		log_process(info)
-		self.info = info
-
-	def error_handler(self, err):
-		log_error(err)
-		self.errors.append(err)
-
-	def component_handler(self, component):
-		self.component = component
-		self.component_steps = 0
-		log_process(component)
-
-	def critical_handler(self, critical):
-		self.critical = critical
-		self.finish()
-
-	def step_handler(self, steps, component_steps=0):
-		self.steps = steps
-		self.component_steps = component_steps
-		percent = min(100.0, (100.0 * steps) / self.max_steps)
-		percent_component = min(100.0, (100.0 * component_steps) / self.max_steps)
-		if not component_steps:
-			log_process('Overall: % 6.1f%%' % (percent, percent_component))
-		else:
-			log_process('Overall: % 6.1f%%  Component: % 6.1f%%' % (percent, percent_component))
-
-
-class UCCImage(object):
-	def __init__(self, spec_file):
-		self._read_spec_file(spec_file)
-
-	def _read_spec_file(self, spec_file):
-		pass
-
-
-
 def _dummy_progress(*args):
 	pass
+
+
+# helper function for wrapping the step_handler method of the Progress object
+def _step_handler_wrapper(percent_fraction, total_progress, progress):
+	def _step_handler(current_size, file_size):
+		fraction_component = float(current_size) / file_size
+		percent_component = 100.0 * fraction_component
+		percent_total = total_progress + fraction_component * percent_fraction
+		progress.step_handler(percent_total, percent_component)
+
+	return _step_handler
 
 
 def _free_disk_space(path):
@@ -159,8 +107,10 @@ def _free_disk_space(path):
 	free_diskspace = vfs.f_frsize * vfs.f_bfree
 	return free_diskspace
 
+
 def _physical_memory():
 	return (psutil.used_phymem() + psutil.avail_phymem())
+
 
 def _sha256(filepath, progress=_dummy_progress):
 	'''Computes the sha256 sum for the given file. Optionally with a callback
@@ -214,8 +164,6 @@ def _unxz(infile, keep_src_file=False, progress=_dummy_progress):
 		if os.path.exists(outfile):
 			os.remove(outfile)
 
-	return outfile
-
 
 def _get_file_size(filename):
 	'''Get the file size (in byte) for the given file at the URL specified by
@@ -233,7 +181,7 @@ def _get_file_size(filename):
 	connection.request('HEAD', parts.path)
 	response = connection.getresponse()
 	if response.status >= 400:
-		raise httplib.error('Could not download file: %s - %s [%s]' % (response.status, httplib.responses.get(response.status, 'Unknown error'), url))
+		raise httplib.error('Could not download file (%s - %s): %s' % (response.status, httplib.responses.get(response.status, 'Unknown error'), url))
 	headers = dict(response.getheaders())
 	size = int(headers.get('content-length', '0'))
 	return size
@@ -265,7 +213,7 @@ def _download_file(filename, hash_value=None, progress=_dummy_progress):
 	# remove existing file
 	outfile = os.path.join(UCC_IMAGE_DIRECTORY, filename)
 	if os.path.exists(outfile):
-		log_info("File %s already exists, removing it for new download." % filename)
+		log_info('File %s already exists, removing it for new download.' % filename)
 		os.remove(outfile)
 
 	# split progress into 50% for download and 50% for hash validation (if hash is given)
@@ -281,7 +229,7 @@ def _download_file(filename, hash_value=None, progress=_dummy_progress):
 		log_info('Downloading %s' % url)
 		_download_url(url, outfile, _progress)
 	except IOError as exc:
-		_exit("An error occured while downloading image %s:\n%s\n\n... terminating" % (url, exc))
+		_exit('An error occured while downloading image %s:\n%s' % (url, exc))
 
 	# validate hash
 	if hash_value:
@@ -291,157 +239,332 @@ def _download_file(filename, hash_value=None, progress=_dummy_progress):
 		log_info('Validating hash value of file %s' % filename)
 		digest = _sha256(outfile, _progress)
 		if digest != hash_value:
-			_exit("Invalid hash value for downloaded file %s! Quitting!\nHash expected: %s\nHash received: %s" % (filename, hash_value, digest))
+			_exit('Invalid hash value for downloaded file %s! Quitting!\nHash expected: %s\nHash received: %s' % (filename, hash_value, digest))
 
 
-def _get_file_sizes(spec):
-	file_keys = ('img', 'initrd', 'md5', 'kernel', 'reg')
-	sizes = {}
-	for ikey in file_keys:
-		file_key = 'file-%s' % ikey
-		sizes[ikey] = _get_file_size(spec[file_key])
-	return sizes
+def _run_join_script(join_script, username=None, password=None):
+	'''Calls the specified join script with username and password (if specified).'''
 
-
-def _read_spec_file(spec_file):
-	'''Download and read the content of the spec file from the URL specified by
-	ucc/image/path. The correct content of the spec file is verified and free
-	disk spaces is ensured, as well.'''
-
-	_get_file_size(spec_file)  # raises an error if file does not exist
-	url = '%s/%s' % (UCC_BASE_URL, spec_file)
-	stream = urllib.urlopen(url, proxies=_get_proxies())
-	spec = yaml.load(stream)
-	stream.close()
-
-	for i in ['title', 'version', 'hash-img', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
-		if not spec.get(i):
-			raise ValueError('Malformed spec file, missing entry "%s"' % i)
-
-	total_download_size = sum(_get_file_sizes(spec).values())
-	free_diskspace = _free_disk_space(UCC_IMAGE_DIRECTORY)
-	if (free_diskspace <= 1.1 * total_download_size):  # take 110% more of needed space into account as little buffer
-		raise ValueError("Not enough free diskspace to download the image!\nNeeded: %s\nAvailable: %s" % (spec['total-size'], free_diskspace))
-
-	# download spec file to hard disk
-	_download_file(spec_file)
-	return spec
-
-
-def _set_rootpw(imgname, interactive_rootpw=False):
-	'''Calls ucc-image-root-password for the image'''
-	cmd = ["/usr/sbin/ucc-image-root-password", "-i", imgname]
-	if interactive_rootpw:
-		print "Setting root password in the downloaded image. Please enter the password:"
-		cmd += ["-p"]
-	else:
-		log_process("Setting root password in the image to the root password of the current system")
-
-	ret = subprocess.call(cmd)
-	if ret != 0:
-		log_warn("Root password could not be set!")
-
-
-def _run_join_script(join_script):
-	'''Calls the specified join script on a DC master.'''
-
-	# make sure that the join script is executable
-	join_script_path = os.path.join('/usr/lib/univention-install/', join_script)
-	subprocess.call(["/bin/chmod", "a+x", join_script_path])
-
-	# only run join script directly on master
 	systemrole = configRegistry['server/role']
-	if systemrole == "domaincontroller_master" or systemrole == "domaincontroller_backup":
+	is_master = systemrole == 'domaincontroller_master' or systemrole == 'domaincontroller_backup'
+
+	# execute join script
+	with tempfile.NamedTemporaryFile() as passwordFile:
+		cmd = ['/usr/sbin/univention-run-join-scripts']
+		if not is_master and username and password:
+			# credentials are provided
+			passwordFile.write('%s' % password)
+			passwordFile.flush()
+			cmd += ['-dcaccount', username, '-dcpwd', passwordFile.name]
+
+		# if scripts are provided only execute them instead of running all join scripts
+		cmd += ['--run-scripts', join_script]
+		log_process('Executing join scripts %s' % join_script)
+		process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+		stdout, stderr = process.communicate()
+
+	if stdout:
+		log_process('Join script output (stdout):\n%s' % stdout)
+	if stderr:
+		log_warn('Join script output (stderr):\n%s' % stderr)
+	if process.returncode != 0:
+		return False
+
+
+class Progress(object):
+	def __init__(self, max_steps=100):
+		self.reset(max_steps)
+
+	def reset(self, max_steps=100):
+		self.max_steps = max_steps
+		self.finished = False
+		self.steps = 0
+		self.component = _('Initializing')
+		self.component_steps = 0
+		self.info = ''
+		self.errors = []
+		self.critical = False
+		self._last_logged_step = -1
+		self._last_logged_component_step = -1
+
+	def poll(self):
+		return dict(
+			finished=self.finished,
+			steps=100 * float(self.steps) / self.max_steps,
+			component=self.component,
+			info=self.info,
+			errors=self.errors,
+			critical=self.critical,
+		)
+
+	def finish(self):
+		log_process('Finished')
+		self.finished = True
+
+	def info_handler(self, info):
+		log_process(info)
+		self.info = info
+
+	def error_handler(self, err):
+		log_error(err)
+		self.errors.append(err)
+
+	def component_handler(self, component):
+		self.component = component
+		self.component_steps = 0
+		log_process(component)
+
+	def critical_handler(self, critical):
+		self.critical = critical
+		self.finish()
+
+	def step_handler(self, steps, component_steps=0):
+		self.steps = steps
+		self.component_steps = component_steps
+
+		# do not log every step
+		if abs(self._last_logged_step - steps) < 1 and abs(self._last_logged_component_step - component_steps) < 1:
+			return
+
+		percent = min(100.0, (100.0 * steps) / self.max_steps)
+		percent_component = min(100.0, (100.0 * component_steps) / self.max_steps)
+		if not component_steps:
+			log_process('Overall: % 6.1f%%' % percent)
+		else:
+			log_process('Overall: % 6.1f%%  Component: % 6.1f%%' % (percent, percent_component))
+
+		self._last_logged_step = steps
+		self._last_logged_component_step = component_steps
+
+
+class UCCImage(object):
+	def __init__(self, spec_url):
+		self._base = os.path.dirname(spec_url)
+		self._spec_file = os.path.basename(spec_url)
+		self._spec_url = spec_url
+		self.spec = {}
+		self._read_spec_file(spec_url)
+		self._total_download_size = None
+		self._file_sizes = None
+		if spec_url.startswith('http://') or spec_url.startswith('https://'):
+			self.spec['location'] = 'online'
+		else:
+			self.spec['location'] = 'local'
+
+	def _read_spec_file(self, spec_url):
+		_get_file_size(self.spec_file)  # raises an error if file does not exist
+		stream = urllib.urlopen(spec_url, proxies=_get_proxies())
+		self.spec = yaml.load(stream)
+		stream.close()
+
+		for i in ['version', 'description', 'id', 'hash-img', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
+			if i not in self.spec:
+				raise ValueError('Malformed spec file, missing entry %s' % i)
+
+	@property
+	def id(self):
+		return self.get('id')
+
+	@property
+	def version(self):
+		return str(self.get('version'))
+
+	@property
+	def description(self):
+		return self.get('description')
+
+	@property
+	def file(self):
+		'''Image file name without .xz file ending.'''
+		img_name = self.get('file-img')
+		if img_name.endswith('.xz'):
+			img_name = img_name[:-3]
+		return img_name
+
+	@property
+	def spec_file(self):
+		return self._spec_file
+
+	@property
+	def join_script(self):
+		return self.get('file-reg')
+
+	@property
+	def location(self):
+		return self.get('location')
+
+	def get(self, key):
+		'''Helper function to access configuration elements of the image's spec file.'''
+		return self.spec.get(key.lower(), 'NULL')
+
+	def to_dict(self):
+		return {
+			'id': self.id,
+			'version': self.version,
+			'description': self.description,
+			'file': self.file,
+			'spec_file': self.spec_file,
+			'location': self.location,
+		}
+
+	def __str__(self):
+		return '<%s %s %s [%s]>' % (self.id, self.file, self.version, self.location)
+
+	def __repr__(self):
+		return str(self)
+
+	@property
+	def file_sizes(self):
+		if not self._file_sizes:
+			file_keys = ('img', 'initrd', 'md5', 'kernel', 'reg')
+			sizes = {}
+			for ikey in file_keys:
+				file_key = 'file-%s' % ikey
+				sizes[ikey] = _get_file_size(self.spec[file_key])
+			self._file_sizes = sizes
+		return self._file_sizes
+
+	@property
+	def total_download_size(self):
+		if not self._total_download_size:
+			self._total_download_size = sum(self.file_sizes.values())
+		return self._total_download_size
+
+	def has_enough_disk_space(self):
+		free_diskspace = _free_disk_space(UCC_IMAGE_DIRECTORY)
+		# take 110% more of needed space into account as little buffer
+		return (free_diskspace > 1.1 * self.total_download_size)
+
+	def _download_spec_file(self):
+		if not self.has_enough_disk_space():
+			raise IOError('Not enough free diskspace to download the image!\nNeeded: %s\nAvailable: %s' % (spec['total-size'], free_diskspace))
+		_download_file(self.spec_file)
+
+	def _download_file(self, key, validate_hash=True, progress=_dummy_progress):
+		file_key = 'file-%s' % key
+		hash_value = None
+		if validate_hash:
+			hash_key = 'hash-%s' % key
+			hash_value = self.get(hash_key)
+
+		_download_file(self.get(file_key), hash_value, progress)
+
+	def _unpack(self, progress=_dummy_progress):
+		img_file = self.get('file-img')
+		if img_file.endswith('.xz'):
+			img_path = os.path.join(UCC_IMAGE_DIRECTORY, img_file)
+			_unxz(img_path, False, progress)
+
+	def _remove_files(self):
+		def _remove(filename):
+			path = os.path.join(UCC_IMAGE_DIRECTORY, filename)
+			if os.path.exists(path):
+				try:
+					log_info('Removing file %s' % path)
+					os.remove(path)
+				except (IOError, OSError) as exc:
+					log_warn('Ignoring removal failure of file %s: %s' % (path, exc))
+
+		log_process('Removing all files related to image...')
+		_remove(self.spec_file)
+		for ikey, ivalue in self.spec.iteritems():
+			if not ikey.startswith('file-'):
+				continue
+			_remove(ivalue)
+
+
+	def download(self, validate_hash=True, progress=Progress()):
+		'''Download spec file, image file and all other related images. Unpack image if necessary.'''
+
 		try:
-			log_process('Run join script %s' % join_script)
-			subprocess.call([join_script_path])
-		except OSError as exc:
-			log_error('Could not run join script %s: %s' % (join_script_path, exc))
-			log_error('... ignoring')
+			# download spec file
+			self._download_spec_file()
+
+			# compute file size
+			sizes = self.file_sizes
+			total_progress = 0
+			log_info('Need to download in total %d files and %.1f MB of data.' % (len(sizes), self.total_download_size / 1000**2))
+
+			# download all files -> 70%
+			for ikey, isize in sizes.iteritems():
+				ifile = self.get('file-%s' % ikey)
+				if validate_hash:
+					progress.component_handler(_('Downloading and validating file %s [%.1f MB]') % (ifile, sizes[ikey] / 1000**2))
+				else:
+					progress.component_handler(_('Downloading file %s [%.1f MB]') % (ifile, isize / 1000**2))
+
+				file_percent = (70.0 * isize) / self.total_download_size
+				self._download_file(ikey, validate_hash, _step_handler_wrapper(file_percent, total_progress, progress))
+				total_progress += file_percent
+
+			# place join script into correct directory
+			join_script_src_path = os.path.join(UCC_IMAGE_DIRECTORY, self.join_script)
+			join_script_dest_path = os.path.join('/usr/lib/univention-install/', self.join_script)
+			log_info('Copy join script to %s' % join_script_dest_path)
+			shutil.copy(join_script_src_path, join_script_dest_path)
+			subprocess.call(['/bin/chmod', 'a+x', join_script_dest_path])
+
+			# unpack UCC image -> 30%
+			progress.component_handler(_('Unpacking image file %s') % self.file)
+			self._unpack(_step_handler_wrapper(30.0, total_progress, progress))
+			progress.step_handler(100.0)
+			progress.finish()
+		except Exception as exc:
+			# remove already partly downloaded files
+			self._remove_files()
+			# re-raise exception
+			raise
+
+	def set_root_password(self, interactive_rootpw=False):
+		'''Calls ucc-image-root-password for the image'''
+		cmd = ['/usr/sbin/ucc-image-root-password', '-i', self.file]
+		if interactive_rootpw:
+			print 'Setting root password in the downloaded image. Please enter the password:'
+			cmd += ['-p']
+		else:
+			log_process('Setting root password in the image to the root password of the current system')
+
+		ret = subprocess.call(cmd)
+		if ret != 0:
+			log_warn('Root password could not be set!')
+
+	def run_join_script(self, username=None, password=None):
+		return _run_join_script(self.join_script, username, password)
 
 
-def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, progress=Progress()):
+def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, username=None, password=None, progress=Progress()):
 	'''Convenience function, given a spec file, downloads all associated files and unpacks the image.'''
-
 	try:
-		# some basic system checks
+		progress.reset()
 		if not configRegistry['ucc/image/path']:
-			_exit("The UCR variable ucc/image/path must be set!", True)
+			_exit('The UCR variable ucc/image/path must be set!', True)
 
 		if not os.path.exists(UCC_IMAGE_DIRECTORY):
-			_exit("UCC image path %s does not exists!" % UCC_IMAGE_DIRECTORY, True)
+			_exit('UCC image path %s does not exists!' % UCC_IMAGE_DIRECTORY, True)
 
-		# download spec file
-		progress.component_handler(_('Downloading and reading spec file %s') % spec_file)
-		spec = _read_spec_file(spec_file)
+		progress.component_handler(_('Downloading and reading img file %s') % spec_file)
+		spec_url = '%s/%s' % (UCC_BASE_URL, spec_file)
+		img = UCCImage(spec_url)
+		img.download(validate_hash, progress)
 
-		# compute file size
-		sizes = _get_file_sizes(spec)
-		total_download_size = sum(sizes.values())
-		total_progress = 0
-		log_info('Need to download in total %d files and %.1f MB of data.' % (len(sizes), total_download_size / 1000**2))
+		progress.component_handler(_('Setting root password for image %s') % self.file)
+		img.set_root_password(interactive_rootpw)
 
-		# helper function for wrapping the step_handler method of the Progress object
-		def _step_handler(percent_fraction):
-			def _inner_function(current_size, file_size):
-				fraction_component = float(current_size) / file_size
-				percent_component = 100.0 * fraction_component
-				percent_total = total_progress + fraction_component * percent_fraction
-				progress.step_handler(percent_total, percent_component)
+		progress.component_handler(_('Running join script %s') % self.join_script)
+		img.run_join_script(username, password)
 
-			return _inner_function
-
-		# download all files -> 76%
-		for ikey, isize in sizes.iteritems():
-			file_key = 'file-%s' % ikey
-			hash_value = None
-			if validate_hash:
-				progress.component_handler(_('Downloading and validating image file %s [%.1f MB]') % (spec['file-img'], sizes[ikey] / 1000**2))
-				hash_key = 'hash-%s' % ikey
-				hash_value = spec[hash_key]
-			else:
-				progress.component_handler(_('Downloading image file %s [%.1f MB]') % (spec['file-img'], isize / 1000**2))
-
-			file_percent = (75.0 * isize) / total_download_size
-			_download_file(spec[file_key], hash_value, _step_handler(file_percent))
-			total_progress += file_percent
-
-		# place join script into correct directory
-		join_script_src_path = os.path.join(UCC_IMAGE_DIRECTORY, spec['file-reg'])
-		join_script_dest_path = os.path.join('/usr/lib/univention-install/', spec['file-reg'])
-		log_info('Copy join script to %s' % join_script_dest_path)
-		shutil.copy(join_script_src_path, join_script_dest_path)
-
-		# unpack UCC image -> 20%
-		progress.component_handler(_('Unpacking image file %s') % spec['file-img'])
-		imgname = os.path.join(UCC_IMAGE_DIRECTORY, spec['file-img'])
-		if imgname.endswith('.xz'):
-			imgname = _unxz(imgname, False, _step_handler(20.0))
-		progress.step_handler(96.0)
-
-		# set root password -> 2%
-		progress.component_handler(_('Setting root password for image %s') % spec['file-img'])
-		_set_rootpw(imgname, interactive_rootpw)
-		progress.step_handler(98.0)
-
-		# run join script -> 2%
-		progress.component_handler(_('Running join script %s') % spec['file-reg'])
-		_run_join_script(spec['file-reg'])
-		progress.step_handler(100.0)
-		log_process('Done')
+		progress.component_handler(_('Finished.'))
 	except (IOError, ValueError, OSError, RuntimeError, httplib.HTTPException) as exc:
-		progress.error_handler(_("An error occured while downloading the image data (%s):\n%s\n\n... terminating") % (spec_file, exc))
+		progress.error_handler(_('Image data for spec file %s could not be downloaded from server:\n%s\n') % (spec_file, exc))
 		progress.critical_handler(True)
+		log_error('Error downloading image data from server:\n%s' % ''.join(traceback.format_tb(sys.exc_info()[2])))
 
 
-def get_installed_ucc_images():
+def get_local_ucc_images():
 	'''Get a list of all locally installed UCC images represented by a dict with the spec-file content.'''
 	def _read(spec_file):
 		file_path = os.path.join(UCC_IMAGE_DIRECTORY, spec_file)
-		with open(file_path, 'r') as infile:
-			spec = yaml.load(infile)
-		spec['id'] = spec_file
-		return spec
+		return UCCImage(file_path)
 
 	all_files = os.listdir(UCC_IMAGE_DIRECTORY)
 	specs = [_read(i) for i in all_files if i.endswith('.spec')]
@@ -449,20 +572,26 @@ def get_installed_ucc_images():
 
 
 _regWhiteSpace = re.compile(r'\s+')
-def get_available_ucc_images():
+def get_online_ucc_images():
 	'''Get a list of all images that are available online.'''
-	stream = urllib.urlopen(UCC_IMAGE_INDEX_URL, proxies=_get_proxies())
 	index = []
+	stream = None
 	try:
+		stream = urllib.urlopen(UCC_IMAGE_INDEX_URL, proxies=_get_proxies())
 		for line in stream:
 			line = line.strip()
-			parts = _regWhiteSpace.split(line, 1)  #TODO: should be 4 later
-			if len(parts) != 2:
+			if line.startswith('#'):
 				continue
-			index.append({
-				'id': parts[0],
-				'title': parts[1],
-			})
+
+			parts = _regWhiteSpace.split(line)
+			if not parts:
+				continue
+
+			# read in image spec file
+			spec_url = '%s/%s' % (UCC_BASE_URL, parts[0])
+			index.append(UCCImage(spec_url))
 	finally:
-		stream.close()
+		if stream:
+			stream.close()
 	return index
+

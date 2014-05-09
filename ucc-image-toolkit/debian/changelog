@@ -1,3 +1,10 @@
+ucc-image-toolkit (2.0.2-1) unstable; urgency=low
+
+  *  Bug #30379: added UCCImage class and adapted ucc.images for integration
+     with UMC module
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 09 May 2014 12:53:02 +0200
+
 ucc-image-toolkit (2.0.1-35) unstable; urgency=low
 
   * Bug #30379: allow for uncompressed images, remove originating file after

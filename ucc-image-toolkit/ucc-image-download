@@ -37,10 +37,6 @@ import sys
 import univention.debug as ud
 import ucc.images as ucc
 
-from univention.lib.i18n import Translation
-_ = Translation('ucc-image-lib').translate
-
-
 def init_logging(level = 2):
 	fd = ud.init('/dev/stdout', ud.FLUSH, ud.NO_FUNCTION)
 	ud.set_level(ud.MODULE, level)
@@ -92,5 +88,5 @@ if __name__ == "__main__":
 	# call from the command line
 	spec_file, validate_hash, interactive_rootpw, debug_level = parse_args()
 	init_logging(debug_level)
-	ucc.download_ucc_image(spec_file, validate_hash, interactive_rootpw, CLIProgress())
+	ucc.download_ucc_image(spec_file, validate_hash=validate_hash, interactive_rootpw=interactive_rootpw, progress=CLIProgress())
 
