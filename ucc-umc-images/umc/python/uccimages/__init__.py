@@ -40,26 +40,45 @@ from univention.lib.i18n import Translation
 from univention.management.console.modules import UMC_OptionTypeError, Base, UMC_CommandError
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response
+from univention.management.console.modules.mixins import ProgressMixin
 
 import ucc.images as ucc_images
 
 _ = Translation('ucc-umc-images').translate
 
-class Progress(ucc_images.Progress):
-	pass
+UCCProgress = ucc_images.Progress
 
-class Instance(Base):
-	def init(self):
-		self.progress_state = Progress()
+class ProgressWrapper(ucc_images.Progress):
+	def __init__(self, umc_progress):
+		UCCProgress.__init__(self)
+		self.umc_progress = umc_progress
+		self.umc_progress.title = _('Applying UCC configuration settings')
+		self.umc_progress.total = self.max_steps
 
-	def progress(self, request):
-		def _run():
-			time.sleep(1)
-			self.finished(request.id, self.progress_state.poll())
+	def finish(self):
+		UCCProgress.finish(self)
+		self.umc_progress.finish()
 
-		thread = Thread(target=_run)
-		thread.start()
+	def error(self, err, finish=True):
+		UCCProgress.error(self, err, finish)
+		if finish:
+			self.umc_progress.finish_with_result({
+				'success': False,
+				'error': err,
+			})
+		else:
+			intermediate.append(err)
 
+	def info(self, message):
+		UCCProgress.info(self, message)
+		self.umc_progress.message = message
+
+	def advance(self, steps, substeps=-1):
+		UCCProgress.advance(self, steps, substeps)
+		self.umc_progress.current = steps
+
+
+class Instance(Base, ProgressMixin):
 	@simple_response
 	def query(self):
 		try:
@@ -73,7 +92,7 @@ class Instance(Base):
 					i.validate(True)
 					images.append(i)
 				except ValueError as exc:
-					MODULE.warn('Ignoring image %i: %s' % (i.file, exc))
+					MODULE.warn('Ignoring image %s: %s' % (i.file, exc))
 			MODULE.info('Images: %s' % images)
 		except ValueError as exc:
 			raise UMC_CommandError(str(exc))
@@ -106,23 +125,11 @@ class Instance(Base):
 
 		return result
 
-	@simple_response
-	def download(self, image=''):
+	@simple_response(with_progress=True)
+	def download(self, image='', progress=None):
 		# start download process in a thread
-		def _run():
-			try:
-				ucc_images.download_ucc_image(image, username=self._username, password=self._password, progress=self.progress_state)
-			except Exception as exc:
-				# be sure to log any error that might occur (albeit it should not)
-				# ... otherwise the Thread will let disappear any exception
-				self.progress_state.error_handler(_('Unexpected error: %s') % exc)
-				self.progress_state.critical_handler(True)
-				MODULE.error('Unexpected error:\n%s' % ''.join(traceback.format_tb(sys.exc_info()[2])))
-
-		thread = Thread(target=_run)
-		thread.start()
-		return True
-
+		progress_wrapper = ProgressWrapper(progress)
+		ucc_images.download_ucc_image(image, username=self._username, password=self._password, progress=progress_wrapper)
 
 	@simple_response
 	def remove(self, image=''):

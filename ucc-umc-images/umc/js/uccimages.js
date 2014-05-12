@@ -154,33 +154,19 @@ define([
 				// should not happen
 				return;
 			}
-			tools.umcpCommand('uccimages/download', {
+			var downloadCmd = this.umcpProgressCommand(this._progressBar, 'uccimages/download', {
 				image: items[0].spec_file
-			}).then(lang.hitch(this, '_startDownloadProgress'));
-		},
-
-		_startDownloadProgress: function() {
-			this.standby(false);
-			this._progressBar.reset(_('Preparing download...'))
-			this.standby(true, this._progressBar);
-
-			this._progressBar.auto(
-				'uccimages/progress',
-				{},
-				lang.hitch(this, function() {
-					this.standby(false);
-					this._grid.filter(this._grid.query);
-					var errors = this._progressBar.getErrors();
-					if (errors.errors.length) {
-						var err = errors.errors[0];
-						err = err.replace(/\n/g, '<br>');
-						dialog.alert(err, _('Download error'));
-					}
-				}),
-				undefined,
-				undefined,
-				true
-			);
+			}).then(lang.hitch(this, function() {
+				this.standby(false);
+				this._grid.filter(this._grid.query);
+				var errors = this._progressBar.getErrors();
+				if (errors.errors.length) {
+					var err = errors.errors[0];
+					err = err.replace(/\n/g, '<br>');
+					dialog.alert(err, _('Download error'));
+				}
+			}));
+			this.standbyDuring(downloadCmd, this._progressBar);
 		},
 
 		_remove: function(ids, items) {
