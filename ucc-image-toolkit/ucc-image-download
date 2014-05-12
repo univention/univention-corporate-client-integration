@@ -64,24 +64,23 @@ def parse_args():
 
 
 class CLIProgress(ucc.Progress):
-	def step_handler(self, steps, component_steps=0):
+	def advance(self, steps, substeps=-1):
 		self.steps = steps
-		self.component_steps = component_steps
+		self.substeps = substeps
 
 		percent = min(100.0, (100.0 * steps) / self.max_steps)
-		if component_steps:
-			percent_component = min(100.0, (100.0 * component_steps) / self.max_steps)
-			sys.stdout.write('\r% 6.1f%%  [overall: % 6.1f%%]' % (percent_component, percent))
-			if component_steps >= self.max_steps:
+		if substeps < 0:
+			ucc.log_process('Overall: % 6.1f%%' % percent)
+		else:
+			percent_sub = min(100.0, (100.0 * substeps) / self.max_steps)
+			sys.stdout.write('\r% 6.1f%%  [overall: % 6.1f%%]' % (percent_sub, percent))
+			if substeps >= self.max_steps:
 				sys.stdout.write(' ... done\n')
 			sys.stdout.flush()
-		else:
-			ucc.log_process('Overall: % 6.1f%%' % percent)
 
-
-	def critical_handler(self, critical):
-		if critical:
-			sys.exit(1)
+	def error(self, err):
+		ucc.log_error(err)
+		sys.exit(1)
 
 
 if __name__ == "__main__":

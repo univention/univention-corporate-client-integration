@@ -90,15 +90,15 @@ def _dummy_progress(*args):
 	pass
 
 
-# helper function for wrapping the step_handler method of the Progress object
-def _step_handler_wrapper(percent_fraction, total_progress, progress):
-	def _step_handler(current_size, file_size):
-		fraction_component = float(current_size) / file_size
-		percent_component = 100.0 * fraction_component
-		percent_total = total_progress + fraction_component * percent_fraction
-		progress.step_handler(percent_total, percent_component)
+# helper function for wrapping the advance method of the Progress object
+def _advance_wrapper(percent_fraction, total_progress, progress):
+	def _advance(current_size, file_size):
+		fraction_file = float(current_size) / file_size
+		percent_file = 100.0 * fraction_file
+		percent_total = total_progress + fraction_file * percent_fraction
+		progress.advance(percent_total, percent_file)
 
-	return _step_handler
+	return _advance
 
 
 def _free_disk_space(path):
@@ -151,7 +151,6 @@ def _unxz(infile, keep_src_file=False, progress=_dummy_progress):
 
 				uncompressed_data = decompressor.decompress(compressed_data)
 				fout.write(uncompressed_data)
-				percent = (100.0 * fin.tell()) / total_size
 				progress(fin.tell(), total_size)
 				del compressed_data
 				del uncompressed_data
@@ -279,63 +278,45 @@ class Progress(object):
 	def reset(self, max_steps=100):
 		self.max_steps = max_steps
 		self.finished = False
+		self.message = _('Initializing')
 		self.steps = 0
-		self.component = _('Initializing')
-		self.component_steps = 0
-		self.info = ''
+		self.substeps = 0
 		self.errors = []
-		self.critical = False
 		self._last_logged_step = -1
-		self._last_logged_component_step = -1
-
-	def poll(self):
-		return dict(
-			finished=self.finished,
-			steps=100 * float(self.steps) / self.max_steps,
-			component=self.component,
-			info=self.info,
-			errors=self.errors,
-			critical=self.critical,
-		)
+		self._last_logged_substep = -1
 
 	def finish(self):
 		log_process('Finished')
 		self.finished = True
 
-	def info_handler(self, info):
-		log_process(info)
-		self.info = info
-
-	def error_handler(self, err):
+	def error(self, err, finish=True):
 		log_error(err)
 		self.errors.append(err)
+		if finish:
+			self.finish()
 
-	def component_handler(self, component):
-		self.component = component
-		self.component_steps = 0
-		log_process(component)
+	def info(self, message):
+		self.message = message
+		self.substeps = 0
+		log_process(message)
 
-	def critical_handler(self, critical):
-		self.critical = critical
-		self.finish()
-
-	def step_handler(self, steps, component_steps=0):
+	def advance(self, steps, substeps=-1):
 		self.steps = steps
-		self.component_steps = component_steps
+		self.substeps = substeps
 
 		# do not log every step
-		if abs(self._last_logged_step - steps) < 1 and abs(self._last_logged_component_step - component_steps) < 1:
+		if abs(self._last_logged_step - steps) < 1 and abs(self._last_logged_substep - substeps) < 1:
 			return
 
 		percent = min(100.0, (100.0 * steps) / self.max_steps)
-		percent_component = min(100.0, (100.0 * component_steps) / self.max_steps)
-		if not component_steps:
+		if substeps < 0:
 			log_process('Overall: % 6.1f%%' % percent)
 		else:
-			log_process('Overall: % 6.1f%%  Component: % 6.1f%%' % (percent, percent_component))
+			percent_sub = min(100.0, (100.0 * substeps) / self.max_steps)
+			log_process('Overall: % 6.1f%%  current task: % 6.1f%%' % (percent, percent_sub))
 
 		self._last_logged_step = steps
-		self._last_logged_component_step = component_steps
+		self._last_logged_substep = substeps
 
 
 class UCCImage(object):
@@ -367,12 +348,12 @@ class UCCImage(object):
 		# following fields are not absolutely required:
 		for i in ['hash-img', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
 			if i not in self.spec:
-				raise ValueError(_('Malformed spec file %s, missing entry %s!') % (self.spec_file, i))
+				raise ValueError(_('Malformed spec file %s, missing entry "%s"!') % (self.spec_file, i))
 
 		# these fields are needed for display purposes
 		for i in ['version', 'description', 'id']:
 			if i not in self.spec:
-				msg = _('Entry %s not specified in spec file %s!') % (i, self.spec_file)
+				msg = _('Entry "%s" not specified in spec file %s!') % (i, self.spec_file)
 				if be_strict:
 					raise ValueError(msg)
 				else:
@@ -454,7 +435,7 @@ class UCCImage(object):
 
 	def _download_spec_file(self):
 		if not self.has_enough_disk_space():
-			raise IOError('Not enough free diskspace to download the image!\nNeeded: %s\nAvailable: %s' % (spec['total-size'], free_diskspace))
+			raise IOError('Not enough free diskspace to download the image!\nNeeded: %s\nAvailable: %s' % (self.total_download_size, _free_disk_space(UCC_IMAGE_DIRECTORY)))
 		_download_file(self.spec_file)
 
 	def _download_file(self, key, validate_hash=True, progress=_dummy_progress):
@@ -515,10 +496,10 @@ class UCCImage(object):
 			# download all files -> 70%
 			for ikey, isize in sizes.iteritems():
 				ifile = self.get('file-%s' % ikey)
-				progress.component_handler(_('Downloading file %s [%.1f MB]') % (ifile, isize / 1000**2))
+				progress.info(_('Downloading file %s [%.1f MB]') % (ifile, isize / 1000**2))
 
 				file_percent = (70.0 * isize) / self.total_download_size
-				self._download_file(ikey, validate_hash, _step_handler_wrapper(file_percent, total_progress, progress))
+				self._download_file(ikey, validate_hash, _advance_wrapper(file_percent, total_progress, progress))
 				total_progress += file_percent
 
 			# place join script into correct directory
@@ -529,9 +510,9 @@ class UCCImage(object):
 			subprocess.call(['/bin/chmod', 'a+x', join_script_dest_path])
 
 			# unpack UCC image -> 30%
-			progress.component_handler(_('Unpacking image file %s') % self.file)
-			self._unpack(_step_handler_wrapper(30.0, total_progress, progress))
-			progress.step_handler(100.0)
+			progress.info(_('Unpacking image file %s') % self.file)
+			self._unpack(_advance_wrapper(30.0, total_progress, progress))
+			progress.advance(100.0)
 			progress.finish()
 		except Exception as exc:
 			# remove already partly downloaded files
@@ -541,7 +522,7 @@ class UCCImage(object):
 
 	def set_root_password(self, interactive_rootpw=False):
 		'''Calls ucc-image-root-password for the image'''
-		cmd = ['/usr/sbin/ucc-image-root-password', '-i', self.file]
+		cmd = ['/usr/sbin/ucc-image-root-password', '-i', os.path.join(UCC_IMAGE_DIRECTORY, self.file)]
 		if interactive_rootpw:
 			print 'Setting root password in the downloaded image. Please enter the password:'
 			cmd += ['-p']
@@ -549,8 +530,9 @@ class UCCImage(object):
 			log_process('Setting root password in the image to the root password of the current system')
 
 		ret = subprocess.call(cmd)
+		log_info(str(cmd))
 		if ret != 0:
-			log_warn('Root password could not be set!')
+			log_error('Root password could not be set!')
 
 	def run_join_script(self, username=None, password=None):
 		return _run_join_script(self.join_script, username, password)
@@ -567,24 +549,22 @@ def _check_ucr_variables():
 def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, username=None, password=None, progress=Progress()):
 	'''Convenience function, given a spec file, downloads all associated files and unpacks the image.'''
 	try:
-		progress.reset()
 		_check_ucr_variables()
 
-		progress.component_handler(_('Downloading and reading img file %s') % spec_file)
+		progress.info(_('Downloading and reading img file %s') % spec_file)
 		spec_url = '%s/%s' % (UCC_BASE_URL, spec_file)
 		img = UCCImage(spec_url)
 		img.download(validate_hash, progress)
 
-		progress.component_handler(_('Setting root password for image %s') % img.file)
+		progress.info(_('Setting root password for image %s') % img.file)
 		img.set_root_password(interactive_rootpw)
 
-		progress.component_handler(_('Running join script %s') % img.join_script)
+		progress.info(_('Running join script %s') % img.join_script)
 		img.run_join_script(username, password)
 
-		progress.component_handler(_('Finished.'))
+		progress.info(_('Finished.'))
 	except (IOError, ValueError, OSError, RuntimeError, httplib.HTTPException) as exc:
-		progress.error_handler(_('Image data for spec file %s could not be downloaded from server:\n%s\n') % (spec_file, exc))
-		progress.critical_handler(True)
+		progress.error(_('Image data for spec file %s could not be downloaded from server:\n%s\n') % (spec_file, exc))
 		log_error('Error downloading image data from server:\n%s' % ''.join(traceback.format_tb(sys.exc_info()[2])))
 
 
