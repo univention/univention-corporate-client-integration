@@ -163,7 +163,7 @@ def _unxz(infile, keep_src_file=False, progress=_dummy_progress):
 		# remove extracted file in case we do not have enough space
 		if os.path.exists(outfile):
 			os.remove(outfile)
-		_exit(_('Not enough hard disk space to decompress %s!') % infile)
+		_exit(_('Decompression of file %s failed: %s!') % (infile, exc))
 
 
 def _get_file_size(filename):
