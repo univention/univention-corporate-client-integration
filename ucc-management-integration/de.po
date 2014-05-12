@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-04-28 11:12+0200\n"
+"POT-Creation-Date: 2014-05-12 12:08+0200\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -16,140 +16,140 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: modules/computers/ucc.py:53
+#: modules/computers/ucc.py:54
 msgid "Computer: Univention Corporate Client"
 msgstr "Rechner: Univention Corporate Client"
 
-#: modules/computers/ucc.py:57
+#: modules/computers/ucc.py:58
 msgid "Posix account"
 msgstr "POSIX-Konto"
 
-#: modules/computers/ucc.py:61
+#: modules/computers/ucc.py:62
 msgid "Kerberos principal"
 msgstr "Kerberos-Prinzipal"
 
-#: modules/computers/ucc.py:65
+#: modules/computers/ucc.py:66
 msgid "Samba account"
 msgstr "Samba-Konto"
 
-#: modules/computers/ucc.py:73
+#: modules/computers/ucc.py:74
 msgid "Hostname"
 msgstr "Rechnername"
 
-#: modules/computers/ucc.py:84 modules/settings/ucc_image.py:64
+#: modules/computers/ucc.py:85 modules/settings/ucc_image.py:64
 #: modules/settings/ucc_session.py:64
 msgid "Description"
 msgstr "Beschreibung"
 
-#: modules/computers/ucc.py:94
+#: modules/computers/ucc.py:95
 msgid "Operating system"
 msgstr "Betriebssystem"
 
-#: modules/computers/ucc.py:103
+#: modules/computers/ucc.py:104
 msgid "Operating system version"
 msgstr "Version des Betriebssystems"
 
-#: modules/computers/ucc.py:112
+#: modules/computers/ucc.py:113
 msgid "Domain"
 msgstr "Domäne"
 
-#: modules/computers/ucc.py:122
+#: modules/computers/ucc.py:123
 msgid "MAC address"
 msgstr "MAC-Adresse"
 
-#: modules/computers/ucc.py:133
+#: modules/computers/ucc.py:134
 msgid "Network"
 msgstr "Netzwerk"
 
-#: modules/computers/ucc.py:143
+#: modules/computers/ucc.py:144
 msgid "IP address"
 msgstr "IP-Adresse"
 
-#: modules/computers/ucc.py:154
+#: modules/computers/ucc.py:155
 msgid "Forward zone for DNS entry"
 msgstr "Forward-Zone für DNS-Eintrag"
 
-#: modules/computers/ucc.py:165
+#: modules/computers/ucc.py:166
 msgid "Reverse zone for DNS entry"
 msgstr "Reverse-Zone für DNS-Eintrag"
 
-#: modules/computers/ucc.py:176
+#: modules/computers/ucc.py:177
 msgid "Zone for DNS alias"
 msgstr "Zone für DNS-Alias"
 
-#: modules/computers/ucc.py:187 modules/computers/ucc.py:376
+#: modules/computers/ucc.py:188 modules/computers/ucc.py:377
 msgid "DNS alias"
 msgstr "DNS-Alias"
 
-#: modules/computers/ucc.py:197
+#: modules/computers/ucc.py:198
 msgid "DHCP service"
 msgstr "DHCP-Service"
 
-#: modules/computers/ucc.py:208
+#: modules/computers/ucc.py:209
 msgid "Password"
 msgstr "Passwort"
 
-#: modules/computers/ucc.py:219
+#: modules/computers/ucc.py:220
 msgid "Unix home directory"
 msgstr "Unix Heimatverzeichnis"
 
-#: modules/computers/ucc.py:230
+#: modules/computers/ucc.py:231
 msgid "Login shell"
 msgstr "Login-Shell"
 
-#: modules/computers/ucc.py:241
+#: modules/computers/ucc.py:242
 msgid "Primary group"
 msgstr "Primäre Gruppe"
 
-#: modules/computers/ucc.py:252
+#: modules/computers/ucc.py:253
 msgid "Inventory number"
 msgstr "Inventarnummer"
 
-#: modules/computers/ucc.py:262 modules/computers/ucc.py:373
+#: modules/computers/ucc.py:263 modules/computers/ucc.py:374
 msgid "Groups"
 msgstr "Gruppen"
 
-#: modules/computers/ucc.py:273
+#: modules/computers/ucc.py:274
 msgid "Boot variant"
 msgstr "Startvariante"
 
-#: modules/computers/ucc.py:274
+#: modules/computers/ucc.py:275
 msgid "Boot variant of this client"
 msgstr "Startvariante des Clients"
 
-#: modules/computers/ucc.py:284
+#: modules/computers/ucc.py:285
 msgid "Repartitioning for installed systems"
 msgstr "Neupartitionierung für installierte Systeme"
 
-#: modules/computers/ucc.py:285
+#: modules/computers/ucc.py:286
 msgid "Force repartitioning for installed systems"
 msgstr "Forciert die Neupartitionierung für bereits installierte Systeme"
 
-#: modules/computers/ucc.py:295
+#: modules/computers/ucc.py:296
 msgid "Image"
 msgstr "Image"
 
-#: modules/computers/ucc.py:296
+#: modules/computers/ucc.py:297
 msgid "Image to boot"
 msgstr "Startimage"
 
-#: modules/computers/ucc.py:305
+#: modules/computers/ucc.py:306
 msgid "Additional boot parameter"
 msgstr "Erweiterte Startparameter"
 
-#: modules/computers/ucc.py:306
+#: modules/computers/ucc.py:307
 msgid "Additional boot parameter of this client"
 msgstr "Erweiterte Startparameter für diesen Client"
 
-#: modules/computers/ucc.py:315
+#: modules/computers/ucc.py:316
 msgid "Service"
 msgstr "Dienst"
 
-#: modules/computers/ucc.py:325
+#: modules/computers/ucc.py:326
 msgid "Relative ID"
 msgstr "Relative ID"
 
-#: modules/computers/ucc.py:338 modules/policies/ucc_desktop.py:158
+#: modules/computers/ucc.py:339 modules/policies/ucc_desktop.py:158
 #: modules/policies/ucc_desktop.py:159 modules/policies/ucc_hardware.py:190
 #: modules/policies/ucc_hardware.py:191 modules/policies/ucc_software.py:153
 #: modules/policies/ucc_software.py:154 modules/policies/ucc_user.py:160
@@ -159,64 +159,64 @@ msgstr "Relative ID"
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/computers/ucc.py:338
+#: modules/computers/ucc.py:339
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: modules/computers/ucc.py:339
+#: modules/computers/ucc.py:340
 msgid "Computer account"
 msgstr "Rechnerkonto"
 
-#: modules/computers/ucc.py:344
+#: modules/computers/ucc.py:345
 msgid "Network settings "
 msgstr "Netzwerkeinstellungen"
 
-#: modules/computers/ucc.py:348
+#: modules/computers/ucc.py:349
 msgid "DNS Forward and Reverse Lookup Zone"
 msgstr "DNS-Forward und Reverse-Zonen"
 
-#: modules/computers/ucc.py:352
+#: modules/computers/ucc.py:353
 msgid "DHCP"
 msgstr "DHCP"
 
-#: modules/computers/ucc.py:356
+#: modules/computers/ucc.py:357
 msgid "Images"
 msgstr "Images"
 
-#: modules/computers/ucc.py:357
+#: modules/computers/ucc.py:358
 msgid "Image settings"
 msgstr "Image Einstellungen"
 
-#: modules/computers/ucc.py:363
+#: modules/computers/ucc.py:364
 msgid "Account"
 msgstr "Konto"
 
-#: modules/computers/ucc.py:367
+#: modules/computers/ucc.py:368
 msgid "Unix account"
 msgstr "Unix-Konto"
 
-#: modules/computers/ucc.py:367
+#: modules/computers/ucc.py:368
 msgid "Unix account settings"
 msgstr "Unix-Konto-Einstellungen"
 
-#: modules/computers/ucc.py:370
+#: modules/computers/ucc.py:371
 msgid "Services"
 msgstr "Dienste"
 
-#: modules/computers/ucc.py:373
+#: modules/computers/ucc.py:374
 msgid "Group memberships"
 msgstr "Gruppenmitgliedschaften"
 
-#: modules/computers/ucc.py:376
+#: modules/computers/ucc.py:377
 msgid "Alias DNS entry"
 msgstr "Alias-DNS-Eintrag"
 
-#: modules/computers/ucc.py:504
+#: modules/computers/ucc.py:511
 msgid " At least posix or kerberos is required."
 msgstr "Mindestens POSIX oder Kerberos werden benötigt"
 
 #: modules/policies/ucc_desktop.py:47 modules/policies/ucc_desktop.py:76
-#: modules/syntax.d/ucc.py:71
+#: modules/syntax.d/ucc.py:72
 msgid "UCC desktop environment variables"
 msgstr "UCC Desktop Umgebungsvariablen"
 
@@ -410,7 +410,7 @@ msgstr "UCC Benutzersitzung"
 msgid "UCC user session"
 msgstr "UCC Benutzersitzung"
 
-#: modules/policies/ucc_user.py:69 modules/syntax.d/ucc.py:62
+#: modules/policies/ucc_user.py:69 modules/syntax.d/ucc.py:63
 msgid "Force this session for user logins"
 msgstr "Erzwingen dieser Sitzung für Benutzeranmeldungen"
 
@@ -420,36 +420,41 @@ msgstr ""
 "Diese Sitzung wird bei der Anmeldung vorgegeben und keine Benutzerauswahl "
 "getroffen"
 
-#: modules/policies/ucc_user.py:79 modules/syntax.d/ucc.py:63
-msgid "Windows domain"
-msgstr "Windows-Domäne"
-
-#: modules/policies/ucc_user.py:80
-msgid "This windows domain will be used for RDP user logons."
+#: modules/policies/ucc_user.py:79
+msgid "Windows domain for RDP sessions"
 msgstr "Diese Windows-Domäne wird für RDP-Anmeldungen verwendet"
 
-#: modules/policies/ucc_user.py:89 modules/syntax.d/ucc.py:64
-msgid "Windows terminal server"
-msgstr "Windows Terminalserver"
+#: modules/policies/ucc_user.py:80
+msgid ""
+"This windows domain will be used for RDP user logons. If an XRDP server is "
+"used, this input field can be left empty."
+msgstr "Diese Windows-Domäne wird für RDP-Anmeldungen verwendet. Wird ein XRDP-Server verwendet, kann das Feld leer bleiben."
+
+#: modules/policies/ucc_user.py:89
+msgid "Windows/XRDP terminal server"
+msgstr "Windows/XRDP Terminalserver"
 
 #: modules/policies/ucc_user.py:90
 msgid ""
-"This windows terminal server will be used for user logon Windows terminal "
-"servers."
+"This terminal server will be used for user logon to Windows terminal servers "
+"oder XRDP terminal servers."
 msgstr ""
 "Dieser Windows-Terminalserver wird für Anmeldungen an Windows "
-"Terminalservern verwendet"
+"oder XRDP-Terminalservern verwendet."
 
-#: modules/policies/ucc_user.py:99 modules/syntax.d/ucc.py:65
-msgid "UCC terminal server"
-msgstr "UCC Terminalserver"
+#: modules/policies/ucc_user.py:99
+msgid "UCC 1.0 terminal server (not used for UCC 2.0 clients)"
+msgstr ""
 
 #: modules/policies/ucc_user.py:100
 msgid ""
-"This UCC terminal server will be used for user logon UCC terminal servers."
+"This UCC terminal server will be used for user logons to UCC terminal "
+"servers using X11 forwarding. In UCC 2.0 this is no longer supported and "
+"XRDP should be used instead."
 msgstr ""
-"Dieser UCC-Terminalserver wird für Anmeldungen an UCC Terminalservern "
-"verwendet"
+"Dieser UCC-Terminalserver wird für Anmeldungen an UCC-Terminalservern "
+"verwendet, die X11-Forwarding verwenden. In UCC 2.0 ist das nicht mehr"
+"unterstützt. Stattdessen sollte XRDP verwendet werden."
 
 #: modules/settings/ucc_image.py:47
 msgid "UCC images"
@@ -500,22 +505,38 @@ msgid "Live system"
 msgstr "Live-System"
 
 #: modules/syntax.d/ucc.py:42
+msgid "Local boot"
+msgstr ""
+
+#: modules/syntax.d/ucc.py:43
 msgid "Image boot without update check"
 msgstr "Image-Boot ohne Update-Prüfung"
 
-#: modules/syntax.d/ucc.py:43
+#: modules/syntax.d/ucc.py:44
 msgid "Image boot with update check"
 msgstr "Image-Boot mit Update-Prüfung"
 
-#: modules/syntax.d/ucc.py:44
+#: modules/syntax.d/ucc.py:45
 msgid "Installation with repartitioning and image rollout"
 msgstr "Installation: Neupartitionierung und Image-Rollout"
 
-#: modules/syntax.d/ucc.py:75
+#: modules/syntax.d/ucc.py:64
+msgid "Windows domain"
+msgstr "Windows-Domäne"
+
+#: modules/syntax.d/ucc.py:65
+msgid "Windows terminal server"
+msgstr "Windows Terminalserver"
+
+#: modules/syntax.d/ucc.py:66
+msgid "UCC terminal server"
+msgstr "UCC Terminalserver"
+
+#: modules/syntax.d/ucc.py:76
 msgid "Variable"
 msgstr "Variable"
 
-#: modules/syntax.d/ucc.py:75
+#: modules/syntax.d/ucc.py:76
 msgid "Value"
 msgstr "Wert"
 

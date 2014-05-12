@@ -76,8 +76,8 @@ property_descriptions={
 			identifies=0
 		),
 	'windowsDomain': univention.admin.property(
-			short_description=_('Windows domain'),
-			long_description=_('This windows domain will be used for RDP user logons.'),
+			short_description=_('Windows domain for RDP sessions'),
+			long_description=_('This windows domain will be used for RDP user logons. If an XRDP server is used, this input field can be left empty.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -86,8 +86,8 @@ property_descriptions={
 			identifies=0
 		),
 	'windowsTerminalserver': univention.admin.property(
-			short_description=_('Windows terminal server'),
-			long_description=_('This windows terminal server will be used for user logon Windows terminal servers.'),
+			short_description=_('Windows/XRDP terminal server'),
+			long_description=_('This terminal server will be used for user logon to Windows terminal servers oder XRDP terminal servers.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -96,8 +96,8 @@ property_descriptions={
 			identifies=0
 		),
 	'uccTerminalserver': univention.admin.property(
-			short_description=_('UCC terminal server'),
-			long_description=_('This UCC terminal server will be used for user logon UCC terminal servers.'),
+			short_description=_('UCC 1.0 terminal server (not used for UCC 2.0 clients)'),
+			long_description=_('This UCC terminal server will be used for user logons to UCC terminal servers using X11 forwarding. In UCC 2.0 this is no longer supported and XRDP should be used instead.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
 			options=[],
