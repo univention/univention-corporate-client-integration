@@ -63,8 +63,17 @@ class Instance(Base):
 	@simple_response
 	def query(self):
 		try:
-			images = ucc_images.get_local_ucc_images()
-			images += ucc_images.get_online_ucc_images()
+			_images = ucc_images.get_local_ucc_images()
+			_images += ucc_images.get_online_ucc_images()
+
+			# make sure the spec files meet the strict validation
+			images = []
+			for i in _images:
+				try:
+					i.validate(True)
+					images.append(i)
+				except ValueError as exc:
+					MODULE.warn('Ignoring image %i: %s' % (i.file, exc))
 			MODULE.info('Images: %s' % images)
 		except ValueError as exc:
 			raise UMC_CommandError(str(exc))
