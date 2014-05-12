@@ -66,12 +66,11 @@ def log_process(msg):
 def log_info(msg):
 	ud.debug(ud.MODULE, ud.INFO, msg)
 
-def _exit(msg):
-	if __name__ == '__main__':
+def _exit(msg, sys_exit=False):
+	if __name__ == '__main__' and sys_exit:
 		log_error(msg)
 		sys.exit(1)
-	else:
-		raise RuntimeError(msg)
+	raise RuntimeError(msg)
 
 
 configRegistry = ucr.ConfigRegistry()
@@ -160,10 +159,11 @@ def _unxz(infile, keep_src_file=False, progress=_dummy_progress):
 		if not keep_src_file:
 			# successful decompression -> remove compressed source file
 			os.remove(infile)
-	finally:
+	except (IOError, OSError) as exc:
 		# remove extracted file in case we do not have enough space
 		if os.path.exists(outfile):
 			os.remove(outfile)
+		_exit(_('Not enough hard disk space to decompress %s!') % infile)
 
 
 def _get_file_size(filename):
@@ -230,7 +230,7 @@ def _download_file(filename, hash_value=None, progress=_dummy_progress):
 		log_info('Downloading %s' % url)
 		_download_url(url, outfile, _progress)
 	except IOError as exc:
-		_exit('An error occured while downloading image %s:\n%s' % (url, exc))
+		_exit(_('An error occured while downloading image %s:\n%s') % (url, exc))
 
 	# validate hash
 	if hash_value:
@@ -240,7 +240,7 @@ def _download_file(filename, hash_value=None, progress=_dummy_progress):
 		log_info('Validating hash value of file %s' % filename)
 		digest = _sha256(outfile, _progress)
 		if digest != hash_value:
-			_exit('Invalid hash value for downloaded file %s!\nHash expected: %s\nHash received: %s' % (filename, hash_value, digest))
+			_exit(_('Invalid hash value for downloaded file %s!\nHash expected: %s\nHash received: %s') % (filename, hash_value, digest))
 
 
 def _run_join_script(join_script, username=None, password=None):
@@ -361,15 +361,22 @@ class UCCImage(object):
 		stream = urllib.urlopen(spec_url, proxies=_get_proxies())
 		self.spec = yaml.load(stream)
 		stream.close()
+		self.validate()
 
-		# following fields are not required to allow backwards compatibility with UCC 1.0 spec-files:
-		#   description, id
-		for i in ['version', 'hash-img', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
+	def validate(self, be_strict=False):
+		# following fields are not absolutely required:
+		for i in ['hash-img', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
 			if i not in self.spec:
-				raise ValueError(_('Malformed spec file %s, missing entry %s') % (self.spec_file, i))
-		for i in ['description', 'id']:
+				raise ValueError(_('Malformed spec file %s, missing entry %s!') % (self.spec_file, i))
+
+		# these fields are needed for display purposes
+		for i in ['version', 'description', 'id']:
 			if i not in self.spec:
-				log_warn('Entry %s not specified in spec file %s ... ignoring' % (i, self.spec_file))
+				msg = _('Entry %s not specified in spec file %s!' % (i, self.spec_file))
+				if be_strict:
+					raise ValueError(msg)
+				else:
+					log_warn(msg)
 
 	@property
 	def id(self):
@@ -551,10 +558,10 @@ class UCCImage(object):
 
 def _check_ucr_variables():
 	if not configRegistry['ucc/image/path']:
-		_exit('The UCR variable ucc/image/path must be set!', True)
+		_exit(_('The UCR variable ucc/image/path must be set!'), True)
 
 	if not os.path.exists(UCC_IMAGE_DIRECTORY):
-		_exit('UCC image path %s does not exists!' % UCC_IMAGE_DIRECTORY, True)
+		_exit(_('UCC image path %s does not exists!') % UCC_IMAGE_DIRECTORY, True)
 
 
 def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, username=None, password=None, progress=Progress()):
