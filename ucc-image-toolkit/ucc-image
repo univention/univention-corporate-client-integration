@@ -44,6 +44,10 @@ import time
 import traceback
 import datetime
 import commands
+import univention.config_registry as ucr
+
+configRegistry = ucr.ConfigRegistry()
+configRegistry.load()
 
 
 # Helper function to run a command and give an error message if the command failed
@@ -59,6 +63,7 @@ def _run_cmd(cmd_block, fd=sys.stdout):
 		msg = 'The command "%s" failed with the error code %d' % (string.join(cmd_block), retcode)
 		raise RuntimeError(msg)
 	return retcode
+
 
 def _copy_system_to_image(options, image_file, bootstrap_dir, workingdir, logfile_fd):
 
@@ -83,13 +88,13 @@ def _copy_system_to_image(options, image_file, bootstrap_dir, workingdir, logfil
 		rm /var/lib/apt/lists/* || true
 		apt-get clean
 		umount /proc
-		
+
 		# Wait for two seconds, otherwise the umount might fail
 		sleep 2
-		
+
 		exit 0
 		''')
-	
+
 	fd.close()
 	os.chmod(cleanup_fd, 0744)
 	cmd_block = ['/usr/sbin/chroot', bootstrap_dir, './cleanup-ucc.sh']
@@ -113,7 +118,8 @@ def _copy_system_to_image(options, image_file, bootstrap_dir, workingdir, logfil
 		os.rmdir(bootstrap_dir)
 	except OSError:
 		pass
-	
+
+
 # Do some cleanup stuff
 def _cleanup(options, workingdir, bootstrap_dir, logfile_fd):
 	if options.cleanup:
@@ -320,6 +326,9 @@ if __name__ == '__main__':
 		_run_cmd(cmd_block, logfile_fd)
 		cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'ucr', 'set', 'hostname=%s' % config.get_hostname(), 'domainname=%s' % config.get_domainname()]
 		_run_cmd(cmd_block, logfile_fd)
+		# Bug 30286: Set nameserver 1 during bootstrap, as there is no dns resolver on a memberserver
+		cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'ucr', 'set', 'nameserver1=%s' % configRegistry.get('nameserver1', '')]
+		_run_cmd(cmd_block, logfile_fd)
 
 		_print_done()
 
@@ -366,12 +375,15 @@ if __name__ == '__main__':
 				_run_cmd(cmd_block, logfile_fd)
 				_print_done()
 
+		nameserver1_set = False
 		if config.has_section('Configuration'):
 			_print_process('Applying UCR settings')
 			for line in config.get('Configuration', 'ucr_variables', None).split('\n'):
 				if line:
 					cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'ucr', 'set', line]
 					_run_cmd(cmd_block, logfile_fd)
+					if 'nameserver1=' in line:
+						nameserver1_set = True
 
 			_print_done()
 
@@ -385,6 +397,11 @@ if __name__ == '__main__':
 		# This should still be kept for UCC 2, as users updating from UCC 1 may not have the updated -sync-persistent
 		cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'ln', '-s', '/etc/machine.secret', '/etc/ldap.secret']
 		_run_cmd(cmd_block, logfile_fd)
+
+		# Bug 30286: Unset nameserver 1, but only if it was not defined in the image config file
+		if not nameserver1_set:
+			cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'ucr', 'unset', 'nameserver1']
+			_run_cmd(cmd_block, logfile_fd)
 
 		# Write the partition settings into the image, this file will be used by
 		# the partition script
