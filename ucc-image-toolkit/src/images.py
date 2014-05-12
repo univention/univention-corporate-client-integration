@@ -372,7 +372,7 @@ class UCCImage(object):
 		# these fields are needed for display purposes
 		for i in ['version', 'description', 'id']:
 			if i not in self.spec:
-				msg = _('Entry %s not specified in spec file %s!' % (i, self.spec_file))
+				msg = _('Entry %s not specified in spec file %s!') % (i, self.spec_file)
 				if be_strict:
 					raise ValueError(msg)
 				else:
