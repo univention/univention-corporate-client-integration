@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.6-3) unstable; urgency=low
+
+  * Switch back to internal apt sources
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 12 May 2014 11:14:18 +0200
+
 ucc-image-toolkit (2.0.6-2) unstable; urgency=low
 
   * Use linux-image-generic instead of linux-image-generic-pae. The latter is
