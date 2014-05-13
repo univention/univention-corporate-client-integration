@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.11-1) unstable; urgency=low
+
+  * Bug #30379: adjust CLI tool output, add get_latest_online_ucc_image()
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 13 May 2014 16:10:30 +0200
+
 ucc-image-toolkit (2.0.10-1) unstable; urgency=low
 
   * Bug #30379: adjustments for unified progress handling

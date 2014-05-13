@@ -53,21 +53,33 @@ from univention.lib.i18n import Translation
 _ = Translation('ucc-image-management').translate
 
 
+use_univention_debug = True
+
 # short cuts for logging
 def log_warn(msg):
-	ud.debug(ud.MODULE, ud.WARN, msg)
+	if use_univention_debug:
+		ud.debug(ud.MODULE, ud.WARN, msg)
+	else:
+		sys.stdout.write('WARN: %s\n' % msg)
 
 def log_error(msg):
-	ud.debug(ud.MODULE, ud.ERROR, msg)
+	if use_univention_debug:
+		ud.debug(ud.MODULE, ud.ERROR, msg)
+	else:
+		sys.stdout.write('ERROR: %s\n' % msg)
 
 def log_process(msg):
-	ud.debug(ud.MODULE, ud.PROCESS, msg)
+	if use_univention_debug:
+		ud.debug(ud.MODULE, ud.PROCESS, msg)
+	else:
+		sys.stdout.write('%s\n' % msg)
 
 def log_info(msg):
-	ud.debug(ud.MODULE, ud.INFO, msg)
+	if use_univention_debug:
+		ud.debug(ud.MODULE, ud.INFO, msg)
 
 def _exit(msg, sys_exit=False):
-	if __name__ == '__main__' and sys_exit:
+	if not use_univention_debug and sys_exit:
 		log_error(msg)
 		sys.exit(1)
 	raise RuntimeError(msg)
@@ -223,10 +235,8 @@ def _download_file(filename, hash_value=None, progress=_dummy_progress):
 			progress(0.8 * current_size, file_size)
 
 	# download
-	log_process('Downloading file %s' % filename)
 	try:
 		url = '%s/%s' % (UCC_BASE_URL, filename)
-		log_info('Downloading %s' % url)
 		_download_url(url, outfile, _progress)
 	except IOError as exc:
 		_exit(_('An error occured while downloading image %s:\n%s') % (url, exc))
@@ -612,6 +622,20 @@ def get_online_ucc_images():
 		if stream:
 			stream.close()
 	return index
+
+
+def get_latest_online_ucc_image():
+	'''Get a list of only the latest images of a kind that are available online.'''
+
+	images = get_online_ucc_images()
+	versions = {}
+	for i in images:
+		versions.setdefault(i.id, []).append(i)
+	latest_images = []
+	for iimages in versions.itervalues():
+		iimages.sort(cmp=lambda x, y: -cmp(x.version, y.version))
+		latest_images.append(iimages[0])
+	return latest_images
 
 
 def remove_ucc_image(spec_file):

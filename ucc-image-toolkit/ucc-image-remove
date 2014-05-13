@@ -35,10 +35,6 @@ from optparse import OptionParser
 import univention.debug as ud
 import ucc.images as ucc_images
 
-def init_logging(level = 2):
-	fd = ud.init('/dev/stdout', ud.FLUSH, ud.NO_FUNCTION)
-	ud.set_level(ud.MODULE, level)
-
 
 def parse_args():
 	parser = OptionParser()
@@ -52,10 +48,10 @@ def parse_args():
 
 if __name__ == "__main__":
 	# call from the command line
+	ucc_images.use_univention_debug = False
 	listimg, removeimg, debug_level = parse_args()
-	init_logging(debug_level)
 	if not listimg and not removeimg:
-		ucc_images._exit('You need to specify either -l or -r. Run with --help for details.')
+		ucc_images._exit('You need to specify either -l or -r. Run with --help for details.', True)
 	if listimg:
 		images = ucc_images.get_local_ucc_images()
 		for iimg in images:

@@ -35,12 +35,7 @@ from optparse import OptionParser
 import sys
 
 import univention.debug as ud
-import ucc.images as ucc
-
-def init_logging(level = 2):
-	fd = ud.init('/dev/stdout', ud.FLUSH, ud.NO_FUNCTION)
-	ud.set_level(ud.MODULE, level)
-
+import ucc.images as ucc_images
 
 def parse_args():
 	usage = '''%s [options] -s config_file ''' % sys.argv[0]
@@ -63,14 +58,14 @@ def parse_args():
 	return (options.spec, not options.skiphash, options.rootpw, options.debug)
 
 
-class CLIProgress(ucc.Progress):
+class CLIProgress(ucc_images.Progress):
 	def advance(self, steps, substeps=-1):
 		self.steps = steps
 		self.substeps = substeps
 
 		percent = min(100.0, (100.0 * steps) / self.max_steps)
 		if substeps < 0:
-			ucc.log_process('Overall: % 6.1f%%' % percent)
+			ucc_images.log_process('Overall: % 6.1f%%' % percent)
 		else:
 			percent_sub = min(100.0, (100.0 * substeps) / self.max_steps)
 			sys.stdout.write('\r% 6.1f%%  [overall: % 6.1f%%]' % (percent_sub, percent))
@@ -79,13 +74,13 @@ class CLIProgress(ucc.Progress):
 			sys.stdout.flush()
 
 	def error(self, err):
-		ucc.log_error(err)
+		ucc_images.log_error(err)
 		sys.exit(1)
 
 
 if __name__ == "__main__":
 	# call from the command line
+	ucc_images.use_univention_debug = False
 	spec_file, validate_hash, interactive_rootpw, debug_level = parse_args()
-	init_logging(debug_level)
-	ucc.download_ucc_image(spec_file, validate_hash=validate_hash, interactive_rootpw=interactive_rootpw, progress=CLIProgress())
+	ucc_images.download_ucc_image(spec_file, validate_hash=validate_hash, interactive_rootpw=interactive_rootpw, progress=CLIProgress())
 
