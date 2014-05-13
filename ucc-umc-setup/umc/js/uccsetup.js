@@ -35,10 +35,12 @@ define([
 	"dojo/on",
 	"dojo/topic",
 	"dojo/Deferred",
+	"dojo/promise/all",
 	"dojox/html/styles",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/Page",
+	"umc/widgets/ProgressBar",
 	"umc/widgets/Form",
 	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Module",
@@ -50,7 +52,7 @@ define([
 	"umc/widgets/Wizard",
 	"./uccsetup/RadioButton",
 	"umc/i18n!umc/modules/uccsetup"
-], function(declare, lang, array, on, topic, Deferred, styles, dialog, tools, Page, Form, ExpandingTitlePane, Module, TextBox, CheckBox, ComboBox, Uploader, Text, Wizard, RadioButton, _) {
+], function(declare, lang, array, on, topic, Deferred, all, styles, dialog, tools, Page, ProgressBar, Form, ExpandingTitlePane, Module, TextBox, CheckBox, ComboBox, Uploader, Text, Wizard, RadioButton, _) {
 	styles.insertCssRule('.umc-uccsetup-wizard-indent', 'margin-left: 27px;');
 //	var modulePath = require.toUrl('umc/modules/uccsetup');
 //	styles.insertCssRule('.umc-uccsetup-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
@@ -67,11 +69,13 @@ define([
 //	});
 
 	var _regIPv4 =  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/;
+	var _regURL =  /^https?:\/\//;
 
 	var _Wizard = declare("umc.modules.uccsetup.Wizard", [ Wizard ], {
 		autoValidate: true,
 		autoFocus: true,
 		initialInfo: {},
+		_progressBar: null,
 
 		// taken from: http://stackoverflow.com/a/9221063
 		constructor: function() {
@@ -80,15 +84,10 @@ define([
 				headerText: _('Univention Corporate Client configuration wizard'),
 				helpText: _('<p>Welcome to the setup wizard for Univention Corporate Client (UCC)!</p><p>UCC provides support for fully-featured Linux desktop systems running KDE (both stationary and notebooks) as well as support for Linux-based thin clients and access to terminal servers (Windows, Citrix XenApp, XRDP).</p>'),
 				widgets: [{
-					type: Text,
-					name: 'warning',
-					content: _('<b>Warning:</b> This is version of the UCC configuration wizard is a preview. Incomplete functionalities are marked where applicable.'),
-					labelConf: { style: 'margin-top: 0'	}
-				}, {
 					type: CheckBox,
 					name: 'fatclient',
 					label: _('<b>Linux desktop systems configuration / XRDP terminal server setup</b>'),
-					labelConf: { style: 'margin-top: 1.25em;' }
+					labelConf: { style: 'margin-top: 0;' }
 				}, {
 					type: Text,
 					name: 'helpFatclient',
@@ -113,12 +112,7 @@ define([
 					type: CheckBox,
 					name: 'download',
 					label: _('Download UCC desktop image'),
-					value: true,
-					disabled: true
-				}, {
-					type: Text,
-					name: 'warning',
-					content: _('<p><b>Warning:</b> The download is not yet implemented in this preview of the UCC configuration wizard. Please use the following command to download the UCC desktop image manually:</p><pre>ucc-image-download -s ucc-2.0-ms1-desktop-image.img.xz.spec</pre>')
+					value: true
 				}]
 			}, {
 				name: 'download-thinclient',
@@ -128,12 +122,7 @@ define([
 					type: CheckBox,
 					name: 'download',
 					label: _('Download UCC thin client image'),
-					value: true,
-					disabled: true
-				}, {
-					type: Text,
-					name: 'warning',
-					content: _('<p><b>Warning:</b> The download is not yet implemented in this preview of the UCC configuration wizard. Please use the following command to download the UCC desktop image manually:</p><pre>ucc-image-download -s ucc-2.0-ms1-thinclient-image.img.xz.spec</pre>')
+					value: true
 				}]
 			}, {
 				name: 'network',
@@ -168,7 +157,6 @@ define([
 					required: true,
 					disabled: true,
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' },
-					//regExp: _regIPv4,
 					validator: function(value) {
 						return _regIPv4.test(value);
 					},
@@ -286,7 +274,10 @@ define([
 					type: TextBox,
 					required: true,
 					name: 'url',
-					label: _('URL for Citrix farm login')
+					label: _('URL for Citrix farm login'),
+					validator: function(value) {
+						return _regURL.test(value);
+					}
 				}, {
 					type: CheckBox,
 					name: 'autoLogin',
@@ -301,7 +292,10 @@ define([
 					type: TextBox,
 					required: true,
 					name: 'url',
-					label: _('Automatically connect to this web site')
+					label: _('Automatically connect to this web site'),
+					validator: function(value) {
+						return _regURL.test(value);
+					}
 				}]
 			}, {
 				name: 'confirm',
@@ -311,6 +305,16 @@ define([
 					type: Text,
 					name: 'summary',
 					content: _('')
+				}]
+			}, {
+				name: 'error',
+				headerText: _('UCC wizard - An error ocurred'),
+				helpText: _('An error occurred during the configuration of UCC. The following information will give you some more details on which problems occurred during the installation process.'),
+				widgets: [{
+					type: Text,
+					name: 'info',
+					style: 'font-style:italic;',
+					content: ''
 				}]
 			}, {
 				name: 'done',
@@ -326,6 +330,18 @@ define([
 					+ _('<p>After successful installation you can log in with any domain user.</p>')
 					+ _('<p>To configure a UCC system as an XRDP terminal server you need to select the desktop image and assign the <b>UCC software update settings</b> policy <i>xrdp-terminalserver-installation</i>.</p>')
 			}];
+		},
+
+		buildRendering: function() {
+			this.inherited(arguments);
+			this._progressBar = new ProgressBar({});
+			this.own(this._progressBar);
+			this.standby(true);
+			this._ready().then(lang.hitch(this, 'standby', false));
+
+			// change labels of default footer buttons
+			this.getPage('confirm')._footerButtons.next.set('label', _('Apply configuration'));
+			this.getPage('error')._footerButtons.finish.set('label', _('Close'));
 		},
 
 		_queryDefaultGateway: function() {
@@ -436,8 +452,8 @@ define([
 			vals.thinclient = this.getWidget('start', 'thinclient').get('value');
 
 			// downloads
-			vals.downloadThinClientImage = this.getWidget('download-thinclient', 'download').get('value');
-			vals.downloadFatClientImage = this.getWidget('download-fatclient', 'download').get('value');
+			vals.downloadThinClientImage = this.getWidget('download-thinclient', 'download').get('value') && vals.thinclient;
+			vals.downloadFatClientImage = this.getWidget('download-fatclient', 'download').get('value') && vals.fatclient;
 
 			// network configuration
 			vals.network = {};
@@ -577,14 +593,41 @@ define([
 			return this._isPageForClientType(pageName) && this._isPageForTerminalServiceType(pageName);
 		},
 
+		_updateErrorPage: function(message) {
+			message = message || _('An unexpected error occurred. More information about the cause of the error can be found in the log file /var/log/univention/management-console-module-uccsetup.log. Please retry to configure UCC after resolving any conflicting issues.');
+			this.getWidget('error', 'info').set('content', message);
+		},
+
 		_applyConfiguration: function() {
+			this.standby(false);
+			this._progressBar.reset(_('Applying UCC configuration settings'));
 			var vals = this.getValues();
-			return tools.umcpCommand('uccsetup/apply', vals).then(lang.hitch(this, function(response) {
-				return true;
+			var deferred = tools.umcpProgressCommand(this._progressBar, 'uccsetup/apply', vals).then(lang.hitch(this, function(result) {
+				this.standby(false);
+				if (!result.success) {
+					this._updateErrorPage(result.error);
+					return 'error';
+				}
+				return 'done';
 			}), lang.hitch(this, function(error) {
-				return false;
+				// an alert dialogue with the traceback is shown automatically
+				this.standby(false);
+				this._updateErrorPage();
+				return 'error';
 			}));
+			this.standbyDuring(deferred, this._progressBar);
 			return deferred;
+		},
+
+		_ready: function() {
+			var formReadyDeferreds = array.map(this.pages, function(ipageConf) {
+				var ipage = this.getPage(ipageConf.name);
+				if (ipage._form) {
+					return ipage._form.ready();
+				}
+				return null;
+			}, this);
+			return all(formReadyDeferreds);
 		},
 
 		next: function(pageName) {
@@ -597,15 +640,7 @@ define([
 				this._updateConfirmationPage();
 			}
 			if (pageName == 'confirm') {
-				this.standby(true);
-				return this._applyConfiguration().then(lang.hitch(this, function(success) {
-					this.standby(false);
-					if (success) {
-						return 'done';
-					}
-					//TODO: error page?
-					return 'confirm';
-				}));
+				return this._applyConfiguration();
 			}
 			var isAtLeastOneServiceSelected = this._getTerminalServices().length > 0;
 			if (pageName == 'terminalServices-thinclient' && !isAtLeastOneServiceSelected) {
@@ -630,10 +665,16 @@ define([
 		},
 
 		hasNext: function(pageName) {
+			if (pageName == 'error') {
+				return false;
+			}
 			return this.inherited(arguments);
 		},
 
 		hasPrevious: function(pageName) {
+			if (pageName == 'error' || pageName == 'done') {
+				return false;
+			}
 			return this.inherited(arguments);
 		},
 

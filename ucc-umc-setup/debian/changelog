@@ -1,3 +1,9 @@
+ucc-umc-setup (0.1.11-1) unstable; urgency=low
+
+  * Bug #34360: added progress and error handling
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 13 May 2014 19:50:37 +0200
+
 ucc-umc-setup (0.1.10-2) unstable; urgency=low
 
   * Bug #34360: Clarify some texts based on feedback from Alexander Kramer

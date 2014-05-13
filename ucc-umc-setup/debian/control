@@ -13,7 +13,8 @@ XS-Python-Version: 2.6
 Package: ucc-umc-setup
 Architecture: all
 Depends: ${misc:Depends},
- univention-management-console-server
+ univention-management-console-server,
+ ucc-image-toolkit
 Description: Wizard for configuring and setting up Univention Corporate Client
  Wizard for configuring and setting up Univention Corporate Client
  .

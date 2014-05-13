@@ -12,5 +12,6 @@
 	<command name="uccsetup/info/ucc_images" function="info_ucc_images"/>
 	<command name="uccsetup/info" function="info"/>
 	<command name="uccsetup/apply" function="apply"/>
+	<command name="uccsetup/progress" function="progress"/>
   </module>
 </umc>

@@ -34,9 +34,10 @@ from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 
 import univention.admin.modules as udm_modules
+udm_modules.update()
 import univention.admin.uldap as udm_uldap
 import univention.admin.objects as udm_objects
-udm_modules.update()
+import ucc.images as ucc_images
 
 UCC_NETWORK_DN = 'cn=ucc-network,cn=networks,%s' % ucr['ldap/base']
 UCC_USER_SESSION_POLICY_DN = 'cn=ucc-usersession,cn=policies,%s' % ucr['ldap/base']
@@ -44,6 +45,38 @@ UCR_VARIABLE_POLICY_DN = 'cn=ucc-common-settings,cn=config-registry,cn=policies,
 UCR_VARIABLE_POLICY_THINCLIENTS_DN = 'cn=ucc-thinclient-settings,cn=config-registry,cn=policies,%s' % ucr['ldap/base']
 UCR_VARIABLE_POLICY_FATCLIENTS_DN = 'cn=ucc-desktop-settings,cn=config-registry,cn=policies,%s' % ucr['ldap/base']
 DHCP_ROUTING_POLICY_DN = 'cn=ucc-dhcp-gateway,cn=routing,cn=dhcp,cn=policies,%s' % ucr['ldap/base']
+
+
+UCCProgress = ucc_images.Progress
+
+class ProgressWrapper(ucc_images.Progress):
+	def __init__(self, umc_progress, max_steps, offset):
+		UCCProgress.__init__(self, umc_progress.total)
+		self.umc_progress = umc_progress
+		self._max_steps = max_steps
+		self._offset = offset
+
+	def finish(self):
+		UCCProgress.finish(self)
+
+	def error(self, err, finish=True):
+		UCCProgress.error(self, err, finish)
+		if finish:
+			self.umc_progress.finish_with_result({
+				'success': False,
+				'error': err,
+			})
+		else:
+			intermediate.append(err)
+
+	def info(self, message):
+		UCCProgress.info(self, message)
+		self.umc_progress.message = message
+
+	def advance(self, steps, substeps=-1):
+		UCCProgress.advance(self, steps, substeps)
+		self.umc_progress.current = float(steps * self._max_steps) / self.max_steps + self._offset
+
 
 _user_dn = None
 _password = None
