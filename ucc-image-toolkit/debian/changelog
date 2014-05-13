@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.12-2) unstable; urgency=medium
+
+  * add EFI example image (Bug #33978)
+
+ -- Janek Walkenhorst <walkenhorst@univention.de>  Tue, 13 May 2014 17:58:35 +0200
+
 ucc-image-toolkit (2.0.12-1) unstable; urgency=low
 
   * fixed ucc-image (Bug #31942) 
