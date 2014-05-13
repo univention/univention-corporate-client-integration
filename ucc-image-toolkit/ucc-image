@@ -64,6 +64,26 @@ def _run_cmd(cmd_block, fd=sys.stdout):
 		raise RuntimeError(msg)
 	return retcode
 
+def _stop_services_in_bootstrap(bootstrap_dir, logfile_fd):
+	# Stop all services that may have been started in the chroot
+	try:
+		cmd_block = ['fuser', '-k', bootstrap_dir]
+		_run_cmd(cmd_block, logfile_fd)
+	except RuntimeError:
+		# ignore: If no process was killed, fuser return code will be 1
+		pass
+
+def _mount_in_bootstrap(bootstrap_dir, logfile_fd, mount=True):
+
+	if mount:
+                cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'mount', '-t', 'proc', 'proc', 'proc']
+                _run_cmd(cmd_block, logfile_fd)
+		cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'mount', '-t', 'sysfs', 'sysfs', 'sys']
+		_run_cmd(cmd_block, logfile_fd)
+	else:
+		for i in ['/proc', '/sys']:
+			cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'umount', i]
+			_run_cmd(cmd_block, logfile_fd)
 
 def _copy_system_to_image(options, image_file, bootstrap_dir, workingdir, logfile_fd):
 
@@ -71,13 +91,8 @@ def _copy_system_to_image(options, image_file, bootstrap_dir, workingdir, logfil
 	if not os.path.exists(mount_dir):
 		os.mkdir(mount_dir)
 
-	# Stop all services that may have been started in the chroot
-	try:
-		cmd_block = ['fuser', '-k', bootstrap_dir]
-		_run_cmd(cmd_block, logfile_fd)
-	except RuntimeError:
-		# ignore: If no process uses the loopback devive, fuser return code will be 1
-		pass
+	_stop_services_in_bootstrap(bootstrap_dir, logfile_fd)
+	_mount_in_bootstrap(bootstrap_dir, logfile_fd, mount=False)
 
 	# clean up bootstrap dir
 	cleanup_fd = os.path.join(bootstrap_dir, 'cleanup-ucc.sh')
@@ -87,7 +102,6 @@ def _copy_system_to_image(options, image_file, bootstrap_dir, workingdir, logfil
 		set -x
 		rm /var/lib/apt/lists/* || true
 		apt-get clean
-		umount /proc
 
 		# Wait for two seconds, otherwise the umount might fail
 		sleep 2
@@ -106,7 +120,10 @@ def _copy_system_to_image(options, image_file, bootstrap_dir, workingdir, logfil
 	_run_cmd(cmd_block, logfile_fd)
 
 	# copy the system
-	subprocess.call("mv %s/* %s" % (bootstrap_dir, mount_dir), shell=True)
+	if options.cleanup:
+		subprocess.call("mv %s/* %s/" % (bootstrap_dir, mount_dir), shell=True)
+	else:
+		subprocess.call("cp -a %s/* %s/" % (bootstrap_dir, mount_dir), shell=True)
 	subprocess.call("/bin/sync", shell=False)
 
 	# umount the image
@@ -115,17 +132,26 @@ def _copy_system_to_image(options, image_file, bootstrap_dir, workingdir, logfil
 
 	# Try to remove empty mount directory
 	try:
-		os.rmdir(bootstrap_dir)
+		os.rmdir(mount_dir)
 	except OSError:
 		pass
 
 
 # Do some cleanup stuff
 def _cleanup(options, workingdir, bootstrap_dir, logfile_fd):
+
+	# this is also done in _copy_system_to_image, but in case
+	# the bootstrap fails, we also need to do this here
+	try:
+		_stop_services_in_bootstrap(bootstrap_dir, logfile_fd)
+		_mount_in_bootstrap(bootstrap_dir, logfile_fd, mount=False)
+	except RuntimeError:
+		pass
+
 	if options.cleanup:
 		# Try to remove empty debootstrap directory
 		try:
-			os.rmdir(bootstrap_dir)
+			shutil.rmtree(bootstrap_dir)
 		except OSError:
 			pass
 
@@ -309,8 +335,7 @@ if __name__ == '__main__':
 
 		fd.close()
 
-		cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'mount', '-t', 'proc', 'proc', 'proc']
-		_run_cmd(cmd_block, logfile_fd)
+		_mount_in_bootstrap(bootstrap_dir, logfile_fd, mount=True)
 
 		cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'apt-get', 'update']
 		_run_cmd(cmd_block, logfile_fd)

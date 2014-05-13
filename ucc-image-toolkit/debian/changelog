@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.12-1) unstable; urgency=low
+
+  * fixed ucc-image (Bug #31942) 
+
+ -- Felix Botner <botner@univention.de>  Tue, 13 May 2014 17:13:15 +0200
+
 ucc-image-toolkit (2.0.11-1) unstable; urgency=low
 
   * Bug #30379: adjust CLI tool output, add get_latest_online_ucc_image()
