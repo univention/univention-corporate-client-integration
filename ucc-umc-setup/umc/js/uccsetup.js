@@ -87,12 +87,12 @@ define([
 				}, {
 					type: CheckBox,
 					name: 'fatclient',
-					label: _('<b>Linux desktop systems configuration</b>'),
+					label: _('<b>Linux desktop systems configuration / XRDP terminal server setup</b>'),
 					labelConf: { style: 'margin-top: 1.25em;' }
 				}, {
 					type: Text,
 					name: 'helpFatclient',
-					content: ('<p>Linux desktops are installed via PXE netboot within only a few minutes. For this, 20 GBs of hard disk space and 1 GB RAM are required on the client computers.</p>'),
+					content: ('<p>Linux desktops are installed via PXE netboot within only a few minutes. This option can also be used to setup an XRDP terminal server.</p>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}, {
 					type: CheckBox,
@@ -108,7 +108,7 @@ define([
 			}, {
 				name: 'download-fatclient',
 				headerText: _('Download preconfigured UCC desktop image'),
-				helpText: _('<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. The image is regularly updated and offers a fully-featured KDE desktop environment.<p></p>Note that it is also possible to create custom images. This is documented in DOCREF.</p>'),
+				helpText: _('<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. The image is regularly updated and offers a fully-featured KDE desktop environment.<p></p>Note that it is also possible to create custom images. This is documented in the UCC manual.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'download',
@@ -123,7 +123,7 @@ define([
 			}, {
 				name: 'download-thinclient',
 				headerText: _('Download preconfigured UCC thinclient image'),
-				helpText: _('<p>Univention provides a preconfigured UCC thin client image which is regularly updated.</p><p>The thin client image allows access to various terminal services (Windows, Citrix XenApp, XRDP) and provides also a minimal local LXDE desktop. In addition to this, it is possible to configure a direct browser login to a preconfigured website, e.g, to access cloud-based web services.</p><p>Note that it is also possible to create custom images. This is documented in DOCREF.</p>'),
+				helpText: _('<p>Univention provides a preconfigured UCC thin client image which is regularly updated.</p><p>The thin client image allows access to various terminal services (Windows, Citrix XenApp, XRDP) and provides also a minimal local LXDE desktop. In addition to this, it is possible to configure a direct browser login to a preconfigured website, e.g, to access cloud-based web services.</p><p>Note that it is also possible to create custom images. This is documented in the UCC manual.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'download',
@@ -222,7 +222,7 @@ define([
 			}, {
 				name: 'terminalServices-thinclient-rdp',
 				headerText: _('Configure acccess to Windows terminal/XRDP server'),
-				helpText: _('<p>This step allows the configuration of remote terminal server access using the RDP protocol.</p><p>You can either access a Microsoft Windows terminal server (using a Windows-based desktop) or a XRDP terminal server (using a Linux-based KDE desktop). The setup of a XRDP terminal server is documented in TODODOC.</p>'),
+				helpText: _('<p>This step allows the configuration of remote terminal server access using the RDP protocol.</p><p>You can either access a Microsoft Windows terminal server (using a Windows-based desktop) or a XRDP terminal server (using a Linux-based KDE desktop). To configure an XRDP terminal server, please use the <b>Linux desktop systems configuration / XRDP terminal server</b> option of the UCC setup wizard.</p>'),
 				widgets: [{
 					type: TextBox,
 					required: true,
@@ -324,6 +324,7 @@ define([
 					+ _('<p> 6. <i>Installation with repartitioning and image rollout</i> should be selected as the <b>Boot variant</b> along with the designated image. Warning: All data on that system is lost! If you only want to try UCC without installing it on the hard drive, you can alternatively select <i>Live boot</i>. </p>')
 					+ _('<p> The images are rolled out using PXE. Thus, the BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
 					+ _('<p>After successful installation you can log in with any domain user.</p>')
+					+ _('<p>To configure a UCC system as an XRDP terminal server you need to select the desktop image and assign the <b>UCC software update settings</b> policy <i>xrdp-terminalserver-installation</i>.</p>')
 			}];
 		},
 
