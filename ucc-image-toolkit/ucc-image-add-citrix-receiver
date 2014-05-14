@@ -42,7 +42,7 @@ parser = optparse.OptionParser()
 # 3 DEB file not found
 # 4 Image mount failed
 # 5 Installation of Citrix Receiver failed
-	
+
 
 
 def chroot_cmd(cmd):
@@ -51,13 +51,21 @@ def chroot_cmd(cmd):
 def cmd(cmd):
 	return subprocess.call(cmd, shell=True, stdout=logfile, stderr=logfile)
 
-def log(msg):
+def log(msg, percent=None):
 	print msg
 	logfile.write(msg + "\n")
+	if opt.progress and percent is not None:
+		print '_PROGRESS_: %s' % percent
+
+def exit(msg, exit_code):
+	log(msg)
+	if opt.progress:
+		print '_ERROR_: %s' % msg
+	sys.exit(exit_code)
 
 def cleanup():
 	log("Cleaning up")
-		
+
 	if os.path.exists(mntpoint):
 		subprocess.call('sync', shell=True)
 		subprocess.call('umount ' + mntpoint, shell=True)
@@ -68,6 +76,7 @@ def cleanup():
 
 parser.add_option("-i", "--uccimage", dest="image", action="store", help="The UCC image into which the Debian package should be installed")
 parser.add_option("-d", "--debpackage", dest="deb", action="store", help="The Debian package to be installed into the UCC image")
+parser.add_option("-p", "--progress", dest="progress", action="store_true", help="Print parsable progress information to stdout")
 
 opt, args = parser.parse_args()
 
@@ -91,11 +100,9 @@ mntpoint=tempfile.mkdtemp()
 
 logfile = open("/var/log/univention/citrix-install.log", "w", 0)
 log("Adding Citrix Receiver to the UCC image, see /var/log/univention/citrix-install.log for more details")
+log("Mounting image", 2)
 if cmd('mount -o loop /var/lib/univention-client-boot/' + os.path.basename(opt.image) + ' ' + mntpoint) != 0:
-	log("Mounting the image failed, maybe you don't have free loop devices")
-	sys.exit(4)
-else:
-	log("Mounting image")
+	exit("Mounting the image failed! Maybe there are no free loop devices.", 4)
 
 # f = open(os.path.join(mntpoint, "check-ica-state.sh"), "w")
 # f.write("LC_ALL=C dpkg-query -W  -f='${Status}' icaclient | grep -q installed")
@@ -105,28 +112,27 @@ else:
 # 	cleanup()
 # 	sys.exit(0)
 
-log("Copying Receiver package")
+log("Copying Receiver package", 5)
 cmd('cp ' + opt.deb + ' ' + mntpoint)
 
-log("Installing dependencies")
+log("Installing dependencies", 10)
 chroot_cmd('apt-get update')
 chroot_cmd('apt-get --force-yes --assume-yes install univention-ucc-session-xenapp')
 
-log("Installing Citrix Receiver")
+log("Installing Citrix Receiver", 50)
 if chroot_cmd('dpkg -i ' + os.path.basename(opt.deb)) != 0:
-	log("Installation of Citrix Receiver failed, please result the logfile")
 	cleanup()
-	sys.exit(5)
+	exit("Installation of Citrix Receiver failed, please result the logfile (%s)." % logfile.name, 5)
 
 chroot_cmd('sync')
 cmd('sync')
 
 cleanup()
 
-log("Generating hash value")
+log("Generating hash value", 80)
 cmd = 'md5sum "%s" | sed -ne "s| .*||p" > "%s" ' % (opt.image, opt.image+".md5")
 if subprocess.call(cmd, shell=True):
-	log("Generation of hash value failed")
-	sys.exit(6)
+	exit("Generation of hash value failed", 6)
 
+log("Done", 100)
 

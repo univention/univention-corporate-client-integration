@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.13-1) unstable; urgency=low
+
+  * Bug #34360: add parsable progress output to ucc-image-add-citrix-receiver
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 14 May 2014 18:47:08 +0200
+
 ucc-image-toolkit (2.0.12-2) unstable; urgency=medium
 
   * add EFI example image (Bug #33978)
@@ -6,7 +12,7 @@ ucc-image-toolkit (2.0.12-2) unstable; urgency=medium
 
 ucc-image-toolkit (2.0.12-1) unstable; urgency=low
 
-  * fixed ucc-image (Bug #31942) 
+  * fixed ucc-image (Bug #31942)
 
  -- Felix Botner <botner@univention.de>  Tue, 13 May 2014 17:13:15 +0200
 
