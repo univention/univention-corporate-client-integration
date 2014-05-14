@@ -29,6 +29,8 @@
 
 from contextlib import contextmanager
 import ipaddr
+import subprocess
+import re
 
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
@@ -39,13 +41,15 @@ import univention.admin.uldap as udm_uldap
 import univention.admin.objects as udm_objects
 import ucc.images as ucc_images
 
+from univention.lib.i18n import Translation
+_ = Translation('ucc-umc-setup').translate
+
 UCC_NETWORK_DN = 'cn=ucc-network,cn=networks,%s' % ucr['ldap/base']
 UCC_USER_SESSION_POLICY_DN = 'cn=ucc-usersession,cn=policies,%s' % ucr['ldap/base']
 UCR_VARIABLE_POLICY_DN = 'cn=ucc-common-settings,cn=config-registry,cn=policies,%s' % ucr['ldap/base']
 UCR_VARIABLE_POLICY_THINCLIENTS_DN = 'cn=ucc-thinclient-settings,cn=config-registry,cn=policies,%s' % ucr['ldap/base']
 UCR_VARIABLE_POLICY_FATCLIENTS_DN = 'cn=ucc-desktop-settings,cn=config-registry,cn=policies,%s' % ucr['ldap/base']
 DHCP_ROUTING_POLICY_DN = 'cn=ucc-dhcp-gateway,cn=routing,cn=dhcp,cn=policies,%s' % ucr['ldap/base']
-
 
 UCCProgress = ucc_images.Progress
 
@@ -66,8 +70,6 @@ class ProgressWrapper(ucc_images.Progress):
 				'success': False,
 				'error': err,
 			})
-		else:
-			intermediate.append(err)
 
 	def info(self, message):
 		UCCProgress.info(self, message)
@@ -264,5 +266,36 @@ def set_rdp_values(domain, terminal_server, ldap_connection):
 	with _set_policy(computers_container_dn, 'policies/ucc_user', UCC_USER_SESSION_POLICY_DN, ldap_connection) as users_session_policy:
 		users_session_policy['windowsDomain'] = domain
 		users_session_policy['windowsTerminalserver'] = terminal_server
+
+re_progress_split = re.compile(r':\s*')
+def add_citrix_receiver_to_ucc_image(image_path, debian_package_path, progress):
+	cmd = ['/usr/sbin/ucc-image-add-citrix-receiver', '--progress', '--uccimage', image_path, '--debpackage', debian_package_path]
+	MODULE.info('Calling command: %s' % ' '.join(cmd))
+	proc = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+	while True:
+		line = proc.stdout.readline()
+		MODULE.info('[ucc-image-add-citrix-receiver] %s' % line.strip())
+		if not line:
+			break
+		line = line.strip()
+		parts = re_progress_split.split(line)
+		if len(parts) != 2:
+			continue
+		if parts[0] == '_PROGRESS_':
+			try:
+				steps = int(parts[1])
+				progress.advance(steps)
+			except ValueError as exc:
+				MODULE.info('Failed to parse line: %s\n%s' % (line, exc))
+		elif parts[0] == '_ERROR_':
+			progress.error(parts[1])
+	proc.wait()
+
+	# make sure that the progress object has been finished
+	if proc.returncode != 0:
+		progress.error(_('An unknown error occurred.'))
+	else:
+		progress.finish()
+
 
 

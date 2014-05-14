@@ -30,7 +30,6 @@
 import os.path
 import shutil
 import tempfile
-import subprocess
 
 from univention.management.console.modules import Base
 from univention.management.console.modules import UMC_CommandError
@@ -46,10 +45,9 @@ import univention.admin.objects as udm_objects
 import ucc.images as ucc_images
 
 from univention.lib.i18n import Translation
+_ = Translation('ucc-umc-setup').translate
 
 import util
-
-_ = Translation( 'ucc-umc-setup' ).translate
 
 
 class Instance(Base, ProgressMixin):
@@ -253,9 +251,10 @@ class Instance(Base, ProgressMixin):
 			ucc_image_path = os.path.join(ucc_images.UCC_IMAGE_DIRECTORY, ucc_image.file) if ucc_image else None
 			if not ucc_image or not os.path.exists(ucc_image_path):
 				MODULE.warn('Chosen UCC image %s for Citrix Receiver installation could not be found' % ucc_image_choice)
-				raise UMC_CommandError(_('The chosen UCC image file %s could not be found on the local system!' % ucc_image_choice))
+				raise UMC_CommandError(_('The chosen UCC image file %s could not be found on the local system!') % ucc_image_choice)
 
-			subprocess.call(['/usr/sbin/ucc-image-add-citrix-receiver', '--uccimage', ucc_image_path, '--debpackage', self._citrix_receiver_path])
+			progress_wrapper = util.ProgressWrapper(progress, 30, 70)
+			util.add_citrix_receiver_to_ucc_image(ucc_image_path, self._citrix_receiver_path, progress_wrapper)
 
 		return { 'success': True }
 
