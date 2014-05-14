@@ -56,11 +56,13 @@ def log(msg, percent=None):
 	logfile.write(msg + "\n")
 	if opt.progress and percent is not None:
 		print '_PROGRESS_: %s' % percent
+		sys.stdout.flush()
 
 def exit(msg, exit_code):
 	log(msg)
 	if opt.progress:
 		print '_ERROR_: %s' % msg
+		sys.stdout.flush()
 	sys.exit(exit_code)
 
 def cleanup():
