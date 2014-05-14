@@ -13,5 +13,6 @@
 	<command name="uccsetup/info" function="info"/>
 	<command name="uccsetup/apply" function="apply"/>
 	<command name="uccsetup/progress" function="progress"/>
+	<command name="uccsetup/upload" function="upload_deb"/>
   </module>
 </umc>

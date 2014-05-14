@@ -70,11 +70,13 @@ define([
 
 	var _regIPv4 =  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/;
 	var _regURL =  /^https?:\/\//;
+	var _regDebianI386 = /_i386.deb$/;
 
 	var _Wizard = declare("umc.modules.uccsetup.Wizard", [ Wizard ], {
 		autoValidate: true,
 		autoFocus: true,
-		initialInfo: {},
+		__info: {},
+		_infoDeferred: null,
 		_progressBar: null,
 
 		// taken from: http://stackoverflow.com/a/9221063
@@ -100,7 +102,7 @@ define([
 					labelConf: { style: 'margin-top: 1.25em;' }
 				}, {
 					type: Text,
-					name: 'helpThinclient',
+					name: 'helpThinClient',
 					content: ('<p>UCC provides a thin client image which is installed on the local Compact Flash storage of thin clients (2 GB are required).</p><p>UCC Thin clients can access RDP terminal services (Windows terminal server or xrdp), Citrix Xen App terminal services or configure a direct browser login to a web site (e.g. for a web service).</p>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}]
@@ -122,7 +124,8 @@ define([
 					type: CheckBox,
 					name: 'download',
 					label: _('Download UCC thin client image'),
-					value: true
+					value: true,
+					onChange: lang.hitch(this, '_updateDownloadThinClient')
 				}]
 			}, {
 				name: 'network',
@@ -236,11 +239,6 @@ define([
 				headerText: _('Configure access to Citrix XenApp server'),
 				helpText: _('This step allows the configuration of a XenApp terminal server using the Citrix protocol. For this, Citrix Receiver will be integrated into the UCC thin client image.'),
 				widgets: [{
-					type: Text,
-					name: 'warning',
-					content: _('<b>Warning:</b> The integration of the Citrix receiver is not yet implemented in this preview version of the UCC configuration wizard.'),
-					labelConf: { style: 'margin-bottom: 1.25em;' }
-				}, {
 					type: ComboBox,
 					name: 'image',
 					label: _('Please select the image into which Citrix Receiver should be integrated.'),
@@ -250,6 +248,7 @@ define([
 						label: _('UCC default image')
 					}],
 					autoHide: true
+					//labelConf: { style: 'margin-bottom: 1.25em;' }
 				}, {
 					type: Text,
 					name: 'help',
@@ -258,13 +257,30 @@ define([
 					type: Uploader,
 					name: 'upload',
 					label: _('<p>After the download has completed, please upload the Citrix Receiver DEB file to proceed.</p>'),
-					disabled: true
+					command: 'uccsetup/upload',
+					showClearButton: false,
+					maxSize: 30000000,
+					canUpload: lang.hitch(this, '_checkUploadFile'),
+					onProgress: lang.hitch(this, function(info) {
+						this._progressBar.setInfo(null, null, info.decimal * 100);
+					}),
+					onError: lang.hitch(this, function(err) {
+						this.standby(false);
+					}),
+					onUploaded: lang.hitch(this, function(info) {
+						this.standby(false);
+						this._setCitrixReceiverUploaded(true);
+					}),
+					onUploadStarted: lang.hitch(this, function(info) {
+						this.standby(false);
+						this._progressBar.reset(_('Uploading file'));
+						this.standby(true, this._progressBar);
+					})
 				}, {
 					type: CheckBox,
 					name: 'eula',
 					label: _('Confirm the End User License Agreement of Citrix Receiver (as presented during the download of the Citrix Receiver).'),
-					labelConf: { style: 'margin-top: 1.25em;' },
-					disabled: true
+					labelConf: { style: 'margin-top: 1.25em;' }
 				}]
 			}, {
 				name: 'terminalServices-thinclient-citrix-login',
@@ -334,6 +350,7 @@ define([
 
 		buildRendering: function() {
 			this.inherited(arguments);
+			this._queryInfo();
 			this._progressBar = new ProgressBar({});
 			this.own(this._progressBar);
 			this.standby(true);
@@ -344,11 +361,42 @@ define([
 			this.getPage('error')._footerButtons.finish.set('label', _('Close'));
 		},
 
-		_queryDefaultGateway: function() {
-			tools.umcpCommand('uccsetup/info').then(lang.hitch(this, function(response) {
-				this.initialInfo = response.result;
+		postCreate: function() {
+			this.inherited(arguments);
+			this._setDefaultGateway();
+			this._watchNetworkRadioButtons();
+			this._setLabelConf();
+			var networkAddressWidget = this.getWidget('network', 'newNetworkAddress');
+			networkAddressWidget.on('keyup', lang.hitch(this, '_updateNetworkDefaults'));
+			this._setCitrixReceiverUploaded(false);
+			this._updateDownloadThinClient();
+		},
+
+		_checkUploadFile: function(fileInfo) {
+			if (!_regDebianI386.test(fileInfo.name)) {
+				dialog.alert(_('The specified file needs to be a Debian package (file ending .deb) for a 32 bit system architecture.'));
+				return false;
+			}
+			return true;
+		},
+
+		_setCitrixReceiverUploaded: function(uploaded) {
+			this.getPage('terminalServices-thinclient-citrix-upload')._footerButtons.next.set('disabled', !uploaded);
+			var eula = this.getWidget('terminalServices-thinclient-citrix-upload', 'eula');
+			eula.set('disabled', !uploaded);
+		},
+
+		_queryInfo: function() {
+			this._infoDeferred = tools.umcpCommand('uccsetup/info').then(lang.hitch(this, function(response) {
+				this._info = response.result;
+				return response.result;
+			}));
+		},
+
+		_setDefaultGateway: function() {
+			this._infoDeferred.then(lang.hitch(this, function(info) {
 				var gatewayWidget = this.getWidget('gateway', 'gateway');
-				gatewayWidget.set('value', response.result.gateway);
+				gatewayWidget.set('value', info.gateway);
 			}));
 		},
 
@@ -380,15 +428,6 @@ define([
 					}
 				}, this);
 			}, this);
-		},
-
-		postCreate: function() {
-			this.inherited(arguments);
-			this._queryDefaultGateway();
-			this._watchNetworkRadioButtons();
-			this._setLabelConf();
-			var networkAddressWidget = this.getWidget('network', 'newNetworkAddress');
-			networkAddressWidget.on('keyup', lang.hitch(this, '_updateNetworkDefaults'));
 		},
 
 		_getClientType: function() {
@@ -512,6 +551,19 @@ define([
 			return vals;
 		},
 
+		_updateDownloadThinClient: function() {
+			var downloadThinClient = this.getWidget('download-thinclient', 'download').get('value');
+			var staticValues = [];
+			if (downloadThinClient) {
+				staticValues = [{
+					id: '_DEFAULT_',
+					label: _('Downloaded UCC thin client image')
+				}];
+			}
+			var uccImageWidget = this.getWidget('terminalServices-thinclient-citrix-upload', 'image');
+			uccImageWidget.set('staticValues', staticValues);
+		},
+
 		_updateNetworkDefaults: function() {
 			var networkAddress = this.getWidget('network', 'newNetworkAddress').get('value');
 			if (!_regIPv4.test(networkAddress)) {
@@ -580,7 +632,7 @@ define([
 		_isPageVisible: function(pageName) {
 			// if the gateway is already configured for DHCP, do not show the page
 			// for configuring the gateway
-			if (pageName == 'gateway' && this.initialInfo.dhcp_routing_policy) {
+			if (pageName == 'gateway' && this._info.dhcp_routing_policy) {
 				return false;
 			}
 
@@ -620,14 +672,15 @@ define([
 		},
 
 		_ready: function() {
-			var formReadyDeferreds = array.map(this.pages, function(ipageConf) {
+			var deferreds = array.map(this.pages, function(ipageConf) {
 				var ipage = this.getPage(ipageConf.name);
 				if (ipage._form) {
 					return ipage._form.ready();
 				}
 				return null;
 			}, this);
-			return all(formReadyDeferreds);
+			deferreds.unshift(this._infoDeferred);
+			return all(deferreds);
 		},
 
 		next: function(pageName) {
@@ -641,6 +694,11 @@ define([
 			}
 			if (pageName == 'confirm') {
 				return this._applyConfiguration();
+			}
+			var eulaAccepted = this.getWidget('terminalServices-thinclient-citrix-upload', 'eula').get('value');
+			if (pageName == 'terminalServices-thinclient-citrix-upload' && !eulaAccepted) {
+				dialog.alert(_('Please confirm the End User License Agreement of Citrix Receiver to proceed.'));
+				return pageName;
 			}
 			var isAtLeastOneServiceSelected = this._getTerminalServices().length > 0;
 			if (pageName == 'terminalServices-thinclient' && !isAtLeastOneServiceSelected) {
@@ -679,7 +737,7 @@ define([
 		},
 
 		canCancel: function(pageName) {
-			return this.inherited(arguments);
+			return !(pageName == 'error' || pageName == 'done');
 		}
 	});
 

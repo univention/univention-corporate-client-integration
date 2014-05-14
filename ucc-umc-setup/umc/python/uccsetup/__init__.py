@@ -27,12 +27,19 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
+import os.path
+import shutil
+import tempfile
+import subprocess
+
 from univention.management.console.modules import Base
+from univention.management.console.modules import UMC_CommandError
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
-from univention.management.console.modules.decorators import simple_response, sanitize
+from univention.management.console.modules.decorators import simple_response, sanitize, file_upload
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import DictSanitizer, StringSanitizer, BooleanSanitizer
+from univention.management.console.protocol.session import TEMPUPLOADDIR
 
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
@@ -48,6 +55,13 @@ _ = Translation( 'ucc-umc-setup' ).translate
 class Instance(Base, ProgressMixin):
 	def init(self):
 		util.set_credentials(self._user_dn, self._password)
+		self._citrix_receiver_path = None
+
+	def destroy(self):
+		if self._citrix_receiver_path and os.path.exists(self._citrix_receiver_path):
+			MODULE.info('Remove uploaded citrix receiver debian package: %s' % self._citrix_receiver_path)
+			shutil.rmtree(self._citrix_receiver_path, ignore_errors=True)
+			self._citrix_receiver_path = None
 
 	@simple_response
 	def info_networks(self):
@@ -64,13 +78,12 @@ class Instance(Base, ProgressMixin):
 
 	@simple_response
 	def info_ucc_images(self):
-		ldap_connection = util.get_ldap_connection()
-		images = udm_modules.lookup('settings/ucc_image', None, ldap_connection, base=ucr['ldap/base'], scope='sub')
+		images = ucc_images.get_local_ucc_images()
 		result = []
 		for iimg in images:
 			result.append({
-				'id': iimg.dn,
-				'label': iimg['name'],
+				'id': iimg.file,
+				'label': iimg.description,
 			})
 		return result
 
@@ -83,13 +96,36 @@ class Instance(Base, ProgressMixin):
 			'gateway': ucr.get('gateway'),
 			'dhcp_routing_policy': dhcp_routing_obj and dhcp_routing_obj.dn,
 			'ucr_policy_exists': ucr_policy_obj.exists(),
-			#TODO: return images that already exist
 		}
 
-	@simple_response
-	def upload_deb(self):
-		# TODO: handle upload of .deb package for Xen Retriever
-		pass
+	@file_upload
+	def upload_deb(self, request):
+		# make sure that we got a list
+		if not isinstance(request.options, (tuple, list)):
+			raise UMC_CommandError(_('Expected list of dicts, but got: %s') % str(request.options) )
+		file_info = request.options[0]
+		if not ('tmpfile' in file_info and 'filename' in file_info):
+			raise UMC_CommandError(_('Invalid upload data, got: %s') % str(file_info) )
+
+		# check for fake uploads
+		tmpfile = file_info['tmpfile']
+		if not os.path.realpath(tmpfile).startswith(TEMPUPLOADDIR):
+			raise UMC_CommandError(_('Invalid upload file path'))
+
+		# check for correct file type
+		filename = file_info['filename']
+		if not filename.endswith('_i386.deb'):
+			raise UMC_CommandError(_('Invalid file type! File needs to be a Debian archive (.deb) for 32 bit architecture.'))
+
+		# we got an uploaded file with the following properties:
+		#   name, filename, tmpfile
+		dest_path = tempfile.mktemp(suffix='_i386.deb')
+		MODULE.info('Received file "%s", saving it to "%s"' % (tmpfile, dest_path))
+		shutil.move(tmpfile, dest_path)
+		self._citrix_receiver_path = dest_path
+
+		# done
+		self.finished( request.id, None )
 
 	@sanitize(
 		thinclient=BooleanSanitizer(),
@@ -124,6 +160,10 @@ class Instance(Base, ProgressMixin):
 		ldap_connection = util.get_ldap_connection()
 		progress.title =_('Applying UCC configuration settings')
 		progress.total = 100
+
+		# make sure the citrix receiver debian package has been uploaded
+		if citrix and not self._citrix_receiver_path:
+			raise UMC_CommandError(_('The Debian package of the Citrix Receiver could not be found. Please make sure that the file has been uploaded.'))
 
 		def _progress(steps, msg):
 			progress.current = steps
@@ -165,6 +205,7 @@ class Instance(Base, ProgressMixin):
 
 		if citrix:
 			_progress(6, _('Citrix XenApp settings'))
+
 			# Citrix configuration
 			ucr_variables['citrix/webinterface'] = citrix.get('url', '')
 			ucr_variables['citrix/accepteula'] = 'true'
@@ -172,8 +213,6 @@ class Instance(Base, ProgressMixin):
 			if citrix.get('autoLogin'):
 				thinclient_ucr_variables['lightdm/autologin/session'] = 'XenApp'
 				thinclient_ucr_variables['lightdm/autologin'] = 'true'
-
-			#TODO: Citrix deb integration -> https://forge.univention.org/bugzilla/show_bug.cgi?id=34452#c2
 
 		# save UCR variables as policy
 		_progress(8, _('Setting UCR variables'))
@@ -185,21 +224,38 @@ class Instance(Base, ProgressMixin):
 		desktop_image = [i for i in online_images if i.id == 'ucc20desktop']
 		if not thinclient_image or not desktop_image:
 			return { 'success': False, 'error': _('UCC images cannot be downloaded! Please check your internet connection.') }
-		thinclient_image = thinclient_image[0].spec_file
-		desktop_image = desktop_image[0].spec_file
+		thinclient_image = thinclient_image[0]
+		desktop_image = desktop_image[0]
 
 		# download image(s)
+		download_percentage = 60 if citrix else 90
+		download_percentage_third = download_percentage / 3
 		if downloadThinClientImage and downloadFatClientImage:
-			progress_wrapper = util.ProgressWrapper(progress, 30, 10)
-			ucc_images.download_ucc_image(thinclient_image, username=self._username, password=self._password, progress=progress_wrapper)
-			progress_wrapper = util.ProgressWrapper(progress, 60, 40)
-			ucc_images.download_ucc_image(desktop_image, username=self._username, password=self._password, progress=progress_wrapper)
+			progress_wrapper = util.ProgressWrapper(progress, download_percentage_third, 10)
+			ucc_images.download_ucc_image(thinclient_image.spec_file, username=self._username, password=self._password, progress=progress_wrapper)
+			progress_wrapper = util.ProgressWrapper(progress, download_percentage_third * 2, 10 + download_percentage_third)
+			ucc_images.download_ucc_image(desktop_image.spec_file, username=self._username, password=self._password, progress=progress_wrapper)
 		elif downloadThinClientImage:
-			progress_wrapper = util.ProgressWrapper(progress, 90, 10)
-			ucc_images.download_ucc_image(thinclient_image, username=self._username, password=self._password, progress=progress_wrapper)
+			progress_wrapper = util.ProgressWrapper(progress, download_percentage, 10)
+			ucc_images.download_ucc_image(thinclient_image.spec_file, username=self._username, password=self._password, progress=progress_wrapper)
 		elif downloadFatClientImage:
-			progress_wrapper = util.ProgressWrapper(progress, 90, 10)
-			ucc_images.download_ucc_image(desktop_image, username=self._username, password=self._password, progress=progress_wrapper)
+			progress_wrapper = util.ProgressWrapper(progress, download_percentage, 10)
+			ucc_images.download_ucc_image(desktop_image.spec_file, username=self._username, password=self._password, progress=progress_wrapper)
+
+		# install citrix receiver in UCC image
+		if citrix:
+			_progress(70, _('Installing Citrix Receiver application in image file. This might take a few minutes to complete.'))
+			ucc_image_choice = citrix.get('image', '_DEFAULT_')
+			if ucc_image_choice == '_DEFAULT_':
+				ucc_image_choice = thinclient_image.file
+			ucc_image = [i for i in ucc_images.get_local_ucc_images() if i.file == ucc_image_choice]
+			ucc_image = ucc_image[0] if ucc_image else None
+			ucc_image_path = os.path.join(ucc_images.UCC_IMAGE_DIRECTORY, ucc_image.file) if ucc_image else None
+			if not ucc_image or not os.path.exists(ucc_image_path):
+				MODULE.warn('Chosen UCC image %s for Citrix Receiver installation could not be found' % ucc_image_choice)
+				raise UMC_CommandError(_('The chosen UCC image file %s could not be found on the local system!' % ucc_image_choice))
+
+			subprocess.call(['/usr/sbin/ucc-image-add-citrix-receiver', '--uccimage', ucc_image_path, '--debpackage', self._citrix_receiver_path])
 
 		return { 'success': True }
 
