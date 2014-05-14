@@ -154,17 +154,20 @@ define([
 				// should not happen
 				return;
 			}
+			this.standby(false);
+			this._progressBar.reset(_('Downloading and registering UCC image'));
 			var downloadCmd = this.umcpProgressCommand(this._progressBar, 'uccimages/download', {
 				image: items[0].spec_file
-			}).then(lang.hitch(this, function() {
+			}).then(lang.hitch(this, function(result) {
 				this.standby(false);
 				this._grid.filter(this._grid.query);
-				var errors = this._progressBar.getErrors();
-				if (errors.errors.length) {
-					var err = errors.errors[0];
+				if (result.error) {
+					var err = result.error;
 					err = err.replace(/\n/g, '<br>');
 					dialog.alert(err, _('Download error'));
 				}
+			}), lang.hitch(this, function(err) {
+				this.standby(false);
 			}));
 			this.standbyDuring(downloadCmd, this._progressBar);
 		},

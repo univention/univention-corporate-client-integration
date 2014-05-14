@@ -52,15 +52,17 @@ class ProgressWrapper(ucc_images.Progress):
 	def __init__(self, umc_progress):
 		UCCProgress.__init__(self)
 		self.umc_progress = umc_progress
-		self.umc_progress.title = _('Applying UCC configuration settings')
+		self.umc_progress.title = _('Downloading and registering UCC image')
 		self.umc_progress.total = self.max_steps
 
 	def finish(self):
+		if not self.umc_progress.finished:
+			self.umc_progress.finish_with_result({
+				'success': True,
+			})
 		UCCProgress.finish(self)
-		self.umc_progress.finish()
 
 	def error(self, err, finish=True):
-		UCCProgress.error(self, err, finish)
 		if finish:
 			self.umc_progress.finish_with_result({
 				'success': False,
@@ -68,14 +70,15 @@ class ProgressWrapper(ucc_images.Progress):
 			})
 		else:
 			intermediate.append(err)
+		UCCProgress.error(self, err, finish)
 
 	def info(self, message):
-		UCCProgress.info(self, message)
 		self.umc_progress.message = message
+		UCCProgress.info(self, message)
 
 	def advance(self, steps, substeps=-1):
-		UCCProgress.advance(self, steps, substeps)
 		self.umc_progress.current = steps
+		UCCProgress.advance(self, steps, substeps)
 
 
 class Instance(Base, ProgressMixin):
@@ -130,6 +133,9 @@ class Instance(Base, ProgressMixin):
 		# start download process in a thread
 		progress_wrapper = ProgressWrapper(progress)
 		ucc_images.download_ucc_image(image, username=self._username, password=self._password, progress=progress_wrapper)
+		if hasattr(progress, 'result'):
+			return progress.result
+		return { 'success': True }
 
 	@simple_response
 	def remove(self, image=''):
