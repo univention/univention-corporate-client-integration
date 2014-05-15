@@ -604,7 +604,7 @@ menuentry 'Debug Shell' {
 		if exitcode == 0:
 			if options.compress:
 				print "Compressing image"
-				subprocess.call("/usr/bin/xz -v " + image_file, shell=True)
+				subprocess.call("/usr/bin/xz -0 -v " + image_file, shell=True)
 				image_name = image_name + ".xz"
 				image_file = os.path.join(workingdir, image_name)
 
