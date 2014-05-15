@@ -363,7 +363,7 @@ define([
 
 		postCreate: function() {
 			this.inherited(arguments);
-			this._setDefaultGateway();
+			this._setDefaultValues();
 			this._watchNetworkRadioButtons();
 			this._setLabelConf();
 			var networkAddressWidget = this.getWidget('network', 'newNetworkAddress');
@@ -393,10 +393,16 @@ define([
 			}));
 		},
 
-		_setDefaultGateway: function() {
+		_setDefaultValues: function() {
 			this._infoDeferred.then(lang.hitch(this, function(info) {
-				var gatewayWidget = this.getWidget('gateway', 'gateway');
-				gatewayWidget.set('value', info.gateway);
+				this.getWidget('gateway', 'gateway').set('value', info.gateway);
+				array.forEach(['host', 'domain', 'sound', 'usb'], function(ikey) {
+					this.getWidget('terminalServices-thinclient-rdp', ikey).set('value', info['rdp_' + ikey]);
+				}, this);
+				this.getWidget('terminalServices-thinclient-citrix-upload', 'eula').set('value', info.citrix_accepteula);
+				this.getWidget('terminalServices-thinclient-citrix-login', 'url').set('value', info.citrix_url);
+				this.getWidget('terminalServices-thinclient-citrix-login', 'autoLogin').set('value', info.citrix_autologin);
+				this.getWidget('terminalServices-thinclient-browser', 'url').set('value', info.browser_url);
 			}));
 		},
 
@@ -491,8 +497,8 @@ define([
 			vals.thinclient = this.getWidget('start', 'thinclient').get('value');
 
 			// downloads
-			vals.downloadThinClientImage = this.getWidget('download-thinclient', 'download').get('value') && vals.thinclient;
-			vals.downloadFatClientImage = this.getWidget('download-fatclient', 'download').get('value') && vals.fatclient;
+			vals.downloadThinClientImage = this.getWidget('download-thinclient', 'download').get('value') && vals.thinclient && !this._info.has_installed_ucc_thinclient;
+			vals.downloadFatClientImage = this.getWidget('download-fatclient', 'download').get('value') && vals.fatclient && !this._info.has_installed_ucc_desktop;
 
 			// network configuration
 			vals.network = {};
@@ -633,6 +639,17 @@ define([
 			// if the gateway is already configured for DHCP, do not show the page
 			// for configuring the gateway
 			if (pageName == 'gateway' && this._info.dhcp_routing_policy) {
+				return false;
+			}
+
+			// do not display the download page if a UCC image has already been installed
+			if (pageName == 'download-thinclient' && this._info.has_installed_ucc_thinclient) {
+				return false;
+			}
+			if (pageName == 'download-fatclient' && this._info.has_installed_ucc_desktop) {
+				return false;
+			}
+			if (pageName == 'terminalServices-thinclient-citrix-upload' && this._info.citrix_receiver_package_downloaded) {
 				return false;
 			}
 

@@ -1,3 +1,12 @@
+ucc-umc-setup (0.1.14-1) unstable; urgency=low
+
+  Bug #34360:
+  * display currently set values in the wizard
+  * dynamically hide download pages if images are already present
+  * store Citrix Receiver deb  package file in the UCC image directory
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 15 May 2014 18:43:59 +0200
+
 ucc-umc-setup (0.1.13-1) unstable; urgency=low
 
   * Bug #34360: added postinst, parse progress information from stdout of

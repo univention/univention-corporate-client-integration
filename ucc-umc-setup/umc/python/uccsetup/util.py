@@ -31,6 +31,8 @@ from contextlib import contextmanager
 import ipaddr
 import subprocess
 import re
+import os
+import os.path
 
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
@@ -52,6 +54,7 @@ UCR_VARIABLE_POLICY_FATCLIENTS_DN = 'cn=ucc-desktop-settings,cn=config-registry,
 DHCP_ROUTING_POLICY_DN = 'cn=ucc-dhcp-gateway,cn=routing,cn=dhcp,cn=policies,%s' % ucr['ldap/base']
 
 UCCProgress = ucc_images.Progress
+
 
 class ProgressWrapper(ucc_images.Progress):
 	def __init__(self, umc_progress, max_steps, offset):
@@ -88,14 +91,17 @@ def set_credentials( dn, passwd ):
 	_password = passwd
 	MODULE.info('Saved LDAP DN for user %s' % _user_dn)
 
+
 def get_ldap_connection():
 	MODULE.info('Open LDAP connection for user %s' % _user_dn )
 	return udm_uldap.access(base=ucr.get('ldap/base'), binddn=_user_dn, bindpw=_password, follow_referral=True)
+
 
 def bool2str(b):
 	if b:
 		return 'true'
 	return 'false'
+
 
 def _get_dhcp_service_obj(ldap_connection):
 	result = udm_modules.lookup('dhcp/service', None, ldap_connection, scope='sub', base='cn=dhcp,%s' % ucr['ldap/base'])
@@ -106,6 +112,7 @@ def _get_dhcp_service_obj(ldap_connection):
 
 	return result[0]
 
+
 def _get_forward_zone(ldap_connection):
 	result = udm_modules.lookup('dns/forward_zone', None, ldap_connection, scope='sub', base='cn=dns,%s' % ucr['ldap/base'])
 	if not result:
@@ -114,6 +121,7 @@ def _get_forward_zone(ldap_connection):
 		return None
 
 	return result[0]
+
 
 def _get_reverse_zone(address, mask, ldap_connection):
 	dns_container_dn = 'cn=dns,%s' % ucr['ldap/base']
@@ -132,11 +140,13 @@ def _get_reverse_zone(address, mask, ldap_connection):
 	zone_obj.create()
 	return zone_obj
 
+
 def _get_default_network(ldap_connection):
 		network_dn = 'cn=default,cn=networks,%s' % ucr['ldap/base']
 		network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, None, network_dn)
 		network_obj.open()
 		return network_obj
+
 
 def set_network(address, mask, first_ip, last_ip, ldap_connection):
 	# open network object
@@ -180,6 +190,7 @@ def set_network(address, mask, first_ip, last_ip, ldap_connection):
 	print '# network:', network_obj.info
 	network_obj.create()
 
+
 def set_dhcp_service_for_network(network_dn, ldap_connection):
 	network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, None, network_dn)
 	network_obj.open()
@@ -192,6 +203,7 @@ def set_dhcp_service_for_network(network_dn, ldap_connection):
 		network_obj['dhcpEntryZone'] = dhcp_service_obj.dn
 		network_obj.modify()
 
+
 def _get_policy_object(policy_dns, module_name, ldap_connection):
 	for idn in policy_dns:
 		attrs = ldap_connection.lo.get(idn)
@@ -201,8 +213,9 @@ def _get_policy_object(policy_dns, module_name, ldap_connection):
 			return udm_objects.get(policy_modules[0], None, ldap_connection, None, idn, attributes = attrs)
 	return None
 
+
 @contextmanager
-def _set_policy(container_dn, policy_type, policy_dn, ldap_connection):
+def _open_container_policy(container_dn, policy_type, policy_dn, ldap_connection, read_only=False):
 	# open policy object at the given container
 	container_obj = udm_objects.get(udm_modules.get('container/cn'), None, ldap_connection, None, container_dn)
 	container_obj.open()
@@ -223,6 +236,9 @@ def _set_policy(container_dn, policy_type, policy_dn, ldap_connection):
 
 	yield policy_obj
 
+	if read_only:
+		return
+
 	# make sure that the policy is set at the container
 	if not policy_obj.dn in container_obj.policies:
 		container_obj.policies.append(policy_obj.dn)
@@ -234,20 +250,37 @@ def _set_policy(container_dn, policy_type, policy_dn, ldap_connection):
 	else:
 		policy_obj.create()
 
-def set_ucr_policy_variables(common_variables, thinclient_variables, fatclient_variables, ldap_connection):
+
+def _get_ucr_policy_variable_tuples():
 	computers_container_dn = 'cn=computers,%s' % ucr['ldap/base']
 	thinclients_container_dn = 'cn=ucc-thinclients,cn=computers,%s' % ucr['ldap/base']
 	fatclients_container_dn = 'cn=ucc-desktops,cn=computers,%s' % ucr['ldap/base']
-	items = [
-		(computers_container_dn, common_variables, UCR_VARIABLE_POLICY_DN),
-		(thinclients_container_dn, thinclient_variables, UCR_VARIABLE_POLICY_THINCLIENTS_DN),
-		(fatclients_container_dn, fatclient_variables, UCR_VARIABLE_POLICY_FATCLIENTS_DN),
+	return [
+		[computers_container_dn, UCR_VARIABLE_POLICY_DN],
+		[thinclients_container_dn, UCR_VARIABLE_POLICY_THINCLIENTS_DN],
+		[fatclients_container_dn, UCR_VARIABLE_POLICY_FATCLIENTS_DN],
 	]
-	for container_dn, variables, policy_dn in items:
-		with _set_policy(container_dn, 'policies/registry', policy_dn, ldap_connection) as ucr_policy:
+
+
+def set_ucr_policy_variables(common_variables, thinclient_variables, fatclient_variables, ldap_connection):
+	items = _get_ucr_policy_variable_tuples()
+	items[0].append(common_variables)
+	items[1].append(thinclient_variables)
+	items[2].append(fatclient_variables)
+	for container_dn, policy_dn, variables in items:
+		with _open_container_policy(container_dn, 'policies/registry', policy_dn, ldap_connection) as ucr_policy:
 			variable_dict = dict(ucr_policy.get('registry', []))
 			variable_dict.update(variables)
 			ucr_policy['registry'] = variable_dict.items()
+
+
+def get_ucr_policy_variables(ldap_connection):
+	vals = {}
+	for container_dn, policy_dn in _get_ucr_policy_variable_tuples():
+		with _open_container_policy(container_dn, 'policies/registry', policy_dn, ldap_connection, read_only=True) as ucr_policy:
+			vals.update(ucr_policy['registry'])
+	return vals
+
 
 def get_dhcp_routing_policy(ldap_connection):
 	dhcp_container_dn = 'cn=dhcp,%s' % ucr['ldap/base']
@@ -255,19 +288,56 @@ def get_dhcp_routing_policy(ldap_connection):
 	dhcp_container_obj.open()
 	return _get_policy_object(dhcp_container_obj.policies, 'policies/dhcp_routing', ldap_connection)
 
+
 def set_dhcp_routing(gateway, ldap_connection):
 	dhcp_container_dn = 'cn=dhcp,%s' % ucr['ldap/base']
-	with _set_policy(dhcp_container_dn, 'policies/dhcp_routing', DHCP_ROUTING_POLICY_DN, ldap_connection) as dhcp_policy:
+	with _open_container_policy(dhcp_container_dn, 'policies/dhcp_routing', DHCP_ROUTING_POLICY_DN, ldap_connection) as dhcp_policy:
 		if gateway not in dhcp_policy.get('routers', []):
 			dhcp_policy['routers'].append(gateway)
 
+
+def get_rdp_values(ldap_connection):
+	computers_container_dn = 'cn=computers,%s' % ucr['ldap/base']
+	with _open_container_policy(computers_container_dn, 'policies/ucc_user', UCC_USER_SESSION_POLICY_DN, ldap_connection, read_only=True) as users_session_policy:
+		return users_session_policy.get('windowsTerminalserver', ''), users_session_policy.get('windowsDomain', '')
+
+
 def set_rdp_values(domain, terminal_server, ldap_connection):
 	computers_container_dn = 'cn=computers,%s' % ucr['ldap/base']
-	with _set_policy(computers_container_dn, 'policies/ucc_user', UCC_USER_SESSION_POLICY_DN, ldap_connection) as users_session_policy:
+	with _open_container_policy(computers_container_dn, 'policies/ucc_user', UCC_USER_SESSION_POLICY_DN, ldap_connection) as users_session_policy:
 		users_session_policy['windowsDomain'] = domain
 		users_session_policy['windowsTerminalserver'] = terminal_server
 
-re_progress_split = re.compile(r':\s*')
+
+def get_latest_ucc_images():
+	online_images = ucc_images.get_latest_online_ucc_image()
+	thinclient_image = [i for i in online_images if i.id == 'ucc20thin']
+	desktop_image = [i for i in online_images if i.id == 'ucc20desktop']
+	thinclient_image = thinclient_image[0] if thinclient_image else None
+	desktop_image = desktop_image[0] if desktop_image else None
+	return thinclient_image, desktop_image
+
+
+def has_installed_ucc_thinclient():
+	images = ucc_images.get_local_ucc_images()
+	image = [i for i in images if i.id == 'ucc20thin']
+	return bool(image)
+
+
+def has_installed_ucc_desktop():
+	images = ucc_images.get_local_ucc_images()
+	image = [i for i in images if i.id == 'ucc20desktop']
+	return bool(image)
+
+
+def get_citrix_receiver_package_path():
+	deb_file = [i for i in os.listdir(ucc_images.UCC_IMAGE_DIRECTORY) if i.endswith('_i386.deb')]
+	if deb_file:
+		return os.path.join(ucc_images.UCC_IMAGE_DIRECTORY, deb_file[0])
+	return ''
+
+
+_re_progress_split = re.compile(r':\s*')
 def add_citrix_receiver_to_ucc_image(image_path, debian_package_path, progress):
 	cmd = ['/usr/sbin/ucc-image-add-citrix-receiver', '--progress', '--uccimage', image_path, '--debpackage', debian_package_path]
 	MODULE.info('Calling command: %s' % ' '.join(cmd))
@@ -278,7 +348,7 @@ def add_citrix_receiver_to_ucc_image(image_path, debian_package_path, progress):
 		if not line:
 			break
 		line = line.strip()
-		parts = re_progress_split.split(line)
+		parts = _re_progress_split.split(line)
 		if len(parts) != 2:
 			continue
 		if parts[0] == '_PROGRESS_':

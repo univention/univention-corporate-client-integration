@@ -29,7 +29,6 @@
 
 import os.path
 import shutil
-import tempfile
 
 from univention.management.console.modules import Base
 from univention.management.console.modules import UMC_CommandError
@@ -43,6 +42,7 @@ from univention.management.console.protocol.session import TEMPUPLOADDIR
 import univention.admin.modules as udm_modules
 import univention.admin.objects as udm_objects
 import ucc.images as ucc_images
+from univention.config_registry import ConfigRegistry
 
 from univention.lib.i18n import Translation
 _ = Translation('ucc-umc-setup').translate
@@ -53,13 +53,6 @@ import util
 class Instance(Base, ProgressMixin):
 	def init(self):
 		util.set_credentials(self._user_dn, self._password)
-		self._citrix_receiver_path = None
-
-	def destroy(self):
-		if self._citrix_receiver_path and os.path.exists(self._citrix_receiver_path):
-			MODULE.info('Remove uploaded citrix receiver debian package: %s' % self._citrix_receiver_path)
-			shutil.rmtree(self._citrix_receiver_path, ignore_errors=True)
-			self._citrix_receiver_path = None
 
 	@simple_response
 	def info_networks(self):
@@ -89,11 +82,23 @@ class Instance(Base, ProgressMixin):
 	def info(self):
 		ldap_connection = util.get_ldap_connection()
 		dhcp_routing_obj = util.get_dhcp_routing_policy(ldap_connection)
-		ucr_policy_obj = udm_objects.get(udm_modules.get('policies/registry'), None, ldap_connection, None, util.UCR_VARIABLE_POLICY_DN)
+		rdp_host, rdp_domain = util.get_rdp_values(ldap_connection)
+		ucr_policy = ConfigRegistry()
+		ucr_policy.update(util.get_ucr_policy_variables(ldap_connection))  # hack to access the method is_true()
 		return {
-			'gateway': ucr.get('gateway'),
+			'gateway': ucr.get('gateway', ''),
 			'dhcp_routing_policy': dhcp_routing_obj and dhcp_routing_obj.dn,
-			'ucr_policy_exists': ucr_policy_obj.exists(),
+			'has_installed_ucc_desktop': util.has_installed_ucc_desktop(),
+			'has_installed_ucc_thinclient': util.has_installed_ucc_thinclient(),
+			'rdp_usb': ucr_policy.is_true('rdp/redirectdisk'),
+			'rdp_sound': ucr_policy.is_false('rdp/disable-sound'),
+			'rdp_host': rdp_host,
+			'rdp_domain': rdp_domain,
+			'citrix_accepteula': ucr_policy.is_true('citrix/accepteula'),
+			'citrix_receiver_package_downloaded': bool(util.get_citrix_receiver_package_path()),
+			'citrix_url': ucr_policy.get('citrix/webinterface', ''),
+			'citrix_autologin': ucr_policy.get('lightdm/autologin/session') == 'XenApp' and ucr_policy.is_true('lightdm/autologin'),
+			'browser_url': ucr_policy.get('firefox/startsite', ''),
 		}
 
 	@file_upload
@@ -117,10 +122,10 @@ class Instance(Base, ProgressMixin):
 
 		# we got an uploaded file with the following properties:
 		#   name, filename, tmpfile
-		dest_path = tempfile.mktemp(suffix='_i386.deb')
-		MODULE.info('Received file "%s", saving it to "%s"' % (tmpfile, dest_path))
-		shutil.move(tmpfile, dest_path)
-		self._citrix_receiver_path = dest_path
+		dest_file = os.path.join(ucc_images.UCC_IMAGE_DIRECTORY, filename)
+		MODULE.info('Received file "%s", saving it to "%s"' % (tmpfile, dest_file))
+		shutil.move(tmpfile, dest_file)
+		os.chmod(dest_file, 0644)
 
 		# done
 		self.finished( request.id, None )
@@ -160,7 +165,7 @@ class Instance(Base, ProgressMixin):
 		progress.total = 100
 
 		# make sure the citrix receiver debian package has been uploaded
-		if citrix and not self._citrix_receiver_path:
+		if citrix and not util.get_citrix_receiver_package_path():
 			raise UMC_CommandError(_('The Debian package of the Citrix Receiver could not be found. Please make sure that the file has been uploaded.'))
 
 		def _progress(steps, msg):
@@ -211,19 +216,18 @@ class Instance(Base, ProgressMixin):
 			if citrix.get('autoLogin'):
 				thinclient_ucr_variables['lightdm/autologin/session'] = 'XenApp'
 				thinclient_ucr_variables['lightdm/autologin'] = 'true'
+			else:
+				thinclient_ucr_variables['lightdm/autologin/session'] = ''
+				thinclient_ucr_variables['lightdm/autologin'] = 'false'
 
 		# save UCR variables as policy
 		_progress(8, _('Setting UCR variables'))
 		util.set_ucr_policy_variables(ucr_variables, thinclient_ucr_variables, fatclient_ucr_variables, ldap_connection)
 
 		# query the latest ucc image file
-		online_images = ucc_images.get_latest_online_ucc_image()
-		thinclient_image = [i for i in online_images if i.id == 'ucc20thin']
-		desktop_image = [i for i in online_images if i.id == 'ucc20desktop']
+		thinclient_image, desktop_image = util.get_latest_ucc_images()
 		if not thinclient_image or not desktop_image:
 			return { 'success': False, 'error': _('UCC images cannot be downloaded! Please check your internet connection.') }
-		thinclient_image = thinclient_image[0]
-		desktop_image = desktop_image[0]
 
 		# download image(s)
 		download_percentage = 60 if citrix else 90
@@ -254,7 +258,7 @@ class Instance(Base, ProgressMixin):
 				raise UMC_CommandError(_('The chosen UCC image file %s could not be found on the local system!') % ucc_image_choice)
 
 			progress_wrapper = util.ProgressWrapper(progress, 30, 70)
-			util.add_citrix_receiver_to_ucc_image(ucc_image_path, self._citrix_receiver_path, progress_wrapper)
+			util.add_citrix_receiver_to_ucc_image(ucc_image_path, util.get_citrix_receiver_package_path(), progress_wrapper)
 
 		return { 'success': True }
 
