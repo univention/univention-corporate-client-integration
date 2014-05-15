@@ -1,6 +1,12 @@
+ucc-image-toolkit (2.0.15-1) unstable; urgency=low
+
+  * Bug #34360: make sure that access rights are 0644 for all image files
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 15 May 2014 18:58:10 +0200
+
 ucc-image-toolkit (2.0.14-3) unstable; urgency=low
 
-  * Temporarily use compression level 0, speeds up the build 
+  * Temporarily use compression level 0, speeds up the build
 
  -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 15 May 2014 10:40:45 +0200
 

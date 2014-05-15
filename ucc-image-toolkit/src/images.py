@@ -354,6 +354,18 @@ class UCCImage(object):
 		stream.close()
 		self.validate()
 
+	def _fix_access_rights(self):
+		log_info('Adjusting access rights of image files to 0644 ...')
+		files = [ivalue for ikey, ivalue in self.spec.iteritems() if ikey.startswith('file-')]
+		files.append(self.spec_file)
+		files.append(self.file)
+		for ifile in files:
+			ipath = os.path.join(UCC_IMAGE_DIRECTORY, ifile)
+			if not os.path.exists(ipath):
+				continue
+			log_info('  chmod 0644 %s' % ifile)
+			os.chmod(ipath, 0644)
+
 	def validate(self, be_strict=False):
 		# following fields are not absolutely required:
 		for i in ['hash-img', 'hash-kernel', 'hash-initrd', 'hash-md5', 'hash-reg', 'file-img', 'file-initrd', 'file-kernel', 'file-md5', 'file-reg']:
@@ -517,13 +529,15 @@ class UCCImage(object):
 			join_script_dest_path = os.path.join('/usr/lib/univention-install/', self.join_script)
 			log_info('Copy join script to %s' % join_script_dest_path)
 			shutil.copy(join_script_src_path, join_script_dest_path)
-			subprocess.call(['/bin/chmod', 'a+x', join_script_dest_path])
+			os.chmod(join_script_dest_path, 0755)
 
 			# unpack UCC image -> 30%
 			progress.info(_('Unpacking image file %s') % self.file)
 			self._unpack(_advance_wrapper(30.0, total_progress, progress))
 			progress.advance(100.0)
 			progress.finish()
+
+			self._fix_access_rights()
 		except Exception as exc:
 			# remove already partly downloaded files
 			self.remove_files()
