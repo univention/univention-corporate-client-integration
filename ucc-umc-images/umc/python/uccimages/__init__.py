@@ -31,13 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-from threading import Thread
-import time
 import traceback
 import sys
+import httplib
 
 from univention.lib.i18n import Translation
-from univention.management.console.modules import UMC_OptionTypeError, Base, UMC_CommandError
+from univention.management.console.modules import Base, UMC_CommandError
 from univention.management.console.log import MODULE
 from univention.management.console.modules.decorators import simple_response
 from univention.management.console.modules.mixins import ProgressMixin
@@ -69,7 +68,7 @@ class ProgressWrapper(ucc_images.Progress):
 				'error': err,
 			})
 		else:
-			intermediate.append(err)
+			self.umc_progress.intermediate.append(err)
 		UCCProgress.error(self, err, finish)
 
 	def info(self, message):
@@ -113,18 +112,25 @@ class Instance(Base, ProgressMixin):
 
 		result = []
 		for i in images:
-			idict = i.to_dict()
+			try:
+				idict = i.to_dict()
 
-			# set status
-			is_deprecated = images_grouped_by_id[i.id][0] != i
-			if is_deprecated and i.location == 'local' and i.id:
-				idict['status'] = 'deprecated'
-			elif i.location == 'local':
-				idict['status'] = 'installed'
-			else:
-				idict['status'] = 'available'
+				# set status
+				is_deprecated = images_grouped_by_id[i.id][0] != i
+				status = i.status
+				if is_deprecated and status == 'installed' and i.id:
+					idict['status'] = 'deprecated'
+				else:
+					idict['status'] = status
 
-			result.append(idict)
+				# get the download size for files that can be downloaded
+				if status in ('available', 'incomplete'):
+					idict['size'] = i.total_download_size
+				else:
+					idict['size'] = 0
+				result.append(idict)
+			except httplib.HTTPException as exc:
+				MODULE.warn('Image data for spec file %s could not be downloaded ... ignoring: %s' % (i.spec_file, exc))
 
 		return result
 

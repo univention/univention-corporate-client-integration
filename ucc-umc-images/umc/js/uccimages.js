@@ -80,6 +80,15 @@ define([
 
 			// define grid actions
 			var actions = [{
+				name: 'reload',
+				label: _('Refresh'),
+				description: _('Refresh the list view'),
+				isContextAction: false,
+				iconClass: 'umcIconRefresh',
+				callback: lang.hitch(this, function() {
+					this._grid.filter(this._grid.query);
+				})
+			}, {
 				name: 'download',
 				label: _('Download'),
 				description: _('Download a UCC image'),
@@ -87,7 +96,7 @@ define([
 				isStandardAction: true,
 				callback: lang.hitch(this, '_download'),
 				canExecute: function(item) {
-					return item.location == 'online';
+					return item.status == 'available' || item.status == 'incomplete';
 				}
 			}, {
 				name: 'remove',
@@ -98,7 +107,7 @@ define([
 				iconClass: 'umcIconDelete',
 				callback: lang.hitch(this, '_remove'),
 				canExecute: function(item) {
-					return item.location == 'local';
+					return item.status == 'installed' || item.status == 'incomplete' || item.status == 'deprecated';
 				}
 			}];
 
@@ -154,22 +163,37 @@ define([
 				// should not happen
 				return;
 			}
-			this.standby(false);
-			this._progressBar.reset(_('Downloading and registering UCC image'));
-			var downloadCmd = this.umcpProgressCommand(this._progressBar, 'uccimages/download', {
-				image: items[0].spec_file
-			}).then(lang.hitch(this, function(result) {
-				this.standby(false);
-				this._grid.filter(this._grid.query);
-				if (result.error) {
-					var err = result.error;
-					err = err.replace(/\n/g, '<br>');
-					dialog.alert(err, _('Download error'));
+			var item = items[0];
+			var gb = item.size / Math.pow(10, 9);
+			dialog.confirm(_('Please confirm the download of the UCC image %s [%.1f GB].', item.description, gb), [{
+				label: _('Cancel'),
+				name: 'cancel'
+			}, {
+				label: _('Download'),
+				'default': true,
+				name: 'download'
+			}]).then(lang.hitch(this, function(response) {
+				if (response != 'download') {
+					return;
 				}
-			}), lang.hitch(this, function(err) {
+
 				this.standby(false);
+				this._progressBar.reset(_('Downloading and registering UCC image'));
+				var downloadCmd = this.umcpProgressCommand(this._progressBar, 'uccimages/download', {
+					image: items[0].spec_file
+				}).then(lang.hitch(this, function(result) {
+					this.standby(false);
+					this._grid.filter(this._grid.query);
+					if (result.error) {
+						var err = result.error;
+						err = err.replace(/\n/g, '<br>');
+						dialog.alert(err, _('Download error'));
+					}
+				}), lang.hitch(this, function(err) {
+					this.standby(false);
+				}));
+				this.standbyDuring(downloadCmd, this._progressBar);
 			}));
-			this.standbyDuring(downloadCmd, this._progressBar);
 		},
 
 		_remove: function(ids, items) {

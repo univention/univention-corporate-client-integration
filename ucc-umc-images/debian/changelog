@@ -1,3 +1,12 @@
+ucc-umc-images (0.1.7-1) unstable; urgency=low
+
+  Bug #30379:
+  * added confirmation dialogue for download
+  * block concurrent download
+  * added refresh action
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 16 May 2014 17:16:11 +0200
+
 ucc-umc-images (0.1.6-1) unstable; urgency=low
 
   * Bug #30379: adjust error handling
