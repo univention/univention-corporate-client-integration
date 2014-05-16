@@ -85,6 +85,7 @@ class Instance(Base, ProgressMixin):
 		rdp_host, rdp_domain = util.get_rdp_values(ldap_connection)
 		ucr_policy = ConfigRegistry()
 		ucr_policy.update(util.get_ucr_policy_variables(ldap_connection))  # hack to access the method is_true()
+		thinclient_image, desktop_image = util.get_latest_ucc_images()
 		return {
 			'gateway': ucr.get('gateway', ''),
 			'dhcp_routing_policy': dhcp_routing_obj and dhcp_routing_obj.dn,
@@ -99,6 +100,8 @@ class Instance(Base, ProgressMixin):
 			'citrix_url': ucr_policy.get('citrix/webinterface', ''),
 			'citrix_autologin': ucr_policy.get('lightdm/autologin/session') == 'XenApp' and ucr_policy.is_true('lightdm/autologin'),
 			'browser_url': ucr_policy.get('firefox/startsite', ''),
+			'download_size_thinclient': thinclient_image.total_download_size,
+			'download_size_desktop': desktop_image.total_download_size,
 		}
 
 	@file_upload
@@ -166,7 +169,7 @@ class Instance(Base, ProgressMixin):
 
 		# make sure the citrix receiver debian package has been uploaded
 		if citrix and not util.get_citrix_receiver_package_path():
-			raise UMC_CommandError(_('The Debian package of the Citrix Receiver could not be found. Please make sure that the file has been uploaded.'))
+			return {'success': False, 'error':_('The Debian package of the Citrix Receiver could not be found. Please make sure that the file has been uploaded.')}
 
 		def _progress(steps, msg):
 			progress.current = steps
@@ -178,8 +181,10 @@ class Instance(Base, ProgressMixin):
 			if network.get('existingDN'):
 				util.set_dhcp_service_for_network(network.get('existingDN'), ldap_connection)
 			else:
-				#TODO: error handling
-				util.set_network(network.get('address'), network.get('mask'), network.get('firstIP'), network.get('lastIP'), ldap_connection)
+				try:
+					util.set_network(network.get('address'), network.get('mask'), network.get('firstIP'), network.get('lastIP'), ldap_connection)
+				except ValueError as exc:
+					return {'success': False, 'error': str(exc)}
 
 		# DHCP routing policy for gateway
 		dhcp_routing_obj = util.get_dhcp_routing_policy(ldap_connection)
@@ -260,5 +265,5 @@ class Instance(Base, ProgressMixin):
 			progress_wrapper = util.ProgressWrapper(progress, 30, 70)
 			util.add_citrix_receiver_to_ucc_image(ucc_image_path, util.get_citrix_receiver_package_path(), progress_wrapper)
 
-		return { 'success': True }
+		return {'success': True}
 

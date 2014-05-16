@@ -1,3 +1,12 @@
+ucc-umc-setup (0.1.15-1) unstable; urgency=low
+
+  Bug #34360:
+  * added UCR variables ucc/image/defaultid/{thinclient,desktop}
+  * improved error handling for network configuration
+  * adjusted the presentation of the confirmation page
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 16 May 2014 23:46:12 +0200
+
 ucc-umc-setup (0.1.14-1) unstable; urgency=low
 
   Bug #34360:

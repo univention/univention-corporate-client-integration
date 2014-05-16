@@ -41,6 +41,7 @@ import univention.admin.modules as udm_modules
 udm_modules.update()
 import univention.admin.uldap as udm_uldap
 import univention.admin.objects as udm_objects
+import univention.admin.uexceptions as udm_exceptions
 import ucc.images as ucc_images
 
 from univention.lib.i18n import Translation
@@ -52,6 +53,8 @@ UCR_VARIABLE_POLICY_DN = 'cn=ucc-common-settings,cn=config-registry,cn=policies,
 UCR_VARIABLE_POLICY_THINCLIENTS_DN = 'cn=ucc-thinclient-settings,cn=config-registry,cn=policies,%s' % ucr['ldap/base']
 UCR_VARIABLE_POLICY_FATCLIENTS_DN = 'cn=ucc-desktop-settings,cn=config-registry,cn=policies,%s' % ucr['ldap/base']
 DHCP_ROUTING_POLICY_DN = 'cn=ucc-dhcp-gateway,cn=routing,cn=dhcp,cn=policies,%s' % ucr['ldap/base']
+UCC_THINCLIENT_ID = ucr.get('ucc/image/defaultid/thinclient', 'ucc20thin')
+UCC_DESKTOP_ID = ucr.get('ucc/image/defaultid/desktop', 'ucc20desktop')
 
 UCCProgress = ucc_images.Progress
 
@@ -101,6 +104,16 @@ def bool2str(b):
 	if b:
 		return 'true'
 	return 'false'
+
+
+# from umc.modules.udm.udm_ldap.py
+def _get_udm_exception_msg(e):
+	msg = getattr(e, 'message', '')
+	if getattr(e, 'args', False):
+		if e.args[0] != msg or len(e.args) != 1:
+			for arg in e.args:
+				msg += ' ' + arg
+	return msg
 
 
 def _get_dhcp_service_obj(ldap_connection):
@@ -164,7 +177,6 @@ def set_network(address, mask, first_ip, last_ip, ldap_connection):
 	network_obj.open()
 
 	# set network values
-	#TODO: error handling
 	network_obj['name'] = name
 	network_obj['network'] = address
 	network_obj['netmask'] = mask
@@ -187,8 +199,11 @@ def set_network(address, mask, first_ip, last_ip, ldap_connection):
 			network_obj['dnsEntryZoneReverse'] = reverse_zone_obj.dn
 
 	# save changes
-	print '# network:', network_obj.info
-	network_obj.create()
+	try:
+		network_obj.create()
+	except udm_exceptions.base as exc:
+		message = _get_udm_exception_msg(exc)
+		raise ValueError(message)
 
 
 def set_dhcp_service_for_network(network_dn, ldap_connection):
@@ -311,8 +326,8 @@ def set_rdp_values(domain, terminal_server, ldap_connection):
 
 def get_latest_ucc_images():
 	online_images = ucc_images.get_latest_online_ucc_image()
-	thinclient_image = [i for i in online_images if i.id == 'ucc20thin']
-	desktop_image = [i for i in online_images if i.id == 'ucc20desktop']
+	thinclient_image = [i for i in online_images if i.id == UCC_THINCLIENT_ID]
+	desktop_image = [i for i in online_images if i.id == UCC_DESKTOP_ID]
 	thinclient_image = thinclient_image[0] if thinclient_image else None
 	desktop_image = desktop_image[0] if desktop_image else None
 	return thinclient_image, desktop_image
@@ -320,13 +335,13 @@ def get_latest_ucc_images():
 
 def has_installed_ucc_thinclient():
 	images = ucc_images.get_local_ucc_images()
-	image = [i for i in images if i.id == 'ucc20thin']
+	image = [i for i in images if i.id == UCC_THINCLIENT_ID]
 	return bool(image)
 
 
 def has_installed_ucc_desktop():
 	images = ucc_images.get_local_ucc_images()
-	image = [i for i in images if i.id == 'ucc20desktop']
+	image = [i for i in images if i.id == UCC_DESKTOP_ID]
 	return bool(image)
 
 

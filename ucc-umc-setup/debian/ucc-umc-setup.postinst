@@ -35,5 +35,8 @@ upload_size=30000
 if [ -z "$umc_server_upload_max" -o "$umc_server_upload_max" -lt "$upload_size" ]; then
 	ucr set umc/server/upload/max=${upload_size}
 fi
+ucr set \
+	ucc/image/defaultid/thinclient=ucc20thin \
+	ucc/image/defaultid/desktop=ucc20desktop
 
 exit 0

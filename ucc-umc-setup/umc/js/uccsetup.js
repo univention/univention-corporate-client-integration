@@ -171,17 +171,22 @@ define([
 					required: true,
 					disabled: true
 				}, {
-					//TODO: error handling
 					type: TextBox,
 					name: 'newFirstIP',
 					label: _('First IP address'),
 					disabled: true,
-					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
+					labelConf: { 'class': 'umc-uccsetup-wizard-indent' },
+					validator: function(value) {
+						return _regIPv4.test(value);
+					}
 				}, {
 					type: TextBox,
 					name: 'newLastIP',
 					label: _('Last IP address'),
-					disabled: true
+					disabled: true,
+					validator: function(value) {
+						return _regIPv4.test(value);
+					}
 				}]
 			}, {
 				name: 'gateway',
@@ -315,12 +320,12 @@ define([
 				}]
 			}, {
 				name: 'confirm',
-				headerText: _('Confirm configuration'),
-				helpText: _('Please confirm the chosen UCC configuration in order to apply them to the system.'),
+				headerText: _('Confirm configuration settings'),
+				helpText: _('Please confirm the chosen UCC configuration in order to apply them to the system and the domain directory.'),
 				widgets: [{
 					type: Text,
 					name: 'summary',
-					content: _('')
+					content: ''
 				}]
 			}, {
 				name: 'error',
@@ -358,7 +363,7 @@ define([
 
 			// change labels of default footer buttons
 			this.getPage('confirm')._footerButtons.next.set('label', _('Apply configuration'));
-			this.getPage('error')._footerButtons.finish.set('label', _('Close'));
+			this.getPage('error')._footerButtons.next.set('label', _('Retry'));
 		},
 
 		postCreate: function() {
@@ -590,33 +595,33 @@ define([
 
 		_updateConfirmationPage: function() {
 			var vals = this.getValues();
-			var msg = '<ul>';
+			var msg = '';
 			if (vals.fatclient) {
-				msg += '<li>' + _('Support for linux desktop systems will be configured.');
+				msg += '<p><b>' + _('Support for linux desktop systems') + '</b></p>';
 				if (vals.downloadFatClientImage) {
-					msg += '<ul><li>' + _('A preconfigured UCC desktop image will be downloaded.') + '</li></ul>';
+					msg += '<ul style="margin-top:0;"><li>' + _('Download of UCC desktop image [%.1f GB]', this._info.download_size_desktop / Math.pow(10, 9)) + '</li></ul>';
 				}
-				msg += '</li>';
 			}
 			if (vals.thinclient) {
-				msg += '<li>' + _('Support for thin clients will be configured.');
-				msg += '<ul>';
+				msg += '<p><b>' + _('Support for thin clients') + '</b></p>';
+				msg += '<ul style="margin-top:0;">';
 				if (vals.downloadThinClientImage) {
-					msg += '<li>' + _('A preconfigured UCC thin client image will be downloaded.') + '</li>';
+					msg += '<li>' + _('Download of UCC thin client image [%.1f GB]', this._info.download_size_thinclient / Math.pow(10, 9)) + '</li>';
 				}
 
 				if (vals.rdp) {
-					msg += '<li>' + _('Access to RDP terminal server %s will be configured.', vals.rdp.host) + '</li>';
+					msg += '<li>' + _('RDP terminal server: <i>%s</i>', vals.rdp.host) + '</li>';
 				}
 				if (vals.citrix) {
-					msg += '<li>' + _('Access to Citrix XenApp server at URL %s will be configured.', vals.citrix.url) + '</li>';
+					msg += '<li>' + _('Citrix XenApp server: <i>%s</i>', vals.citrix.url) + '</li>';
 				}
 				if (vals.browser) {
-					msg += '<li>' + _('Direct browser access to URL %s will be configured.', vals.browser.url) + '</li>';
+					msg += '<li>' + _('Direct browser access: <i>%s</i>', vals.browser.url) + '</li>';
 				}
-				msg += '</ul></li>';
+				msg += '</ul>';
 			}
-			msg += '<li>';
+			msg += '<p><b>' + _('Network configuration') + '</b></p>';
+			msg += '<ul style="margin-top:0;">';
 			if (vals.network.existingDN) {
 				var existingNetworkWidget = this.getWidget('network', 'existingNetwork');
 				var networkLabel = '';
@@ -625,13 +630,15 @@ define([
 						networkLabel = ientry.label;
 					}
 				});
-				msg += _('Network segment for client IP addresses will be the already existing <i>network %s</i>.', networkLabel);
+				msg += '<li>' + _('Client IP address segment: <i>network %s</i>', networkLabel) + '</li>';
 			}
 			else {
-				msg += _('Network segment for client IP addresses will be the new network <i>%s</i>.', vals.network.address);
+				msg += '<li>' + _('New client IP address segment: <i>network %s</i>', vals.network.address) + '</li>';
 			}
-			msg += '</li>';
-			msg += '</li></ul>';
+			if (vals.gateway) {
+				msg += '<li>' + _('Gateway: <i>%s</i>', vals.gateway) + '</li>';
+			}
+			msg += '</ul>';
 			this.getWidget('confirm', 'summary').set('content', msg);
 		},
 
@@ -656,7 +663,6 @@ define([
 			// if citrix auto login is checked, do not show the page for configuring
 			// the default session
 			var citrixAutoLogin = this.getWidget('terminalServices-thinclient-citrix-login', 'autoLogin').get('value');
-			//TODO: if UCC image already exists, hide download page
 
 			// general check
 			return this._isPageForClientType(pageName) && this._isPageForTerminalServiceType(pageName);
@@ -712,6 +718,9 @@ define([
 			if (pageName == 'confirm') {
 				return this._applyConfiguration();
 			}
+			if (pageName == 'error') {
+				return 'start'
+			}
 			var eulaAccepted = this.getWidget('terminalServices-thinclient-citrix-upload', 'eula').get('value');
 			if (pageName == 'terminalServices-thinclient-citrix-upload' && !eulaAccepted) {
 				dialog.alert(_('Please confirm the End User License Agreement of Citrix Receiver to proceed.'));
@@ -739,22 +748,11 @@ define([
 			return previousPage;
 		},
 
-		hasNext: function(pageName) {
-			if (pageName == 'error') {
-				return false;
-			}
-			return this.inherited(arguments);
-		},
-
 		hasPrevious: function(pageName) {
 			if (pageName == 'error' || pageName == 'done') {
 				return false;
 			}
 			return this.inherited(arguments);
-		},
-
-		canCancel: function(pageName) {
-			return !(pageName == 'error' || pageName == 'done');
 		}
 	});
 
