@@ -59,6 +59,9 @@ def parse_args():
 
 
 class CLIProgress(ucc_images.Progress):
+	def __init__(self):
+		ucc_images.Progress.__init__(self)
+
 	def advance(self, steps, substeps=-1):
 		self.steps = steps
 		self.substeps = substeps
@@ -72,6 +75,8 @@ class CLIProgress(ucc_images.Progress):
 			if substeps >= self.max_steps:
 				sys.stdout.write(' ... done\n')
 			sys.stdout.flush()
+
+		self._update_progress_file()
 
 	def error(self, err):
 		ucc_images.log_error(err)

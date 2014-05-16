@@ -46,6 +46,7 @@ import contextlib
 import re
 import psutil
 import traceback
+import time
 
 import univention.config_registry as ucr
 import univention.debug as ud
@@ -116,7 +117,7 @@ def _advance_wrapper(percent_fraction, total_progress, progress):
 def _free_disk_space(path):
 	'''Returns the free disk space for a given path.'''
 	vfs = os.statvfs(path)
-	free_diskspace = vfs.f_frsize * vfs.f_bfree
+	free_diskspace = vfs.f_frsize * vfs.f_bavail
 	return free_diskspace
 
 
@@ -283,7 +284,43 @@ def _run_join_script(join_script, username=None, password=None):
 
 class Progress(object):
 	def __init__(self, max_steps=100):
+		self.progress_file = None
 		self.reset(max_steps)
+
+	def _remove_progress_file(self):
+		if self.progress_file:
+			try:
+				# close handle
+				if self._progress_file_handle:
+					self._progress_file_handle.close()
+					self._progress_file_handle = None
+
+				# remove file
+				log_info('Removing progress file: %s' % self.progress_file)
+				os.remove(self.progress_file)
+			except (IOError, OSError) as exc:
+				log_warn('Failed to remove progress file %s with following error: %s' % (self.progress_file, exc))
+			self.progress_file = None
+
+	def _open_progress_file(self):
+		if not self._progress_file_handle:
+			self._progress_file_handle = open(self.progress_file, 'w')
+			os.chmod(self.progress_file, 0644)
+		self._progress_file_handle.seek(0)
+		return self._progress_file_handle
+
+	def _update_progress_file(self):
+		if not self.progress_file:
+			return
+		percent = (100.0 * self.steps) / self.max_steps
+		try:
+			log_info('Updating progress file: %s' % self.progress_file)
+			progress_file = self._open_progress_file()
+			progress_file.write('%s\t%s\t%s' % (os.getpid(), percent, self.message))
+			progress_file.truncate()
+			progress_file.flush()
+		except (IOError, OSError) as exc:
+			log_warn('Writing progress file %s failed: %s' % (self.progress_file, exc))
 
 	def reset(self, max_steps=100):
 		self.max_steps = max_steps
@@ -294,10 +331,14 @@ class Progress(object):
 		self.errors = []
 		self._last_logged_step = -1
 		self._last_logged_substep = -1
+		self._remove_progress_file()
+		self.progress_file = None
+		self._progress_file_handle = None
 
 	def finish(self):
 		log_process('Finished')
 		self.finished = True
+		self._remove_progress_file()
 
 	def error(self, err, finish=True):
 		log_error(err)
@@ -309,6 +350,7 @@ class Progress(object):
 		self.message = message
 		self.substeps = 0
 		log_process(message)
+		self._update_progress_file()
 
 	def advance(self, steps, substeps=-1):
 		self.steps = steps
@@ -327,6 +369,7 @@ class Progress(object):
 
 		self._last_logged_step = steps
 		self._last_logged_substep = substeps
+		self._update_progress_file()
 
 
 class UCCImage(object):
@@ -412,6 +455,60 @@ class UCCImage(object):
 	@property
 	def location(self):
 		return self.get('location')
+
+	@property
+	def progress_file(self):
+		return '%s.progress' % self.spec_file
+
+	@property
+	def is_other_download_running(self):
+		progress_file_path = os.path.join(UCC_IMAGE_DIRECTORY, self.progress_file)
+		if not os.path.exists(progress_file_path):
+			return False
+		try:
+			parts = []
+			with open(progress_file_path) as progress_file:
+				line = progress_file.read()
+				parts = line.split('\t', 2)
+
+			if len(parts) != 3:
+				# wrong format
+				return False
+
+			# see whether process exists
+			pid = int(parts[0])
+			proc = psutil.Process(pid)
+
+			# make sure that last modification time is at least 5 min ago
+			file_mod_time = os.stat(progress_file_path).st_mtime
+			last_time = (time.time() - file_mod_time) / 60  # time in minutes
+			return last_time < 5
+		except psutil.NoSuchProcess as exc:
+			# process is not running anymore
+			pass
+		except ValueError as exc:
+			# wrong format, probably PID
+			pass
+		except (IOError, OSError) as exc:
+			log_warn('Failed to check whether another download process is running: %s' % exc)
+		return False
+
+	@property
+	def status(self):
+		'''The status of the ucc image is determined by the following states:
+		downloading, installed, incomplete, available.'''
+
+		# get the status of the UCC image
+		if self.is_other_download_running:
+			return 'downloading'
+
+		files = [self.file, self.spec_file, self.join_script]
+		files_exist = [os.path.exists(os.path.join(UCC_IMAGE_DIRECTORY, ifile)) for ifile in files]
+		if all(files_exist):
+			return 'installed'
+		if any(files_exist):
+			return 'incomplete'
+		return 'available'
 
 	def get(self, key):
 		'''Helper function to access configuration elements of the image's spec file.'''
@@ -507,6 +604,9 @@ class UCCImage(object):
 		'''Download spec file, image file and all other related images. Unpack image if necessary.'''
 
 		try:
+			# make sure that a temporary progress file is being updated, as well
+			progress.progress_file = os.path.join(UCC_IMAGE_DIRECTORY, self.progress_file)
+
 			# download spec file
 			self._download_spec_file()
 
@@ -578,6 +678,8 @@ def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, 
 		progress.info(_('Downloading and reading img file %s') % spec_file)
 		spec_url = '%s/%s' % (UCC_BASE_URL, spec_file)
 		img = UCCImage(spec_url)
+		if img.is_other_download_running:
+			raise RuntimeError(_('Another process is currently downloading the UCC image %s.') % img.file)
 		img.download(validate_hash, progress)
 
 		progress.info(_('Setting root password for image %s') % img.file)
@@ -588,7 +690,7 @@ def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, 
 
 		progress.info(_('Finished.'))
 	except (IOError, ValueError, OSError, RuntimeError, httplib.HTTPException) as exc:
-		progress.error(_('Image data for spec file %s could not be downloaded from server:\n%s\n') % (spec_file, exc))
+		progress.error(_('Image data of spec file %s could not be downloaded from server:\n%s\n') % (spec_file, exc))
 		log_error('Error downloading image data from server:\n%s' % ''.join(traceback.format_tb(sys.exc_info()[2])))
 
 
@@ -604,6 +706,12 @@ def get_local_ucc_images():
 	all_files = os.listdir(UCC_IMAGE_DIRECTORY)
 	specs = [_read(i) for i in all_files if i.endswith('.spec')]
 	return specs
+
+
+def is_image_downloading(spec_file):
+	file_path = os.path.join(UCC_IMAGE_DIRECTORY, spec_file)
+	image = UCCImage(file_path)
+	return image.is_other_download_running
 
 
 _regWhiteSpace = re.compile(r'\s+')
@@ -629,9 +737,13 @@ def get_online_ucc_images():
 			if not parts:
 				continue
 
-			# read in image spec file
-			spec_url = '%s/%s' % (UCC_BASE_URL, parts[0])
-			index.append(UCCImage(spec_url))
+			# try to read in image spec file
+			try:
+				spec_url = '%s/%s' % (UCC_BASE_URL, parts[0])
+				index.append(UCCImage(spec_url))
+			except (IOError, RuntimeError, httplib.HTTPException) as exc:
+				log_warn('Failed to read spec file %s ... ignoring: %s' % (spec_url, exc))
+
 	finally:
 		if stream:
 			stream.close()
@@ -659,6 +771,8 @@ def remove_ucc_image(spec_file):
 	log_process('Removing image %s' % spec_file)
 	spec_file_path = os.path.join(UCC_IMAGE_DIRECTORY, spec_file)
 	img = UCCImage(spec_file_path)
+	if img.is_other_download_running:
+		raise RuntimeError(_('Another process is currently downloading the UCC image %s.') % img.file)
 	img.remove_files()
 
 
