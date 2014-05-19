@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.18-1) unstable; urgency=low
+
+  * Bug #34360: fixed typo
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 19 May 2014 16:26:37 +0200
+
 ucc-image-toolkit (2.0.17-1) unstable; urgency=low
 
   * Bug #34360: regularly check for enough free size (> 0.5 GB) on hard disk

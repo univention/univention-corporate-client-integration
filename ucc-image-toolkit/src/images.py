@@ -173,7 +173,7 @@ def _unxz(infile, keep_src_file=False, progress=_dummy_progress):
 				if counter % 50 == 0:
 					free_diskspace_gb = _free_disk_space(UCC_IMAGE_DIRECTORY) / 1000**3  # in GB
 					if free_diskspace_gb < 0.5:
-						raise IOError(_('Not enough space left on hard disk.') % outfile)
+						raise IOError(_('Not enough space left on hard disk.'))
 				counter += 1
 
 		if not keep_src_file:
