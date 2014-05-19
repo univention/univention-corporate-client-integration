@@ -58,10 +58,10 @@ univention-config-registry set \
 	ucc/pxe/timezone?$(cat /etc/timezone) \
 	ucc/pxe/bootsplash?true \
 	ucc/pxe/vga?788 \
+	security/packetfilter/package/ucc-remotelog/udp/514/all=ACCEPT \
+	security/packetfilter/package/ucc-remotelog/tcp/514/all=ACCEPT \
 	logrotate/syslog-ucc/rotate/count?7 \
 	logrotate/syslog-ucc/rotate?daily
-
-univention-config-registry set security/packetfilter/package/ucc-remotelog/udp/514/all=ACCEPT
 
 call_joinscript 91ucc-pxe-boot.inst
 

@@ -12,6 +12,7 @@ Architecture: all
 Depends: ${misc:Depends},
  shell-univention-lib (>= 1.0.6),
  univention-tftp,
+ rsyslog-relp,
  syslinux,
 Recommends: univention-dhcp,
  univention-nfs-server
