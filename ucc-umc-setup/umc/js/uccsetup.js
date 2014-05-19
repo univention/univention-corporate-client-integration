@@ -103,7 +103,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpThinClient',
-					content: ('<p>UCC provides a thin client image which is installed on the local Compact Flash storage of thin clients (2 GB are required).</p><p>UCC Thin clients can access RDP terminal services (Windows terminal server or xrdp), Citrix Xen App terminal services or configure a direct browser login to a web site (e.g. for a web service).</p>'),
+					content: ('<p>UCC provides a thin client image which is installed on the local Compact Flash storage of thin clients (2 GB are required).</p><p>UCC thin clients can access RDP terminal services (Windows terminal server or XRDP), Citrix Xen App terminal services or configure a direct browser login to a web site (e.g. for a web service).</p>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}]
 			}, {
@@ -242,7 +242,7 @@ define([
 			}, {
 				name: 'terminalServices-thinclient-citrix-upload',
 				headerText: _('Configure access to Citrix XenApp server'),
-				helpText: _('This step allows the configuration of a XenApp terminal server using the Citrix protocol. For this, Citrix Receiver will be integrated into the UCC thin client image.'),
+				helpText: _('This step allows the configuration of a XenApp terminal server using the Citrix protocol. For this, Citrix Receiver will be integrated into the UCC thin client image (it cannot be distributed in the standard UCC images due to license restrictions).'),
 				widgets: [{
 					type: ComboBox,
 					name: 'image',
@@ -257,7 +257,7 @@ define([
 				}, {
 					type: Text,
 					name: 'help',
-					content: _('<p>For the configuration, it is necessary to manually download the i386 DEB version of the <a href="http://www.citrix.de/downloads/citrix-receiver/linux/receiver-for-linux-130.html" target="_blank">Citrix Receiver</a>.</p>')
+					content: _('<p>For the configuration, it is necessary to manually download the 32-bit DEB version of the <a href="http://www.citrix.de/downloads/citrix-receiver/linux/receiver-for-linux-130.html" target="_blank">Citrix Receiver for Linux</a> and save it somewhere on your desktop.</p>')
 				}, {
 					type: Uploader,
 					name: 'upload',
@@ -302,7 +302,7 @@ define([
 				}, {
 					type: CheckBox,
 					name: 'autoLogin',
-					label: _('Automatic Linux Desktop login'),
+					label: _('Automatic login (the actual authentication occurs on the Citrix farm web interface)'),
 					value: true
 				}]
 			}, {
@@ -321,7 +321,7 @@ define([
 			}, {
 				name: 'confirm',
 				headerText: _('Confirm configuration settings'),
-				helpText: _('Please confirm the chosen UCC configuration in order to apply them to the system and the domain directory.'),
+				helpText: _('Please confirm the chosen UCC configuration:'),
 				widgets: [{
 					type: Text,
 					name: 'summary',
@@ -379,7 +379,7 @@ define([
 
 		_checkUploadFile: function(fileInfo) {
 			if (!_regDebianI386.test(fileInfo.name)) {
-				dialog.alert(_('The specified file needs to be a Debian package (file ending .deb) for a 32 bit system architecture.'));
+				dialog.alert(_('The specified file needs to be a Debian package (file ending .deb) for the 32 bit system architecture.'));
 				return false;
 			}
 			return true;
