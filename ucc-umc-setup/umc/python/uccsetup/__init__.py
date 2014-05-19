@@ -250,7 +250,7 @@ class Instance(Base, ProgressMixin):
 			ucc_images.download_ucc_image(desktop_image.spec_file, username=self._username, password=self._password, progress=progress_wrapper)
 
 		# install citrix receiver in UCC image
-		if citrix:
+		if citrix and not progress.finished:
 			_progress(70, _('Installing Citrix Receiver application in image file. This might take a few minutes to complete.'))
 			ucc_image_choice = citrix.get('image', '_DEFAULT_')
 			if ucc_image_choice == '_DEFAULT_':
@@ -264,6 +264,10 @@ class Instance(Base, ProgressMixin):
 
 			progress_wrapper = util.ProgressWrapper(progress, 30, 70)
 			util.add_citrix_receiver_to_ucc_image(ucc_image_path, util.get_citrix_receiver_package_path(), progress_wrapper)
+
+		if hasattr(progress, 'result'):
+			# some error probably occurred -> return the result in the progress
+			return progress.result
 
 		return {'success': True}
 

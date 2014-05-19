@@ -670,6 +670,7 @@ define([
 
 		_updateErrorPage: function(message) {
 			message = message || _('An unexpected error occurred. More information about the cause of the error can be found in the log file /var/log/univention/management-console-module-uccsetup.log. Please retry to configure UCC after resolving any conflicting issues.');
+			message = message.replace(/\n/g, '<br>');
 			this.getWidget('error', 'info').set('content', message);
 		},
 
