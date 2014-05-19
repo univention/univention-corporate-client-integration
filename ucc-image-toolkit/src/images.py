@@ -156,6 +156,7 @@ def _unxz(infile, keep_src_file=False, progress=_dummy_progress):
 
 	try:
 		with contextlib.nested(open(infile, 'rb'), open(outfile, 'wb')) as (fin, fout):
+			counter = 0
 			while True:
 				compressed_data = fin.read(DEFAULT_CHUNK_SIZE)
 				if not compressed_data:
@@ -167,6 +168,13 @@ def _unxz(infile, keep_src_file=False, progress=_dummy_progress):
 				progress(fin.tell(), total_size)
 				del compressed_data
 				del uncompressed_data
+
+				# check free size on disk every N rounds
+				if counter % 50 == 0:
+					free_diskspace_gb = _free_disk_space(UCC_IMAGE_DIRECTORY) / 1000**3  # in GB
+					if free_diskspace_gb < 0.5:
+						raise IOError(_('Not enough space left on hard disk.') % outfile)
+				counter += 1
 
 		if not keep_src_file:
 			# successful decompression -> remove compressed source file
