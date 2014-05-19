@@ -1,3 +1,11 @@
+ucc-umc-setup (0.1.17-1) unstable; urgency=low
+
+  Bug #34360:
+  * create ucc_software policy for installation of xrdp
+  * create first the policy object and then reference it at a given container
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 19 May 2014 12:18:12 +0200
+
 ucc-umc-setup (0.1.16-2) unstable; urgency=low
 
   * Update some interface texts (Bug #34360)

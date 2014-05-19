@@ -202,7 +202,7 @@ class Instance(Base, ProgressMixin):
 			thinclient_ucr_variables['lightdm/sessiondefault'] = 'firefox'
 
 		if rdp:
-			_progress(4, _('RDP terminal server settings'))
+			_progress(3, _('RDP terminal server settings'))
 			# RDP terminal server + domain name
 			util.set_rdp_values(rdp.get('domain', ''), rdp.get('host', ''), ldap_connection)
 			# RDP configuration -> usb and sound
@@ -212,7 +212,7 @@ class Instance(Base, ProgressMixin):
 			thinclient_ucr_variables['lightdm/sessiondefault'] = 'RDP'
 
 		if citrix:
-			_progress(6, _('Citrix XenApp settings'))
+			_progress(4, _('Citrix XenApp settings'))
 
 			# Citrix configuration
 			ucr_variables['citrix/webinterface'] = citrix.get('url', '')
@@ -226,8 +226,13 @@ class Instance(Base, ProgressMixin):
 				thinclient_ucr_variables['lightdm/autologin'] = 'false'
 
 		# save UCR variables as policy
-		_progress(8, _('Setting UCR variables'))
+		_progress(5, _('Setting UCR variables'))
 		util.set_ucr_policy_variables(ucr_variables, thinclient_ucr_variables, fatclient_ucr_variables, ldap_connection)
+
+		# set installation policy for desktops
+		if fatclient:
+			_progress(6, _('Configuring installation policy for desktop clients'))
+			util.set_xrdp_install_policy(ldap_connection)
 
 		# query the latest ucc image file
 		thinclient_image, desktop_image = util.get_latest_ucc_images()

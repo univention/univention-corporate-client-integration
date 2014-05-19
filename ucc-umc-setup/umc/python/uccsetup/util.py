@@ -49,6 +49,7 @@ _ = Translation('ucc-umc-setup').translate
 
 UCC_NETWORK_DN = 'cn=ucc-network,cn=networks,%s' % ucr['ldap/base']
 UCC_USER_SESSION_POLICY_DN = 'cn=ucc-usersession,cn=policies,%s' % ucr['ldap/base']
+XRDP_INSTALLATION_POLICY_DN = 'cn=xrdp-terminalserver-installation,cn=policies,%s' % ucr['ldap/base']
 UCR_VARIABLE_POLICY_DN = 'cn=ucc-common-settings,cn=config-registry,cn=policies,%s' % ucr['ldap/base']
 UCR_VARIABLE_POLICY_THINCLIENTS_DN = 'cn=ucc-thinclient-settings,cn=config-registry,cn=policies,%s' % ucr['ldap/base']
 UCR_VARIABLE_POLICY_FATCLIENTS_DN = 'cn=ucc-desktop-settings,cn=config-registry,cn=policies,%s' % ucr['ldap/base']
@@ -254,16 +255,16 @@ def _open_container_policy(container_dn, policy_type, policy_dn, ldap_connection
 	if read_only:
 		return
 
-	# make sure that the policy is set at the container
-	if not policy_obj.dn in container_obj.policies:
-		container_obj.policies.append(policy_obj.dn)
-		container_obj.modify()
-
 	# save changes policy obj
 	if policy_obj.exists():
 		policy_obj.modify()
 	else:
 		policy_obj.create()
+
+	# make sure that the policy is set at the container
+	if not policy_obj.dn in container_obj.policies:
+		container_obj.policies.append(policy_obj.dn)
+		container_obj.modify()
 
 
 def _get_ucr_policy_variable_tuples():
@@ -322,6 +323,12 @@ def set_rdp_values(domain, terminal_server, ldap_connection):
 	with _open_container_policy(computers_container_dn, 'policies/ucc_user', UCC_USER_SESSION_POLICY_DN, ldap_connection) as users_session_policy:
 		users_session_policy['windowsDomain'] = domain
 		users_session_policy['windowsTerminalserver'] = terminal_server
+
+
+def set_xrdp_install_policy(ldap_connection):
+	desktops_container_dn = 'cn=ucc-desktops,cn=computers,%s' % ucr['ldap/base']
+	with _open_container_policy(desktops_container_dn, 'policies/ucc_software', XRDP_INSTALLATION_POLICY_DN, ldap_connection) as installation_policy:
+		installation_policy['pkginstall'] = ['univention-xrdp']
 
 
 def get_latest_ucc_images():
