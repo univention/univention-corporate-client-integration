@@ -401,12 +401,21 @@ define([
 		_setDefaultValues: function() {
 			this._infoDeferred.then(lang.hitch(this, function(info) {
 				this.getWidget('gateway', 'gateway').set('value', info.gateway);
-				array.forEach(['host', 'domain', 'sound', 'usb'], function(ikey) {
-					this.getWidget('terminalServices-thinclient-rdp', ikey).set('value', info['rdp_' + ikey]);
-				}, this);
+
+				if (inf.rdp_host) {
+					// only set if rdp is configured
+					array.forEach(['host', 'domain', 'sound', 'usb'], function(ikey) {
+						this.getWidget('terminalServices-thinclient-rdp', ikey).set('value', info['rdp_' + ikey]);
+					}, this);
+				}
+
+				if (info.citrix_url) {
+					// only set if citrix is configured
+					this.getWidget('terminalServices-thinclient-citrix-login', 'autoLogin').set('value', info.citrix_autologin);
+				}
 				this.getWidget('terminalServices-thinclient-citrix-upload', 'eula').set('value', info.citrix_accepteula);
 				this.getWidget('terminalServices-thinclient-citrix-login', 'url').set('value', info.citrix_url);
-				this.getWidget('terminalServices-thinclient-citrix-login', 'autoLogin').set('value', info.citrix_autologin);
+
 				this.getWidget('terminalServices-thinclient-browser', 'url').set('value', info.browser_url);
 			}));
 		},
