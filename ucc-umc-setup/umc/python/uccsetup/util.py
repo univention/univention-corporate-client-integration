@@ -233,9 +233,13 @@ def _get_policy_object(policy_dns, module_name, ldap_connection):
 @contextmanager
 def _open_container_policy(container_dn, policy_type, policy_dn, ldap_connection, read_only=False):
 	# open policy object at the given container
-	container_obj = udm_objects.get(udm_modules.get('container/cn'), None, ldap_connection, None, container_dn)
-	container_obj.open()
-	policy_obj = _get_policy_object(container_obj.policies, policy_type, ldap_connection)
+	container_obj = None
+	policy_obj = None
+	if container_dn:
+		container_obj = udm_objects.get(udm_modules.get('container/cn'), None, ldap_connection, None, container_dn)
+		container_obj.open()
+		policy_obj = _get_policy_object(container_obj.policies, policy_type, ldap_connection)
+
 	if policy_obj:
 		# a policy object is already associated with the container
 		policy_obj.open()
@@ -262,7 +266,7 @@ def _open_container_policy(container_dn, policy_type, policy_dn, ldap_connection
 		policy_obj.create()
 
 	# make sure that the policy is set at the container
-	if not policy_obj.dn in container_obj.policies:
+	if container_dn and not policy_obj.dn in container_obj.policies:
 		container_obj.policies.append(policy_obj.dn)
 		container_obj.modify()
 
@@ -326,8 +330,7 @@ def set_rdp_values(domain, terminal_server, ldap_connection):
 
 
 def set_xrdp_install_policy(ldap_connection):
-	desktops_container_dn = 'cn=ucc-desktops,cn=computers,%s' % ucr['ldap/base']
-	with _open_container_policy(desktops_container_dn, 'policies/ucc_software', XRDP_INSTALLATION_POLICY_DN, ldap_connection) as installation_policy:
+	with _open_container_policy(None, 'policies/ucc_software', XRDP_INSTALLATION_POLICY_DN, ldap_connection) as installation_policy:
 		installation_policy['pkginstall'] = ['univention-xrdp']
 
 
