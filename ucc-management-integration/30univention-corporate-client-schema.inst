@@ -85,6 +85,11 @@ univention-directory-manager container/cn create "$@" --position "cn=computers,$
 							--set computerPath=1 \
 							--set name="ucc-desktops" || die
 
+univention-directory-manager container/cn create "$@" --position "cn=computers,$ldap_base" \
+							--ignore_exists \
+							--set computerPath=1 \
+							--set name="ucc-xrdpserver" || die
+
 # create default ucc user policy
 univention-directory-manager policies/ucc_user create "$@" --ignore_exists \
 	--position="cn=ucc,cn=policies,$ldap_base" \
