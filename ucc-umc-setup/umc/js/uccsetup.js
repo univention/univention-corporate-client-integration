@@ -302,7 +302,7 @@ define([
 				}, {
 					type: CheckBox,
 					name: 'autoLogin',
-					label: _('Automatic login (the actual authentication occurs on the Citrix farm web interface)'),
+					label: _('Automatic thin client login (the actual authentication occurs on the Citrix farm web interface)'),
 					value: true
 				}]
 			}, {
