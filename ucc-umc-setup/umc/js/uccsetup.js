@@ -349,7 +349,7 @@ define([
 					+ _('<p> 6. <i>Installation with repartitioning and image rollout</i> should be selected as the <b>Boot variant</b> along with the designated image. Warning: All data on that system is lost! If you only want to try UCC without installing it on the hard drive, you can alternatively select <i>Live boot</i>. </p>')
 					+ _('<p> The images are rolled out using PXE. Thus, the BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
 					+ _('<p>After successful installation you can log in with any domain user.</p>')
-					+ _('<p>To configure a UCC system as an XRDP terminal server you need to select the desktop image and assign the <b>UCC software update settings</b> policy <i>xrdp-terminalserver-installation</i>.</p>')
+					+ _('<p>To configure a UCC system as an XRDP terminal server you need to select the desktop image and create the client in <i>ucc-xrdpserver</i> container. A software installation policy is bound to this container. After a reboot the <b>univention-xrdp</b> package is installed automatically.</p>')
 			}];
 		},
 
