@@ -227,7 +227,7 @@ define([
 				}, {
 					type: TextBox,
 					name: 'domain',
-					label: _('Domain name (use xrdp1 for XRDP)')
+					label: _('Domain name (leave empty when connecting to a XRDP terminal server)')
 				}, {
 					type: CheckBox,
 					name: 'sound',
