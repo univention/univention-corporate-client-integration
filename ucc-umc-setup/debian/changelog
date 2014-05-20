@@ -1,3 +1,9 @@
+ucc-umc-setup (0.1.19-1) unstable; urgency=low
+
+  * Bug #34360: adjust policy names/paths and the referencing containers
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 20 May 2014 12:09:24 +0200
+
 ucc-umc-setup (0.1.18-2) unstable; urgency=low
 
   * Update some interface texts (Bug #34360)
