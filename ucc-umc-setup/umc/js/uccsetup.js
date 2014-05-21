@@ -217,7 +217,7 @@ define([
 				}]
 			}, {
 				name: 'terminalServices-thinclient-rdp',
-				headerText: _('Configure acccess to Windows terminal/XRDP server'),
+				headerText: _('Configure acccess to Windows/XRDP terminal server'),
 				helpText: _('<p>This step allows the configuration of remote terminal server access using the RDP protocol.</p><p>You can either access a Microsoft Windows terminal server (using a Windows-based desktop) or a XRDP terminal server (using a Linux-based KDE desktop). To configure an XRDP terminal server, please use the <b>Linux desktop systems configuration / XRDP terminal server</b> option of the UCC setup wizard.</p>'),
 				widgets: [{
 					type: TextBox,
@@ -341,12 +341,14 @@ define([
 				name: 'done',
 				headerText: _('Configuration finished'),
 				helpText: _('<p>Now you can create one or several clients in the <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'computers/computer\')">computer management module</a> by clicking on <b>Add</b> </p>')
-					+ _('<p> 1. Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected. </p>')
-					+ _('<p> 2. Select <i>Univention Corporate Client</i> as the <b>Type</b> of computer. </p>')
-					+ _('<p> 3. Enter the <i>Hostname</i> of the client. </p>')
-					+ _('<p> 4. When selecting <b>Network</b> created earlier, a free IP address is proposed. The MAC address of the client needs to be specified for a working DHCP configuration. </p>')
-					+ _('<p> 5. Now click <i>Next</i>. </p>')
-					+ _('<p> 6. <i>Installation with repartitioning and image rollout</i> should be selected as the <b>Boot variant</b> along with the designated image. Warning: All data on that system is lost! If you only want to try UCC without installing it on the hard drive, you can alternatively select <i>Live boot</i>. </p>')
+					+ '<ol>'
+					+ _('<li>Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected. </li>')
+					+ _('<li>Select <i>Univention Corporate Client</i> as the <b>Type</b> of computer. </li>')
+					+ _('<li>Enter the <i>Hostname</i> of the client. </li>')
+					+ _('<li>When selecting <b>Network</b> created earlier, a free IP address is proposed. The MAC address of the client needs to be specified for a working DHCP configuration. </li>')
+					+ _('<li>Now click <i>Next</i>. </li>')
+					+ _('<li><i>Installation with repartitioning and image rollout</i> should be selected as the <b>Boot variant</b> along with the designated image. Warning: All data on that system is lost! If you only want to try UCC without installing it on the hard drive, you can alternatively select <i>Live system</i>. </li>')
+					+ '</ol>'
 					+ _('<p> The images are rolled out using PXE. Thus, the BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
 					+ _('<p>After successful installation you can log in with any domain user.</p>')
 					+ _('<p>To configure a UCC system as an XRDP terminal server you need to select the desktop image and create the client in <i>ucc-xrdpserver</i> container. A software installation policy is bound to this container. After a reboot the <b>univention-xrdp</b> package is installed automatically.</p>')

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucc-umc-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: \n"
+"POT-Creation-Date: 2014-05-21 22:22+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,3 +12,75 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: umc/python/uccsetup/util.py:390
+msgid "An unknown error occurred."
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:167
+msgid "Applying UCC configuration settings"
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:198
+msgid "Browser settings"
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:215
+msgid "Citrix XenApp settings"
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:234
+msgid "Configuring installation policy for desktop clients"
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:111
+#, python-format
+msgid "Expected list of dicts, but got: %s"
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:259
+msgid ""
+"Installing Citrix Receiver application in image file. This might take a few "
+"minutes to complete."
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:124
+msgid ""
+"Invalid file type! File needs to be a Debian archive (.deb) for 32 bit "
+"architecture."
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:114
+#, python-format
+msgid "Invalid upload data, got: %s"
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:119
+msgid "Invalid upload file path"
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:179
+msgid "Network settings..."
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:205
+msgid "RDP terminal server settings"
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:229
+msgid "Setting UCR variables"
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:172
+msgid ""
+"The Debian package of the Citrix Receiver could not be found. Please make "
+"sure that the file has been uploaded."
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:268
+#, python-format
+msgid "The chosen UCC image file %s could not be found on the local system!"
+msgstr ""
+
+#: umc/python/uccsetup/__init__.py:240
+msgid "UCC images cannot be downloaded! Please check your internet connection."
+msgstr ""
