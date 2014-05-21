@@ -1,0 +1,232 @@
+# Copyright (C) 2014 Univention GmbH
+# This file is distributed under the same license as the ucc-image-toolkit package.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ucc-image-toolkit 2.0.18-3\n"
+"Report-Msgid-Bugs-To: packages@univention.de\n"
+"POT-Creation-Date: 2014-05-21 14:27+0200\n"
+"PO-Revision-Date: 2014-05-21 14:04+0200\n"
+"Last-Translator: Univention GmbH <packages@univention.de>\n"
+"Language-Team: Univention GmbH <packages@univention.de>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#, python-format
+msgid "\r% 6.1f%%  [overall: % 6.1f%%]"
+msgstr "\r% 6.1f%%  [gesamt: % 6.1f%%]"
+
+msgid " ... done\n"
+msgstr " ... erledigt\n"
+
+msgid "Adjusting access rights of image files to 0644 ..."
+msgstr "Anpassen der Zugriffsrechte der Image-Dateien auf 0644 ..."
+
+#, python-format
+msgid ""
+"An error occured while downloading image %s:\n"
+"%s"
+msgstr ""
+"Ein Fehler trat beim Herunterladen des Images %s auf:\n"
+"%s"
+
+#, python-format
+msgid "Another process is currently downloading the UCC image %s."
+msgstr "Ein andere Prozess lädet gerade des UCC-Image %s herunter."
+
+#, python-format
+msgid "Copy join script to %s"
+msgstr "Kopieren des Join-skriptes nach %s"
+
+#, python-format
+msgid "Could not download file (%s - %s): %s"
+msgstr "Die Datei (%s - %s) konnte nicht herunter geladen werden: %s"
+
+#, python-format
+msgid "Decompression of file %s failed: %s!"
+msgstr "Das Entpacken der Datei %s schlug fehl: %s"
+
+#, python-format
+msgid "Downloading and reading image file %s"
+msgstr "Herunterladen und lesen der Image-Datei %s"
+
+#, python-format
+msgid "Downloading file %s [%.1f MB]"
+msgstr "Lade Datei %s herunter [%.1f MB]"
+
+#, python-format
+msgid "ERROR: %s\n"
+msgstr "FEHLER: %s\n"
+
+#, python-format
+msgid "Entry \"%s\" not specified in spec file %s!"
+msgstr "Der Eintrag \"%s\" ist nicht angegeben in der Spec-Datei %s!"
+
+#, python-format
+msgid ""
+"Error downloading image data from server:\n"
+"%s"
+msgstr "Fehler beim Herunterladen der Image-Datei vom Server:\n%s"
+
+#, python-format
+msgid "Executing join script %s"
+msgstr "Ausführen des Join-Skriptes %s"
+
+#, python-format
+msgid "Failed to check whether another download process is running: %s"
+msgstr "Es konnte nicht festgestellt werden, ob ein anderer konkurrierender Prozess läuft: %s"
+
+#, python-format
+msgid "Failed to read spec file %s ... ignoring: %s"
+msgstr "Fehler beim Einlesen der Spec-Datei %s ... wird ignoriert: %s"
+
+#, python-format
+msgid "Failed to remove progress file %s with following error: %s"
+msgstr "Ein Fehler trat beim Entfernen der Fortschrittsdatei %s auf: %s"
+
+#, python-format
+msgid "File %s already exists, removing it for new download."
+msgstr "Die Datei %s existiert bereits, sie wird für das Herunterladen entfernt."
+
+msgid "Finished"
+msgstr "Beendet"
+
+msgid "Finished."
+msgstr "Beendet."
+
+#, python-format
+msgid "Ignoring removal failure of file %s: %s"
+msgstr "Der Fehler beim Entfernen der Datei %s wird ignoriert: %s"
+
+#, python-format
+msgid "Image data could not be removed: %s"
+msgstr "Die Image-Daten konnte nicht entfernt werden: %s"
+
+#, python-format
+msgid ""
+"Image data of spec file %s could not be downloaded from server:\n"
+"%s\n"
+msgstr "Die Image-Daten der Spec-Datei %s konnten nicht vom Server herunter geladen werden:\n%s\n"
+
+msgid "Initializing"
+msgstr "Initialisierung"
+
+#, python-format
+msgid ""
+"Invalid hash value for downloaded file %s!\n"
+"Hash expected: %s\n"
+"Hash received: %s"
+msgstr "Ungültiger Hash-Wert für die herunter geladene Datei %s!\nErwarteter Hash-Wert: %s\nEmpfangener Hash-Wert: %s"
+
+#, python-format
+msgid ""
+"Join script output (stderr):\n"
+"%s"
+msgstr "Join-Skript-Ausgabe (stderr):\n%s"
+
+#, python-format
+msgid ""
+"Join script output (stdout):\n"
+"%s"
+msgstr "Join-Skript-Ausgabe (stdout):\n%s"
+
+#, python-format
+msgid "Malformed spec file %s, missing entry \"%s\"!"
+msgstr "Ungültige Spec-Datei %s mit fehlendem Eintrag \"%s\"!"
+
+#, python-format
+msgid "Need to download in total %d files and %.1f MB of data."
+msgstr "Insgesamt werden %d Dateien und %.1f MB an Daten herunter geladen."
+
+msgid ""
+"No valid UCC server specified via UCR variable ucc/image/download/url. The "
+"image index file could not be opened!"
+msgstr "Über die UCR-Variable ucc/image/download/url wurde kein gültiger UCC-Server angegeben. Die Image-Index-Datei konnte nicht geöffnet werden!"
+
+#, python-format
+msgid ""
+"Not enough free diskspace to download the image!\n"
+"Needed: %s\n"
+"Available: %s"
+msgstr "Auf der Festplatte ist nicht ausreichend freier Speicherplatz vorhanden!\nBenötigter Platz: %s\nVerfügbarer Platz: %s"
+
+msgid "Not enough space left on hard disk."
+msgstr "Auf der Festplatte ist nicht ausreichend freier Speicherplatz vorhanden."
+
+#, python-format
+msgid "Overall: % 6.1f%%"
+msgstr "Gesamt: % 6.1f%%"
+
+#, python-format
+msgid "Overall: % 6.1f%%  current task: % 6.1f%%"
+msgstr "Gesamt: % 6.1f%%  aktuelle Aufgabe: % 6.1f%%"
+
+msgid "Removing all files related to image..."
+msgstr "Entfernen aller zum Image zugehörigen Dateien..."
+
+#, python-format
+msgid "Removing file %s"
+msgstr "Entfernen der Datei %s"
+
+#, python-format
+msgid "Removing image %s"
+msgstr "Entfernen des Images %s"
+
+#, python-format
+msgid "Removing progress file: %s"
+msgstr "Entfernen der Fortschrittsdatei: %s"
+
+msgid "Root password could not be set!"
+msgstr "Das Root-Passwort konnte nicht gesetzt werden!"
+
+#, python-format
+msgid "Running join script %s"
+msgstr "Ausführen des Join-Skriptes %s"
+
+#, python-format
+msgid "Setting root password for image %s"
+msgstr "Setzen des Root-Passwortes für das Image %s"
+
+msgid ""
+"Setting root password in the downloaded image. Please enter the password:"
+msgstr "Setzen des Root-Passwortes für das heruntergeladene Image. Bitte geben Sie das Password ein:"
+
+msgid ""
+"Setting root password in the image to the root password of the current system"
+msgstr "Das Root-Passwort wird für das Images auf das Passwort des aktuellen Systems gesetzt"
+
+msgid "The UCR variable ucc/image/path must be set!"
+msgstr "Die UCR-Variable ucc/image/path muss gesetzt sein!"
+
+#, python-format
+msgid "UCC image path %s does not exists!"
+msgstr "Der UCC-Image-Pfad %s existiert nicht!"
+
+#, python-format
+msgid "Uknown protocol %s."
+msgstr "Unbekanntes Protokoll %s."
+
+msgid "Unknown error"
+msgstr "Unbekannter Fehler"
+
+#, python-format
+msgid "Unpacking image file %s"
+msgstr "Entpacken der Image-Datei %s"
+
+#, python-format
+msgid "Updating progress file: %s"
+msgstr "Aktualisierung der Fortschrittsdatei: %s"
+
+#, python-format
+msgid "Validating hash value of file %s"
+msgstr ""
+
+#, python-format
+msgid "WARN: %s\n"
+msgstr ""
+
+#, python-format
+msgid "Writing progress file %s failed: %s"
+msgstr ""

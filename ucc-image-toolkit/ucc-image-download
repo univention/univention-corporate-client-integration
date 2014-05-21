@@ -33,9 +33,12 @@
 
 from optparse import OptionParser
 import sys
+import os
 
 import univention.debug as ud
 import ucc.images as ucc_images
+from univention.lib.i18n import Translation
+_ = Translation('ucc-image-toolkit').translate
 
 def parse_args():
 	usage = '''%s [options] -s config_file ''' % sys.argv[0]
@@ -45,7 +48,7 @@ def parse_args():
 	#parser.add_option("-r", "--reload", action="store_true", dest="reload", help="Force reloading of file, do not resume downloads")
 	parser.add_option("-p", "--set-root-pw-interactive", action="store_true", default=False, dest="rootpw", help="By default the root password from the current system is set in the image. Use this option to set it interactively")
 	parser.add_option("--skip-hash", action="store_true", default=False, dest="skiphash", help="Skip validation of downloaded files")
-	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = 2, 
+	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = 2,
 		help = 'if given than debugging is activated and set to the specified level [default: %default]' )
 
 	(options, args) = parser.parse_args()
@@ -71,9 +74,9 @@ class CLIProgress(ucc_images.Progress):
 			ucc_images.log_process('Overall: % 6.1f%%' % percent)
 		else:
 			percent_sub = min(100.0, (100.0 * substeps) / self.max_steps)
-			sys.stdout.write('\r% 6.1f%%  [overall: % 6.1f%%]' % (percent_sub, percent))
+			sys.stdout.write(_('\r% 6.1f%%  [overall: % 6.1f%%]') % (percent_sub, percent))
 			if substeps >= self.max_steps:
-				sys.stdout.write(' ... done\n')
+				sys.stdout.write(_(' ... done\n'))
 			sys.stdout.flush()
 
 		self._update_progress_file()

@@ -34,7 +34,8 @@
 from optparse import OptionParser
 import univention.debug as ud
 import ucc.images as ucc_images
-
+from univention.lib.i18n import Translation
+_ = Translation('ucc-image-toolkit').translate
 
 def parse_args():
 	parser = OptionParser()
@@ -59,8 +60,8 @@ if __name__ == "__main__":
 	elif removeimg:
 		try:
 			ucc_images.remove_ucc_image(removeimg)
-			print 'Finished.'
+			print _('Finished.')
 		except (IOError, OSError) as exc:
-			ucc_images.log_error('Image data could not be removed: %s' % exc)
+			ucc_images.log_error(_('Image data could not be removed: %s') % exc)
 
 

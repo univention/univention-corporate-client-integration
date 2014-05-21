@@ -5,4 +5,5 @@ ucc-image-download usr/sbin/
 ucc-image-remove usr/sbin/
 ucc-image-set-join-information usr/sbin/
 ucc-image-add-citrix-receiver usr/sbin/
-src/*	usr/share/pyshared/ucc
+src/*py	usr/share/pyshared/ucc
+src/ucc-image-toolkit.mo usr/share/locale/de/LC_MESSAGES

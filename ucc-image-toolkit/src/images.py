@@ -51,7 +51,7 @@ import time
 import univention.config_registry as ucr
 import univention.debug as ud
 from univention.lib.i18n import Translation
-_ = Translation('ucc-image-management').translate
+_ = Translation('ucc-image-toolkit').translate
 
 
 use_univention_debug = True
@@ -61,13 +61,13 @@ def log_warn(msg):
 	if use_univention_debug:
 		ud.debug(ud.MODULE, ud.WARN, msg)
 	else:
-		sys.stdout.write('WARN: %s\n' % msg)
+		sys.stdout.write(_('WARN: %s\n') % msg)
 
 def log_error(msg):
 	if use_univention_debug:
 		ud.debug(ud.MODULE, ud.ERROR, msg)
 	else:
-		sys.stdout.write('ERROR: %s\n' % msg)
+		sys.stdout.write(_('ERROR: %s\n') % msg)
 
 def log_process(msg):
 	if use_univention_debug:
@@ -183,7 +183,7 @@ def _unxz(infile, keep_src_file=False, progress=_dummy_progress):
 		# remove extracted file in case we do not have enough space
 		if os.path.exists(outfile):
 			os.remove(outfile)
-		_exit(_('Decompression of file %s failed: %s!') % (infile, exc))
+		_exit(_('Decompression of file %s failed: %s') % (infile, exc))
 
 
 def _get_file_size(filename):
@@ -197,12 +197,12 @@ def _get_file_size(filename):
 	elif parts.scheme == 'https':
 		connection = httplib.HTTPSConnection(parts.hostname)
 	else:
-		raise httplib.error('Uknown protocol %s.' % parts.scheme)
+		raise httplib.error(_('Uknown protocol %s.') % parts.scheme)
 
 	connection.request('HEAD', parts.path)
 	response = connection.getresponse()
 	if response.status >= 400:
-		raise httplib.error('Could not download file (%s - %s): %s' % (response.status, httplib.responses.get(response.status, 'Unknown error'), url))
+		raise httplib.error(_('Could not download file (%s - %s): %s') % (response.status, httplib.responses.get(response.status, _('Unknown error')), url))
 	headers = dict(response.getheaders())
 	size = int(headers.get('content-length', '0'))
 	return size
@@ -234,7 +234,7 @@ def _download_file(filename, hash_value=None, progress=_dummy_progress):
 	# remove existing file
 	outfile = os.path.join(UCC_IMAGE_DIRECTORY, filename)
 	if os.path.exists(outfile):
-		log_info('File %s already exists, removing it for new download.' % filename)
+		log_info(_('File %s already exists, removing it for new download.') % filename)
 		os.remove(outfile)
 
 	# split progress into 50% for download and 50% for hash validation (if hash is given)
@@ -255,7 +255,7 @@ def _download_file(filename, hash_value=None, progress=_dummy_progress):
 		def _progress(current_size, file_size):
 			progress(0.2 * current_size + 0.8 * file_size, file_size)
 
-		log_info('Validating hash value of file %s' % filename)
+		log_info(_('Validating hash value of file %s') % filename)
 		digest = _sha256(outfile, _progress)
 		if digest != hash_value:
 			_exit(_('Invalid hash value for downloaded file %s!\nHash expected: %s\nHash received: %s') % (filename, hash_value, digest))
@@ -278,14 +278,14 @@ def _run_join_script(join_script, username=None, password=None):
 
 		# if scripts are provided only execute them instead of running all join scripts
 		cmd += ['--run-scripts', join_script]
-		log_process('Executing join scripts %s' % join_script)
+		log_process(_('Executing join script %s') % join_script)
 		process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 		stdout, stderr = process.communicate()
 
 	if stdout:
-		log_process('Join script output (stdout):\n%s' % stdout)
+		log_process(_('Join script output (stdout):\n%s') % stdout)
 	if stderr:
-		log_warn('Join script output (stderr):\n%s' % stderr)
+		log_warn(_('Join script output (stderr):\n%s') % stderr)
 	if process.returncode != 0:
 		return False
 
@@ -304,10 +304,10 @@ class Progress(object):
 					self._progress_file_handle = None
 
 				# remove file
-				log_info('Removing progress file: %s' % self.progress_file)
+				log_info(_('Removing progress file: %s') % self.progress_file)
 				os.remove(self.progress_file)
 			except (IOError, OSError) as exc:
-				log_warn('Failed to remove progress file %s with following error: %s' % (self.progress_file, exc))
+				log_warn(_('Failed to remove progress file %s with following error: %s') % (self.progress_file, exc))
 			self.progress_file = None
 
 	def _open_progress_file(self):
@@ -322,13 +322,13 @@ class Progress(object):
 			return
 		percent = (100.0 * self.steps) / self.max_steps
 		try:
-			log_info('Updating progress file: %s' % self.progress_file)
+			log_info(_('Updating progress file: %s') % self.progress_file)
 			progress_file = self._open_progress_file()
 			progress_file.write('%s\t%s\t%s' % (os.getpid(), percent, self.message))
 			progress_file.truncate()
 			progress_file.flush()
 		except (IOError, OSError) as exc:
-			log_warn('Writing progress file %s failed: %s' % (self.progress_file, exc))
+			log_warn(_('Writing progress file %s failed: %s') % (self.progress_file, exc))
 
 	def reset(self, max_steps=100):
 		self.max_steps = max_steps
@@ -344,7 +344,7 @@ class Progress(object):
 		self._progress_file_handle = None
 
 	def finish(self):
-		log_process('Finished')
+		log_process(_('Finished'))
 		self.finished = True
 		self._remove_progress_file()
 
@@ -370,10 +370,10 @@ class Progress(object):
 
 		percent = min(100.0, (100.0 * steps) / self.max_steps)
 		if substeps < 0:
-			log_process('Overall: % 6.1f%%' % percent)
+			log_process(_('Overall: % 6.1f%%') % percent)
 		else:
 			percent_sub = min(100.0, (100.0 * substeps) / self.max_steps)
-			log_process('Overall: % 6.1f%%  current task: % 6.1f%%' % (percent, percent_sub))
+			log_process(_('Overall: % 6.1f%%  current task: % 6.1f%%') % (percent, percent_sub))
 
 		self._last_logged_step = steps
 		self._last_logged_substep = substeps
@@ -406,7 +406,7 @@ class UCCImage(object):
 		self.validate()
 
 	def _fix_access_rights(self):
-		log_info('Adjusting access rights of image files to 0644 ...')
+		log_info(_('Adjusting access rights of image files to 0644 ...'))
 		files = [ivalue for ikey, ivalue in self.spec.iteritems() if ikey.startswith('file-')]
 		files.append(self.spec_file)
 		files.append(self.file)
@@ -498,7 +498,7 @@ class UCCImage(object):
 			# wrong format, probably PID
 			pass
 		except (IOError, OSError) as exc:
-			log_warn('Failed to check whether another download process is running: %s' % exc)
+			log_warn(_('Failed to check whether another download process is running: %s') % exc)
 		return False
 
 	@property
@@ -562,7 +562,7 @@ class UCCImage(object):
 
 	def _download_spec_file(self):
 		if not self.has_enough_disk_space():
-			raise IOError('Not enough free diskspace to download the image!\nNeeded: %s\nAvailable: %s' % (self.total_download_size, _free_disk_space(UCC_IMAGE_DIRECTORY)))
+			raise IOError(_('Not enough free diskspace to download the image!\nNeeded: %s\nAvailable: %s') % (self.total_download_size, _free_disk_space(UCC_IMAGE_DIRECTORY)))
 		_download_file(self.spec_file)
 
 	def _download_file(self, key, validate_hash=True, progress=_dummy_progress):
@@ -585,12 +585,12 @@ class UCCImage(object):
 			path = os.path.join(UCC_IMAGE_DIRECTORY, filename)
 			if os.path.exists(path):
 				try:
-					log_info('Removing file %s' % path)
+					log_info(_('Removing file %s') % path)
 					os.remove(path)
 				except (IOError, OSError) as exc:
-					log_warn('Ignoring removal failure of file %s: %s' % (path, exc))
+					log_warn(_('Ignoring removal failure of file %s: %s') % (path, exc))
 
-		log_process('Removing all files related to image...')
+		log_process(_('Removing all files related to image...'))
 		for ikey, ivalue in self.spec.iteritems():
 			if not ikey.startswith('file-'):
 				continue
@@ -621,7 +621,7 @@ class UCCImage(object):
 			# compute file size
 			sizes = self.file_sizes
 			total_progress = 0
-			log_info('Need to download in total %d files and %.1f MB of data.' % (len(sizes), self.total_download_size / 1000**2))
+			log_info(_('Need to download in total %d files and %.1f MB of data.') % (len(sizes), self.total_download_size / 1000**2))
 
 			# download all files -> 70%
 			for ikey, isize in sizes.iteritems():
@@ -635,7 +635,7 @@ class UCCImage(object):
 			# place join script into correct directory
 			join_script_src_path = os.path.join(UCC_IMAGE_DIRECTORY, self.join_script)
 			join_script_dest_path = os.path.join('/usr/lib/univention-install/', self.join_script)
-			log_info('Copy join script to %s' % join_script_dest_path)
+			log_info(_('Copy join script to %s') % join_script_dest_path)
 			shutil.copy(join_script_src_path, join_script_dest_path)
 			os.chmod(join_script_dest_path, 0755)
 
@@ -656,15 +656,15 @@ class UCCImage(object):
 		'''Calls ucc-image-root-password for the image'''
 		cmd = ['/usr/sbin/ucc-image-root-password', '-i', os.path.join(UCC_IMAGE_DIRECTORY, self.file)]
 		if interactive_rootpw:
-			print 'Setting root password in the downloaded image. Please enter the password:'
+			print _('Setting root password in the downloaded image. Please enter the password:')
 			cmd += ['-p']
 		else:
-			log_process('Setting root password in the image to the root password of the current system')
+			log_process(_('Setting root password in the image to the root password of the current system'))
 
 		ret = subprocess.call(cmd)
 		log_info(str(cmd))
 		if ret != 0:
-			log_error('Root password could not be set!')
+			log_error(_('Root password could not be set!'))
 
 	def run_join_script(self, username=None, password=None):
 		return _run_join_script(self.join_script, username, password)
@@ -683,7 +683,7 @@ def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, 
 	try:
 		_check_ucr_variables()
 
-		progress.info(_('Downloading and reading img file %s') % spec_file)
+		progress.info(_('Downloading and reading image file %s') % spec_file)
 		spec_url = '%s/%s' % (UCC_BASE_URL, spec_file)
 		img = UCCImage(spec_url)
 		if img.is_other_download_running:
@@ -699,7 +699,7 @@ def download_ucc_image(spec_file, validate_hash=True, interactive_rootpw=False, 
 		progress.info(_('Finished.'))
 	except (IOError, ValueError, OSError, RuntimeError, httplib.HTTPException) as exc:
 		progress.error(_('Image data of spec file %s could not be downloaded from server:\n%s\n') % (spec_file, exc))
-		log_error('Error downloading image data from server:\n%s' % ''.join(traceback.format_tb(sys.exc_info()[2])))
+		log_error(_('Error downloading image data from server:\n%s') % ''.join(traceback.format_tb(sys.exc_info()[2])))
 
 
 def get_local_ucc_images():
@@ -750,7 +750,7 @@ def get_online_ucc_images():
 				spec_url = '%s/%s' % (UCC_BASE_URL, parts[0])
 				index.append(UCCImage(spec_url))
 			except (IOError, RuntimeError, httplib.HTTPException) as exc:
-				log_warn('Failed to read spec file %s ... ignoring: %s' % (spec_url, exc))
+				log_warn(_('Failed to read spec file %s ... ignoring: %s') % (spec_url, exc))
 
 	finally:
 		if stream:
@@ -776,7 +776,7 @@ def remove_ucc_image(spec_file):
 	'''Remove the specified UCC image.'''
 
 	_check_ucr_variables()
-	log_process('Removing image %s' % spec_file)
+	log_process(_('Removing image %s') % spec_file)
 	spec_file_path = os.path.join(UCC_IMAGE_DIRECTORY, spec_file)
 	img = UCCImage(spec_file_path)
 	if img.is_other_download_running:
