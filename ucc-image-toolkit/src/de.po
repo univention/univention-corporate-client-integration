@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucc-image-toolkit 2.0.18-3\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-05-21 14:27+0200\n"
+"POT-Creation-Date: 2014-05-21 16:17+0200\n"
 "PO-Revision-Date: 2014-05-21 14:04+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -44,8 +44,7 @@ msgstr "Kopieren des Join-skriptes nach %s"
 msgid "Could not download file (%s - %s): %s"
 msgstr "Die Datei (%s - %s) konnte nicht herunter geladen werden: %s"
 
-#, python-format
-msgid "Decompression of file %s failed: %s!"
+msgid "Decompression of file %s failed: %s"
 msgstr "Das Entpacken der Datei %s schlug fehl: %s"
 
 #, python-format
@@ -68,7 +67,9 @@ msgstr "Der Eintrag \"%s\" ist nicht angegeben in der Spec-Datei %s!"
 msgid ""
 "Error downloading image data from server:\n"
 "%s"
-msgstr "Fehler beim Herunterladen der Image-Datei vom Server:\n%s"
+msgstr ""
+"Fehler beim Herunterladen der Image-Datei vom Server:\n"
+"%s"
 
 #, python-format
 msgid "Executing join script %s"
@@ -76,7 +77,9 @@ msgstr "Ausführen des Join-Skriptes %s"
 
 #, python-format
 msgid "Failed to check whether another download process is running: %s"
-msgstr "Es konnte nicht festgestellt werden, ob ein anderer konkurrierender Prozess läuft: %s"
+msgstr ""
+"Es konnte nicht festgestellt werden, ob ein anderer konkurrierender Prozess "
+"läuft: %s"
 
 #, python-format
 msgid "Failed to read spec file %s ... ignoring: %s"
@@ -88,7 +91,8 @@ msgstr "Ein Fehler trat beim Entfernen der Fortschrittsdatei %s auf: %s"
 
 #, python-format
 msgid "File %s already exists, removing it for new download."
-msgstr "Die Datei %s existiert bereits, sie wird für das Herunterladen entfernt."
+msgstr ""
+"Die Datei %s existiert bereits, sie wird für das Herunterladen entfernt."
 
 msgid "Finished"
 msgstr "Beendet"
@@ -108,7 +112,10 @@ msgstr "Die Image-Daten konnte nicht entfernt werden: %s"
 msgid ""
 "Image data of spec file %s could not be downloaded from server:\n"
 "%s\n"
-msgstr "Die Image-Daten der Spec-Datei %s konnten nicht vom Server herunter geladen werden:\n%s\n"
+msgstr ""
+"Die Image-Daten der Spec-Datei %s konnten nicht vom Server herunter geladen "
+"werden:\n"
+"%s\n"
 
 msgid "Initializing"
 msgstr "Initialisierung"
@@ -118,19 +125,26 @@ msgid ""
 "Invalid hash value for downloaded file %s!\n"
 "Hash expected: %s\n"
 "Hash received: %s"
-msgstr "Ungültiger Hash-Wert für die herunter geladene Datei %s!\nErwarteter Hash-Wert: %s\nEmpfangener Hash-Wert: %s"
+msgstr ""
+"Ungültiger Hash-Wert für die herunter geladene Datei %s!\n"
+"Erwarteter Hash-Wert: %s\n"
+"Empfangener Hash-Wert: %s"
 
 #, python-format
 msgid ""
 "Join script output (stderr):\n"
 "%s"
-msgstr "Join-Skript-Ausgabe (stderr):\n%s"
+msgstr ""
+"Join-Skript-Ausgabe (stderr):\n"
+"%s"
 
 #, python-format
 msgid ""
 "Join script output (stdout):\n"
 "%s"
-msgstr "Join-Skript-Ausgabe (stdout):\n%s"
+msgstr ""
+"Join-Skript-Ausgabe (stdout):\n"
+"%s"
 
 #, python-format
 msgid "Malformed spec file %s, missing entry \"%s\"!"
@@ -143,17 +157,23 @@ msgstr "Insgesamt werden %d Dateien und %.1f MB an Daten herunter geladen."
 msgid ""
 "No valid UCC server specified via UCR variable ucc/image/download/url. The "
 "image index file could not be opened!"
-msgstr "Über die UCR-Variable ucc/image/download/url wurde kein gültiger UCC-Server angegeben. Die Image-Index-Datei konnte nicht geöffnet werden!"
+msgstr ""
+"Über die UCR-Variable ucc/image/download/url wurde kein gültiger UCC-Server "
+"angegeben. Die Image-Index-Datei konnte nicht geöffnet werden!"
 
 #, python-format
 msgid ""
 "Not enough free diskspace to download the image!\n"
 "Needed: %s\n"
 "Available: %s"
-msgstr "Auf der Festplatte ist nicht ausreichend freier Speicherplatz vorhanden!\nBenötigter Platz: %s\nVerfügbarer Platz: %s"
+msgstr ""
+"Auf der Festplatte ist nicht ausreichend freier Speicherplatz vorhanden!\n"
+"Benötigter Platz: %s\n"
+"Verfügbarer Platz: %s"
 
 msgid "Not enough space left on hard disk."
-msgstr "Auf der Festplatte ist nicht ausreichend freier Speicherplatz vorhanden."
+msgstr ""
+"Auf der Festplatte ist nicht ausreichend freier Speicherplatz vorhanden."
 
 #, python-format
 msgid "Overall: % 6.1f%%"
@@ -191,11 +211,15 @@ msgstr "Setzen des Root-Passwortes für das Image %s"
 
 msgid ""
 "Setting root password in the downloaded image. Please enter the password:"
-msgstr "Setzen des Root-Passwortes für das heruntergeladene Image. Bitte geben Sie das Password ein:"
+msgstr ""
+"Setzen des Root-Passwortes für das heruntergeladene Image. Bitte geben Sie "
+"das Password ein:"
 
 msgid ""
 "Setting root password in the image to the root password of the current system"
-msgstr "Das Root-Passwort wird für das Images auf das Passwort des aktuellen Systems gesetzt"
+msgstr ""
+"Das Root-Passwort wird für das Images auf das Passwort des aktuellen Systems "
+"gesetzt"
 
 msgid "The UCR variable ucc/image/path must be set!"
 msgstr "Die UCR-Variable ucc/image/path muss gesetzt sein!"

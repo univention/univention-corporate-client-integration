@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.20-1) unstable; urgency=low
+
+  * Bug #34360: fixed fuzzy translation
+
+ -- Alexander Kläser <klaeser@univention.de>  Wed, 21 May 2014 16:18:46 +0200
+
 ucc-image-toolkit (2.0.19-1) unstable; urgency=low
 
   * Bug #34360: added translations
