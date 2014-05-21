@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucc-umc-images\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: \n"
+"POT-Creation-Date: 2014-05-21 16:13+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,3 +12,88 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: umc/js/uccimages.js:118
+msgid "Available"
+msgstr "Verfügbar"
+
+#: umc/js/uccimages.js:180
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: umc/js/uccimages.js:120
+msgid "Deprecated"
+msgstr "Veraltet"
+
+#: umc/js/uccimages.js:93 umc/js/uccimages.js:183
+msgid "Download"
+msgstr "Herunterladen"
+
+#: umc/js/uccimages.js:94
+msgid "Download a UCC image"
+msgstr "Lade ein UCC-Image herunter"
+
+#: umc/js/uccimages.js:201
+msgid "Download error"
+msgstr "Fehler beim Herunterladen"
+
+#: umc/js/uccimages.js:117
+msgid "Downloading"
+msgstr "Herunterladen"
+
+#: umc/js/uccimages.js:192
+msgid "Downloading and registering UCC image"
+msgstr "Herunterladen und Registrierung des UCC-Images"
+
+#: umc/js/uccimages.js:125
+msgid "Image name"
+msgstr "Image-Name"
+
+#: umc/js/uccimages.js:119
+msgid "Incomplete"
+msgstr "Unvollständig"
+
+#: umc/js/uccimages.js:116
+msgid "Installed"
+msgstr "Installiert"
+
+#: umc/js/uccimages.js:179
+#, python-format
+msgid "Please confirm the download of the UCC image %s [%.1f GB]."
+msgstr "Bitte bestätigen Sie das Herunterladen des UCC-Images %s [%.1f GB]."
+
+#: umc/js/uccimages.js:84
+msgid "Refresh"
+msgstr "Aktualisieren"
+
+#: umc/js/uccimages.js:85
+msgid "Refresh the list view"
+msgstr "Aktualisieren der Listenansicht"
+
+#: umc/js/uccimages.js:103
+msgid "Remove"
+msgstr "Entfernen"
+
+#: umc/js/uccimages.js:104
+msgid "Remove a UCC image"
+msgstr "Entfernen eines UCC-Images"
+
+#: umc/js/uccimages.js:228
+#, python-format
+msgid "Removing image %s of %s"
+msgstr "Entferne Image %s von %s"
+
+#: umc/js/uccimages.js:216
+msgid "Removing images..."
+msgstr "Entfernen von Images..."
+
+#: umc/js/uccimages.js:72
+msgid "Search results"
+msgstr "Suchergebnisse"
+
+#: umc/js/uccimages.js:133
+msgid "Status"
+msgstr "Status"
+
+#: umc/js/uccimages.js:129
+msgid "Version"
+msgstr "Version"

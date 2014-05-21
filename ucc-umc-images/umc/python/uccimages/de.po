@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucc-umc-images\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: \n"
+"POT-Creation-Date: 2014-05-21 15:26+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -12,3 +12,11 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
+#: umc/python/uccimages/__init__.py:54
+msgid "Downloading and registering UCC image"
+msgstr "Herunterladen und Registrierung des UCC-Images"
+
+#: umc/python/uccimages/__init__.py:152
+#, python-format
+msgid "Unexpected error: %s"
+msgstr "Unerwarteter Fehler: %s"

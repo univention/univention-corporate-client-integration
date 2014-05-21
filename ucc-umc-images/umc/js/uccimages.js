@@ -112,6 +112,14 @@ define([
 			}];
 
 			// define the grid columns
+			var statusMap = {
+				installed: _('Installed'),
+				downloading: _('Downloading'),
+				available: _('Available'),
+				incomplete: _('Incomplete'),
+				deprecated: _('Deprecated')
+			};
+
 			var columns = [{
 				name: 'description',
 				label: _('Image name'),
@@ -123,7 +131,10 @@ define([
 			}, {
 				name: 'status',
 				label: _('Status'),
-				width: '15%'
+				width: '15%',
+				formatter: function(value) {
+					return statusMap[value];
+				}
 			}];
 
 			// generate the data grid
