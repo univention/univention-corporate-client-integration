@@ -105,11 +105,6 @@ univention-directory-manager container/cn create "$@" --ignore_exists \
 	--set name="services" \
 	--position "cn=univention,$ldap_base" || die
 
-# create ucc terminal server service
-univention-directory-manager settings/service create "$@" --ignore_exists \
-	--set name="UCCTS"  \
-	--position "cn=services,cn=univention,$ldap_base" || die
-
 univention-directory-manager settings/syntax create "$@" --ignore_exists \
      						--position "cn=UCC,cn=custom attributes,cn=univention,$ldap_base" \
      						--set name="UCCAutostart" \
