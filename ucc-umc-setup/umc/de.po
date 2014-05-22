@@ -13,7 +13,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 msgid "UCC Setup"
-msgstr ""
+msgstr "UCC Einrichtung"
 
 msgid "Wizard to configure and set up Univention Corporate Client"
-msgstr ""
+msgstr "Assistent zur Konfiguration von Univention Corporate Client"

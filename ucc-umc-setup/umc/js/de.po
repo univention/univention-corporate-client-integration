@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucc-umc-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-05-21 22:40+0200\n"
+"POT-Creation-Date: 2014-05-22 15:15+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,75 +21,113 @@ msgstr ""
 msgid "<b>Thin client configuration</b>"
 msgstr "<b>Thin-Clients konfigurieren</b>"
 
-#: umc/js/uccsetup.js:350
+#: umc/js/uccsetup.js:359
 msgid ""
 "<li><i>Installation with repartitioning and image rollout</i> should be "
 "selected as the <b>Boot variant</b> along with the designated image. "
 "Warning: All data on that system is lost! If you only want to try UCC "
 "without installing it on the hard drive, you can alternatively select "
 "<i>Live system</i>. </li>"
-msgstr "<li><i>Installation mit Neupartitionierung und Image-Rollout</i> sollte als <b>Startvariante</b> zusammen mit dem vorgesehenen Image ausgewählt werden. Warnung: Alle Daten auf dem System gehen verloren! Zum Test von UCC ohne eine Installation auf der Festplatte kann alternativ die Option <i>Live-System</i> ausgewählt werden.</li>"
+msgstr ""
+"<li><i>Installation mit Neupartitionierung und Image-Rollout</i> sollte als "
+"<b>Startvariante</b> zusammen mit dem vorgesehenen Image ausgewählt werden. "
+"Warnung: Alle Daten auf dem System gehen verloren! Zum Test von UCC ohne "
+"eine Installation auf der Festplatte kann alternativ die Option <i>Live-"
+"System</i> ausgewählt werden.</li>"
 
-#: umc/js/uccsetup.js:345
+#: umc/js/uccsetup.js:354
 msgid ""
 "<li>Depending on whether the client is a desktop or thin client, the fitting "
 "<b>Container</b> should be selected. </li>"
-msgstr "<li>Abhängig davon ob das Client-System ein Thin-Client- oder Desktop-Rechner ist sollte der passende <i>Container</i> gewählt werden.</li>"
+msgstr ""
+"<li>Abhängig davon ob das Client-System ein Thin-Client- oder Desktop-"
+"Rechner ist sollte der passende <i>Container</i> gewählt werden.</li>"
 
-#: umc/js/uccsetup.js:347
+#: umc/js/uccsetup.js:356
 msgid "<li>Enter the <i>Hostname</i> of the client. </li>"
 msgstr "<li>Eingabe des <i>Systemnamens</i> des Clients.</li>"
 
-#: umc/js/uccsetup.js:349
+#: umc/js/uccsetup.js:358
 msgid "<li>Now click <i>Next</i>. </li>"
 msgstr "<li>Bestätigen durch Klick auf <i>Weiter</i>.</li>"
 
-#: umc/js/uccsetup.js:346
+#: umc/js/uccsetup.js:355
 msgid ""
 "<li>Select <i>Univention Corporate Client</i> as the <b>Type</b> of "
 "computer. </li>"
-msgstr "<li>Auswahl von <i>Univention Corporate Client</i> als <b>Typ</b> des Computers.</li>"
+msgstr ""
+"<li>Auswahl von <i>Univention Corporate Client</i> als <b>Typ</b> des "
+"Computers.</li>"
 
-#: umc/js/uccsetup.js:348
+#: umc/js/uccsetup.js:357
 msgid ""
 "<li>When selecting <b>Network</b> created earlier, a free IP address is "
 "proposed. The MAC address of the client needs to be specified for a working "
 "DHCP configuration. </li>"
-msgstr "<li>Durch die Auswahl des <b>Netzwerks</b>, welches zuvor eingerichtet wurde, wird eine freie IP-Adresse vorgeschlagen. Die MAC-Adresse des Clients muss für eine funktionierende DHCP-Konfiguration mit angegeben werden.</li>"
+msgstr ""
+"<li>Durch die Auswahl des <b>Netzwerks</b>, welches zuvor eingerichtet "
+"wurde, wird eine freie IP-Adresse vorgeschlagen. Die MAC-Adresse des Clients "
+"muss für eine funktionierende DHCP-Konfiguration mit angegeben werden.</li>"
 
-#: umc/js/uccsetup.js:352
+#: umc/js/uccsetup.js:361
 msgid ""
 "<p> The images are rolled out using PXE. Thus, the BIOS of the clients needs "
 "to have PXE/netboot enabled in its startup configuration. Once the client is "
-"started the installation is initiated and the client in joined into the UCS "
+"started the installation is initiated and the client is joined into the UCS "
 "domain.</p>"
-msgstr "<p>Die Images werden via PXE ausgerollt. Daher muss im BIOS der Client-Rechner PXE/Netboot als Starteinstellung konfiguriert sein. Sobald der Client gestartet wird wird die Installation angestoßen und der Beitritt in die UCS-Domäne durchgeführt.</p>"
+msgstr ""
+"<p>Die Images werden via PXE ausgerollt. Daher muss im BIOS der Client-"
+"Rechner PXE/Netboot als Starteinstellung konfiguriert sein. Sobald der "
+"Client gestartet wird wird die Installation angestoßen und der Beitritt in "
+"die UCS-Domäne durchgeführt.</p>"
 
-#: umc/js/uccsetup.js:353
+#: umc/js/uccsetup.js:362
 msgid ""
 "<p>After successful installation you can log in with any domain user.</p>"
-msgstr "<p>Nach einer erfolgreichen Installation kann sich jeder Domänenbenutzer an dem Rechner anmelden.</p>"
+msgstr ""
+"<p>Nach einer erfolgreichen Installation kann sich jeder Domänenbenutzer an "
+"dem Rechner anmelden.</p>"
 
-#: umc/js/uccsetup.js:264
+#: umc/js/uccsetup.js:263
 msgid ""
 "<p>After the download has completed, please upload the Citrix Receiver DEB "
 "file to proceed.</p>"
-msgstr "<p>Nach erfolgreichem Herunterladen muss die Citrix-Receiver-DEB-Datei hochgeladen werden, um fortzufahren.</p>"
+msgstr ""
+"<p>Nach erfolgreichem Herunterladen muss die Citrix-Receiver-DEB-Datei "
+"hochgeladen werden, um fortzufahren.</p>"
 
-#: umc/js/uccsetup.js:260
+#: umc/js/uccsetup.js:259
 msgid ""
 "<p>For the configuration, it is necessary to manually download the 32-bit "
 "DEB version of the <a href=\"http://www.citrix.de/downloads/citrix-receiver/"
 "linux/receiver-for-linux-130.html\" target=\"_blank\">Citrix Receiver for "
 "Linux</a> and save it somewhere on your desktop.</p>"
-msgstr "<p>Zur Einrichtung ist es notwendig, die 32-bit DEB-Version des <a href=\"http://www.citrix.de/downloads/citrix-receiver/linux/receiver-for-linux-130.html\" target=\"_blank\">Citrix Receiver für Linux</a> herunter zu laden und sie auf Ihrer Arbeitsfläche abzuspeichern.</p>"
+msgstr ""
+"<p>Zur Einrichtung ist es notwendig, die 32-bit DEB-Version des <a href="
+"\"http://www.citrix.de/downloads/citrix-receiver/linux/receiver-for-"
+"linux-130.html\" target=\"_blank\">Citrix Receiver für Linux</a> herunter zu "
+"laden und sie auf Ihrer Arbeitsfläche abzuspeichern.</p>"
 
-#: umc/js/uccsetup.js:343
+#: umc/js/uccsetup.js:349
 msgid ""
 "<p>Now you can create one or several clients in the <a href=\"javascript:void"
 "(0)\" onclick=\"require('umc/app').openModule('udm', 'computers/"
-"computer')\">computer management module</a> by clicking on <b>Add</b> </p>"
-msgstr "<p>Jetzt können Sie einen oder mehrere Client-Rechner in dem <a href=\"javascript:void(0)\" onclick=\"require('umc/app').openModule('udm', 'computers/computer')\">Verwaltungsmodul für Computer</a> anlegen durch Klick auf <b>Hinzufügen</b>.</p>"
+"computer')\">computer management module</a> by clicking on <b>Add</b>.</p>"
+msgstr ""
+"<p>Jetzt können Sie einen oder mehrere Client-Rechner in dem <a href="
+"\"javascript:void(0)\" onclick=\"require('umc/app').openModule('udm', "
+"'computers/computer')\">Verwaltungsmodul für Computer</a> anlegen durch "
+"Klick auf <b>Hinzufügen</b>.</p>"
+
+#: umc/js/uccsetup.js:351
+msgid ""
+"<p>Now you can create one or several clients in the <i>computer management "
+"module</i> on the DC master system of your domain by clicking on <b>Add</b>."
+"</p>"
+msgstr ""
+"<p>Jetzt können Sie einen oder mehrere Client-Rechner in dem "
+"<i>Verwaltungsmodul für Computer</i> auf dem DC-Master-System Ihrer Domäne "
+"anlegen durch Klick auf <b>Hinzufügen</b>.</p>"
 
 #: umc/js/uccsetup.js:221
 msgid ""
@@ -99,27 +137,48 @@ msgid ""
 "Linux-based KDE desktop). To configure an XRDP terminal server, please use "
 "the <b>Linux desktop systems configuration / XRDP terminal server</b> option "
 "of the UCC setup wizard.</p>"
-msgstr "<p>Dieser Schritt ermöglicht das Einrichten eines entfernten Terminalserver-Zugriffs mittels des RDP-Protokolls.</p><p>Es kann entweder der Zugriff auf einen Microsoft Windows Terminalserver (für einen Windows-Arbeitsplatz) oder auf einen XRDP-Terminalserver (für einen Linux-Arbeitsplatz) konfiguriert werden. Für das Einrichten eines XRDP-Terminalservers kann die Option <b>Linux Desktop-Systeme konfigurieren / XRDP-Terminal-Server einrichten</b> des UCC-Einrichtungsassistenten ausgewählt werden.</p>"
+msgstr ""
+"<p>Dieser Schritt ermöglicht das Einrichten eines entfernten Terminalserver-"
+"Zugriffs mittels des RDP-Protokolls.</p><p>Es kann entweder der Zugriff auf "
+"einen Microsoft Windows Terminalserver (für einen Windows-Arbeitsplatz) oder "
+"auf einen XRDP-Terminalserver (für einen Linux-Arbeitsplatz) konfiguriert "
+"werden. Für das Einrichten eines XRDP-Terminalservers kann die Option "
+"<b>Linux Desktop-Systeme konfigurieren / XRDP-Terminal-Server einrichten</b> "
+"des UCC-Einrichtungsassistenten ausgewählt werden.</p>"
 
-#: umc/js/uccsetup.js:354
+#: umc/js/uccsetup.js:363
 msgid ""
 "<p>To configure a UCC system as an XRDP terminal server you need to select "
 "the desktop image and create the client in <i>ucc-xrdpserver</i> container. "
 "A software installation policy is bound to this container. After a reboot "
 "the <b>univention-xrdp</b> package is installed automatically.</p>"
-msgstr "<p>Um ein UCC-System als XRDP-Terminalserver zu konfigurieren, muss das Desktop-Image ausgewählt und ein Client-Rechner in dem Container <b>ucc-xrdpserver</b> angelegt werden. Eine Software-Update-Richtlinie ist mit diesem Container verknüpft, so dass das Paket <b>univention-xrdp</b> automatisch bei einem Neustart installiert wird.</p>"
+msgstr ""
+"<p>Um ein UCC-System als XRDP-Terminalserver zu konfigurieren, muss das "
+"Desktop-Image ausgewählt und ein Client-Rechner in dem Container <b>ucc-"
+"xrdpserver</b> angelegt werden. Eine Software-Update-Richtlinie ist mit "
+"diesem Container verknüpft, so dass das Paket <b>univention-xrdp</b> "
+"automatisch bei einem Neustart installiert wird.</p>"
 
 #: umc/js/uccsetup.js:133
 msgid ""
 "<p>UCS uses so-called network objects for managing IP adresses and the DNS/"
-"DHCP configuration of the clients. A list of IP addresses is configured and "
-"the next available address is then automatically selected when creating a "
-"computer.</p> </p>You can either use an existing network object or create a "
-"new one. The <b>default</b> network is created during the installation of "
-"the UCS master domain controller. If you want to separate the IP addresses "
-"of the UCS servers and the UCC clients it is recommended to create a new "
+"DHCP configuration of the clients. Network objects specify IP address ranges "
+"and automatically provide the next available address for a new computer "
+"entry.</p> </p>You can either use an existing network object or create a new "
+"one. The <b>default</b> network is created during the installation of the "
+"UCS master domain controller. If you want to separate the IP addresses of "
+"the UCS servers and the UCC clients it is recommended to create a new "
 "network object."
 msgstr ""
+"<p>UCS benutzt ein sogenanntes Netzwerkobjekt um IP-Adressen sowie DNS-/DHCP-"
+"Einstellungen für Client-Systeme zu verwalten. Netzwerkobjekte definieren IP-"
+"Adressbereiche und stellen die nächste freie Adresse für einen neuen "
+"Computer-Eintrag bereit.</p><p>Es ist möglich entweder ein bestehends "
+"Netzwerkobjekt zu verwenden oder ein neues zu erstellen. Das Netzwerk "
+"<b>default</b> wird während der Installation des UCS-Master-"
+"Domänencontrollers erstellt. Wenn es gewünscht ist IP-Adressen zwischen UCS-"
+"Server- und UCC-Client-Systemen zu trennen, sollte ein neues Netzwerkobjekt "
+"angelegt werden.</p>"
 
 #: umc/js/uccsetup.js:122
 msgid ""
@@ -131,75 +190,105 @@ msgid ""
 "web services.</p><p>Note that it is also possible to create custom images. "
 "This is documented in the UCC manual.</p>"
 msgstr ""
+"<p>Univention stellt ein vorkonfiguriertes UCC Thin-Client-Image bereit, "
+"welches regelmäßig aktualisiert wird.</p><p>Das Thin-Client-Image erlaubt "
+"den Zugriff auf verschiedene Terminaldienste (Windows, Citrix XenApp, XRDP) "
+"und stellt darüber hinaus auch eine minimale, lokale LXDE-Arbeitsumgebung "
+"bereid. Zusätzlich ist es möglich den direkten Zugriff auf bestimmte "
+"Webseiten einzurichten, bspw. auf Cloud basierte Web-Dienste.</p><p>Davon "
+"abgesehen ist es auch möglich eigene Images anzulegen. Dies ist im UCC-"
+"Handbuch dokumentiert.</p>"
 
 #: umc/js/uccsetup.js:112
 msgid ""
 "<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. "
 "The image is regularly updated and offers a fully-featured KDE desktop "
-"environment.<p></p>Note that it is also possible to create custom images. "
+"environment.</p><p>Note that it is also possible to create custom images. "
 "This is documented in the UCC manual.</p>"
 msgstr ""
+"<p>Univention stellt ein vorkonfiguriertes Desktop-Image basierend auf "
+"Kubuntu 14.04 zur bereit. Das Image wird regelmäßig aktualisiert und bietet "
+"eine vollständige KDE-Arbeitsumgebung.<p><p>Davon abgesehen ist es auch "
+"möglich eigene Images anzulegen. Dies ist im UCC-Handbuch dokumentiert.</p>"
 
 #: umc/js/uccsetup.js:87
 msgid ""
 "<p>Welcome to the setup wizard for Univention Corporate Client (UCC)!</"
 "p><p>UCC provides support for fully-featured Linux desktop systems running "
 "KDE (both stationary and notebooks) as well as support for Linux-based thin "
-"clients and access to terminal servers (Windows, Citrix XenApp, XRDP).</p>"
+"clients to access terminal servers (Windows, Citrix XenApp, XRDP).</p>"
 msgstr ""
+"<p>Herzlich willkommen auf dem Einrichtungsassistenten für Univention "
+"Corporate Client (UCC)!</p><p>UCC bietet Unterstützung für vollständige "
+"Linux Arbeitsplatzsysteme aufbauend auf KDE (sowohl für Arbeitsplatzrechner "
+"als auch Notebooks) sowie Linux basierende Thin-Clients für den Zugriff auf "
+"Terminalserver (Windows, Citrix XenApp, XRDP).</p>"
 
-#: umc/js/uccsetup.js:333
+#: umc/js/uccsetup.js:332
 msgid ""
 "An error occurred during the configuration of UCC. The following information "
 "will give you some more details on which problems occurred during the "
 "installation process."
 msgstr ""
+"Ein Fehler trat während der Konfiguration von UCC auf. Die nachfolgenden "
+"Informationen detaillieren welche Probleme genau während des "
+"Installationsprozesses auftraten."
 
-#: umc/js/uccsetup.js:683
+#: umc/js/uccsetup.js:703
 msgid ""
 "An unexpected error occurred. More information about the cause of the error "
 "can be found in the log file /var/log/univention/management-console-module-"
 "uccsetup.log. Please retry to configure UCC after resolving any conflicting "
 "issues."
 msgstr ""
+"Ein unerwarteter Fehler trat auf. Genauere Hinweise über die Ursache dieses "
+"Fehlers können in der Log-Datei /var/log/univention/management-console-"
+"module-uccsetup.log gefunden werden. Bitte versuchen sie die Konfiguration "
+"von UCC erneut nach dem Lösen bestehender Konflikte."
 
-#: umc/js/uccsetup.js:367
+#: umc/js/uccsetup.js:376
 msgid "Apply configuration"
 msgstr "Einstellungen anwenden"
 
-#: umc/js/uccsetup.js:690
+#: umc/js/uccsetup.js:710
 msgid "Applying UCC configuration settings"
 msgstr "Anwenden der UCC-Konfigurationseinstellungen"
 
-#: umc/js/uccsetup.js:748
+#: umc/js/uccsetup.js:769
 msgid "At least one configuration type needs to be selected."
 msgstr "Zumindest ein Einrichtungstyp muss ausgewählt werden."
 
-#: umc/js/uccsetup.js:743
+#: umc/js/uccsetup.js:764
 msgid "At least one terminal service needs to be configured."
 msgstr "Zumindest ein Terminal-Dienst muss konfiguriert werden."
 
-#: umc/js/uccsetup.js:305
+#: umc/js/uccsetup.js:304
 msgid ""
 "Automatic thin client login (the actual authentication occurs on the Citrix "
 "farm web interface)"
 msgstr ""
+"Automatische Thin-Client-Anmeldung (die eigentliche Authentifizierung findet "
+"in der Citrix-Farm-Weboberfläche statt)"
 
-#: umc/js/uccsetup.js:316
-msgid "Automatically connect to this web site"
-msgstr "Automatische Verbindung zu dieser Webseite"
+#: umc/js/uccsetup.js:315
+msgid ""
+"Automatically connect to this web site (e.g., <span style=\"text-decoration: "
+"underline\">http://intranet.example.com/groupware</span> )"
+msgstr ""
+"Automatischer Verbindungsaufbau mit folgender Webseite (bspw. <span style="
+"\"text-decoration: underline\">http://intranet.example.com/groupware</span> )"
 
-#: umc/js/uccsetup.js:627
+#: umc/js/uccsetup.js:650
 #, python-format
 msgid "Citrix XenApp server: <i>%s</i>"
 msgstr "Citrix XenApp-Server: <i>%s</i>"
 
-#: umc/js/uccsetup.js:644
+#: umc/js/uccsetup.js:667
 #, python-format
 msgid "Client IP address segment: <i>network %s</i>"
 msgstr "Client IP-Adresssegment: <i>Netzwerk %s</i>"
 
-#: umc/js/uccsetup.js:342
+#: umc/js/uccsetup.js:341
 msgid "Configuration finished"
 msgstr "Konfiguration beendet"
 
@@ -215,7 +304,7 @@ msgstr "Konfiguration "
 msgid "Configure acccess to Windows/XRDP terminal server"
 msgstr "Einrichten des Zugriffs auf Windows-/XRDP-Terminalserver"
 
-#: umc/js/uccsetup.js:244 umc/js/uccsetup.js:292
+#: umc/js/uccsetup.js:244 umc/js/uccsetup.js:291
 msgid "Configure access to Citrix XenApp server"
 msgstr "Einrichten des Zugriffs auf Citrix XenApp-Server"
 
@@ -227,168 +316,186 @@ msgstr "Einrichten des Zugriffs auf einen Citrix XenApp-Terminalserver"
 msgid "Configure access to a Windows/XRDP terminal server"
 msgstr "Einrichten des Zugriffs auf einen Windows-/XRDP-Terminalserver"
 
-#: umc/js/uccsetup.js:310
+#: umc/js/uccsetup.js:309
 msgid "Configure direct web browser access"
-msgstr "Einrichten des direkten Zugriffs über den Web-Browser"
+msgstr "Einrichten des direkten Zugriffs auf eine Webseite"
 
 #: umc/js/uccsetup.js:216
 msgid "Configure direct web browser access to a preconfigured web site"
-msgstr "Einrichten des direkten Zugriffs über den Web-Browser auf einen vorkonfigurierte Webseite"
+msgstr "Einrichten des direkten Zugriffs auf eine vorkonfigurierte Webseite"
 
-#: umc/js/uccsetup.js:323
+#: umc/js/uccsetup.js:322
 msgid "Confirm configuration settings"
 msgstr "Einstellungen bestätigen"
 
-#: umc/js/uccsetup.js:287
+#: umc/js/uccsetup.js:286
 msgid ""
 "Confirm the End User License Agreement of Citrix Receiver (as presented "
 "during the download of the Citrix Receiver)."
 msgstr ""
+"Bestätigung des Endbenutzer-Lizenzvertrag (wie er während des Herunterladens "
+"von Citrix Receiver angezeigt wurde)."
 
 #: umc/js/uccsetup.js:198
 msgid "Default gateway"
-msgstr ""
+msgstr "Standard-Gateway"
 
-#: umc/js/uccsetup.js:630
+#: umc/js/uccsetup.js:653
 #, python-format
 msgid "Direct browser access: <i>%s</i>"
-msgstr ""
+msgstr "Direkter Zugriff auf Webseite: <i>%s</i>"
 
 #: umc/js/uccsetup.js:230
 msgid "Domain name (leave empty when connecting to a XRDP terminal server)"
 msgstr ""
+"Domänenname (freilassen für die Verbindung mit einem XRDP-Terminalserver"
 
 #: umc/js/uccsetup.js:116
 msgid "Download UCC desktop image"
-msgstr ""
+msgstr "Herunterladen des UCC-Desktop-Images"
 
 #: umc/js/uccsetup.js:126
 msgid "Download UCC thin client image"
-msgstr ""
+msgstr "Herunterladen des UCC Thin-Client-Images"
 
-#: umc/js/uccsetup.js:613
+#: umc/js/uccsetup.js:636
 #, python-format
 msgid "Download of UCC desktop image [%.1f GB]"
-msgstr ""
+msgstr "Herunterladen des UCC Desktop-Images [%.1f GB]"
 
-#: umc/js/uccsetup.js:620
+#: umc/js/uccsetup.js:643
 #, python-format
 msgid "Download of UCC thin client image [%.1f GB]"
-msgstr ""
+msgstr "Herunterladen des UCC Thin-Client-Images [%.1f GB]"
 
 #: umc/js/uccsetup.js:111
 msgid "Download preconfigured UCC desktop image"
-msgstr ""
+msgstr "Herunterladen eines vorkonfigurierten UCC Desktop-Images"
 
 #: umc/js/uccsetup.js:121
 msgid "Download preconfigured UCC thinclient image"
-msgstr ""
+msgstr "Herunterladen eines vorkonfigurierten UCC Thin-Client-Image"
 
-#: umc/js/uccsetup.js:582
+#: umc/js/uccsetup.js:592
 msgid "Downloaded UCC thin client image"
-msgstr ""
+msgstr "Herunterladen des UCC Thin-Client-Images"
 
 #: umc/js/uccsetup.js:239
 msgid "Enable USB storage passthrough"
-msgstr ""
+msgstr "Aktiviere Weiterleitung von USB-Speichermedien"
 
 #: umc/js/uccsetup.js:234
 msgid "Enable sound"
-msgstr ""
+msgstr "Soundausgabe aktivieren"
 
 #: umc/js/uccsetup.js:176
 msgid "First IP address"
-msgstr ""
+msgstr "Erste IP-Adresse"
 
-#: umc/js/uccsetup.js:650
+#: umc/js/uccsetup.js:673
 #, python-format
 msgid "Gateway: <i>%s</i>"
-msgstr ""
+msgstr "Gateway: <i>%s</i>"
 
 #: umc/js/uccsetup.js:226
 msgid "Host name of terminal server"
-msgstr ""
+msgstr "Systemnamen des Terminalservers"
 
 #: umc/js/uccsetup.js:185
 msgid "Last IP address"
-msgstr ""
+msgstr "Letzte IP-Adresse"
 
 #: umc/js/uccsetup.js:170
 msgid "Netmask"
-msgstr ""
+msgstr "Netzmaske"
 
 #: umc/js/uccsetup.js:159
 msgid "Network address (e.g., 192.168.10.0)"
-msgstr ""
+msgstr "Netzwerkadresse (bspw. 192.168.10.0)"
 
-#: umc/js/uccsetup.js:132 umc/js/uccsetup.js:634
+#: umc/js/uccsetup.js:132 umc/js/uccsetup.js:657
 msgid "Network configuration"
-msgstr ""
+msgstr "Netzwerkkonfiguration"
 
-#: umc/js/uccsetup.js:647
+#: umc/js/uccsetup.js:670
 #, python-format
 msgid "New client IP address segment: <i>network %s</i>"
-msgstr ""
+msgstr "Neues IP-Adresssegment für Client-Rechner: <i>Netzwerk %s</i>"
 
 #: umc/js/uccsetup.js:194
 msgid ""
 "No default gateway is currently assigned to the subnet via DHCP. Which "
-"gateway should be configured for this network? (in most cases the default "
-"gateway of the UCS server can be used)"
+"gateway should be configured for this network? (In most cases the default "
+"gateway of the UCS server can be used.)"
 msgstr ""
+"Derzeit ist kein Standard-Gateway für das Submnetz über DHCP konfiguriert. "
+"Welcher Gateway soll dem Netzwerk zugewiesen werden? (In den meisten Fällen "
+"kann dafür der Standard-Gateway des UCS-Systems genutzt werden.)"
 
-#: umc/js/uccsetup.js:738
+#: umc/js/uccsetup.js:759
 msgid ""
 "Please confirm the End User License Agreement of Citrix Receiver to proceed."
 msgstr ""
+"Bitte bestätigen Sie Endbenutzer-Lizenzvertrag des Citrix Receivers um "
+"fortzufahren."
 
-#: umc/js/uccsetup.js:324
+#: umc/js/uccsetup.js:323
 msgid "Please confirm the chosen UCC configuration:"
-msgstr ""
+msgstr "Bitte bestätigen sie die ausgewählten UCC-Konfigurationseinstellungen:"
 
 #: umc/js/uccsetup.js:249
 msgid ""
 "Please select the image into which Citrix Receiver should be integrated."
 msgstr ""
+"Bitte wählen Sie das Image aus, in das Citrix Receiver integriert werden "
+"soll."
 
-#: umc/js/uccsetup.js:293
+#: umc/js/uccsetup.js:292
 msgid ""
 "Please specify the URL of the Citrix farm web interface for the user login."
 msgstr ""
+"Bitte geben Sie die URL für die Anmeldung an der Citrix-Farm-Weboberfläche "
+"an."
 
-#: umc/js/uccsetup.js:624
+#: umc/js/uccsetup.js:647
 #, python-format
 msgid "RDP terminal server: <i>%s</i>"
-msgstr ""
+msgstr "RDP-Terminalserver: <i>%s</i>"
 
-#: umc/js/uccsetup.js:368
+#: umc/js/uccsetup.js:377
 msgid "Retry"
-msgstr ""
+msgstr "Wiederholen"
 
 #: umc/js/uccsetup.js:155
 msgid "Specify a new IP segment"
-msgstr ""
+msgstr "Angabe eines neuen IP-Adresssegments"
 
-#: umc/js/uccsetup.js:611
+#: umc/js/uccsetup.js:634
 msgid "Support for linux desktop systems"
-msgstr ""
+msgstr "Unterstützung für Linux-Desktop-Systeme"
 
-#: umc/js/uccsetup.js:617
+#: umc/js/uccsetup.js:640
 msgid "Support for thin clients"
-msgstr ""
+msgstr "Unterstützung für Thin-Clients"
 
-#: umc/js/uccsetup.js:311
+#: umc/js/uccsetup.js:310
 msgid ""
 "The Firefox session automatically starts a Firefox web browser session in "
 "fullscreen. This can be used to configure a direct browser login to a "
 "preconfigured website, e.g., to access cloud-based web services."
 msgstr ""
+"Die Firefox-Sitzung started automatisch den Web-Browser Firefox im "
+"Vollbildmodus. Dies kann dazu genutzt werden, um den direkten Zugriff auf "
+"eine bestimmte Webseite zu konfigurieren, bspw. für den Zugriff auf Cloud "
+"basierte Web-Dienste."
 
-#: umc/js/uccsetup.js:384
+#: umc/js/uccsetup.js:393
 msgid ""
 "The specified file needs to be a Debian package (file ending .deb) for the "
 "32 bit system architecture."
 msgstr ""
+"Die ausgewählte Datei muss ein Debian-Paket (mit der Dateiendung .deb) für "
+"32 bit Systemarchitektur sein."
 
 #: umc/js/uccsetup.js:245
 msgid ""
@@ -397,33 +504,46 @@ msgid ""
 "thin client image (it cannot be distributed in the standard UCC images due "
 "to license restrictions)."
 msgstr ""
+"Dieser Schritt erlaubt die Konfiguration eines XenApp-Terminalservers, der "
+"das Citrix-Protokoll nutzt. Dazu wird Citrix Receiver in das UCC Thin-Client-"
+"Image integriert. (Aufgrund von Lizenzeinschränkungen kann Citrix Receiver "
+"nicht im UCC Standard-Image bereit gestellt werden.)"
 
 #: umc/js/uccsetup.js:253
 msgid "UCC default image"
-msgstr ""
+msgstr "UCC Standard-Image"
 
-#: umc/js/uccsetup.js:332
+#: umc/js/uccsetup.js:331
 msgid "UCC wizard - An error ocurred"
-msgstr ""
+msgstr "UCC Assistent - Ein Fehler trat auf"
 
-#: umc/js/uccsetup.js:298
-msgid "URL for Citrix farm login"
+#: umc/js/uccsetup.js:297
+msgid ""
+"URL for Citrix farm login (e.g., <span style=\"text-decoration: underline"
+"\">http://citrix.example.com/StoreServiceWeb</span> )"
 msgstr ""
+"URL für die Citrix Farm-Anmeldung (bspw. <span style=\"text-decoration: "
+"underline\">http://citrix.example.com/StoreServiceWeb</span> )"
 
 #: umc/js/uccsetup.js:86
 msgid "Univention Corporate Client configuration wizard"
-msgstr ""
+msgstr "Univention Corporate Client Konfigurationsassistent"
 
-#: umc/js/uccsetup.js:281
+#: umc/js/uccsetup.js:280
 msgid "Uploading file"
-msgstr ""
+msgstr "Hochladen der Datei"
 
 #: umc/js/uccsetup.js:143
 msgid "Use an existing configuration"
-msgstr ""
+msgstr "Verwenden einer bestehenden Konfiguration"
 
 #: umc/js/uccsetup.js:204
 msgid ""
-"Which terminal service(s) shall be configured? In most environments only on "
+"Which terminal service(s) shall be configured? In most environments only one "
 "terminal service is used."
 msgstr ""
+"Welche(r) Terminaldienst(e) sollen konfiguriert werden? In den meisten "
+"Umgebungen wird nur ein Terminaldienst benutzt."
+
+#~ msgid "Automatically connect to this web site"
+#~ msgstr "Automatische Verbindung zu dieser Webseite"

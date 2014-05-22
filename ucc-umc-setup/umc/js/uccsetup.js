@@ -84,7 +84,7 @@ define([
 			this.pages = [{
 				name: 'start',
 				headerText: _('Univention Corporate Client configuration wizard'),
-				helpText: _('<p>Welcome to the setup wizard for Univention Corporate Client (UCC)!</p><p>UCC provides support for fully-featured Linux desktop systems running KDE (both stationary and notebooks) as well as support for Linux-based thin clients and access to terminal servers (Windows, Citrix XenApp, XRDP).</p>'),
+				helpText: _('<p>Welcome to the setup wizard for Univention Corporate Client (UCC)!</p><p>UCC provides support for fully-featured Linux desktop systems running KDE (both stationary and notebooks) as well as support for Linux-based thin clients to access terminal servers (Windows, Citrix XenApp, XRDP).</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'fatclient',
@@ -109,7 +109,7 @@ define([
 			}, {
 				name: 'download-fatclient',
 				headerText: _('Download preconfigured UCC desktop image'),
-				helpText: _('<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. The image is regularly updated and offers a fully-featured KDE desktop environment.<p></p>Note that it is also possible to create custom images. This is documented in the UCC manual.</p>'),
+				helpText: _('<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. The image is regularly updated and offers a fully-featured KDE desktop environment.</p><p>Note that it is also possible to create custom images. This is documented in the UCC manual.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'download',
@@ -130,7 +130,7 @@ define([
 			}, {
 				name: 'network',
 				headerText: _('Network configuration'),
-				helpText: _('<p>UCS uses so-called network objects for managing IP adresses and the DNS/DHCP configuration of the clients. A list of IP addresses is configured and the next available address is then automatically selected when creating a computer.</p> </p>You can either use an existing network object or create a new one. The <b>default</b> network is created during the installation of the UCS master domain controller. If you want to separate the IP addresses of the UCS servers and the UCC clients it is recommended to create a new network object.'),
+				helpText: _('<p>UCS uses so-called network objects for managing IP adresses and the DNS/DHCP configuration of the clients. Network objects specify IP address ranges and automatically provide the next available address for a new computer entry.</p> </p>You can either use an existing network object or create a new one. The <b>default</b> network is created during the installation of the UCS master domain controller. If you want to separate the IP addresses of the UCS servers and the UCC clients it is recommended to create a new network object.'),
 				layout: [
 					'useExistingNetwork', 'existingNetwork', 'createNewNetwork',
 					['newNetworkAddress', 'newNetmask'],
@@ -191,7 +191,7 @@ define([
 			}, {
 				name: 'gateway',
 				headerText: _('Configuration of default gateway'),
-				helpText: _('No default gateway is currently assigned to the subnet via DHCP. Which gateway should be configured for this network? (in most cases the default gateway of the UCS server can be used)'),
+				helpText: _('No default gateway is currently assigned to the subnet via DHCP. Which gateway should be configured for this network? (In most cases the default gateway of the UCS server can be used.)'),
 				widgets: [{
 					type: TextBox,
 					name: 'gateway',
@@ -201,7 +201,7 @@ define([
 			}, {
 				name: 'terminalServices-thinclient',
 				headerText: _('Configuration of terminal services'),
-				helpText: _('Which terminal service(s) shall be configured? In most environments only on terminal service is used.'),
+				helpText: _('Which terminal service(s) shall be configured? In most environments only one terminal service is used.'),
 				widgets: [{
 					type: CheckBox,
 					name: 'rdp',
@@ -358,7 +358,7 @@ define([
 				+ _('<li>Now click <i>Next</i>. </li>')
 				+ _('<li><i>Installation with repartitioning and image rollout</i> should be selected as the <b>Boot variant</b> along with the designated image. Warning: All data on that system is lost! If you only want to try UCC without installing it on the hard drive, you can alternatively select <i>Live system</i>. </li>')
 				+ '</ol>'
-				+ _('<p> The images are rolled out using PXE. Thus, the BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
+				+ _('<p> The images are rolled out using PXE. Thus, the BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client is joined into the UCS domain.</p>')
 				+ _('<p>After successful installation you can log in with any domain user.</p>')
 				+ _('<p>To configure a UCC system as an XRDP terminal server you need to select the desktop image and create the client in <i>ucc-xrdpserver</i> container. A software installation policy is bound to this container. After a reboot the <b>univention-xrdp</b> package is installed automatically.</p>');
 			return text;
