@@ -12,8 +12,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-msgid "Download and management of UCC client images"
-msgstr "Herunterladen und verwalten von UCC-Client-Images"
+msgid "Download and management of UCC images"
+msgstr "Herunterladen und Verwalten von UCC-Images"
 
 msgid "UCC Images"
 msgstr "UCC-Images"

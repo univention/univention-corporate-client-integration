@@ -1,3 +1,9 @@
+ucc-umc-images (0.1.9-1) unstable; urgency=low
+
+  * Bug #30379: adpated module description
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 22 May 2014 10:52:12 +0200
+
 ucc-umc-images (0.1.8-1) unstable; urgency=low
 
   * Bug #30379: added translations
