@@ -1,3 +1,13 @@
+ucc-umc-setup (0.1.21-1) unstable; urgency=low
+
+  Bug #34360:
+  * fixed typo in the logic of the JavaScript code
+  * always show the upload page for Citrix Receiver, only hide upload widgets
+  * added example URLs
+  * adjust link to UDM computer module depending on system type
+
+ -- Alexander Kläser <klaeser@univention.de>  Thu, 22 May 2014 11:41:53 +0200
+
 ucc-umc-setup (0.1.20-1) unstable; urgency=low
 
   * Bug #34360: [WIP] added translations

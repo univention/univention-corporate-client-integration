@@ -251,8 +251,7 @@ define([
 					staticValues: [{
 						id: 'default',
 						label: _('UCC default image')
-					}],
-					autoHide: true
+					}]
 					//labelConf: { style: 'margin-bottom: 1.25em;' }
 				}, {
 					type: Text,
@@ -295,7 +294,7 @@ define([
 					type: TextBox,
 					required: true,
 					name: 'url',
-					label: _('URL for Citrix farm login'),
+					label: _('URL for Citrix farm login (e.g., <span style="text-decoration: underline">http://citrix.example.com/StoreServiceWeb</span> )'),
 					validator: function(value) {
 						return _regURL.test(value);
 					}
@@ -313,7 +312,7 @@ define([
 					type: TextBox,
 					required: true,
 					name: 'url',
-					label: _('Automatically connect to this web site'),
+					label: _('Automatically connect to this web site (e.g., <span style="text-decoration: underline">http://intranet.example.com/groupware</span> )'),
 					validator: function(value) {
 						return _regURL.test(value);
 					}
@@ -340,19 +339,29 @@ define([
 			}, {
 				name: 'done',
 				headerText: _('Configuration finished'),
-				helpText: _('<p>Now you can create one or several clients in the <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'computers/computer\')">computer management module</a> by clicking on <b>Add</b> </p>')
-					+ '<ol>'
-					+ _('<li>Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected. </li>')
-					+ _('<li>Select <i>Univention Corporate Client</i> as the <b>Type</b> of computer. </li>')
-					+ _('<li>Enter the <i>Hostname</i> of the client. </li>')
-					+ _('<li>When selecting <b>Network</b> created earlier, a free IP address is proposed. The MAC address of the client needs to be specified for a working DHCP configuration. </li>')
-					+ _('<li>Now click <i>Next</i>. </li>')
-					+ _('<li><i>Installation with repartitioning and image rollout</i> should be selected as the <b>Boot variant</b> along with the designated image. Warning: All data on that system is lost! If you only want to try UCC without installing it on the hard drive, you can alternatively select <i>Live system</i>. </li>')
-					+ '</ol>'
-					+ _('<p> The images are rolled out using PXE. Thus, the BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
-					+ _('<p>After successful installation you can log in with any domain user.</p>')
-					+ _('<p>To configure a UCC system as an XRDP terminal server you need to select the desktop image and create the client in <i>ucc-xrdpserver</i> container. A software installation policy is bound to this container. After a reboot the <b>univention-xrdp</b> package is installed automatically.</p>')
+				helpText: this._getHelpTextForDonePage()
 			}];
+		},
+
+		_getHelpTextForDonePage: function() {
+			var text = '';
+			if (require('umc/modules/udm')) {
+				text += _('<p>Now you can create one or several clients in the <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'computers/computer\')">computer management module</a> by clicking on <b>Add</b>.</p>');
+			} else {
+				text += _('<p>Now you can create one or several clients in the <i>computer management module</i> on the DC master system of your domain by clicking on <b>Add</b>.</p>');
+			}
+			text += '<ol>'
+				+ _('<li>Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected. </li>')
+				+ _('<li>Select <i>Univention Corporate Client</i> as the <b>Type</b> of computer. </li>')
+				+ _('<li>Enter the <i>Hostname</i> of the client. </li>')
+				+ _('<li>When selecting <b>Network</b> created earlier, a free IP address is proposed. The MAC address of the client needs to be specified for a working DHCP configuration. </li>')
+				+ _('<li>Now click <i>Next</i>. </li>')
+				+ _('<li><i>Installation with repartitioning and image rollout</i> should be selected as the <b>Boot variant</b> along with the designated image. Warning: All data on that system is lost! If you only want to try UCC without installing it on the hard drive, you can alternatively select <i>Live system</i>. </li>')
+				+ '</ol>'
+				+ _('<p> The images are rolled out using PXE. Thus, the BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client in joined into the UCS domain.</p>')
+				+ _('<p>After successful installation you can log in with any domain user.</p>')
+				+ _('<p>To configure a UCC system as an XRDP terminal server you need to select the desktop image and create the client in <i>ucc-xrdpserver</i> container. A software installation policy is bound to this container. After a reboot the <b>univention-xrdp</b> package is installed automatically.</p>');
+			return text;
 		},
 
 		buildRendering: function() {
@@ -404,7 +413,7 @@ define([
 			this._infoDeferred.then(lang.hitch(this, function(info) {
 				this.getWidget('gateway', 'gateway').set('value', info.gateway);
 
-				if (inf.rdp_host) {
+				if (info.rdp_host) {
 					// only set if rdp is configured
 					array.forEach(['host', 'domain', 'sound', 'usb'], function(ikey) {
 						this.getWidget('terminalServices-thinclient-rdp', ikey).set('value', info['rdp_' + ikey]);
@@ -419,6 +428,7 @@ define([
 				this.getWidget('terminalServices-thinclient-citrix-login', 'url').set('value', info.citrix_url);
 
 				this.getWidget('terminalServices-thinclient-browser', 'url').set('value', info.browser_url);
+				this._updateCitrixReceiverUploadPage();
 			}));
 		},
 
@@ -604,6 +614,19 @@ define([
 			}, this);
 		},
 
+		_updateCitrixReceiverUploadPage: function() {
+			if (!this._info.citrix_receiver_package_downloaded) {
+				return;
+			}
+			// Citrix Receiver has already been uploaded...
+			// hide all widgets related to the upload
+			this._setCitrixReceiverUploaded(true);  // enables 'next' button
+			array.forEach(['help', 'upload', 'eula'], function(ikey) {
+				var widget = this.getWidget('terminalServices-thinclient-citrix-upload', ikey);
+				widget.set('visible', false);
+			}, this);
+		},
+
 		_updateConfirmationPage: function() {
 			var vals = this.getValues();
 			var msg = '';
@@ -665,9 +688,6 @@ define([
 				return false;
 			}
 			if (pageName == 'download-fatclient' && this._info.has_installed_ucc_desktop) {
-				return false;
-			}
-			if (pageName == 'terminalServices-thinclient-citrix-upload' && this._info.citrix_receiver_package_downloaded) {
 				return false;
 			}
 
@@ -733,8 +753,9 @@ define([
 			if (pageName == 'error') {
 				return 'start'
 			}
-			var eulaAccepted = this.getWidget('terminalServices-thinclient-citrix-upload', 'eula').get('value');
-			if (pageName == 'terminalServices-thinclient-citrix-upload' && !eulaAccepted) {
+			var eulaWidget = this.getWidget('terminalServices-thinclient-citrix-upload', 'eula');
+			var eulaAccepted = eulaWidget.get('value');
+			if (pageName == 'terminalServices-thinclient-citrix-upload' && eulaWidget.get('visible') && !eulaAccepted) {
 				dialog.alert(_('Please confirm the End User License Agreement of Citrix Receiver to proceed.'));
 				return pageName;
 			}
