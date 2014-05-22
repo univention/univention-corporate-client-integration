@@ -32,17 +32,12 @@ define([
 	"dojo/_base/declare",
 	"dojo/_base/lang",
 	"dojo/_base/array",
-	"dojo/on",
 	"dojo/topic",
-	"dojo/Deferred",
 	"dojo/promise/all",
 	"dojox/html/styles",
 	"umc/dialog",
 	"umc/tools",
-	"umc/widgets/Page",
 	"umc/widgets/ProgressBar",
-	"umc/widgets/Form",
-	"umc/widgets/ExpandingTitlePane",
 	"umc/widgets/Module",
 	"umc/widgets/TextBox",
 	"umc/widgets/CheckBox",
@@ -52,7 +47,7 @@ define([
 	"umc/widgets/Wizard",
 	"./uccsetup/RadioButton",
 	"umc/i18n!umc/modules/uccsetup"
-], function(declare, lang, array, on, topic, Deferred, all, styles, dialog, tools, Page, ProgressBar, Form, ExpandingTitlePane, Module, TextBox, CheckBox, ComboBox, Uploader, Text, Wizard, RadioButton, _) {
+], function(declare, lang, array, topic, all, styles, dialog, tools, ProgressBar, Module, TextBox, CheckBox, ComboBox, Uploader, Text, Wizard, RadioButton, _) {
 	styles.insertCssRule('.umc-uccsetup-wizard-indent', 'margin-left: 27px;');
 //	var modulePath = require.toUrl('umc/modules/uccsetup');
 //	styles.insertCssRule('.umc-uccsetup-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
@@ -93,7 +88,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpFatclient',
-					content: ('<p>Linux desktops are installed via PXE netboot within only a few minutes. This option can also be used to setup an XRDP terminal server.</p>'),
+					content: _('<p>Linux desktops are installed via PXE netboot within only a few minutes. This option can also be used to setup an XRDP terminal server.</p>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}, {
 					type: CheckBox,
@@ -103,7 +98,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpThinClient',
-					content: ('<p>UCC provides a thin client image which is installed on the local Compact Flash storage of thin clients (2 GB are required).</p><p>UCC thin clients can access RDP terminal services (Windows terminal server or XRDP), Citrix Xen App terminal services or configure a direct browser login to a web site (e.g. for a web service).</p>'),
+					content: _('<p>UCC provides a thin client image which is installed on the local Compact Flash storage of thin clients (2 GB are required).</p><p>UCC thin clients can access RDP terminal services (Windows terminal server or XRDP), Citrix Xen App terminal services or configure a direct browser login to a web site (e.g. for a web service).</p>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}]
 			}, {
@@ -253,6 +248,12 @@ define([
 						label: _('UCC default image')
 					}]
 					//labelConf: { style: 'margin-bottom: 1.25em;' }
+				}, {
+					type: Text,
+					name: 'fileExists',
+					content: '',  // will be set via this._updateCitrixReceiverUploadPage()
+					visible: false,
+					labelConf: { style: 'margin-bottom: 1.25em;' }
 				}, {
 					type: Text,
 					name: 'help',
@@ -607,7 +608,7 @@ define([
 			tools.forIn({
 				newNetmask: '24',
 				newFirstIP: '{0}.2',
-				newLastIP: '{0}.254',
+				newLastIP: '{0}.254'
 			}, function(ikey, ivalue) {
 				var iwidget = this.getWidget('network', ikey);
 				iwidget.set('value', lang.replace(ivalue, [subnet]));
@@ -615,15 +616,30 @@ define([
 		},
 
 		_updateCitrixReceiverUploadPage: function() {
-			if (!this._info.citrix_receiver_package_downloaded) {
-				return;
+			if (this._info.citrix_receiver_deb_package) {
+				var fileExistsMessage = _('<p>The following Citrix Receiver package file has already been uploaded: <i>%(file)s</i>.</p><p>It is possible to overwrite the existing package file and <a href="javascript:void(0)" onclick="require(\'dijit/registry\').byId(\'%(id)s\').showCitrixReceiverUploadWidgets()">upload a new one</a>.</p>', {
+					file: this._info.citrix_receiver_deb_package,
+					id: this.id
+				});
+				var fileExistsWidget = this.getWidget('terminalServices-thinclient-citrix-upload', 'fileExists');
+				fileExistsWidget.set('content', fileExistsMessage);
+				fileExistsWidget.set('visible', true);
+				this.showCitrixReceiverUploadWidgets(false);
+			} else {
+				this.showCitrixReceiverUploadWidgets(true);
 			}
-			// Citrix Receiver has already been uploaded...
-			// hide all widgets related to the upload
+
+		},
+
+		showCitrixReceiverUploadWidgets: function(visible) {
+			if (visible === undefined) {
+				// toggle visibility
+				visible = !this.getWidget('terminalServices-thinclient-citrix-upload', 'upload').get('visible');
+			}
 			this._setCitrixReceiverUploaded(true);  // enables 'next' button
 			array.forEach(['help', 'upload', 'eula'], function(ikey) {
 				var widget = this.getWidget('terminalServices-thinclient-citrix-upload', ikey);
-				widget.set('visible', false);
+				widget.set('visible', visible);
 			}, this);
 		},
 
@@ -691,10 +707,6 @@ define([
 				return false;
 			}
 
-			// if citrix auto login is checked, do not show the page for configuring
-			// the default session
-			var citrixAutoLogin = this.getWidget('terminalServices-thinclient-citrix-login', 'autoLogin').get('value');
-
 			// general check
 			return this._isPageForClientType(pageName) && this._isPageForTerminalServiceType(pageName);
 		},
@@ -751,7 +763,7 @@ define([
 				return this._applyConfiguration();
 			}
 			if (pageName == 'error') {
-				return 'start'
+				return 'start';
 			}
 			var eulaWidget = this.getWidget('terminalServices-thinclient-citrix-upload', 'eula');
 			var eulaAccepted = eulaWidget.get('value');

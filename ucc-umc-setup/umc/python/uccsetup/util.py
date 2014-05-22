@@ -392,4 +392,12 @@ def add_citrix_receiver_to_ucc_image(image_path, debian_package_path, progress):
 		progress.finish()
 
 
+def remove_citrix_receiver_package():
+	deb_files = [i for i in os.listdir(ucc_images.UCC_IMAGE_DIRECTORY) if i.endswith('_i386.deb')]
+	for ifile in deb_files:
+		ipath = os.path.join(ucc_images.UCC_IMAGE_DIRECTORY, ifile)
+		try:
+			os.remove(ipath)
+		except (OSError, IOError) as exc:
+			MODULE.warn('Could not remove file %s, but ignoring error: %s' % (ipath, exc))
 

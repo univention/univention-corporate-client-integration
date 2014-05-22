@@ -40,7 +40,6 @@ from univention.management.console.modules.sanitizers import DictSanitizer, Stri
 from univention.management.console.protocol.session import TEMPUPLOADDIR
 
 import univention.admin.modules as udm_modules
-import univention.admin.objects as udm_objects
 import ucc.images as ucc_images
 from univention.config_registry import ConfigRegistry
 
@@ -96,7 +95,7 @@ class Instance(Base, ProgressMixin):
 			'rdp_host': rdp_host,
 			'rdp_domain': rdp_domain,
 			'citrix_accepteula': ucr_policy.is_true('citrix/accepteula'),
-			'citrix_receiver_package_downloaded': bool(util.get_citrix_receiver_package_path()),
+			'citrix_receiver_deb_package': os.path.basename(util.get_citrix_receiver_package_path()),
 			'citrix_url': ucr_policy.get('citrix/webinterface', ''),
 			'citrix_autologin': ucr_policy.get('lightdm/autologin/session') == 'XenApp' and ucr_policy.is_true('lightdm/autologin'),
 			'browser_url': ucr_policy.get('firefox/startsite', ''),
@@ -125,6 +124,7 @@ class Instance(Base, ProgressMixin):
 
 		# we got an uploaded file with the following properties:
 		#   name, filename, tmpfile
+		util.remove_citrix_receiver_package()
 		dest_file = os.path.join(ucc_images.UCC_IMAGE_DIRECTORY, filename)
 		MODULE.info('Received file "%s", saving it to "%s"' % (tmpfile, dest_file))
 		shutil.move(tmpfile, dest_file)

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucc-umc-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-05-21 22:22+0200\n"
+"POT-Creation-Date: 2014-05-22 17:16+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -32,7 +32,7 @@ msgstr "Citrix XenApp-Einstellungen"
 msgid "Configuring installation policy for desktop clients"
 msgstr "Einrichten der Installationsrichtlinien für Desktop-Clients"
 
-#: umc/python/uccsetup/__init__.py:111
+#: umc/python/uccsetup/__init__.py:110
 #, python-format
 msgid "Expected list of dicts, but got: %s"
 msgstr "Erwartet wird eine Liste von Dicts, gesendet wurde: %s"
@@ -41,20 +41,24 @@ msgstr "Erwartet wird eine Liste von Dicts, gesendet wurde: %s"
 msgid ""
 "Installing Citrix Receiver application in image file. This might take a few "
 "minutes to complete."
-msgstr "Installation der Anwendung Citrix Receiver in der Image-Datei. Dies kann einige Minuten in Anspruch nehmen."
+msgstr ""
+"Installation der Anwendung Citrix Receiver in der Image-Datei. Dies kann "
+"einige Minuten in Anspruch nehmen."
 
-#: umc/python/uccsetup/__init__.py:124
+#: umc/python/uccsetup/__init__.py:123
 msgid ""
 "Invalid file type! File needs to be a Debian archive (.deb) for 32 bit "
 "architecture."
-msgstr "Ungültiger Dateityp! Die Datei muss ein Debian-Archiv (.deb) für 32 bit Architektur sein."
+msgstr ""
+"Ungültiger Dateityp! Die Datei muss ein Debian-Archiv (.deb) für 32 bit "
+"Architektur sein."
 
-#: umc/python/uccsetup/__init__.py:114
+#: umc/python/uccsetup/__init__.py:113
 #, python-format
 msgid "Invalid upload data, got: %s"
 msgstr "Ungültige Daten, erhielt: %s"
 
-#: umc/python/uccsetup/__init__.py:119
+#: umc/python/uccsetup/__init__.py:118
 msgid "Invalid upload file path"
 msgstr "Ungültiger Hochladepfade"
 
@@ -74,13 +78,19 @@ msgstr "Setzen von UCR-Variablen"
 msgid ""
 "The Debian package of the Citrix Receiver could not be found. Please make "
 "sure that the file has been uploaded."
-msgstr "Das Debian-Paket des Citrix Receivers konnte nicht gefunden werden. Bitte stellen Sie sicher, dass die Datei hochgeladen wurde."
+msgstr ""
+"Das Debian-Paket des Citrix Receivers konnte nicht gefunden werden. Bitte "
+"stellen Sie sicher, dass die Datei hochgeladen wurde."
 
 #: umc/python/uccsetup/__init__.py:268
 #, python-format
 msgid "The chosen UCC image file %s could not be found on the local system!"
-msgstr "Die ausgewählte UCC-Image-Date %s konnte nicht auf dem lokalen System gefunden werden!"
+msgstr ""
+"Die ausgewählte UCC-Image-Date %s konnte nicht auf dem lokalen System "
+"gefunden werden!"
 
 #: umc/python/uccsetup/__init__.py:240
 msgid "UCC images cannot be downloaded! Please check your internet connection."
-msgstr "UCC-Images können nicht herunter geladen werden! Bitte überprüfen sich die Internetverbindung."
+msgstr ""
+"UCC-Images können nicht herunter geladen werden! Bitte überprüfen sich die "
+"Internetverbindung."
