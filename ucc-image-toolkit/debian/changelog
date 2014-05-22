@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.20-3) unstable; urgency=low
+
+  * Switch back to standard compression (yields better compression results) (Bug #34310)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Thu, 22 May 2014 08:38:35 +0200
+
 ucc-image-toolkit (2.0.20-2) unstable; urgency=low
 
   * Switch entirely to external package sources (Bug #34310)
