@@ -1,3 +1,10 @@
+ucc-umc-setup (0.1.25-1) unstable; urgency=low
+
+  * Bug #34360: only show the 'downloaded image' entry on citrix page if
+    download has been selected
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 23 May 2014 16:26:12 +0200
+
 ucc-umc-setup (0.1.24-1) unstable; urgency=low
 
   * Bug #34360: updated translations

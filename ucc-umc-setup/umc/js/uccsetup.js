@@ -388,7 +388,6 @@ define([
 			var networkAddressWidget = this.getWidget('network', 'newNetworkAddress');
 			networkAddressWidget.on('keyup', lang.hitch(this, '_updateNetworkDefaults'));
 			this._setCitrixReceiverUploaded(false);
-			this._updateDownloadThinClient();
 		},
 
 		_checkUploadFile: function(fileInfo) {
@@ -589,7 +588,7 @@ define([
 		_updateDownloadThinClient: function() {
 			var downloadThinClient = this.getWidget('download-thinclient', 'download').get('value');
 			var staticValues = [];
-			if (downloadThinClient) {
+			if (downloadThinClient && this._isPageVisible('download-thinclient')) {
 				staticValues = [{
 					id: '_DEFAULT_',
 					label: _('Downloaded UCC thin client image')
@@ -597,6 +596,7 @@ define([
 			}
 			var uccImageWidget = this.getWidget('terminalServices-thinclient-citrix-upload', 'image');
 			uccImageWidget.set('staticValues', staticValues);
+			uccImageWidget.setInitialValue(null);
 		},
 
 		_updateNetworkDefaults: function() {
@@ -630,7 +630,6 @@ define([
 			} else {
 				this.showCitrixReceiverUploadWidgets(true);
 			}
-
 		},
 
 		showCitrixReceiverUploadWidgets: function(visible) {
@@ -761,6 +760,9 @@ define([
 			if (nextPage == 'confirm') {
 				this._updateConfirmationPage();
 			}
+			if (pageName == 'download-thinclient') {
+				this._updateDownloadThinClient();
+			}
 			if (pageName == 'confirm') {
 				return this._applyConfiguration();
 			}
@@ -769,9 +771,16 @@ define([
 			}
 			var eulaWidget = this.getWidget('terminalServices-thinclient-citrix-upload', 'eula');
 			var eulaAccepted = eulaWidget.get('value');
-			if (pageName == 'terminalServices-thinclient-citrix-upload' && eulaWidget.get('visible') && !eulaAccepted) {
-				dialog.alert(_('Please confirm the End User License Agreement of Citrix Receiver to proceed.'));
-				return pageName;
+			var imageWidget = this.getWidget('terminalServices-thinclient-citrix-upload', 'image')
+			if (pageName == 'terminalServices-thinclient-citrix-upload') {
+				if (eulaWidget.get('visible') && !eulaAccepted) {
+					dialog.alert(_('Please confirm the End User License Agreement of Citrix Receiver to proceed.'));
+					return pageName;
+				}
+				if (!imageWidget.get('value')) {
+					dialog.alert(_('Please specify a UCC image into which Citrix Receiver will be integrated.'));
+					return pageName;
+				}
 			}
 			var isAtLeastOneServiceSelected = this._getTerminalServices().length > 0;
 			if (pageName == 'terminalServices-thinclient' && !isAtLeastOneServiceSelected) {

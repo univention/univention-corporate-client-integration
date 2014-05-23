@@ -86,7 +86,7 @@ msgstr ""
 #, python-format
 msgid "The chosen UCC image file %s could not be found on the local system!"
 msgstr ""
-"Die ausgewählte UCC-Image-Date %s konnte nicht auf dem lokalen System "
+"Die ausgewählte UCC-Image-Datei %s konnte nicht auf dem lokalen System "
 "gefunden werden!"
 
 #: umc/python/uccsetup/__init__.py:240
