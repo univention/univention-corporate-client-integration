@@ -135,7 +135,7 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'useNetwork',
 					name: 'useExistingNetwork',
-					label: _('Use an existing configuration'),
+					label: _('Use an existing network object'),
 					checked: true,
 					labelConf: { style: 'margin-top: 0'	}
 				}, {
@@ -147,7 +147,7 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'useNetwork',
 					name: 'createNewNetwork',
-					label: _('Specify a new IP segment')
+					label: _('Create a new network object')
 				}, {
 					type: TextBox,
 					name: 'newNetworkAddress',
@@ -196,7 +196,7 @@ define([
 			}, {
 				name: 'terminalServices-thinclient',
 				headerText: _('Configuration of terminal services'),
-				helpText: _('Which terminal service(s) shall be configured? In most environments only one terminal service is used.'),
+				helpText: _('Which terminal service(s) shall be configured?'),
 				widgets: [{
 					type: CheckBox,
 					name: 'rdp',
@@ -213,7 +213,7 @@ define([
 			}, {
 				name: 'terminalServices-thinclient-rdp',
 				headerText: _('Configure acccess to Windows/XRDP terminal server'),
-				helpText: _('<p>This step allows the configuration of remote terminal server access using the RDP protocol.</p><p>You can either access a Microsoft Windows terminal server (using a Windows-based desktop) or a XRDP terminal server (using a Linux-based KDE desktop). To configure an XRDP terminal server, please use the <b>Linux desktop systems configuration / XRDP terminal server</b> option of the UCC setup wizard.</p>'),
+				helpText: _('<p>This step allows the configuration of remote terminal server access using the RDP protocol.</p><p>You can either access a Microsoft Windows terminal server (using a Windows-based desktop) or an XRDP terminal server (using a Linux-based KDE desktop). To configure an XRDP terminal server, please use the <b>Linux desktop systems configuration / XRDP terminal server</b> option of the UCC setup wizard.</p>'),
 				widgets: [{
 					type: TextBox,
 					required: true,
@@ -222,7 +222,7 @@ define([
 				}, {
 					type: TextBox,
 					name: 'domain',
-					label: _('Domain name (leave empty when connecting to a XRDP terminal server)')
+					label: _('Domain name (leave empty when connecting to an XRDP terminal server)')
 				}, {
 					type: CheckBox,
 					name: 'sound',
@@ -261,7 +261,7 @@ define([
 				}, {
 					type: Uploader,
 					name: 'upload',
-					label: _('<p>After the download has completed, please upload the Citrix Receiver DEB file to proceed.</p>'),
+					label: _('<p>After the download has completed, please upload the Citrix Receiver DEB file to proceed. The Citrix Receiver is the automatically installed into the selected image.</p>'),
 					command: 'uccsetup/upload',
 					showClearButton: false,
 					maxSize: 30000000,
@@ -352,16 +352,18 @@ define([
 				text += _('<p>Now you can create one or several clients in the <i>computer management module</i> on the DC master system of your domain by clicking on <b>Add</b>.</p>');
 			}
 			text += '<ol>'
-				+ _('<li>Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected. </li>')
+				+ '<li>'
+				+ _('<p>Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected.</p>')
+				+ _('<p>To configure a UCC system as an XRDP terminal server you need to select the desktop image and create the client in <i>ucc-xrdpserver</i> container. A software installation policy is bound to this container. After a reboot the <b>univention-xrdp</b> package is installed automatically.</p>')
+				+ '</li>'
 				+ _('<li>Select <i>Univention Corporate Client</i> as the <b>Type</b> of computer. </li>')
 				+ _('<li>Enter the <i>Hostname</i> of the client. </li>')
 				+ _('<li>When selecting <b>Network</b> created earlier, a free IP address is proposed. The MAC address of the client needs to be specified for a working DHCP configuration. </li>')
 				+ _('<li>Now click <i>Next</i>. </li>')
 				+ _('<li><i>Installation with repartitioning and image rollout</i> should be selected as the <b>Boot variant</b> along with the designated image. Warning: All data on that system is lost! If you only want to try UCC without installing it on the hard drive, you can alternatively select <i>Live system</i>. </li>')
 				+ '</ol>'
-				+ _('<p> The images are rolled out using PXE. Thus, the BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client is joined into the UCS domain.</p>')
-				+ _('<p>After successful installation you can log in with any domain user.</p>')
-				+ _('<p>To configure a UCC system as an XRDP terminal server you need to select the desktop image and create the client in <i>ucc-xrdpserver</i> container. A software installation policy is bound to this container. After a reboot the <b>univention-xrdp</b> package is installed automatically.</p>');
+				+ _('<p>The images are rolled out using PXE after booting a system. Thus, the BIOS of the clients needs to have PXE/netboot enabled in its startup configuration. Once the client is started the installation is initiated and the client is joined into the UCS domain.</p>')
+				+ _('<p>After successful installation you can log in with any domain user.</p>');
 			return text;
 		},
 
@@ -680,10 +682,10 @@ define([
 						networkLabel = ientry.label;
 					}
 				});
-				msg += '<li>' + _('Client IP address segment: <i>network %s</i>', networkLabel) + '</li>';
+				msg += '<li>' + _('Client network object: <i>network %s</i>', networkLabel) + '</li>';
 			}
 			else {
-				msg += '<li>' + _('New client IP address segment: <i>network %s</i>', vals.network.address) + '</li>';
+				msg += '<li>' + _('New client network object: <i>network %s</i>', vals.network.address) + '</li>';
 			}
 			if (vals.gateway) {
 				msg += '<li>' + _('Gateway: <i>%s</i>', vals.gateway) + '</li>';
