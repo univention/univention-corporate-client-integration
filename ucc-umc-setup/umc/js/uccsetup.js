@@ -627,6 +627,7 @@ define([
 				fileExistsWidget.set('content', fileExistsMessage);
 				fileExistsWidget.set('visible', true);
 				this.showCitrixReceiverUploadWidgets(false);
+				this._setCitrixReceiverUploaded(true);  // enable next button
 			} else {
 				this.showCitrixReceiverUploadWidgets(true);
 			}
@@ -637,7 +638,6 @@ define([
 				// toggle visibility
 				visible = !this.getWidget('terminalServices-thinclient-citrix-upload', 'upload').get('visible');
 			}
-			this._setCitrixReceiverUploaded(true);  // enables 'next' button
 			array.forEach(['help', 'upload', 'eula'], function(ikey) {
 				var widget = this.getWidget('terminalServices-thinclient-citrix-upload', ikey);
 				widget.set('visible', visible);
@@ -771,7 +771,7 @@ define([
 			}
 			var eulaWidget = this.getWidget('terminalServices-thinclient-citrix-upload', 'eula');
 			var eulaAccepted = eulaWidget.get('value');
-			var imageWidget = this.getWidget('terminalServices-thinclient-citrix-upload', 'image')
+			var imageWidget = this.getWidget('terminalServices-thinclient-citrix-upload', 'image');
 			if (pageName == 'terminalServices-thinclient-citrix-upload') {
 				if (eulaWidget.get('visible') && !eulaAccepted) {
 					dialog.alert(_('Please confirm the End User License Agreement of Citrix Receiver to proceed.'));
