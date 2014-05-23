@@ -41,11 +41,11 @@ msgid ""
 "<b>Container</b> should be selected. </li>"
 msgstr ""
 "<li>Abhängig davon ob das Client-System ein Thin-Client- oder Desktop-"
-"Rechner ist sollte der passende <i>Container</i> gewählt werden.</li>"
+"Rechner ist sollte der passende <b>Container</b> gewählt werden.</li>"
 
 #: umc/js/uccsetup.js:357
 msgid "<li>Enter the <i>Hostname</i> of the client. </li>"
-msgstr "<li>Eingabe des <i>Rechnernames</i> des Clients.</li>"
+msgstr "<li>Eingabe des <b>Rechnernamens</b> des Clients.</li>"
 
 #: umc/js/uccsetup.js:359
 msgid "<li>Now click <i>Next</i>. </li>"
@@ -76,8 +76,8 @@ msgid ""
 "started the installation is initiated and the client is joined into the UCS "
 "domain.</p>"
 msgstr ""
-"<p>Die Images werden via PXE ausgerollt. Daher muss im BIOS der Client-"
-"Rechner PXE/Netboot als Starteinstellung konfiguriert sein. Sobald der "
+"<p>Die Images werden über PXE ausgerollt. Dazu muss im BIOS der Clients"
+"PXE/Netboot als Starteinstellung konfiguriert sein. Sobald der "
 "Client gestartet wird wird die Installation angestoßen und der Beitritt in "
 "die UCS-Domäne durchgeführt.</p>"
 
@@ -113,6 +113,8 @@ msgid ""
 "<p>Linux desktops are installed via PXE netboot within only a few minutes. "
 "This option can also be used to setup an XRDP terminal server.</p>"
 msgstr ""
+"<p>Linux-Desktops können damit über einen PXE-Netboot in wenigen Minuten installiert werden. "
+"Diese Option wird auch verwendet um einen XRDP-Terminalserver zu installieren.</p>"
 
 #: umc/js/uccsetup.js:350
 msgid ""
@@ -187,6 +189,11 @@ msgid ""
 "Xen App terminal services or configure a direct browser login to a web site "
 "(e.g. for a web service).</p>"
 msgstr ""
+"<p>UCC stell ein Thin Client-Image bereit, dass auch Thin Clients mit Compact "
+"Flash-Speicher installiert wird (2 GB sind nötig).</p><p>UCC Thin Clients "
+"können auch RDP-Terminaldienste (Windows-Terminalserver oder XRDP), Citrix "
+"Xen App-Terminaldienst oder auf eine vorkonfigurierte Webseite zugreifen "
+"(z.B. für einen Cloud-Dienst).</p>"
 
 #: umc/js/uccsetup.js:128
 msgid ""
@@ -202,11 +209,11 @@ msgstr ""
 "<p>UCS benutzt ein sogenanntes Netzwerkobjekt um IP-Adressen sowie DNS-/DHCP-"
 "Einstellungen für Client-Systeme zu verwalten. Netzwerkobjekte definieren IP-"
 "Adressbereiche und stellen die nächste freie Adresse für einen neuen "
-"Computer-Eintrag bereit.</p><p>Es ist möglich entweder ein bestehends "
-"Netzwerkobjekt zu verwenden oder ein neues zu erstellen. Das Netzwerk "
+"Computer-Eintrag bereit.</p><p>Sie können entweder ein bestehendes "
+"Netzwerkobjekt verwenden oder ein neues erstellen. Das Netzwerk "
 "<b>default</b> wurde während der Installation des UCS-Master-"
-"Domänencontrollers erstellt. Wenn es gewünscht ist, IP-Adressen zwischen UCS-"
-"Server- und UCC-Client-Systemen zu trennen, sollte ein neues Netzwerkobjekt "
+"Domänencontrollers erstellt. Wenn IP-Adressen zwischen UCS-Server-"
+"und UCC-Client-Systemen getrennt werden sollen, sollte ein neues Netzwerkobjekt "
 "angelegt werden.</p>"
 
 #: umc/js/uccsetup.js:117
@@ -235,8 +242,8 @@ msgid ""
 "environment.</p><p>Note that it is also possible to create custom images. "
 "This is documented in the UCC manual.</p>"
 msgstr ""
-"<p>Univention stellt ein vorkonfiguriertes Desktop-Image basierend auf "
-"Kubuntu 14.04 zur bereit. Das Image wird regelmäßig aktualisiert und bietet "
+"<p>Univention stellt ein auf Kubuntu 14.04 basierendes, vorkonfiguriertes "
+"Desktop-Image bereit. Das Image wird regelmäßig aktualisiert und bietet "
 "eine vollständige KDE-Arbeitsumgebung.<p><p>Der Bau eigener UCC-Images ist "
 "ebenfalls möglich. Weitere Informationen finden sich im UCC-Handbuch.</p>"
 
@@ -248,7 +255,7 @@ msgid ""
 "clients to access terminal servers (Windows, Citrix XenApp, XRDP).</p>"
 msgstr ""
 "<p>Herzlich willkommen im Einrichtungsassistenten für Univention Corporate "
-"Client (UCC)!</p><p>UCC unterstützt KDE-basierte Linux-Arbeitsplatzsysteme "
+"Client (UCC)!</p><p>UCC unterstützt KDE-basierte Linux-Desktops "
 "(sowohl für Arbeitsplatzrechner als auch Notebooks) sowie Linux-basierte "
 "Thin Clients für den Zugriff auf Terminalserver (Windows, Citrix XenApp, "
 "XRDP).</p>"
@@ -459,7 +466,7 @@ msgid ""
 msgstr ""
 "Derzeit ist kein Standard-Gateway für das Subnetz über DHCP konfiguriert. "
 "Welches Gateway soll dem Netzwerk zugewiesen werden? (In den meisten Fällen "
-"kann dafür der Standard-Gateway des UCS-Systems genutzt werden.)"
+"kann dafür das Standard-Gateway des UCS-Systems genutzt werden.)"
 
 #: umc/js/uccsetup.js:771
 msgid ""
@@ -497,7 +504,7 @@ msgstr "Wiederholen"
 
 #: umc/js/uccsetup.js:150
 msgid "Specify a new IP segment"
-msgstr "Angabe eines neuen IP-Adresssegments"
+msgstr "Angabe eines neuen Netzwerkobjekts"
 
 #: umc/js/uccsetup.js:650
 msgid "Support for linux desktop systems"
@@ -564,15 +571,11 @@ msgstr "Hochladen der Datei"
 
 #: umc/js/uccsetup.js:138
 msgid "Use an existing configuration"
-msgstr "Verwenden einer bestehenden Konfiguration"
+msgstr "Verwenden eines bestehenden Netzwerkobjekts"
 
 #: umc/js/uccsetup.js:199
-msgid ""
-"Which terminal service(s) shall be configured? In most environments only one "
-"terminal service is used."
-msgstr ""
-"Welche(r) Terminaldienst(e) sollen konfiguriert werden? In den meisten "
-"Umgebungen wird nur ein Terminaldienst benutzt."
+msgid ""Which terminal service(s) shall be configured?"
+msgstr "Welche(r) Terminaldienst(e) sollen konfiguriert werden?"
 
 #~ msgid "Automatically connect to this web site"
 #~ msgstr "Automatische Verbindung zu dieser Webseite"
