@@ -1,3 +1,10 @@
+ucc-server (2.0.0-1) unstable; urgency=low
+
+  * Bump version and add a meta package to support updates for the UCC app in the
+    Univention App Center (Bug #34310)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Mon, 26 May 2014 15:35:06 +0200
+
 ucc-server (1.0.1-2) unstable; urgency=low
 
   * Remove dependency on python-univention-directory-manager-ucc (Bug #34310)
