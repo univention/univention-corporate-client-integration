@@ -346,9 +346,10 @@ define([
 
 		_getHelpTextForDonePage: function() {
 			var text = '';
-			if (require('umc/modules/udm')) {
+			try {
+				require('umc/modules/udm');
 				text += _('<p>Now you can create one or several clients in the <a href="javascript:void(0)" onclick="require(\'umc/app\').openModule(\'udm\', \'computers/computer\')">computer management module</a> by clicking on <b>Add</b>.</p>');
-			} else {
+			} catch(e) {
 				text += _('<p>Now you can create one or several clients in the <i>computer management module</i> on the DC master system of your domain by clicking on <b>Add</b>.</p>');
 			}
 			text += '<ol>'

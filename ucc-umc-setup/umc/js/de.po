@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucc-umc-setup\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-05-23 16:31+0200\n"
+"POT-Creation-Date: 2014-05-26 10:31+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "<b>Thin client configuration</b>"
 msgstr "<b>Thin Clients konfigurieren</b>"
 
-#: umc/js/uccsetup.js:363
+#: umc/js/uccsetup.js:364
 msgid ""
 "<li><i>Installation with repartitioning and image rollout</i> should be "
 "selected as the <b>Boot variant</b> along with the designated image. "
@@ -35,15 +35,15 @@ msgstr ""
 "eine Installation auf der Festplatte kann alternativ die Option <i>Live-"
 "System</i> ausgewählt werden.</li>"
 
-#: umc/js/uccsetup.js:360
+#: umc/js/uccsetup.js:361
 msgid "<li>Enter the <i>Hostname</i> of the client. </li>"
 msgstr "<li>Eingabe des <b>Rechnernamens</b> des Clients.</li>"
 
-#: umc/js/uccsetup.js:362
+#: umc/js/uccsetup.js:363
 msgid "<li>Now click <i>Next</i>. </li>"
 msgstr "<li>Bestätigen durch Klick auf <i>Weiter</i>.</li>"
 
-#: umc/js/uccsetup.js:359
+#: umc/js/uccsetup.js:360
 msgid ""
 "<li>Select <i>Univention Corporate Client</i> as the <b>Type</b> of "
 "computer. </li>"
@@ -51,7 +51,7 @@ msgstr ""
 "<li>Auswahl von <i>Univention Corporate Client</i> als <b>Typ</b> des "
 "Computers.</li>"
 
-#: umc/js/uccsetup.js:361
+#: umc/js/uccsetup.js:362
 msgid ""
 "<li>When selecting <b>Network</b> created earlier, a free IP address is "
 "proposed. The MAC address of the client needs to be specified for a working "
@@ -61,7 +61,7 @@ msgstr ""
 "wurde, wird eine freie IP-Adresse vorgeschlagen. Die MAC-Adresse des Clients "
 "muss für eine funktionierende DHCP-Konfiguration mit angegeben werden.</li>"
 
-#: umc/js/uccsetup.js:366
+#: umc/js/uccsetup.js:367
 msgid ""
 "<p>After successful installation you can log in with any domain user.</p>"
 msgstr ""
@@ -78,7 +78,7 @@ msgstr ""
 "hochgeladen werden, um fortzufahren. Der Citrix Receiver wird dann "
 "automatisch in das ausgewählte Image installiert.</p>"
 
-#: umc/js/uccsetup.js:356
+#: umc/js/uccsetup.js:357
 msgid ""
 "<p>Depending on whether the client is a desktop or thin client, the fitting "
 "<b>Container</b> should be selected.</p>"
@@ -107,7 +107,7 @@ msgstr ""
 "installiert werden. Diese Option wird auch verwendet, um einen XRDP-"
 "Terminalserver zu installieren.</p>"
 
-#: umc/js/uccsetup.js:350
+#: umc/js/uccsetup.js:351
 msgid ""
 "<p>Now you can create one or several clients in the <a href=\"javascript:void"
 "(0)\" onclick=\"require('umc/app').openModule('udm', 'computers/"
@@ -118,7 +118,7 @@ msgstr ""
 "'computers/computer')\">Verwaltungsmodul für Computer</a> anlegen durch "
 "Klick auf <b>Hinzufügen</b>.</p>"
 
-#: umc/js/uccsetup.js:352
+#: umc/js/uccsetup.js:353
 msgid ""
 "<p>Now you can create one or several clients in the <i>computer management "
 "module</i> on the DC master system of your domain by clicking on <b>Add</b>."
@@ -128,7 +128,7 @@ msgstr ""
 "<i>Verwaltungsmodul für Computer</i> auf dem DC-Master-System Ihrer Domäne "
 "anlegen durch Klick auf <b>Hinzufügen</b>.</p>"
 
-#: umc/js/uccsetup.js:622
+#: umc/js/uccsetup.js:623
 #, python-format
 msgid ""
 "<p>The following Citrix Receiver package file has already been uploaded: <i>"
@@ -142,7 +142,7 @@ msgstr ""
 "registry').byId('%(id)s').showCitrixReceiverUploadWidgets()\">eine neue "
 "hochzuladen</a>.</p>"
 
-#: umc/js/uccsetup.js:365
+#: umc/js/uccsetup.js:366
 msgid ""
 "<p>The images are rolled out using PXE after booting a system. Thus, the "
 "BIOS of the clients needs to have PXE/netboot enabled in its startup "
@@ -171,7 +171,7 @@ msgstr ""
 "Systeme konfigurieren / XRDP-Terminal-Server einrichten</b> des UCC-"
 "Einrichtungsassistenten ausgewählt werden.</p>"
 
-#: umc/js/uccsetup.js:357
+#: umc/js/uccsetup.js:358
 msgid ""
 "<p>To configure a UCC system as an XRDP terminal server you need to select "
 "the desktop image and create the client in <i>ucc-xrdpserver</i> container. "
@@ -271,7 +271,7 @@ msgstr ""
 "Informationen detaillieren welche Probleme genau während des "
 "Installationsprozesses auftraten."
 
-#: umc/js/uccsetup.js:716
+#: umc/js/uccsetup.js:717
 msgid ""
 "An unexpected error occurred. More information about the cause of the error "
 "can be found in the log file /var/log/univention/management-console-module-"
@@ -283,19 +283,19 @@ msgstr ""
 "module-uccsetup.log gefunden werden. Bitte versuchen sie die Konfiguration "
 "von UCC erneut nach dem Lösen bestehender Konflikte."
 
-#: umc/js/uccsetup.js:379
+#: umc/js/uccsetup.js:380
 msgid "Apply configuration"
 msgstr "Einstellungen anwenden"
 
-#: umc/js/uccsetup.js:723
+#: umc/js/uccsetup.js:724
 msgid "Applying UCC configuration settings"
 msgstr "Anwenden der UCC-Konfigurationseinstellungen"
 
-#: umc/js/uccsetup.js:792
+#: umc/js/uccsetup.js:793
 msgid "At least one configuration type needs to be selected."
 msgstr "Zumindest ein Einrichtungstyp muss ausgewählt werden."
 
-#: umc/js/uccsetup.js:787
+#: umc/js/uccsetup.js:788
 msgid "At least one terminal service needs to be configured."
 msgstr "Zumindest ein Terminal-Dienst muss konfiguriert werden."
 
@@ -315,12 +315,12 @@ msgstr ""
 "Automatischer Verbindungsaufbau mit folgender Webseite (bspw. <span style="
 "\"text-decoration: underline\">http://intranet.example.com/groupware</span> )"
 
-#: umc/js/uccsetup.js:667
+#: umc/js/uccsetup.js:668
 #, python-format
 msgid "Citrix XenApp server: <i>%s</i>"
 msgstr "Citrix XenApp-Server: <i>%s</i>"
 
-#: umc/js/uccsetup.js:684
+#: umc/js/uccsetup.js:685
 #, python-format
 msgid "Client network object: <i>network %s</i>"
 msgstr "Client Netzwerkobjekt: <i>Netzwerk %s</i>"
@@ -381,7 +381,7 @@ msgstr "Anlegen eines neuen Netzwerkobjekts"
 msgid "Default gateway"
 msgstr "Standard-Gateway"
 
-#: umc/js/uccsetup.js:670
+#: umc/js/uccsetup.js:671
 #, python-format
 msgid "Direct browser access: <i>%s</i>"
 msgstr "Direkter Zugriff auf Webseite: <i>%s</i>"
@@ -399,12 +399,12 @@ msgstr "Herunterladen des UCC-Desktop-Images"
 msgid "Download UCC thin client image"
 msgstr "Herunterladen des UCC Thin-Client-Images"
 
-#: umc/js/uccsetup.js:653
+#: umc/js/uccsetup.js:654
 #, python-format
 msgid "Download of UCC desktop image [%.1f GB]"
 msgstr "Herunterladen des UCC Desktop-Images [%.1f GB]"
 
-#: umc/js/uccsetup.js:660
+#: umc/js/uccsetup.js:661
 #, python-format
 msgid "Download of UCC thin client image [%.1f GB]"
 msgstr "Herunterladen des UCC Thin-Client-Images [%.1f GB]"
@@ -417,7 +417,7 @@ msgstr "Herunterladen des vorkonfigurierten UCC Desktop-Images"
 msgid "Download preconfigured UCC thinclient image"
 msgstr "Herunterladen des vorkonfigurierten UCC Thin-Client-Image"
 
-#: umc/js/uccsetup.js:594
+#: umc/js/uccsetup.js:595
 msgid "Downloaded UCC thin client image"
 msgstr "Heruntergeladenes UCC Thin-Client-Image"
 
@@ -433,7 +433,7 @@ msgstr "Soundausgabe aktivieren"
 msgid "First IP address"
 msgstr "Erste IP-Adresse"
 
-#: umc/js/uccsetup.js:690
+#: umc/js/uccsetup.js:691
 #, python-format
 msgid "Gateway: <i>%s</i>"
 msgstr "Gateway: <i>%s</i>"
@@ -454,11 +454,11 @@ msgstr "Netzmaske"
 msgid "Network address (e.g., 192.168.10.0)"
 msgstr "Netzwerkadresse (bspw. 192.168.10.0)"
 
-#: umc/js/uccsetup.js:127 umc/js/uccsetup.js:674
+#: umc/js/uccsetup.js:127 umc/js/uccsetup.js:675
 msgid "Network configuration"
 msgstr "Netzwerkkonfiguration"
 
-#: umc/js/uccsetup.js:687
+#: umc/js/uccsetup.js:688
 #, python-format
 msgid "New client network object: <i>network %s</i>"
 msgstr "Neues Netzwerkobjekt für Client-Rechner: <i>Netzwerk %s</i>"
@@ -473,7 +473,7 @@ msgstr ""
 "Welches Gateway soll dem Netzwerk zugewiesen werden? (In den meisten Fällen "
 "kann dafür der Standard-Gateway des UCS-Systems genutzt werden.)"
 
-#: umc/js/uccsetup.js:777
+#: umc/js/uccsetup.js:778
 msgid ""
 "Please confirm the End User License Agreement of Citrix Receiver to proceed."
 msgstr ""
@@ -491,7 +491,7 @@ msgstr ""
 "Bitte wählen Sie das Image aus, in das Citrix Receiver integriert werden "
 "soll."
 
-#: umc/js/uccsetup.js:781
+#: umc/js/uccsetup.js:782
 msgid ""
 "Please specify a UCC image into which Citrix Receiver will be integrated."
 msgstr ""
@@ -505,20 +505,20 @@ msgstr ""
 "Bitte geben Sie die URL für die Anmeldung an der Citrix-Farm-Weboberfläche "
 "an."
 
-#: umc/js/uccsetup.js:664
+#: umc/js/uccsetup.js:665
 #, python-format
 msgid "RDP terminal server: <i>%s</i>"
 msgstr "RDP-Terminalserver: <i>%s</i>"
 
-#: umc/js/uccsetup.js:380
+#: umc/js/uccsetup.js:381
 msgid "Retry"
 msgstr "Wiederholen"
 
-#: umc/js/uccsetup.js:651
+#: umc/js/uccsetup.js:652
 msgid "Support for linux desktop systems"
 msgstr "Unterstützung für Linux-Desktop-Systeme"
 
-#: umc/js/uccsetup.js:657
+#: umc/js/uccsetup.js:658
 msgid "Support for thin clients"
 msgstr "Unterstützung für Thin Clients"
 
@@ -533,7 +533,7 @@ msgstr ""
 "eine bestimmte Webseite zu konfigurieren, bspw. für den Zugriff auf Cloud-"
 "basierte Web-Dienste."
 
-#: umc/js/uccsetup.js:395
+#: umc/js/uccsetup.js:396
 msgid ""
 "The specified file needs to be a Debian package (file ending .deb) for the "
 "32 bit system architecture."
