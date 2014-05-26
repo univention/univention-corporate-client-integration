@@ -242,11 +242,7 @@ define([
 					type: ComboBox,
 					name: 'image',
 					label: _('Please select the image into which Citrix Receiver should be integrated.'),
-					dynamicValues: 'uccsetup/info/ucc_images',
-					staticValues: [{
-						id: 'default',
-						label: _('UCC default image')
-					}]
+					dynamicValues: 'uccsetup/info/ucc_images'
 					//labelConf: { style: 'margin-bottom: 1.25em;' }
 				}, {
 					type: Text,
