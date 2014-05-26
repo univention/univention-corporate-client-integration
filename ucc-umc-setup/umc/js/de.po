@@ -83,8 +83,8 @@ msgid ""
 "<p>Depending on whether the client is a desktop or thin client, the fitting "
 "<b>Container</b> should be selected.</p>"
 msgstr ""
-"<li>Abhängig davon ob das Client-System ein Thin-Client- oder Desktop-"
-"Rechner ist sollte der passende <b>Container</b> gewählt werden.</li>"
+"<p>Abhängig davon ob das Client-System ein Thin-Client- oder Desktop-"
+"Rechner ist sollte der passende <b>Container</b> gewählt werden.</p>"
 
 #: umc/js/uccsetup.js:260
 msgid ""
