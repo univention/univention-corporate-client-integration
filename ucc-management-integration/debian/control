@@ -31,7 +31,7 @@ Description: Univention Corporate Client - LDAP schema
 
 Package: python-univention-directory-manager-ucc
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, shell-univention-lib
+Depends: ${misc:Depends}, ${python:Depends}, shell-univention-lib, ucc-server
 Provides: ${python:Provides}
 Description: Univention Corporate Client - UDM module
  This package provides the Univention Directory Manager module for the integration 
