@@ -8,7 +8,7 @@ Build-Depends: debhelper (>> 7),
 
 Package: ucc-server
 Architecture: all
-Depends: ucc-image-toolkit, ucc-pxe-boot
+Depends: python-univention-directory-manager-ucc, ucc-image-toolkit, ucc-pxe-boot
 Recommends: ucc-umc-setup, ucc-umc-images
 Description: Meta package for the UCC components installed on UCC servers
  This package installs the packages for a UCS server distributing UCC images.
@@ -16,15 +16,3 @@ Description: Meta package for the UCC components installed on UCC servers
  It is part of Univention Corporate Client (UCC)
  For more information about UCC refer to:
  http://www.univention.de/
-
-Package: ucc-thinclient-image
-Architecture: all
-Description: Dummy package
- This dummy package is needed to support updates of the UCC app in the
- Univention App Center.
- .
- It is part of Univention Corporate Client (UCC)
- For more information about UCC refer to:
- http://www.univention.de/
-
-
