@@ -33,6 +33,7 @@ import subprocess
 import re
 import os
 import os.path
+import ldap
 
 from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
@@ -89,7 +90,7 @@ class ProgressWrapper(ucc_images.Progress):
 
 _user_dn = None
 _password = None
-def set_credentials( dn, passwd ):
+def set_credentials(dn, passwd):
 	global _user_dn, _password
 	_user_dn = dn
 	_password = passwd
@@ -98,7 +99,28 @@ def set_credentials( dn, passwd ):
 
 def get_ldap_connection():
 	MODULE.info('Open LDAP connection for user %s' % _user_dn )
-	return udm_uldap.access(base=ucr.get('ldap/base'), binddn=_user_dn, bindpw=_password, follow_referral=True)
+
+	# Connect to ldap server (inspired from univention.uldap.getMachineConnection())
+	exc = None
+	port = int(ucr.get('ldap/server/port', '7389'))
+	servers = [ucr['ldap/server/name']]
+
+	# try additional server in case the main server is down
+	if ucr.get('ldap/server/addition'):
+		additional_servers = ucr.get('ldap/server/addition', '').split()
+		servers.extend(additional_servers)
+
+	# get the first available server
+	for server in servers:
+		try:
+			lo = udm_uldap.access(host=server, port=port, base=ucr['ldap/base'], binddn=_user_dn, bindpw=_password, follow_referral=True)
+		except ldap.SERVER_DOWN, exc:
+			pass
+		else:
+			return lo
+
+	# no LDAP server found
+	raise ldap.SERVER_DOWN, exc
 
 
 def bool2str(b):

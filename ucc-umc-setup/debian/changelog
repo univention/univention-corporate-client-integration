@@ -1,3 +1,9 @@
+ucc-umc-setup (0.1.30-1) unstable; urgency=low
+
+  * Bug #34360: make sure that the correct LDAP server is used on non DCs
+
+ -- Alexander Kläser <klaeser@univention.de>  Tue, 27 May 2014 16:01:38 +0200
+
 ucc-umc-setup (0.1.29-1) unstable; urgency=low
 
   * Bug #34360: removed deprecated static entry for UCC images
