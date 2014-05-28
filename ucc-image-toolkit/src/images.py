@@ -267,6 +267,11 @@ def _run_join_script(join_script, username=None, password=None):
 	systemrole = configRegistry['server/role']
 	is_master = systemrole == 'domaincontroller_master' or systemrole == 'domaincontroller_backup'
 
+	# do not execute join script on non-master systems and without specified credentials
+	if not is_master and not (username and password):
+		log_warn(_('Please run univention-run-join-scripts manually to execute a new join script which has been registered for this UCC image.'))
+		return False
+
 	# execute join script
 	with tempfile.NamedTemporaryFile() as passwordFile:
 		cmd = ['/usr/sbin/univention-run-join-scripts']

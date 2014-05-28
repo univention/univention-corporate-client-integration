@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucc-image-toolkit 2.0.18-3\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-05-21 16:17+0200\n"
+"POT-Creation-Date: 2014-05-28 11:07+0200\n"
 "PO-Revision-Date: 2014-05-21 14:04+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -44,6 +44,7 @@ msgstr "Kopieren des Join-skriptes nach %s"
 msgid "Could not download file (%s - %s): %s"
 msgstr "Die Datei (%s - %s) konnte nicht herunter geladen werden: %s"
 
+#, python-format
 msgid "Decompression of file %s failed: %s"
 msgstr "Das Entpacken der Datei %s schlug fehl: %s"
 
@@ -183,6 +184,11 @@ msgstr "Gesamt: % 6.1f%%"
 msgid "Overall: % 6.1f%%  current task: % 6.1f%%"
 msgstr "Gesamt: % 6.1f%%  aktuelle Aufgabe: % 6.1f%%"
 
+msgid ""
+"Please run univention-run-join-scripts manually to execute a new join script "
+"which has been registered for this UCC image."
+msgstr "Bitte führen Sie univention-run-join-scripts manuell aus, um das zu diesem UCC-Image zugehörige Join-Skript auszuführen."
+
 msgid "Removing all files related to image..."
 msgstr "Entfernen aller zum Image zugehörigen Dateien..."
 
@@ -245,11 +251,11 @@ msgstr "Aktualisierung der Fortschrittsdatei: %s"
 
 #, python-format
 msgid "Validating hash value of file %s"
-msgstr ""
+msgstr "Überprüfung des Hash-Wertes für die Datei %s"
 
 #, python-format
 msgid "WARN: %s\n"
-msgstr ""
+msgstr "WARNUNG: %s\n"
 
 #, python-format
 msgid "Writing progress file %s failed: %s"
