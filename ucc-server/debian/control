@@ -8,7 +8,7 @@ Build-Depends: debhelper (>> 7),
 
 Package: ucc-server
 Architecture: all
-Depends: python-univention-directory-manager-ucc, ucc-image-toolkit, ucc-pxe-boot
+Depends: python-univention-directory-manager-ucc, ucc-image-toolkit, ucc-pxe-boot, ucc-management-integration
 Recommends: ucc-umc-setup, ucc-umc-images
 Description: Meta package for the UCC components installed on UCC servers
  This package installs the packages for a UCS server distributing UCC images.
