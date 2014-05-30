@@ -79,7 +79,7 @@ define([
 			this.pages = [{
 				name: 'start',
 				headerText: _('Univention Corporate Client configuration wizard'),
-				helpText: _('<p>Welcome to the setup wizard for Univention Corporate Client (UCC)!</p><p>UCC provides support for fully-featured Linux desktop systems running KDE (both stationary and notebooks) as well as support for Linux-based thin clients to access terminal servers (Windows, Citrix XenApp, XRDP).</p>'),
+				helpText: _('<p>Welcome to the setup wizard for Univention Corporate Client (UCC)!</p><p>UCC allows the operation and management of Linux desktop systems as well as thin clients for accessing remote desktop services (terminal servers) via RDP and Citrix XenApp (ICA). Further information can be found in the <a href="http://docs.univention.de/en/ucc2.0.html" target="_blank">UCC manual</a>.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'fatclient',
@@ -88,7 +88,7 @@ define([
 				}, {
 					type: Text,
 					name: 'helpFatclient',
-					content: _('<p>Linux desktops are installed via PXE netboot within only a few minutes. This option can also be used to setup an XRDP terminal server.</p>'),
+					content: _('<p>This option allows the installation of desktops via PXE netboot. With UCC, Linux desktops can also be accessed as remote desktops via the RDP protocol. Please check this option for remote desktop configuration.</p>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}, {
 					type: CheckBox,
@@ -98,13 +98,13 @@ define([
 				}, {
 					type: Text,
 					name: 'helpThinClient',
-					content: _('<p>UCC provides a thin client image which is installed on the local Compact Flash storage of thin clients (2 GB are required).</p><p>UCC thin clients can access RDP terminal services (Windows terminal server or XRDP), Citrix Xen App terminal services or configure a direct browser login to a web site (e.g. for a web service).</p>'),
+					content: _('<p>UCC provides a thin client image which can be installed on thin clients with at least 2 GB of Compact Flash storage.</p><p>UCC thin clients can access RDP and Citrix terminal services or they can be configured for direct access to a specific web site (e.g., for cloud based services).</p>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}]
 			}, {
 				name: 'download-fatclient',
 				headerText: _('Download preconfigured UCC desktop image'),
-				helpText: _('<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. The image is regularly updated and offers a fully-featured KDE desktop environment.</p><p>Note that it is also possible to create custom images. This is documented in the UCC manual.</p>'),
+				helpText: _('<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. The image is regularly updated and offers a fully-featured KDE desktop environment.</p><p>Note that it is also possible to create custom images. This is documented in the <a href="http://docs.univention.de/en/ucc2.0.html" target="_blank">UCC manual</a>.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'download',
@@ -114,7 +114,7 @@ define([
 			}, {
 				name: 'download-thinclient',
 				headerText: _('Download preconfigured UCC thinclient image'),
-				helpText: _('<p>Univention provides a preconfigured UCC thin client image which is regularly updated.</p><p>The thin client image allows access to various terminal services (Windows, Citrix XenApp, XRDP) and provides also a minimal local LXDE desktop. In addition to this, it is possible to configure a direct browser login to a preconfigured website, e.g, to access cloud-based web services.</p><p>Note that it is also possible to create custom images. This is documented in the UCC manual.</p>'),
+				helpText: _('<p>Univention provides a preconfigured UCC thin client image which is regularly updated.</p><p>The thin client image allows access to various terminal services (Windows, Citrix, XRDP) and provides also a minimal local LXDE desktop. In addition to this, it is possible to configure a direct browser login to a preconfigured website, e.g, to access cloud-based web services.</p><p>Note that it is also possible to create custom images. This is documented in the <a href="http://docs.univention.de/en/ucc2.0.html" target="_blank">UCC manual</a>.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'download',
@@ -125,7 +125,7 @@ define([
 			}, {
 				name: 'network',
 				headerText: _('Network configuration'),
-				helpText: _('<p>UCS uses so-called network objects for managing IP adresses and the DNS/DHCP configuration of the clients. Network objects specify IP address ranges and automatically provide the next available address for a new computer entry.</p> </p>You can either use an existing network object or create a new one. The <b>default</b> network is created during the installation of the UCS master domain controller. If you want to separate the IP addresses of the UCS servers and the UCC clients it is recommended to create a new network object.'),
+				helpText: _('<p>UCS uses so-called network objects for managing IP adresses and the DNS/DHCP configuration of the clients. Network objects specify IP address ranges and provide the next available IP address when creating a new computer entry.</p><p>You can either use an existing network object or create a new one. The <b>default</b> network is created during the installation of the UCS master domain controller. If you want to separate the IP addresses of the UCS servers and the UCC clients it is recommended to create a new network object.'),
 				layout: [
 					'useExistingNetwork', 'existingNetwork', 'createNewNetwork',
 					['newNetworkAddress', 'newNetmask'],
@@ -195,30 +195,30 @@ define([
 				}]
 			}, {
 				name: 'terminalServices-thinclient',
-				headerText: _('Configuration of terminal services'),
-				helpText: _('Which terminal service(s) shall be configured?'),
+				headerText: _('Configuration of remote desktop services'),
+				helpText: _('Which access to remote desktop services shall be configured?'),
 				widgets: [{
 					type: CheckBox,
 					name: 'rdp',
-					label: _('Configure access to a Windows/XRDP terminal server')
+					label: _('RDP services (Windows Remote Desktop Services, XRDP)')
 				}, {
 					type: CheckBox,
 					name: 'citrix',
-					label: _('Configure access to a Citrix XenApp terminal server')
+					label: _('Citrix')
 				}, {
 					type: CheckBox,
 					name: 'browser',
-					label: _('Configure direct web browser access to a preconfigured web site')
+					label: _('Preconfigured web site')
 				}]
 			}, {
 				name: 'terminalServices-thinclient-rdp',
-				headerText: _('Configure acccess to Windows/XRDP terminal server'),
-				helpText: _('<p>This step allows the configuration of remote terminal server access using the RDP protocol.</p><p>You can either access a Microsoft Windows terminal server (using a Windows-based desktop) or an XRDP terminal server (using a Linux-based KDE desktop). To configure an XRDP terminal server, please use the <b>Linux desktop systems configuration / XRDP terminal server</b> option of the UCC setup wizard.</p>'),
+				headerText: _('Configure acccess to RDP services'),
+				helpText: _('<p>This step allows to configure access to a remote terminal server using the RDP protocol.</p><p>You can either access a Microsoft Windows terminal server (using a Windows-based desktop) or an XRDP terminal server (using a Linux-based KDE desktop). To configure an XRDP terminal server, please use the <b>Linux desktop systems configuration / XRDP terminal server</b> option of the UCC setup wizard.</p>'),
 				widgets: [{
 					type: TextBox,
 					required: true,
 					name: 'host',
-					label: _('Host name of terminal server')
+					label: _('Host name of RDP server')
 				}, {
 					type: TextBox,
 					name: 'domain',
@@ -236,8 +236,8 @@ define([
 				}]
 			}, {
 				name: 'terminalServices-thinclient-citrix-upload',
-				headerText: _('Configure access to Citrix XenApp server'),
-				helpText: _('This step allows the configuration of a XenApp terminal server using the Citrix protocol. For this, Citrix Receiver will be integrated into the UCC thin client image (it cannot be distributed in the standard UCC images due to license restrictions).'),
+				headerText: _('Configure access to Citrix services'),
+				helpText: _('This step allows to configure the access to Citrix services. For this, Citrix Receiver will be integrated into the UCC thin client image (it cannot be distributed in the standard UCC images due to license restrictions).'),
 				widgets: [{
 					type: ComboBox,
 					name: 'image',
@@ -285,26 +285,26 @@ define([
 				}]
 			}, {
 				name: 'terminalServices-thinclient-citrix-login',
-				headerText: _('Configure access to Citrix XenApp server'),
-				helpText: _('Please specify the URL of the Citrix farm web interface for the user login.'),
+				headerText: _('Configure access to Citrix services'),
+				helpText: _('Please specify the URL of the Citrix web login.'),
 				widgets: [{
 					type: TextBox,
 					required: true,
 					name: 'url',
-					label: _('URL for Citrix farm login (e.g., <span style="text-decoration: underline">http://citrix.example.com/StoreServiceWeb</span> )'),
+					label: _('URL for Citrix login (e.g., <span style="text-decoration: underline">http://citrix.example.com/StoreServiceWeb</span> )'),
 					validator: function(value) {
 						return _regURL.test(value);
 					}
 				}, {
 					type: CheckBox,
 					name: 'autoLogin',
-					label: _('Automatic thin client login (the actual authentication occurs on the Citrix farm web interface)'),
+					label: _('Automatic thin client login (the actual authentication occurs on the Citrix web interface)'),
 					value: true
 				}]
 			}, {
 				name: 'terminalServices-thinclient-browser',
-				headerText: _('Configure direct web browser access'),
-				helpText: _('The Firefox session automatically starts a Firefox web browser session in fullscreen. This can be used to configure a direct browser login to a preconfigured website, e.g., to access cloud-based web services.'),
+				headerText: _('Configure web site access'),
+				helpText: _('This step allows to configure of direct access to a web site, e.g., to access cloud-based web services. For this the web browser Firefox will be launched automatically in fullscreen mode.'),
 				widgets: [{
 					type: TextBox,
 					required: true,
@@ -645,7 +645,7 @@ define([
 			var vals = this.getValues();
 			var msg = '';
 			if (vals.fatclient) {
-				msg += '<p><b>' + _('Support for linux desktop systems') + '</b></p>';
+				msg += '<p><b>' + _('Support for Linux desktop systems') + '</b></p>';
 				if (vals.downloadFatClientImage) {
 					msg += '<ul style="margin-top:0;"><li>' + _('Download of UCC desktop image [%.1f GB]', this._info.download_size_desktop / Math.pow(10, 9)) + '</li></ul>';
 				}
@@ -658,13 +658,13 @@ define([
 				}
 
 				if (vals.rdp) {
-					msg += '<li>' + _('RDP terminal server: <i>%s</i>', vals.rdp.host) + '</li>';
+					msg += '<li>' + _('RDP server: <i>%s</i>', vals.rdp.host) + '</li>';
 				}
 				if (vals.citrix) {
-					msg += '<li>' + _('Citrix XenApp server: <i>%s</i>', vals.citrix.url) + '</li>';
+					msg += '<li>' + _('Citrix server: <i>%s</i>', vals.citrix.url) + '</li>';
 				}
 				if (vals.browser) {
-					msg += '<li>' + _('Direct browser access: <i>%s</i>', vals.browser.url) + '</li>';
+					msg += '<li>' + _('Web site access: <i>%s</i>', vals.browser.url) + '</li>';
 				}
 				msg += '</ul>';
 			}
