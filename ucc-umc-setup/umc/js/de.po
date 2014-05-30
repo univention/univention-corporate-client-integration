@@ -351,7 +351,7 @@ msgstr "Einrichten von Remote-Desktop-Diensten"
 
 #: umc/js/uccsetup.js:215
 msgid "Configure acccess to RDP services"
-msgstr "Zugriff RDP-Dienste konfigurieren"
+msgstr "Zugriff auf RDP-Dienste konfigurieren"
 
 #: umc/js/uccsetup.js:239 umc/js/uccsetup.js:288
 msgid "Configure access to Citrix services"
@@ -548,7 +548,7 @@ msgid ""
 msgstr ""
 "Dieser Schritt ermöglicht die Konfiguration des Zugriffs auf Citrix-"
 "Terminaldienste. Dazu wird der Citrix Receiver in das UCC Thin-Client-Image "
-"integriert. (Aufgrund von Lizenzeinschränkungen kann Citrix Receiver nicht "
+"integriert (aufgrund von Lizenzeinschränkungen kann Citrix Receiver nicht "
 "im UCC Standard-Image bereit gestellt werden.)"
 
 #: umc/js/uccsetup.js:328
