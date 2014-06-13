@@ -1,3 +1,9 @@
+ucc-default-images (1.0.3-3) unstable; urgency=low
+
+  * Updates images to v4 (Bug #35113)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Fri, 13 Jun 2014 11:19:08 +0200
+
 ucc-default-images (1.0.3-2) unstable; urgency=low
 
   * Updates images to v4 (Bug #35113)
