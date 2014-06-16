@@ -1,3 +1,9 @@
+ucc-image-toolkit (2.0.22-2) unstable; urgency=low
+
+  * Bug #35115: fixed fuzzy translation
+
+ -- Alexander Kläser <klaeser@univention.de>  Mon, 16 Jun 2014 14:41:44 +0200
+
 ucc-image-toolkit (2.0.22-1) unstable; urgency=low
 
   * Bug #35115: make sure that proxies are handled correctly when determining

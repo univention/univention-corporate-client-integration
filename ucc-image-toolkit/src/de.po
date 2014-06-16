@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ucc-image-toolkit 2.0.18-3\n"
 "Report-Msgid-Bugs-To: packages@univention.de\n"
-"POT-Creation-Date: 2014-05-28 11:07+0200\n"
+"POT-Creation-Date: 2014-06-16 14:41+0200\n"
 "PO-Revision-Date: 2014-05-21 14:04+0200\n"
 "Last-Translator: Univention GmbH <packages@univention.de>\n"
 "Language-Team: Univention GmbH <packages@univention.de>\n"
@@ -40,9 +40,8 @@ msgstr "Ein andere Prozess lädet gerade des UCC-Image %s herunter."
 msgid "Copy join script to %s"
 msgstr "Kopieren des Join-skriptes nach %s"
 
-#, python-format
-msgid "Could not download file (%s - %s): %s"
-msgstr "Die Datei (%s - %s) konnte nicht herunter geladen werden: %s"
+msgid "Could not download file %s: %s"
+msgstr "Die Datei %s konnte nicht geladen werden: %s"
 
 #, python-format
 msgid "Decompression of file %s failed: %s"
@@ -187,7 +186,9 @@ msgstr "Gesamt: % 6.1f%%  aktuelle Aufgabe: % 6.1f%%"
 msgid ""
 "Please run univention-run-join-scripts manually to execute a new join script "
 "which has been registered for this UCC image."
-msgstr "Bitte führen Sie univention-run-join-scripts manuell aus, um das zu diesem UCC-Image zugehörige Join-Skript auszuführen."
+msgstr ""
+"Bitte führen Sie univention-run-join-scripts manuell aus, um das zu diesem "
+"UCC-Image zugehörige Join-Skript auszuführen."
 
 msgid "Removing all files related to image..."
 msgstr "Entfernen aller zum Image zugehörigen Dateien..."
@@ -235,13 +236,6 @@ msgid "UCC image path %s does not exists!"
 msgstr "Der UCC-Image-Pfad %s existiert nicht!"
 
 #, python-format
-msgid "Uknown protocol %s."
-msgstr "Unbekanntes Protokoll %s."
-
-msgid "Unknown error"
-msgstr "Unbekannter Fehler"
-
-#, python-format
 msgid "Unpacking image file %s"
 msgstr "Entpacken der Image-Datei %s"
 
@@ -260,3 +254,9 @@ msgstr "WARNUNG: %s\n"
 #, python-format
 msgid "Writing progress file %s failed: %s"
 msgstr ""
+
+#~ msgid "Uknown protocol %s."
+#~ msgstr "Unbekanntes Protokoll %s."
+
+#~ msgid "Unknown error"
+#~ msgstr "Unbekannter Fehler"
