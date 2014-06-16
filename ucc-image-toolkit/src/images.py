@@ -41,6 +41,7 @@ import urllib
 import hashlib
 import lzma
 import httplib
+import urllib2
 import urlparse
 import contextlib
 import re
@@ -191,20 +192,16 @@ def _get_file_size(filename):
 	ucc/image/path via a HTTP HEAD request.'''
 
 	url = '%s/%s' % (UCC_BASE_URL, filename)
-	parts = urlparse.urlparse(url)
-	if parts.scheme == 'http':
-		connection = httplib.HTTPConnection(parts.hostname)
-	elif parts.scheme == 'https':
-		connection = httplib.HTTPSConnection(parts.hostname)
-	else:
-		raise httplib.error(_('Uknown protocol %s.') % parts.scheme)
+	request = urllib2.Request(url)
+	request.get_method = lambda : 'HEAD'
+	try:
+		response = urllib2.urlopen(request)
+	except urllib2.HTTPError as exc:
+		# raise an httplib error since this exception type is handled
+		raise httplib.error(_('Could not download file %s: %s') % (url, exc))
 
-	connection.request('HEAD', parts.path)
-	response = connection.getresponse()
-	if response.status >= 400:
-		raise httplib.error(_('Could not download file (%s - %s): %s') % (response.status, httplib.responses.get(response.status, _('Unknown error')), url))
-	headers = dict(response.getheaders())
-	size = int(headers.get('content-length', '0'))
+	info = response.info()
+	size = int(info.getheader('content-length', '0'))
 	return size
 
 
@@ -214,6 +211,16 @@ def _get_proxies():
 	if proxy_http:
 		proxies = {'http': proxy_http, 'https': proxy_http}
 	return proxies
+
+
+# inspired from from u.m.c.modules.appcenter.util
+def _install_opener():
+	proxies = _get_proxies()
+	if proxies:
+		proxy = urllib2.ProxyHandler(proxies)
+		opener = urllib2.build_opener(proxy)
+		urllib2.install_opener(opener)
+_install_opener()
 
 
 def _download_url(url, filepath, progress=_dummy_progress):
