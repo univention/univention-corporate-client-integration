@@ -3,7 +3,7 @@
 # Univention Client Boot PXE
 #  baseconfig/listener module: update config for PXE clients
 #
-# Copyright (C) 2004-2011 Univention GmbH
+# Copyright (C) 2004-2014 Univention GmbH
 #
 # http://www.univention.de/
 #
