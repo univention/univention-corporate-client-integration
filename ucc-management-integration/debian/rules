@@ -63,4 +63,4 @@ override_dh_install:
 	dh_install
 
 %:
-	dh $@
+	dh $@ --with python_support

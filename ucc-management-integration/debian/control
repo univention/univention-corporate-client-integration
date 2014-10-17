@@ -2,15 +2,15 @@ Source: ucc-management-integration
 Section: univention
 Priority: optional
 Maintainer: Univention GmbH <packages@univention.de>
-Build-Depends: debhelper (>> 7),
+Build-Depends: debhelper (>= 9),
  univention-config-dev,
  univention-management-console-dev,
- python2.6,
- python2.6-dev,
+ python-all-dev,
  python-support,
- ucslint,
+ ucslint-univention,
  gettext
 Standards-Version: 3.8.2
+XS-Python-Version: 2.6, 2.7
 
 Package: ucc-management-integration
 Architecture: all
