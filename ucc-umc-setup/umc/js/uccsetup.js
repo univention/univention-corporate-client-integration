@@ -34,7 +34,6 @@ define([
 	"dojo/_base/array",
 	"dojo/topic",
 	"dojo/promise/all",
-	"dojox/html/styles",
 	"umc/dialog",
 	"umc/tools",
 	"umc/widgets/ProgressBar",
@@ -45,24 +44,10 @@ define([
 	"umc/widgets/Uploader",
 	"umc/widgets/Text",
 	"umc/widgets/Wizard",
-	"./uccsetup/RadioButton",
-	"umc/i18n!umc/modules/uccsetup"
-], function(declare, lang, array, topic, all, styles, dialog, tools, ProgressBar, Module, TextBox, CheckBox, ComboBox, Uploader, Text, Wizard, RadioButton, _) {
-	styles.insertCssRule('.umc-uccsetup-wizard-indent', 'margin-left: 27px;');
-//	var modulePath = require.toUrl('umc/modules/uccsetup');
-//	styles.insertCssRule('.umc-uccsetup-page > form > div', 'background-repeat: no-repeat; background-position: 10px 0px; padding-left: 200px; min-height: 200px;');
-//	styles.insertCssRule('.umc-uccsetup-page .umcLabelPaneCheckBox', 'display: block !important;');
-//	array.forEach(['start', 'credentials', 'config', 'info', 'syncconfig', 'syncconfig-left', 'syncconfig-right', 'syncconfig-left-right', 'msi', 'finished'], function(ipage) {
-//		var conf = {
-//			name: ipage,
-//			path: modulePath
-//		};
-//		styles.insertCssRule(
-//			lang.replace('.umc-uccsetup-page-{name} > form > div', conf),
-//			lang.replace('background-image: url({path}/{name}.png)', conf)
-//		);
-//	});
-
+	"umc/widgets/RadioButton",
+	"umc/i18n!umc/modules/uccsetup",
+	"xstyle/css!./uccsetup.css"
+], function(declare, lang, array, topic, all, dialog, tools, ProgressBar, Module, TextBox, CheckBox, ComboBox, Uploader, Text, Wizard, RadioButton, _) {
 	var _regIPv4 =  /^((25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?))$/;
 	var _regURL =  /^https?:\/\//;
 	var _regDebianI386 = /_i386.deb$/;
@@ -70,6 +55,8 @@ define([
 	var _Wizard = declare("umc.modules.uccsetup.Wizard", [ Wizard ], {
 		autoValidate: true,
 		autoFocus: true,
+		autoHeight: true,
+		'class': 'umc-uccsetup-wizard',
 		__info: {},
 		_infoDeferred: null,
 		_progressBar: null,
@@ -84,7 +71,7 @@ define([
 					type: CheckBox,
 					name: 'fatclient',
 					label: _('<b>Linux desktop systems configuration / XRDP terminal server setup</b>'),
-					labelConf: { style: 'margin-top: 0;' }
+					labelConf: { 'class': 'umc-uccsetup-wizard-no-margin-bottom' }
 				}, {
 					type: Text,
 					name: 'helpFatclient',
@@ -94,7 +81,7 @@ define([
 					type: CheckBox,
 					name: 'thinclient',
 					label: _('<b>Thin client configuration</b>'),
-					labelConf: { style: 'margin-top: 1.25em;' }
+					labelConf: { 'class': 'umc-uccsetup-wizard-no-margin-bottom' }
 				}, {
 					type: Text,
 					name: 'helpThinClient',
@@ -136,8 +123,7 @@ define([
 					radioButtonGroup: 'useNetwork',
 					name: 'useExistingNetwork',
 					label: _('Use an existing network object'),
-					checked: true,
-					labelConf: { style: 'margin-top: 0'	}
+					checked: true
 				}, {
 					type: ComboBox,
 					name: 'existingNetwork',
@@ -147,7 +133,8 @@ define([
 					type: RadioButton,
 					radioButtonGroup: 'useNetwork',
 					name: 'createNewNetwork',
-					label: _('Create a new network object')
+					label: _('Create a new network object'),
+					labelConf: { 'class': 'umc-uccsetup-wizard-margin-top' }
 				}, {
 					type: TextBox,
 					name: 'newNetworkAddress',
@@ -243,13 +230,12 @@ define([
 					name: 'image',
 					label: _('Please select the image into which Citrix Receiver should be integrated.'),
 					dynamicValues: 'uccsetup/info/ucc_images'
-					//labelConf: { style: 'margin-bottom: 1.25em;' }
 				}, {
 					type: Text,
 					name: 'fileExists',
 					content: '',  // will be set via this._updateCitrixReceiverUploadPage()
 					visible: false,
-					labelConf: { style: 'margin-bottom: 1.25em;' }
+					labelConf: { 'class': 'umc-uccsetup-wizard-margin-top' }
 				}, {
 					type: Text,
 					name: 'help',
@@ -281,7 +267,7 @@ define([
 					type: CheckBox,
 					name: 'eula',
 					label: _('Confirm the End User License Agreement of Citrix Receiver (as presented during the download of the Citrix Receiver).'),
-					labelConf: { style: 'margin-top: 1.25em;' }
+					labelConf: { 'class': 'umc-uccsetup-wizard-margin-top' }
 				}]
 			}, {
 				name: 'terminalServices-thinclient-citrix-login',
@@ -826,7 +812,11 @@ define([
 			this.wizard.on('Cancel', lang.hitch(this, function() {
 				topic.publish('/umc/tabs/close', this);
 			}));
-		}
+		},
 
+		startup: function() {
+			this.inherited(arguments);
+			this.wizard.startup();
+		}
 	});
 });

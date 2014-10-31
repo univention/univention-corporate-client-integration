@@ -1,3 +1,9 @@
+ucc-umc-setup (3.0.1-1) unstable; urgency=medium
+
+  * Bug #36373: adapted styling to responsive design
+
+ -- Alexander Kläser <klaeser@univention.de>  Fri, 31 Oct 2014 20:31:36 +0100
+
 ucc-umc-setup (3.0.0-1) unstable; urgency=low
 
   * Port to UCS 4 (Bug #35891)
