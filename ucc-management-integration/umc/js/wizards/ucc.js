@@ -62,6 +62,7 @@ define([
 				widget.umcpCommand = this.umcpCommand;
 				widget.dynamicValues = 'udm/syntax/choices';
 				widget.dynamicOptions = {'syntax': {'image':'uccImage', 'boot':'uccBoot'}[widgetName]};
+				widget.sizeClass = 'Two';
 			}
 			return widget;
 		}

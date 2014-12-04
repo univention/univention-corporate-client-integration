@@ -1,3 +1,9 @@
+ucc-management-integration (3.0.0-2) unstable; urgency=medium
+
+  * Bug #37125: adjust size of wizard widgets
+
+ -- Florian Best <best@univention.de>  Thu, 04 Dec 2014 14:22:39 +0100
+
 ucc-management-integration (3.0.0-1) unstable; urgency=low
 
   * Port to UCS 4 (Bug #35891)
