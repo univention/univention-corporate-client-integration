@@ -38,22 +38,18 @@ define([
 ], function(declare, lang, array, udmCallbacks, computer, _) {
 
 	return declare("umc.modules.udm.wizards.computers.ucc", [ computer ], {
-		widgetPages: [
-			{
-				title: _('General'),
-				widgets: [
-					['name'],
-					['network', 'ip'],
-					['mac']
-				]
-			}, {
-				title: _('Images'),
-				widgets: [
-					['boot'],
-					['image']
-				]
-			}
-		],
+		widgetPages: [{
+			widgets: [
+				['name'],
+				['network', 'ip'],
+				['mac']
+			]
+		}, {
+			widgets: [
+				['boot'],
+				['image']
+			]
+		}],
 
 		buildWidget: function(widgetName, originalWidgetDefinition) {
 			widget = this.inherited(arguments);
