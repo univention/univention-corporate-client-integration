@@ -1,3 +1,9 @@
+ucc-image-toolkit (1.0.7-8) unstable; urgency=low
+
+  * New v5 images (Bug #37359)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Tue, 16 Dec 2014 11:16:42 +0100
+
 ucc-image-toolkit (1.0.7-7) unstable; urgency=low
 
   * New v4 images (Bug #35113)
