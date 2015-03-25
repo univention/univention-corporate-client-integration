@@ -1,3 +1,10 @@
+ucc-management-integration (3.0.0-4) unstable; urgency=low
+
+  * Point to the download location of Citrix Receiver 13.1 in the setup
+    wizard (Bug #36362)
+
+ -- Moritz Mühlenhoff <muehlenhoff@univention.de>  Wed, 25 Mar 2015 12:13:20 +0100
+
 ucc-management-integration (3.0.0-3) unstable; urgency=medium
 
   * Bug #37125: remove title in wizard widgets

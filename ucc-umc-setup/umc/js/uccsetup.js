@@ -239,7 +239,7 @@ define([
 				}, {
 					type: Text,
 					name: 'help',
-					content: _('<p>For the configuration, it is necessary to manually download the 32-bit DEB version of the <a href="http://www.citrix.de/downloads/citrix-receiver/linux/receiver-for-linux-130.html" target="_blank">Citrix Receiver for Linux</a> and save it somewhere on your desktop.</p>')
+					content: _('<p>For the configuration, it is necessary to manually download the 32-bit DEB version of the <a href="http://www.citrix.de/downloads/citrix-receiver/linux/receiver-for-linux-131.html" target="_blank">Citrix Receiver for Linux</a> and save it somewhere on your desktop.</p>')
 				}, {
 					type: Uploader,
 					name: 'upload',
