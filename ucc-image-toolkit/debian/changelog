@@ -1,3 +1,11 @@
+ucc-image-toolkit (3.0.1-1) unstable; urgency=medium
+
+  * Bug #38801: Increase version for UCC 2.1
+  * Create trusty symlink for debootstrap
+  * Adapt example image files for UCC 2.1
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 01 Jul 2015 10:37:31 +0200
+
 ucc-image-toolkit (3.0.0-1) unstable; urgency=low
 
   * Port to UCS 4 (Bug #35891)
