@@ -1,3 +1,9 @@
+ucc-umc-images (3.0.1-1) unstable; urgency=medium
+
+  * Bug #38801: Version bump for UCC 2.1 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 01 Jul 2015 11:24:41 +0200
+
 ucc-umc-images (3.0.0-1) unstable; urgency=low
 
   * Port to UCS 4 (Bug #35891)

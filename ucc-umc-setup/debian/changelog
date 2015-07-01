@@ -1,3 +1,9 @@
+ucc-umc-setup (3.0.2-1) unstable; urgency=medium
+
+  * Bug #38801: Version bump for UCC 2.1 
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 01 Jul 2015 11:25:02 +0200
+
 ucc-umc-setup (3.0.1-1) unstable; urgency=medium
 
   * Bug #36373: adapted styling to responsive design
