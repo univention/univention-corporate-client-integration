@@ -126,6 +126,7 @@ if chroot_cmd('dpkg -i ' + os.path.basename(opt.deb)) != 0:
 	cleanup()
 	exit("Installation of Citrix Receiver failed, please result the logfile (%s)." % logfile.name, 5)
 
+chroot_cmd('apt-get clean')
 chroot_cmd('sync')
 cmd('sync')
 
