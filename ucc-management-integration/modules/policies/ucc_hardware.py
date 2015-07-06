@@ -6,7 +6,7 @@
 # Copyright (C) 2010-2014 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # The source code of this program is made available
@@ -106,7 +106,7 @@ property_descriptions={
 		),
 	'prim_name': univention.admin.property(
 			short_description=_('Name of primary display'),
-			long_description=_('The X name of the primary display device (can be queried with xrandr --list)'),
+			long_description=_('The X name of the primary display device (can be queried with xrandr -q)'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -116,7 +116,7 @@ property_descriptions={
 		),
 	'sec_name': univention.admin.property(
 			short_description=_('Name of secondary display'),
-			long_description=_('The X name of the secondary display device (can be queried with xrandr --list)'),
+			long_description=_('The X name of the secondary display device (can be queried with xrandr -q)'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -195,8 +195,8 @@ layout = [
 			'massstorage',
 		] ),
 		Group( _( 'Multi monitor configuration' ), layout = [
-			[ 'prim_res', 'sec_res' ], 
-			[ 'prim_name', 'sec_name' ], 
+			[ 'prim_res', 'sec_res' ],
+			[ 'prim_name', 'sec_name' ],
 			'display-position',
 		] ),
 	] ),
@@ -231,13 +231,13 @@ class object(univention.admin.handlers.simplePolicy):
 
 	def exists(self):
 		return self._exists
-	
+
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyCorporateClientComputer']) ]
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [

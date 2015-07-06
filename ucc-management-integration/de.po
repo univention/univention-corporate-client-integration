@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-05-12 12:08+0200\n"
+"POT-Creation-Date: 2015-07-06 12:55+0200\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -321,10 +321,10 @@ msgstr "Name des primären Anzeigegerätes"
 
 #: modules/policies/ucc_hardware.py:109
 msgid ""
-"The X name of the primary display device (can be queried with xrandr --list)"
+"The X name of the primary display device (can be queried with xrandr -q)"
 msgstr ""
-"Der Name des primären Anzeigegerätes unter X (kann mit xrandr --list "
-"ermittelt werden)"
+"Der Name des primären Anzeigegerätes unter X (kann mit xrandr -q ermittelt "
+"werden)"
 
 #: modules/policies/ucc_hardware.py:118
 msgid "Name of secondary display"
@@ -332,11 +332,10 @@ msgstr "Name des sekundären Anzeigegerätes"
 
 #: modules/policies/ucc_hardware.py:119
 msgid ""
-"The X name of the secondary display device (can be queried with xrandr --"
-"list)"
+"The X name of the secondary display device (can be queried with xrandr -q)"
 msgstr ""
-"Der Name des sekundären Anzeigegerätes unter X (kann mit xrandr --list "
-"ermittelt werden)"
+"Der Name des sekundären Anzeigegerätes unter X (kann mit xrandr -q ermittelt "
+"werden)"
 
 #: modules/policies/ucc_hardware.py:128
 msgid "Position of secondary display relative to the primary"
@@ -428,7 +427,9 @@ msgstr "Diese Windows-Domäne wird für RDP-Anmeldungen verwendet"
 msgid ""
 "This windows domain will be used for RDP user logons. If an XRDP server is "
 "used, this input field can be left empty."
-msgstr "Diese Windows-Domäne wird für RDP-Anmeldungen verwendet. Wird ein XRDP-Server verwendet, kann das Feld leer bleiben."
+msgstr ""
+"Diese Windows-Domäne wird für RDP-Anmeldungen verwendet. Wird ein XRDP-"
+"Server verwendet, kann das Feld leer bleiben."
 
 #: modules/policies/ucc_user.py:89
 msgid "Windows/XRDP terminal server"
@@ -439,8 +440,8 @@ msgid ""
 "This terminal server will be used for user logon to Windows terminal servers "
 "oder XRDP terminal servers."
 msgstr ""
-"Dieser Windows-Terminalserver wird für Anmeldungen an Windows "
-"oder XRDP-Terminalservern verwendet."
+"Dieser Windows-Terminalserver wird für Anmeldungen an Windows oder XRDP-"
+"Terminalservern verwendet."
 
 #: modules/policies/ucc_user.py:99
 msgid "UCC 1.0 terminal server (not used for UCC 2.0 clients)"
@@ -453,8 +454,8 @@ msgid ""
 "XRDP should be used instead."
 msgstr ""
 "Dieser UCC-Terminalserver wird für Anmeldungen an UCC-Terminalservern "
-"verwendet, die X11-Forwarding verwenden. In UCC 2.0 ist das nicht mehr"
-"unterstützt. Stattdessen sollte XRDP verwendet werden."
+"verwendet, die X11-Forwarding verwenden. In UCC 2.0 ist das nicht "
+"mehrunterstützt. Stattdessen sollte XRDP verwendet werden."
 
 #: modules/settings/ucc_image.py:47
 msgid "UCC images"
