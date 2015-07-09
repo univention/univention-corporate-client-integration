@@ -279,7 +279,8 @@ property_descriptions={
 			required=0,
 			may_change=1,
 			identifies=0,
-			default=('overlayfs', [])
+			default=('overlayfs', []),
+			size='Two'
 		),
 	'repartitioning': univention.admin.property(
 			short_description=_('Repartitioning for installed systems'),
@@ -300,7 +301,8 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			size='Two'
 		),
 	'bootParameter': univention.admin.property(
 			short_description=_('Additional boot parameter'),
@@ -310,7 +312,8 @@ property_descriptions={
 			options=[],
 			required=0,
 			may_change=1,
-			identifies=0
+			identifies=0,
+			size='Two'
 		),
 	'service': univention.admin.property(
 			short_description=_('Service'),
@@ -509,8 +512,8 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	def _ldap_addlist(self):
 		if not 'posix' in self.options and not 'kerberos' in self.options:
 			raise univention.admin.uexceptions.invalidOptions(_(' At least posix or kerberos is required.'))
-		
-		
+
+
 		ocs=['top', 'person', 'univentionHost', 'univentionCorporateClient']
 		al=[]
 		if 'kerberos' in self.options:
@@ -762,5 +765,5 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	return res
 
 def identify(dn, attr, canonical=0):
-		
+
 	return 'univentionHost' in attr.get('objectClass', []) and 'univentionCorporateClient' in attr.get('objectClass', []) and ( 'posixAccount' in attr.get('objectClass', []) or ( 'krb5KDCEntry' in attr.get('objectClass', []) and 'krb5Principal' in attr.get('objectClass', []) ) )

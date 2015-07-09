@@ -190,8 +190,6 @@ layout = [
 	Tab(_('General'),_('UCC client configuration'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
-		] ),
-		Group( _( 'Mass storage' ), layout = [
 			'massstorage',
 		] ),
 		Group( _( 'Multi monitor configuration' ), layout = [

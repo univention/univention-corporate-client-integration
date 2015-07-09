@@ -6,7 +6,7 @@
 # Copyright (C) 2013-2014 Univention GmbH
 #
 # http://www.univention.de/
-# 
+#
 # All rights reserved.
 #
 # The source code of this program is made available
@@ -153,8 +153,6 @@ layout = [
 	Tab(_('General'),_('UCC client configuration'), layout = [
 		Group( _( 'General' ), layout = [
 			'name',
-		] ),
-		Group( _( 'Software updates' ), layout = [
 			'uccupdate',
 			'pkginstall',
 			'pkgremove',
@@ -187,13 +185,13 @@ class object(univention.admin.handlers.simplePolicy):
 
 	def exists(self):
 		return self._exists
-	
+
 	def _ldap_pre_create(self):
 		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
 		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicySoftwareupdates']) ]
-	
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter=univention.admin.filter.conjunction('&', [
