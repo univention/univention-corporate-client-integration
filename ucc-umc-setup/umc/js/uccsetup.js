@@ -322,7 +322,8 @@ define([
 			}, {
 				name: 'done',
 				headerText: _('Configuration finished'),
-				helpText: this._getHelpTextForDonePage()
+				helpText: this._getHelpTextForDonePage(),
+				navBootstrapClasses: '',
 			}];
 		},
 

@@ -1,6 +1,13 @@
+ucc-umc-setup (3.0.2-2) unstable; urgency=low
+
+  * Bug #36772: Adapted layout of ucc-umc-setup. Setup finished will
+    now displayed on whole page width.
+
+ -- Drees Dormann <dormann@univention.de>  Fri, 10 Jul 2015 09:22:57 +0200
+
 ucc-umc-setup (3.0.2-1) unstable; urgency=medium
 
-  * Bug #38801: Version bump for UCC 2.1 
+  * Bug #38801: Version bump for UCC 2.1
 
  -- Erik Damrose <damrose@univention.de>  Wed, 01 Jul 2015 11:25:02 +0200
 
