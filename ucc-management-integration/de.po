@@ -455,7 +455,7 @@ msgid ""
 msgstr ""
 "Dieser UCC-Terminalserver wird für Anmeldungen an UCC-Terminalservern "
 "verwendet, die X11-Forwarding verwenden. In UCC 2.0 ist das nicht "
-"mehrunterstützt. Stattdessen sollte XRDP verwendet werden."
+"mehr unterstützt. Stattdessen sollte XRDP verwendet werden."
 
 #: modules/settings/ucc_image.py:47
 msgid "UCC images"
