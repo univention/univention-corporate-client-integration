@@ -122,7 +122,7 @@ chroot_cmd('apt-get update')
 chroot_cmd('apt-get --force-yes --assume-yes install univention-ucc-session-xenapp')
 
 log("Installing Citrix Receiver", 50)
-if chroot_cmd('dpkg -i ' + os.path.basename(opt.deb)) != 0:
+if chroot_cmd('dpkg -i --force-confnew --force-overwrite --force-overwrite-dir ' + os.path.basename(opt.deb)) != 0:
 	cleanup()
 	exit("Installation of Citrix Receiver failed, please result the logfile (%s)." % logfile.name, 5)
 
