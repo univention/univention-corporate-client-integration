@@ -304,6 +304,16 @@ property_descriptions={
 			identifies=0,
 			size='Two'
 		),
+	'imageServer': univention.admin.property(
+		short_description=_('Dedicated image server'),
+		long_description=_('This optional parameter gives the possibility to define a dedicated image server for installing/update ucc clients'),
+		syntax=univention.admin.syntax.uccImageServer,
+		multivalue=0,
+		options=[],
+		required=0,
+		may_change=1,
+		identifies=0
+	),
 	'bootParameter': univention.admin.property(
 			short_description=_('Additional boot parameter'),
 			long_description=_('Additional boot parameter of this client'),
@@ -362,6 +372,7 @@ layout = [
 			'boot',
 			'image',
 			'bootParameter',
+			'imageServer',
 		] ),
 		] ),
 	Tab( _( 'Account' ), _( 'Account' ), advanced = True, layout = [
@@ -398,6 +409,7 @@ mapping.register('image', 'univentionCorporateClientBootImage', None, univention
 mapping.register('bootParameter', 'univentionCorporateClientBootParameter')
 mapping.register('repartitioning', 'univentionCorporateClientBootRepartitioning', None, univention.admin.mapping.ListToString)
 mapping.register('service', 'univentionService')
+mapping.register('imageServer', 'univentionCorporateClientDedicatedImageServer', None, univention.admin.mapping.ListToString)
 
 # add Nagios extension
 nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, options, layout)
