@@ -55,8 +55,8 @@ UCR_VARIABLE_POLICY_DN = 'cn=ucc-common-settings,cn=ucc,cn=policies,%s' % ucr['l
 UCR_VARIABLE_POLICY_THINCLIENTS_DN = 'cn=ucc-thinclient-settings,cn=ucc,cn=policies,%s' % ucr['ldap/base']
 UCR_VARIABLE_POLICY_FATCLIENTS_DN = 'cn=ucc-desktop-settings,cn=ucc,cn=policies,%s' % ucr['ldap/base']
 DHCP_ROUTING_POLICY_DN = 'cn=ucc-dhcp-gateway,cn=routing,cn=dhcp,cn=policies,%s' % ucr['ldap/base']
-UCC_THINCLIENT_ID = ucr.get('ucc/image/defaultid/thinclient', 'ucc20thin')
-UCC_DESKTOP_ID = ucr.get('ucc/image/defaultid/desktop', 'ucc20desktop')
+UCC_THINCLIENT_ID = ucr.get('ucc/image/defaultid/thinclient', 'ucc21thin')
+UCC_DESKTOP_ID = ucr.get('ucc/image/defaultid/desktop', 'ucc21desktop')
 
 UCCProgress = ucc_images.Progress
 

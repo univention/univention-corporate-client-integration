@@ -35,8 +35,19 @@ upload_size=30000
 if [ -z "$umc_server_upload_max" -o "$umc_server_upload_max" -lt "$upload_size" ]; then
 	ucr set umc/server/upload/max=${upload_size}
 fi
+
+# Update image version for UCC 2.1
+if [ "$1" = "configure" -a -n "$2" ] && dpkg --compare-versions "$2" lt 4.0.0-1; then
+	if [ "${ucc_image_defaultid_thinclient}" = "ucc20thin" ]; then
+		ucr set ucc/image/defaultid/thinclient=ucc21thin
+	fi
+	if [ "${ucc_image_defaultid_desktop}" = "ucc20desktop" ]; then
+		ucr set ucc/image/defaultid/desktop=ucc21desktop
+	fi
+fi
+
 ucr set \
-	ucc/image/defaultid/thinclient=ucc20thin \
-	ucc/image/defaultid/desktop=ucc20desktop
+	ucc/image/defaultid/thinclient?ucc21thin \
+	ucc/image/defaultid/desktop?ucc21desktop
 
 exit 0
