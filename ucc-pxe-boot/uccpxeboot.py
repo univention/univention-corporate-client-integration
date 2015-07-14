@@ -54,7 +54,6 @@ def handler(dn, new, old):
 	configRegistry = univention.config_registry.ConfigRegistry()
 	configRegistry.load()
 
-
 	# remove pxe host file
 	if old and old.get('aRecord'):
 		basename = ip_to_hex(old['aRecord'][0])
@@ -93,8 +92,12 @@ LOCALBOOT 0
 			initrd = '%s.initrd' % image
 			kernel = '%s.kernel' % image
 
+			server = configRegistry['ucc/pxe/nfsroot']
+			if new.get('univentionCorporateClientDedicatedImageServer'):
+				server = new['univentionCorporateClientDedicatedImageServer'][0]
 			append = 'root=/dev/nfs '
-			append += 'nfsroot=%s:/var/lib/univention-client-boot ' % configRegistry['ucc/pxe/nfsroot']
+			append += 'nfsroot=%s:/var/lib/univention-client-boot ' % server
+
 			if configRegistry.get('ucc/pxe/vga'):
 				append += 'vga=%s ' % configRegistry['ucc/pxe/vga']
 			append += 'initrd=%s ' % initrd
