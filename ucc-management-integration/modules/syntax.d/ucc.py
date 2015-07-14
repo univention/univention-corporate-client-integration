@@ -75,7 +75,9 @@ class uccDesktopFixedAttributes(univention.admin.syntax.select):
 class uccDesktopEnvVar(complex):
         subsyntaxes = ( ( _( 'Variable' ), string ), ( _( 'Value' ), string ) )
 
-class uccImageServer(IComputer_FQDN):
-	udm_modules = ( 'computers/computer', )
+class uccImageServer(UDM_Attribute):
+	udm_module = 'computers/computer'
 	udm_filter = '(&(objectClass=univentionHost)(service=UCC))'
 	empty_value = True
+	attribute = 'ip'
+	label_format = '%(name)s: %($attribute$)s'
