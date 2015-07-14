@@ -542,7 +542,7 @@ msgid "Value"
 msgstr "Wert"
 
 msgid "Dedicated image server"
-msgstr "Dedizierte Image-Server"
+msgstr "Dedizierter Image-Server"
 
 msgid "This optional parameter gives the possibility to define a dedicated image server for installing/update the UCC client."
 msgstr "Dieser optionale Parameter erlaubt die Konfiguration eines dedizierten Image-Server für die Installation (Update) des UCC Client."
