@@ -1,3 +1,10 @@
+ucc-image-toolkit (4.0.0-6) unstable; urgency=medium
+
+  * Bug #38906: Add iso-level parameter to grub-mkrescue call to support
+    desktop image .iso file
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 14 Jul 2015 12:35:07 +0200
+
 ucc-image-toolkit (4.0.0-5) unstable; urgency=medium
 
   * Bug #38912: Adapt index file name on server
