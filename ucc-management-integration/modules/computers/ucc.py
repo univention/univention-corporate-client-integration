@@ -306,7 +306,7 @@ property_descriptions={
 		),
 	'imageServer': univention.admin.property(
 		short_description=_('Dedicated image server'),
-		long_description=_('This optional parameter gives the possibility to define a dedicated image server for installing/update ucc clients'),
+		long_description=_('This optional parameter gives the possibility to define a dedicated image server for installing/update the UCC client.'),
 		syntax=univention.admin.syntax.uccImageServer,
 		multivalue=0,
 		options=[],

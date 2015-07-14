@@ -541,6 +541,13 @@ msgstr "Variable"
 msgid "Value"
 msgstr "Wert"
 
+msgid "Dedicated image server"
+msgstr "Dedizierte Image-Server"
+
+msgid "This optional parameter gives the possibility to define a dedicated image server for installing/update the UCC client."
+msgstr "Dieser optionale Parameter erlaubt die Konfiguration eines dedizierten Image-Server für die Installation (Update) des UCC Client."
+
+
 #~ msgid "Image boot with update check / Initial installation"
 #~ msgstr "Image-Boot mit Update-Prüfung / Erstinstallation"
 
