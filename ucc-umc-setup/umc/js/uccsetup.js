@@ -237,6 +237,7 @@ define([
 					type: CheckBox,
 					name: 'autoLogin',
 					label: _('Automatic thin client login (the actual authentication occurs on the Citrix web interface)'),
+					checked: true
 				}, {
 					type: Text,
 					name: 'uploadReceiverMessage',
@@ -291,8 +292,8 @@ define([
 					type: CheckBox,
 					name: 'eula',
 					visible: false,
+					checked: false,
 					label: _('Confirm the End User License Agreement of Citrix Receiver (as presented during the download of the Citrix Receiver).'),
-				//this._updateCitrixReceiverUploadPage();
 				}]
 			}, {
 				name: 'terminalServices-thinclient-browser',
@@ -379,8 +380,6 @@ define([
 			this._setLabelConf();
 			var networkAddressWidget = this.getWidget('network', 'newNetworkAddress');
 			networkAddressWidget.on('keyup', lang.hitch(this, '_updateNetworkDefaults'));
-			//TODO remove debug
-			this._setCitrixReceiverUploaded(true);
 		},
 
 		_checkUploadFile: function(fileInfo) {
@@ -392,7 +391,6 @@ define([
 		},
 
 		_setCitrixReceiverUploaded: function(uploaded) {
-			//this.getPage('terminalServices-thinclient-citrix-upload')._footerButtons.next.set('disabled', !uploaded);
 			var eula = this.getWidget('terminalServices-thinclient-citrix-login', 'eula');
 			eula.set('disabled', !uploaded);
 		},
@@ -421,9 +419,8 @@ define([
 				}
 				this.getWidget('terminalServices-thinclient-citrix-login', 'eula').set('value', info.citrix_accepteula);
 				this.getWidget('terminalServices-thinclient-citrix-login', 'url').set('value', info.citrix_url);
-
 				this.getWidget('terminalServices-thinclient-browser', 'url').set('value', info.browser_url);
-}));
+			}));
 		},
 
 		_watchNetworkRadioButtons: function() {
@@ -579,7 +576,8 @@ define([
 					vals.citrix = {
 						image: this.getWidget('terminalServices-thinclient-citrix-login', 'image').get('value'),
 						url: this.getWidget('terminalServices-thinclient-citrix-login', 'url').get('value'),
-						autoLogin: this.getWidget('terminalServices-thinclient-citrix-login', 'autoLogin').get('value')
+						autoLogin: this.getWidget('terminalServices-thinclient-citrix-login', 'autoLogin').get('value'),
+						customReceiver: this.getWidget('terminalServices-thinclient-citrix-login', 'uploadReceiver').get('checked')
 					};
 				}
 
@@ -623,29 +621,6 @@ define([
 			}, function(ikey, ivalue) {
 				var iwidget = this.getWidget('network', ikey);
 				iwidget.set('value', lang.replace(ivalue, [subnet]));
-			}, this);
-		},
-
-		//_updateCitrixReceiverUploadPage: function() {
-		//	var uploadMessage = _('<p>The following Citrix Receiver package file has already been uploaded: <i>%(file)s</i>.</p><p>It is possible to overwrite the existing package file and <a href="javascript:void(0)" onclick="require(\'dijit/registry\').byId(\'%(id)s\').showCitrixReceiverUploadWidgets()">upload a new one</a>.</p>', {
-		//		file: this._info.citrix_receiver_deb_package,
-		//		id: this.id
-		//	});
-		//	var uploadWidget = this.getWidget('terminalServices-thinclient-citrix-login', 'uploadReceiver');
-		//	uploadWidget.set('label', uploadMessage);
-		//	uploadWidget.set('visible', true);
-		//	this.showCitrixReceiverUploadWidgets(false);
-		//	this._setCitrixReceiverUploaded(true);  // enable next button
-		//},
-
-		showCitrixReceiverUploadWidgets: function(visible) {
-			if (visible === undefined) {
-				// toggle visibility
-				visible = !this.getWidget('terminalServices-thinclient-citrix-login', 'upload').get('visible');
-			}
-			array.forEach(['image', 'upload', 'eula'], function(ikey) {
-				var widget = this.getWidget('terminalServices-thinclient-citrix-login', ikey);
-				widget.set('visible', visible);
 			}, this);
 		},
 

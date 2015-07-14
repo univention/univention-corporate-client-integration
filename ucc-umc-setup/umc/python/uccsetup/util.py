@@ -309,7 +309,9 @@ def set_ucr_policy_variables(common_variables, thinclient_variables, fatclient_v
 	items[0].append(common_variables)
 	items[1].append(thinclient_variables)
 	items[2].append(fatclient_variables)
-	for container_dn, policy_dn, variables in items:
+	for container_dn, policy_dn, _variables in items:
+		# ignore empty values
+		variables = dict([(k, v) for k, v in _variables.iteritems() if v])
 		with _open_container_policy(container_dn, 'policies/registry', policy_dn, ldap_connection) as ucr_policy:
 			variable_dict = dict(ucr_policy.get('registry', []))
 			variable_dict.update(variables)
