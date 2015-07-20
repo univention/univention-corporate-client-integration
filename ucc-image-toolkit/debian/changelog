@@ -1,3 +1,10 @@
+ucc-image-toolkit (4.0.0-8) unstable; urgency=medium
+
+  * Bug #38801: Remove version specific comment from config
+  * Modify thinclient image size to 1.55GiB
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 20 Jul 2015 14:37:05 +0200
+
 ucc-image-toolkit (4.0.0-7) unstable; urgency=medium
 
   * Bug #38801: Add 100MiB to thinclient image
