@@ -66,7 +66,7 @@ define([
 			this.pages = [{
 				name: 'start',
 				headerText: _('Univention Corporate Client configuration wizard'),
-				helpText: _('<p>Welcome to the setup wizard for Univention Corporate Client (UCC)!</p><p>UCC allows the operation and management of Linux desktop systems as well as thin clients for accessing remote desktop services (terminal servers) via RDP and Citrix XenApp (ICA). Further information can be found in the <a href="http://docs.univention.de/en/ucc2.0.html" target="_blank">UCC manual</a>.</p>'),
+				helpText: _('<p>Welcome to the setup wizard for Univention Corporate Client (UCC)!</p><p>UCC allows the operation and management of Linux desktop systems as well as thin clients for accessing remote desktop services (terminal servers) via RDP and Citrix XenApp (ICA). Further information can be found in the <a href="http://docs.univention.de/en/ucc2.1.html" target="_blank">UCC manual</a>.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'fatclient',
@@ -91,7 +91,7 @@ define([
 			}, {
 				name: 'download-fatclient',
 				headerText: _('Download preconfigured UCC desktop image'),
-				helpText: _('<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. The image is regularly updated and offers a fully-featured KDE desktop environment.</p><p>Note that it is also possible to create custom images. This is documented in the <a href="http://docs.univention.de/en/ucc2.0.html" target="_blank">UCC manual</a>.</p>'),
+				helpText: _('<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. The image is regularly updated and offers a fully-featured KDE desktop environment.</p><p>Note that it is also possible to create custom images. This is documented in the <a href="http://docs.univention.de/en/ucc2.1.html" target="_blank">UCC manual</a>.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'download',
@@ -101,7 +101,7 @@ define([
 			}, {
 				name: 'download-thinclient',
 				headerText: _('Download preconfigured UCC thinclient image'),
-				helpText: _('<p>Univention provides a preconfigured UCC thin client image which is regularly updated.</p><p>The thin client image allows access to various terminal services (Windows, Citrix, XRDP) and provides also a minimal local LXDE desktop. In addition to this, it is possible to configure a direct browser login to a preconfigured website, e.g, to access cloud-based web services.</p><p>Note that it is also possible to create custom images. This is documented in the <a href="http://docs.univention.de/en/ucc2.0.html" target="_blank">UCC manual</a>.</p>'),
+				helpText: _('<p>Univention provides a preconfigured UCC thin client image which is regularly updated.</p><p>The thin client image allows access to various terminal services (Windows, Citrix, XRDP) and provides also a minimal local LXDE desktop. In addition to this, it is possible to configure a direct browser login to a preconfigured website, e.g, to access cloud-based web services.</p><p>Note that it is also possible to create custom images. This is documented in the <a href="http://docs.univention.de/en/ucc2.1.html" target="_blank">UCC manual</a>.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'download',

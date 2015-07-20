@@ -1,6 +1,12 @@
+ucc-umc-setup (4.0.0-23) unstable; urgency=medium
+
+  * Bug #38801: Fix UCC 2.0 references
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 20 Jul 2015 13:25:35 +0200
+
 ucc-umc-setup (4.0.0-22) unstable; urgency=low
 
-* Bug #38806: Fixed unsetting of policy attributes.
+  * Bug #38806: Fixed unsetting of policy attributes.
   Installation of .deb package will only be triggered
   if 'Use integrated Citrix receiver' is set.
 
