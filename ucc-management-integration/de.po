@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.0.131-2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-06 12:55+0200\n"
+"POT-Creation-Date: 2015-07-20 13:29+0200\n"
 "PO-Revision-Date: 2012-03-27 14:29+0200\n"
 "Last-Translator: <muehlenhoff@univention.de>\n"
 "Language-Team: DE <packages@univention.de>\n"
@@ -77,7 +77,7 @@ msgstr "Reverse-Zone für DNS-Eintrag"
 msgid "Zone for DNS alias"
 msgstr "Zone für DNS-Alias"
 
-#: modules/computers/ucc.py:188 modules/computers/ucc.py:377
+#: modules/computers/ucc.py:188 modules/computers/ucc.py:391
 msgid "DNS alias"
 msgstr "DNS-Alias"
 
@@ -105,7 +105,7 @@ msgstr "Primäre Gruppe"
 msgid "Inventory number"
 msgstr "Inventarnummer"
 
-#: modules/computers/ucc.py:263 modules/computers/ucc.py:374
+#: modules/computers/ucc.py:263 modules/computers/ucc.py:388
 msgid "Groups"
 msgstr "Gruppen"
 
@@ -117,39 +117,51 @@ msgstr "Startvariante"
 msgid "Boot variant of this client"
 msgstr "Startvariante des Clients"
 
-#: modules/computers/ucc.py:285
+#: modules/computers/ucc.py:286
 msgid "Repartitioning for installed systems"
 msgstr "Neupartitionierung für installierte Systeme"
 
-#: modules/computers/ucc.py:286
+#: modules/computers/ucc.py:287
 msgid "Force repartitioning for installed systems"
 msgstr "Forciert die Neupartitionierung für bereits installierte Systeme"
 
-#: modules/computers/ucc.py:296
+#: modules/computers/ucc.py:297
 msgid "Image"
 msgstr "Image"
 
-#: modules/computers/ucc.py:297
+#: modules/computers/ucc.py:298
 msgid "Image to boot"
 msgstr "Startimage"
 
-#: modules/computers/ucc.py:306
+#: modules/computers/ucc.py:308
+msgid "Dedicated image server"
+msgstr "Dedizierter Image-Server"
+
+#: modules/computers/ucc.py:309
+msgid ""
+"This optional parameter gives the possibility to define a dedicated image "
+"server for installing/update the UCC client."
+msgstr ""
+"Dieser optionale Parameter erlaubt die Konfiguration eines dedizierten Image-"
+"Server für die Installation (Update) des UCC Client."
+
+#: modules/computers/ucc.py:318
 msgid "Additional boot parameter"
 msgstr "Erweiterte Startparameter"
 
-#: modules/computers/ucc.py:307
+#: modules/computers/ucc.py:319
 msgid "Additional boot parameter of this client"
 msgstr "Erweiterte Startparameter für diesen Client"
 
-#: modules/computers/ucc.py:316
+#: modules/computers/ucc.py:329
 msgid "Service"
 msgstr "Dienst"
 
-#: modules/computers/ucc.py:326
+#: modules/computers/ucc.py:339
 msgid "Relative ID"
 msgstr "Relative ID"
 
-#: modules/computers/ucc.py:339 modules/policies/ucc_desktop.py:158
+#: modules/computers/ucc.py:352 modules/policies/ucc_desktop.py:158
 #: modules/policies/ucc_desktop.py:159 modules/policies/ucc_hardware.py:190
 #: modules/policies/ucc_hardware.py:191 modules/policies/ucc_software.py:153
 #: modules/policies/ucc_software.py:154 modules/policies/ucc_user.py:160
@@ -159,59 +171,59 @@ msgstr "Relative ID"
 msgid "General"
 msgstr "Allgemein"
 
-#: modules/computers/ucc.py:339
+#: modules/computers/ucc.py:352
 msgid "Basic settings"
 msgstr "Grundeinstellungen"
 
-#: modules/computers/ucc.py:340
+#: modules/computers/ucc.py:353
 msgid "Computer account"
 msgstr "Rechnerkonto"
 
-#: modules/computers/ucc.py:345
+#: modules/computers/ucc.py:358
 msgid "Network settings "
 msgstr "Netzwerkeinstellungen"
 
-#: modules/computers/ucc.py:349
+#: modules/computers/ucc.py:362
 msgid "DNS Forward and Reverse Lookup Zone"
 msgstr "DNS-Forward und Reverse-Zonen"
 
-#: modules/computers/ucc.py:353
+#: modules/computers/ucc.py:366
 msgid "DHCP"
 msgstr "DHCP"
 
-#: modules/computers/ucc.py:357
+#: modules/computers/ucc.py:370
 msgid "Images"
 msgstr "Images"
 
-#: modules/computers/ucc.py:358
+#: modules/computers/ucc.py:371
 msgid "Image settings"
 msgstr "Image Einstellungen"
 
-#: modules/computers/ucc.py:364
+#: modules/computers/ucc.py:378
 msgid "Account"
 msgstr "Konto"
 
-#: modules/computers/ucc.py:368
+#: modules/computers/ucc.py:382
 msgid "Unix account"
 msgstr "Unix-Konto"
 
-#: modules/computers/ucc.py:368
+#: modules/computers/ucc.py:382
 msgid "Unix account settings"
 msgstr "Unix-Konto-Einstellungen"
 
-#: modules/computers/ucc.py:371
+#: modules/computers/ucc.py:385
 msgid "Services"
 msgstr "Dienste"
 
-#: modules/computers/ucc.py:374
+#: modules/computers/ucc.py:388
 msgid "Group memberships"
 msgstr "Gruppenmitgliedschaften"
 
-#: modules/computers/ucc.py:377
+#: modules/computers/ucc.py:391
 msgid "Alias DNS entry"
 msgstr "Alias-DNS-Eintrag"
 
-#: modules/computers/ucc.py:511
+#: modules/computers/ucc.py:526
 msgid " At least posix or kerberos is required."
 msgstr "Mindestens POSIX oder Kerberos werden benötigt"
 
@@ -266,8 +278,8 @@ msgstr "Leere Attribute"
 msgid "Desktop settings"
 msgstr "Desktop-Einstellungen"
 
-#: modules/policies/ucc_desktop.py:166 modules/policies/ucc_hardware.py:203
-#: modules/policies/ucc_software.py:163 modules/policies/ucc_user.py:169
+#: modules/policies/ucc_desktop.py:166 modules/policies/ucc_hardware.py:201
+#: modules/policies/ucc_software.py:161 modules/policies/ucc_user.py:169
 msgid "Object"
 msgstr "Objekt"
 
@@ -345,11 +357,7 @@ msgstr "Position des sekundären Anzeigegerätes relativ zum primären"
 msgid "UCC client configuration"
 msgstr "UCC Client-Einstellungen"
 
-#: modules/policies/ucc_hardware.py:194
-msgid "Mass storage"
-msgstr "Massenspeicher"
-
-#: modules/policies/ucc_hardware.py:197
+#: modules/policies/ucc_hardware.py:195
 msgid "Multi monitor configuration"
 msgstr "Multi-Monitor Konfiguration"
 
@@ -397,10 +405,6 @@ msgstr ""
 "Die in dieser Richtlinie konfigurierten Pakete werden beim nächsten "
 "Systemstart installiert"
 
-#: modules/policies/ucc_software.py:157
-msgid "Software updates"
-msgstr "Software-Updates"
-
 #: modules/policies/ucc_user.py:52
 msgid "Policy: UCC user session"
 msgstr "UCC Benutzersitzung"
@@ -444,18 +448,18 @@ msgstr ""
 "Terminalservern verwendet."
 
 #: modules/policies/ucc_user.py:99
-msgid "UCC 1.0 terminal server (not used for UCC 2.0 clients)"
-msgstr ""
+msgid "UCC 1.0 terminal server (not used for UCC 2 clients)"
+msgstr "UCC 1.0 Terminalserver (in UCC 2 nicht benutzt)"
 
 #: modules/policies/ucc_user.py:100
 msgid ""
 "This UCC terminal server will be used for user logons to UCC terminal "
-"servers using X11 forwarding. In UCC 2.0 this is no longer supported and "
-"XRDP should be used instead."
+"servers using X11 forwarding. In UCC 2 this is no longer supported and XRDP "
+"should be used instead."
 msgstr ""
 "Dieser UCC-Terminalserver wird für Anmeldungen an UCC-Terminalservern "
-"verwendet, die X11-Forwarding verwenden. In UCC 2.0 ist das nicht "
-"mehr unterstützt. Stattdessen sollte XRDP verwendet werden."
+"verwendet, die X11-Forwarding verwenden. In UCC 2 ist das nicht mehr "
+"unterstützt. Stattdessen sollte XRDP verwendet werden."
 
 #: modules/settings/ucc_image.py:47
 msgid "UCC images"
@@ -541,12 +545,11 @@ msgstr "Variable"
 msgid "Value"
 msgstr "Wert"
 
-msgid "Dedicated image server"
-msgstr "Dedizierter Image-Server"
+#~ msgid "Mass storage"
+#~ msgstr "Massenspeicher"
 
-msgid "This optional parameter gives the possibility to define a dedicated image server for installing/update the UCC client."
-msgstr "Dieser optionale Parameter erlaubt die Konfiguration eines dedizierten Image-Server für die Installation (Update) des UCC Client."
-
+#~ msgid "Software updates"
+#~ msgstr "Software-Updates"
 
 #~ msgid "Image boot with update check / Initial installation"
 #~ msgstr "Image-Boot mit Update-Prüfung / Erstinstallation"

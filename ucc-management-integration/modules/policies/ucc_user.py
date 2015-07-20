@@ -96,8 +96,8 @@ property_descriptions={
 			identifies=0
 		),
 	'uccTerminalserver': univention.admin.property(
-			short_description=_('UCC 1.0 terminal server (not used for UCC 2.0 clients)'),
-			long_description=_('This UCC terminal server will be used for user logons to UCC terminal servers using X11 forwarding. In UCC 2.0 this is no longer supported and XRDP should be used instead.'),
+			short_description=_('UCC 1.0 terminal server (not used for UCC 2 clients)'),
+			long_description=_('This UCC terminal server will be used for user logons to UCC terminal servers using X11 forwarding. In UCC 2 this is no longer supported and XRDP should be used instead.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=1,
 			options=[],
