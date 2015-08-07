@@ -1,3 +1,9 @@
+ucc-image-toolkit (4.0.0-9) unstable; urgency=medium
+
+  * Bug #39032: Fix debootstrap link creation
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 07 Aug 2015 13:20:52 +0200
+
 ucc-image-toolkit (4.0.0-8) unstable; urgency=medium
 
   * Bug #38801: Remove version specific comment from config

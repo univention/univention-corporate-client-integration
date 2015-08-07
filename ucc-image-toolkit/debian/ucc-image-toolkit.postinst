@@ -3,7 +3,7 @@
 # UCC image toolkit
 #  postinst file
 #
-# Copyright 2012-2014 Univention GmbH
+# Copyright 2012-2015 Univention GmbH
 #
 # http://www.univention.de/
 #
@@ -42,5 +42,9 @@ create_logfile_if_missing /var/log/univention/ucc-image-toolkit.log "root:adm" 6
 
 ucr set ucc/image/path?/var/lib/univention-client-boot/
 ucr set ucc/image/download/url?http://ucc-images.software-univention.de/download/ucc-images/ 
+
+if [ ! -e /usr/share/debootstrap/scripts/trusty ]; then
+	ln -s /usr/share/debootstrap/scripts/gutsy /usr/share/debootstrap/scripts/trusty
+fi
 
 exit 0
