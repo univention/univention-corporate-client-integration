@@ -38,7 +38,7 @@ import httplib
 from univention.lib.i18n import Translation
 from univention.management.console.modules import Base, UMC_CommandError
 from univention.management.console.log import MODULE
-from univention.management.console.modules.decorators import simple_response
+from univention.management.console.modules.decorators import simple_response, require_password
 from univention.management.console.modules.mixins import ProgressMixin
 
 import ucc.images as ucc_images
@@ -134,11 +134,12 @@ class Instance(Base, ProgressMixin):
 
 		return result
 
+	@require_password
 	@simple_response(with_progress=True)
 	def download(self, image='', progress=None):
 		# start download process in a thread
 		progress_wrapper = ProgressWrapper(progress)
-		ucc_images.download_ucc_image(image, username=self._username, password=self._password, progress=progress_wrapper)
+		ucc_images.download_ucc_image(image, username=self.username, password=self.password, progress=progress_wrapper)
 		if hasattr(progress, 'result'):
 			return progress.result
 		return { 'success': True }

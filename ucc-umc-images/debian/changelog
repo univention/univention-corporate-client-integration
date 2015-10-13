@@ -1,3 +1,9 @@
+ucc-umc-images (4.0.0-1) unstable; urgency=medium
+
+  * Bug #39445: adjust module to be ready for SAML authentication
+
+ -- Florian Best <best@univention.de>  Tue, 13 Oct 2015 12:48:37 +0200
+
 ucc-umc-images (3.0.1-1) unstable; urgency=medium
 
   * Bug #38801: Version bump for UCC 2.1 
