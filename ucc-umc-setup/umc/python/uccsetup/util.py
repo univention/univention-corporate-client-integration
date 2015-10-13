@@ -87,18 +87,14 @@ class ProgressWrapper(ucc_images.Progress):
 		UCCProgress.advance(self, steps, substeps)
 		self.umc_progress.current = float(steps * self._max_steps) / self.max_steps + self._offset
 
-
-_user_dn = None
-_password = None
-def set_credentials(dn, passwd):
-	global _user_dn, _password
-	_user_dn = dn
-	_password = passwd
-	MODULE.info('Saved LDAP DN for user %s' % _user_dn)
+_bind_callback = None
+def set_bind_function(bind_callback):
+	global _bind_callback
+	_bind_callback = bind_callback
 
 
 def get_ldap_connection():
-	MODULE.info('Open LDAP connection for user %s' % _user_dn )
+	MODULE.info('Open LDAP connection')
 
 	# Connect to ldap server (inspired from univention.uldap.getMachineConnection())
 	exc = None
@@ -113,10 +109,11 @@ def get_ldap_connection():
 	# get the first available server
 	for server in servers:
 		try:
-			lo = udm_uldap.access(host=server, port=port, base=ucr['ldap/base'], binddn=_user_dn, bindpw=_password, follow_referral=True)
+			lo = udm_uldap.access(host=server, port=port, base=ucr['ldap/base'], follow_referral=True)
 		except ldap.SERVER_DOWN, exc:
 			pass
 		else:
+			_bind_callback(lo)
 			return lo
 
 	# no LDAP server found

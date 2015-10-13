@@ -30,11 +30,10 @@
 import os.path
 import shutil
 
-from univention.management.console.modules import Base
-from univention.management.console.modules import UMC_CommandError
 from univention.management.console.log import MODULE
 from univention.management.console.config import ucr
-from univention.management.console.modules.decorators import simple_response, sanitize, file_upload
+from univention.management.console.modules import Base, UMC_Error
+from univention.management.console.modules.decorators import simple_response, sanitize, file_upload, require_password
 from univention.management.console.modules.mixins import ProgressMixin
 from univention.management.console.modules.sanitizers import DictSanitizer, StringSanitizer, BooleanSanitizer
 from univention.management.console.protocol.session import TEMPUPLOADDIR
@@ -51,7 +50,7 @@ import util
 
 class Instance(Base, ProgressMixin):
 	def init(self):
-		util.set_credentials(self._user_dn, self._password)
+		util.set_bind_function(self.bind_user_connection)
 
 	@simple_response
 	def info_networks(self):
@@ -107,20 +106,20 @@ class Instance(Base, ProgressMixin):
 	def upload_deb(self, request):
 		# make sure that we got a list
 		if not isinstance(request.options, (tuple, list)):
-			raise UMC_CommandError(_('Expected list of dicts, but got: %s') % str(request.options) )
+			raise UMC_Error(_('Expected list of dicts, but got: %s') % str(request.options) )
 		file_info = request.options[0]
 		if not ('tmpfile' in file_info and 'filename' in file_info):
-			raise UMC_CommandError(_('Invalid upload data, got: %s') % str(file_info) )
+			raise UMC_Error(_('Invalid upload data, got: %s') % str(file_info) )
 
 		# check for fake uploads
 		tmpfile = file_info['tmpfile']
 		if not os.path.realpath(tmpfile).startswith(TEMPUPLOADDIR):
-			raise UMC_CommandError(_('Invalid upload file path'))
+			raise UMC_Error(_('Invalid upload file path'))
 
 		# check for correct file type
 		filename = file_info['filename']
 		if not filename.endswith('_i386.deb'):
-			raise UMC_CommandError(_('Invalid file type! File needs to be a Debian archive (.deb) for 32 bit architecture.'))
+			raise UMC_Error(_('Invalid file type! File needs to be a Debian archive (.deb) for 32 bit architecture.'))
 
 		# we got an uploaded file with the following properties:
 		#   name, filename, tmpfile
@@ -133,6 +132,7 @@ class Instance(Base, ProgressMixin):
 		# done
 		self.finished( request.id, None )
 
+	@require_password
 	@sanitize(
 		thinclient=BooleanSanitizer(),
 		fatclient=BooleanSanitizer(),
@@ -245,15 +245,15 @@ class Instance(Base, ProgressMixin):
 		download_percentage_third = download_percentage / 3
 		if downloadThinClientImage and downloadFatClientImage:
 			progress_wrapper = util.ProgressWrapper(progress, download_percentage_third, 10)
-			ucc_images.download_ucc_image(thinclient_image.spec_file, username=self._username, password=self._password, progress=progress_wrapper)
+			ucc_images.download_ucc_image(thinclient_image.spec_file, username=self.username, password=self.password, progress=progress_wrapper)
 			progress_wrapper = util.ProgressWrapper(progress, download_percentage_third * 2, 10 + download_percentage_third)
-			ucc_images.download_ucc_image(desktop_image.spec_file, username=self._username, password=self._password, progress=progress_wrapper)
+			ucc_images.download_ucc_image(desktop_image.spec_file, username=self.username, password=self.password, progress=progress_wrapper)
 		elif downloadThinClientImage:
 			progress_wrapper = util.ProgressWrapper(progress, download_percentage, 10)
-			ucc_images.download_ucc_image(thinclient_image.spec_file, username=self._username, password=self._password, progress=progress_wrapper)
+			ucc_images.download_ucc_image(thinclient_image.spec_file, username=self.username, password=self.password, progress=progress_wrapper)
 		elif downloadFatClientImage:
 			progress_wrapper = util.ProgressWrapper(progress, download_percentage, 10)
-			ucc_images.download_ucc_image(desktop_image.spec_file, username=self._username, password=self._password, progress=progress_wrapper)
+			ucc_images.download_ucc_image(desktop_image.spec_file, username=self.username, password=self.password, progress=progress_wrapper)
 
 		# install citrix receiver in UCC image
 		if citrix and citrix.get('customReceiver') and not progress.finished:
@@ -266,7 +266,7 @@ class Instance(Base, ProgressMixin):
 			ucc_image_path = os.path.join(ucc_images.UCC_IMAGE_DIRECTORY, ucc_image.file) if ucc_image else None
 			if not ucc_image or not os.path.exists(ucc_image_path):
 				MODULE.warn('Chosen UCC image %s for Citrix Receiver installation could not be found' % ucc_image_choice)
-				raise UMC_CommandError(_('The chosen UCC image file %s could not be found on the local system!') % ucc_image_choice)
+				raise UMC_Error(_('The chosen UCC image file %s could not be found on the local system!') % ucc_image_choice)
 
 			progress_wrapper = util.ProgressWrapper(progress, 30, 70)
 			util.add_citrix_receiver_to_ucc_image(ucc_image_path, util.get_citrix_receiver_package_path(), progress_wrapper)
