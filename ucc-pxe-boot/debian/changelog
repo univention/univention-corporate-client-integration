@@ -1,3 +1,9 @@
+ucc-pxe-boot (7.0.1-3) unstable; urgency=medium
+
+  * Bug #41341: Update syslinux components to syslinux-6.04-pre1
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 27 May 2016 11:42:05 +0200
+
 ucc-pxe-boot (7.0.1-2) unstable; urgency=low
 
   * Bug #35410: Added dedicated image server 
