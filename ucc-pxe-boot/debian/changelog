@@ -1,3 +1,9 @@
+ucc-pxe-boot (7.0.0-2) unstable; urgency=medium
+
+  * Bug #41369: Update syslinux components to syslinux-6.04-pre1
+
+ -- Erik Damrose <damrose@univention.de>  Fri, 27 May 2016 12:01:23 +0200
+
 ucc-pxe-boot (7.0.0-1) unstable; urgency=low
 
   * Port to UCS 4 (Bug #35891)
