@@ -1,3 +1,9 @@
+ucc-server (4.0.0-1) unstable; urgency=medium
+
+  * bumped version
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 31 May 2016 14:19:42 +0200
+
 ucc-server (3.0.1-1) unstable; urgency=medium
 
   * Bug #38801: Version bump for UCC 2.1 
