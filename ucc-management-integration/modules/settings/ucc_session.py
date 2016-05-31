@@ -3,7 +3,7 @@
 # Univention Corporate Client
 #  UDM policy for thin client session 
 #
-# Copyright (C) 2010-2014 Univention GmbH
+# Copyright (C) 2010-2016 Univention GmbH
 #
 # http://www.univention.de/
 #
