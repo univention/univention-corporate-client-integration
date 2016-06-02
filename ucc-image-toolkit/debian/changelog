@@ -1,3 +1,9 @@
+ucc-image-toolkit (5.0.0-2) unstable; urgency=medium
+
+  * Bug #41420: Create xenial symlink for debmirror
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 02 Jun 2016 13:16:48 +0200
+
 ucc-image-toolkit (5.0.0-1) unstable; urgency=medium
 
   * bumped version
