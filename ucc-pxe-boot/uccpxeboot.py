@@ -103,6 +103,8 @@ LOCALBOOT 0
 			append += 'initrd=%s ' % initrd
 			if configRegistry.is_true('ucc/pxe/quiet', False):
 				append += 'quiet '
+			if configRegistry.is_false('ucc/pxe/predicteablenicnames', True):
+				append += 'net.ifnames=0 biosdevname=0 '
 			if 'xorg/keyboard/options/XkbLayout' in configRegistry.keys():
 				append += 'keyboard=%s ' % configRegistry['xorg/keyboard/options/XkbLayout']
 			if 'locale/default' in configRegistry.keys():
