@@ -3,7 +3,7 @@
   <module id="uccsetup" icon="uccsetup" version="1.0">
 	<name>UCC Setup</name>
 	<description>Wizard to configure and set up Univention Corporate Client</description>
-	<keywords>wizard,ucc,setup,configuration,thin client,desktop client,rdp,xrdp,citrix,xen</keywords>
+	<keywords>wizard,ucc,setup,configuration,thin client,desktop client,rdp,citrix,xen</keywords>
 	<categories>
 	  <category name="system"/>
 	</categories>

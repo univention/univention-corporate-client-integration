@@ -230,11 +230,6 @@ class Instance(Base, ProgressMixin):
 		_progress(5, _('Setting UCR variables'))
 		util.set_ucr_policy_variables(ucr_variables, thinclient_ucr_variables, fatclient_ucr_variables, ldap_connection)
 
-		# set installation policy for desktops
-		if fatclient:
-			_progress(6, _('Configuring installation policy for desktop clients'))
-			util.set_xrdp_install_policy(ldap_connection)
-
 		# query the latest ucc image file
 		thinclient_image, desktop_image = util.get_latest_ucc_images()
 		if not thinclient_image or not desktop_image:

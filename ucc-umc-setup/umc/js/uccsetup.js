@@ -70,12 +70,12 @@ define([
 				widgets: [{
 					type: CheckBox,
 					name: 'fatclient',
-					label: _('<b>Linux desktop systems configuration / XRDP terminal server setup</b>'),
+					label: _('<b>Linux desktop systems configuration</b>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-no-margin-bottom' }
 				}, {
 					type: Text,
 					name: 'helpFatclient',
-					content: _('<p>This option allows the installation of desktops via PXE netboot. With UCC, Linux desktops can also be accessed as remote desktops via the RDP protocol. Please check this option for remote desktop configuration.</p>'),
+					content: _('<p>This option allows the installation of desktops via PXE netboot.</p>'),
 					labelConf: { 'class': 'umc-uccsetup-wizard-indent' }
 				}, {
 					type: CheckBox,
@@ -91,7 +91,7 @@ define([
 			}, {
 				name: 'download-fatclient',
 				headerText: _('Download preconfigured UCC desktop image'),
-				helpText: _('<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. The image is regularly updated and offers a fully-featured KDE desktop environment.</p><p>Note that it is also possible to create custom images. This is documented in the <a href="http://docs.univention.de/en/ucc2.1.html" target="_blank">UCC manual</a>.</p>'),
+				helpText: _('<p>Univention provides a preconfigured desktop image based on Ubuntu 16.04. The image is regularly updated and offers a fully-featured desktop environment.</p><p>Note that it is also possible to create custom images. This is documented in the <a href="http://docs.univention.de/en/ucc2.1.html" target="_blank">UCC manual</a>.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'download',
@@ -101,7 +101,7 @@ define([
 			}, {
 				name: 'download-thinclient',
 				headerText: _('Download preconfigured UCC thinclient image'),
-				helpText: _('<p>Univention provides a preconfigured UCC thin client image which is regularly updated.</p><p>The thin client image allows access to various terminal services (Windows, Citrix, XRDP) and provides also a minimal local LXDE desktop. In addition to this, it is possible to configure a direct browser login to a preconfigured website, e.g, to access cloud-based web services.</p><p>Note that it is also possible to create custom images. This is documented in the <a href="http://docs.univention.de/en/ucc2.1.html" target="_blank">UCC manual</a>.</p>'),
+				helpText: _('<p>Univention provides a preconfigured UCC thin client image which is regularly updated.</p><p>The thin client image allows access to various terminal services (Windows, Citrix, RDP) and provides also a minimal local LXDE desktop. In addition to this, it is possible to configure a direct browser login to a preconfigured website, e.g, to access cloud-based web services.</p><p>Note that it is also possible to create custom images. This is documented in the <a href="http://docs.univention.de/en/ucc2.1.html" target="_blank">UCC manual</a>.</p>'),
 				widgets: [{
 					type: CheckBox,
 					name: 'download',
@@ -187,7 +187,7 @@ define([
 				widgets: [{
 					type: CheckBox,
 					name: 'rdp',
-					label: _('RDP services (Windows Remote Desktop Services, XRDP)')
+					label: _('RDP services (Remote Desktop Services)')
 				}, {
 					type: CheckBox,
 					name: 'citrix',
@@ -200,7 +200,7 @@ define([
 			}, {
 				name: 'terminalServices-thinclient-rdp',
 				headerText: _('Configure acccess to RDP services'),
-				helpText: _('<p>This step allows to configure access to a remote terminal server using the RDP protocol.</p><p>You can either access a Microsoft Windows terminal server (using a Windows-based desktop) or an XRDP terminal server (using a Linux-based KDE desktop). To configure an XRDP terminal server, please use the <b>Linux desktop systems configuration / XRDP terminal server</b> option of the UCC setup wizard.</p>'),
+				helpText: _('This step allows to configure access to a remote terminal server using the RDP protocol.'),
 				widgets: [{
 					type: TextBox,
 					required: true,
@@ -209,7 +209,7 @@ define([
 				}, {
 					type: TextBox,
 					name: 'domain',
-					label: _('Domain name (leave empty when connecting to an XRDP terminal server)')
+					label: _('Domain name')
 				}, {
 					type: CheckBox,
 					name: 'sound',
@@ -344,10 +344,7 @@ define([
 				text += _('<p>Now you can create one or several clients in the <i>computer management module</i> on the DC master system of your domain by clicking on <b>Add</b>.</p>');
 			}
 			text += '<ol>'
-				+ '<li>'
-				+ _('<p>Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected.</p>')
-				+ _('<p>To configure a UCC system as an XRDP terminal server you need to select the desktop image and create the client in <i>ucc-xrdpserver</i> container. A software installation policy is bound to this container. After a reboot the <b>univention-xrdp</b> package is installed automatically.</p>')
-				+ '</li>'
+				+ _('<li>Depending on whether the client is a desktop or thin client, the fitting <b>Container</b> should be selected.</li>')
 				+ _('<li>Select <i>Univention Corporate Client</i> as the <b>Type</b> of computer. </li>')
 				+ _('<li>Enter the <i>Hostname</i> of the client. </li>')
 				+ _('<li>When selecting <b>Network</b> created earlier, a free IP address is proposed. The MAC address of the client needs to be specified for a working DHCP configuration. </li>')

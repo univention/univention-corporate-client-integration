@@ -50,7 +50,6 @@ _ = Translation('ucc-umc-setup').translate
 
 UCC_NETWORK_DN = 'cn=ucc-network,cn=networks,%s' % ucr['ldap/base']
 UCC_USER_SESSION_POLICY_DN = 'cn=default-settings,cn=ucc,cn=policies,%s' % ucr['ldap/base']
-XRDP_INSTALLATION_POLICY_DN = 'cn=xrdp-terminalserver-installation,cn=ucc,cn=policies,%s' % ucr['ldap/base']
 UCR_VARIABLE_POLICY_DN = 'cn=ucc-common-settings,cn=ucc,cn=policies,%s' % ucr['ldap/base']
 UCR_VARIABLE_POLICY_THINCLIENTS_DN = 'cn=ucc-thinclient-settings,cn=ucc,cn=policies,%s' % ucr['ldap/base']
 UCR_VARIABLE_POLICY_FATCLIENTS_DN = 'cn=ucc-desktop-settings,cn=ucc,cn=policies,%s' % ucr['ldap/base']
@@ -346,12 +345,6 @@ def set_rdp_values(domain, terminal_server, ldap_connection):
 	with _open_container_policy(ucr['ldap/base'], 'policies/ucc_user', UCC_USER_SESSION_POLICY_DN, ldap_connection) as users_session_policy:
 		users_session_policy['windowsDomain'] = domain
 		users_session_policy['windowsTerminalserver'] = terminal_server
-
-
-def set_xrdp_install_policy(ldap_connection):
-	xrdpserver_container_dn = 'cn=ucc-xrdpserver,cn=computers,%s' % ucr['ldap/base']
-	with _open_container_policy(xrdpserver_container_dn, 'policies/ucc_software', XRDP_INSTALLATION_POLICY_DN, ldap_connection) as installation_policy:
-		installation_policy['pkginstall'] = ['univention-xrdp']
 
 
 def get_latest_ucc_images():

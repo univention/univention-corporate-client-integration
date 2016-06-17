@@ -13,9 +13,9 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: umc/js/uccsetup.js:73
-msgid "<b>Linux desktop systems configuration / XRDP terminal server setup</b>"
+msgid "<b>Linux desktop systems configuration</b>"
 msgstr ""
-"<b>Linux Desktop-Systeme konfigurieren / XRDP-Terminal-Server einrichten</b>"
+"<b>Linux Desktop-Systeme konfigurieren</b>"
 
 #: umc/js/uccsetup.js:83
 msgid "<b>Thin client configuration</b>"
@@ -70,11 +70,11 @@ msgstr ""
 
 #: umc/js/uccsetup.js:347
 msgid ""
-"<p>Depending on whether the client is a desktop or thin client, the fitting "
-"<b>Container</b> should be selected.</p>"
+"<li>Depending on whether the client is a desktop or thin client, the fitting "
+"<b>Container</b> should be selected.</li>"
 msgstr ""
-"<p>Abhängig davon ob das Client-System ein Thin-Client- oder Desktop-Rechner "
-"ist sollte der passende <b>Container</b> gewählt werden.</p>"
+"<li>Abhängig davon ob das Client-System ein Thin-Client- oder Desktop-Rechner "
+"ist sollte der passende <b>Container</b> gewählt werden.</li>"
 
 #: umc/js/uccsetup.js:341
 msgid ""
@@ -134,44 +134,18 @@ msgstr ""
 
 #: umc/js/uccsetup.js:78
 msgid ""
-"<p>This option allows the installation of desktops via PXE netboot. With "
-"UCC, Linux desktops can also be accessed as remote desktops via the RDP "
-"protocol. Please check this option for remote desktop configuration.</p>"
+"<p>This option allows the installation of desktops via PXE netboot.</p>"
 msgstr ""
 "<p>Diese Option ermöglicht die Installation von Desktops über einen PXE-"
-"Netboot. Linux-Desktops können mit UCC auch als Remote Desktops über das RDP-"
-"Protokoll zur Verfügung gestellt werden. Dazu muss ebenfalls diese Option "
-"ausgewählt werden.</p>"
+"Netboot.</p>"
 
 #: umc/js/uccsetup.js:203
 msgid ""
-"<p>This step allows to configure access to a remote terminal server using "
-"the RDP protocol.</p><p>You can either access a Microsoft Windows terminal "
-"server (using a Windows-based desktop) or an XRDP terminal server (using a "
-"Linux-based KDE desktop). To configure an XRDP terminal server, please use "
-"the <b>Linux desktop systems configuration / XRDP terminal server</b> option "
-"of the UCC setup wizard.</p>"
+"This step allows to configure access to a remote terminal server using "
+"the RDP protocol."
 msgstr ""
-"<p>Dieses Schritt ermöglicht die Einrichtung eines Terminalserver-Zugriffs "
-"über das RDP-Protokoll.</p><p>Es kann entweder der Zugriff auf einen "
-"Microsoft Windows Terminalserver (für einen Windows-Arbeitsplatz) oder auf "
-"einen XRDP-Terminalserver (für einen Linux-Arbeitsplatz) konfiguriert "
-"werden. Für das Einrichten eines XRDP-Terminalservers kann die Option "
-"<b>Linux Desktop-Systeme konfigurieren / XRDP-Terminal-Server einrichten</b> "
-"des UCC-Einrichtungsassistenten ausgewählt werden.</p>"
-
-#: umc/js/uccsetup.js:348
-msgid ""
-"<p>To configure a UCC system as an XRDP terminal server you need to select "
-"the desktop image and create the client in <i>ucc-xrdpserver</i> container. "
-"A software installation policy is bound to this container. After a reboot "
-"the <b>univention-xrdp</b> package is installed automatically.</p>"
-msgstr ""
-"<p>Um ein UCC-System als XRDP-Terminalserver zu konfigurieren, muss das "
-"Desktop-Image ausgewählt und ein Client-Rechner in dem Container <b>ucc-"
-"xrdpserver</b> angelegt werden. Eine Software-Update-Richtlinie ist mit "
-"diesem Container verknüpft, so dass das Paket <b>univention-xrdp</b> "
-"automatisch bei einem Neustart installiert wird.</p>"
+"Dieser Schritt ermöglicht die Einrichtung eines Terminalserver-Zugriffs "
+"über das RDP-Protokoll."
 
 #: umc/js/uccsetup.js:88
 msgid ""
@@ -209,7 +183,7 @@ msgstr ""
 msgid ""
 "<p>Univention provides a preconfigured UCC thin client image which is "
 "regularly updated.</p><p>The thin client image allows access to various "
-"terminal services (Windows, Citrix, XRDP) and provides also a minimal local "
+"terminal services (Windows, Citrix, RDP) and provides also a minimal local "
 "LXDE desktop. In addition to this, it is possible to configure a direct "
 "browser login to a preconfigured website, e.g, to access cloud-based web "
 "services.</p><p>Note that it is also possible to create custom images. This "
@@ -218,7 +192,7 @@ msgid ""
 msgstr ""
 "<p>Univention stellt ein vorkonfiguriertes UCC Thin-Client-Image bereit, "
 "welches regelmäßig aktualisiert wird.</p><p>Das Thin-Client-Image erlaubt "
-"den Zugriff auf verschiedene Terminaldienste (Windows, Citrix XenApp, XRDP) "
+"den Zugriff auf verschiedene Terminaldienste (Windows, Citrix XenApp, RDP) "
 "und stellt darüber hinaus auch eine minimale, lokale LXDE-Arbeitsumgebung "
 "bereit. Zusätzlich ist es möglich, den direkten Webbrowser-Zugriff auf eine "
 "Webseite einzurichten, bspw. auf Cloud-basierte Web-Dienste.</p><p>Die "
@@ -228,15 +202,15 @@ msgstr ""
 
 #: umc/js/uccsetup.js:94
 msgid ""
-"<p>Univention provides a preconfigured desktop image based on Kubuntu 14.04. "
-"The image is regularly updated and offers a fully-featured KDE desktop "
+"<p>Univention provides a preconfigured desktop image based on Ubuntu 16.04. "
+"The image is regularly updated and offers a fully-featured desktop "
 "environment.</p><p>Note that it is also possible to create custom images. "
 "This is documented in the <a href=\"http://docs.univention.de/en/ucc2.1.html"
 "\" target=\"_blank\">UCC manual</a>.</p>"
 msgstr ""
 "<p>Univention stellt ein auf Kubuntu 14.04 basierendes, vorkonfiguriertes "
 "Desktop-Image bereit. Das Image wird regelmäßig aktualisiert und bietet eine "
-"vollständige KDE-Arbeitsumgebung.</p><p>Die Erstellung eigener UCC-Images "
+"vollständige Arbeitsumgebung.</p><p>Die Erstellung eigener UCC-Images "
 "ist ebenfalls möglich. Weitere Informationen finden sich im <a href=\"http://"
 "docs.univention.de/de/ucc2.1.html\" target=\"_blank\">UCC-Handbuch</a>.</p>"
 
@@ -369,9 +343,8 @@ msgid "Default gateway"
 msgstr "Standard-Gateway"
 
 #: umc/js/uccsetup.js:212
-msgid "Domain name (leave empty when connecting to an XRDP terminal server)"
-msgstr ""
-"Domänenname (frei lassen für die Verbindung mit einem XRDP-Terminalserver)"
+msgid "Domain name"
+msgstr "Domänenname"
 
 #: umc/js/uccsetup.js:98
 msgid "Download UCC desktop image"
@@ -494,8 +467,8 @@ msgid "RDP server: <i>%s</i>"
 msgstr "RDP-Server: <i>%s</i>"
 
 #: umc/js/uccsetup.js:190
-msgid "RDP services (Windows Remote Desktop Services, XRDP)"
-msgstr "RDP-Dienste (Windows Remote Desktop Services, XRDP)"
+msgid "RDP services (Remote Desktop Services)"
+msgstr "RDP-Dienste (Remote Desktop Services)"
 
 #: umc/js/uccsetup.js:371
 msgid "Retry"
