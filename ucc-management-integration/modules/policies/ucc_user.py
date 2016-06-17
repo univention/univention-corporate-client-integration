@@ -77,7 +77,7 @@ property_descriptions={
 		),
 	'windowsDomain': univention.admin.property(
 			short_description=_('Windows domain for RDP sessions'),
-			long_description=_('This windows domain will be used for RDP user logons. If an XRDP server is used, this input field can be left empty.'),
+			long_description=_('This windows domain will be used for RDP user logons.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -86,8 +86,8 @@ property_descriptions={
 			identifies=0
 		),
 	'windowsTerminalserver': univention.admin.property(
-			short_description=_('Windows/XRDP terminal server'),
-			long_description=_('This terminal server will be used for user logon to Windows terminal servers oder XRDP terminal servers.'),
+			short_description=_('RDP terminal server'),
+			long_description=_('This server will be used for user logon to RDP terminal services.'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -163,7 +163,6 @@ layout = [
 			'session',
 			'windowsDomain',
 			'windowsTerminalserver',
-			'uccTerminalserver',
 		] ),
 	] ),
 	Tab(_('Object'),_('Object'), advanced = True, layout = [

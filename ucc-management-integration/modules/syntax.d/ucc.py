@@ -63,7 +63,6 @@ class uccUserFixedAttributes(univention.admin.syntax.select):
 		('univentionCorporateClientUserSession',_('Force this session for user logins')),
 		('univentionCorporateClientUserWindowsDomain',_('Windows domain')),
 		('univentionCorporateClientUserWindowsTerminalserver',_('Windows terminal server')),
-		('univentionCorporateClientUserUccTerminalserver',_('UCC terminal server')),
 		]
 
 class uccDesktopFixedAttributes(univention.admin.syntax.select):

@@ -429,23 +429,19 @@ msgstr "Diese Windows-Domäne wird für RDP-Anmeldungen verwendet"
 
 #: modules/policies/ucc_user.py:80
 msgid ""
-"This windows domain will be used for RDP user logons. If an XRDP server is "
-"used, this input field can be left empty."
+"This windows domain will be used for RDP user logons."
 msgstr ""
-"Diese Windows-Domäne wird für RDP-Anmeldungen verwendet. Wird ein XRDP-"
-"Server verwendet, kann das Feld leer bleiben."
+"Diese Windows-Domäne wird für RDP-Anmeldungen verwendet."
 
 #: modules/policies/ucc_user.py:89
-msgid "Windows/XRDP terminal server"
-msgstr "Windows/XRDP Terminalserver"
+msgid "RDP terminal server"
+msgstr "RDP Terminalserver"
 
 #: modules/policies/ucc_user.py:90
 msgid ""
-"This terminal server will be used for user logon to Windows terminal servers "
-"oder XRDP terminal servers."
+"This server will be used for user logon to RDP terminal services."
 msgstr ""
-"Dieser Windows-Terminalserver wird für Anmeldungen an Windows oder XRDP-"
-"Terminalservern verwendet."
+"Dieser Server wird für Anmeldungen an RDP Terminalservices verwendet."
 
 #: modules/policies/ucc_user.py:99
 msgid "UCC 1.0 terminal server (not used for UCC 2 clients)"
