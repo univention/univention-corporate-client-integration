@@ -51,13 +51,13 @@ configRegistry.load()
 
 
 # Helper function to run a command and give an error message if the command failed
-def _run_cmd(cmd_block, fd=sys.stdout):
+def _run_cmd(cmd_block, fd=sys.stdout, shell=False):
 	env = os.environ
 	env['DEBIAN_FRONTEND'] = 'noninteractive'
 
 	fd.write('ucc-image cmd: %s\n' % ' '.join(cmd_block))
 	fd.flush()
-	retcode = subprocess.call(cmd_block, shell=False, env=env, stdout=fd, stderr=fd)
+	retcode = subprocess.call(cmd_block, shell=shell, env=env, stdout=fd, stderr=fd)
 	if retcode:
 		fd.write('The command "%s" failed with the error code %d\n' % (string.join(cmd_block), retcode))
 		msg = 'The command "%s" failed with the error code %d' % (string.join(cmd_block), retcode)
@@ -598,7 +598,7 @@ menuentry 'Debug Shell' {
 				shutil.copy(image_file, cd_dir)
 			_print_process('Create ISO image')
 			cmd_block = ['grub-mkrescue', '-o', iso_dest, cd_dir, '--', '-iso-level 3']
-			_run_cmd(cmd_block, logfile_fd)
+			_run_cmd(' '.join(cmd_block), logfile_fd, shell=True)
 			_print_done()
 
 		if exitcode == 0:
