@@ -597,7 +597,7 @@ menuentry 'Debug Shell' {
 				shutil.copy(md5_dest, cd_dir)
 				shutil.copy(image_file, cd_dir)
 			_print_process('Create ISO image')
-			cmd_block = ['grub-mkrescue', '-o', iso_dest, cd_dir, '-iso-level 3']
+			cmd_block = ['grub-mkrescue', '-o', iso_dest, cd_dir, '--', '-iso-level 3']
 			_run_cmd(cmd_block, logfile_fd)
 			_print_done()
 
