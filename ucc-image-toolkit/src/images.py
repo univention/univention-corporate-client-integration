@@ -95,7 +95,7 @@ if UCC_BASE_URL.endswith('/'):
 	# remove trailing '/'
 	UCC_BASE_URL = UCC_BASE_URL[:-1]
 UCC_IMAGE_DIRECTORY = configRegistry['ucc/image/path']
-UCC_IMAGE_INDEX_FILE = 'image-index-ucc-2.1.txt'
+UCC_IMAGE_INDEX_FILE = 'image-index-ucc-3.0.txt'
 UCC_IMAGE_INDEX_URL = '%s/%s' % (UCC_BASE_URL, UCC_IMAGE_INDEX_FILE)
 DEFAULT_CHUNK_SIZE = 2**13
 
