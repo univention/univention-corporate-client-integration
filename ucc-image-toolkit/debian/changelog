@@ -1,3 +1,9 @@
+ucc-image-toolkit (5.0.0-9) unstable; urgency=low
+
+  * Bug #41510: new desktop image
+
+ -- Felix Botner <botner@univention.de>  Wed, 29 Jun 2016 14:08:04 +0200
+
 ucc-image-toolkit (5.0.0-8) unstable; urgency=low
 
   * Bug #41510: new desktop image
