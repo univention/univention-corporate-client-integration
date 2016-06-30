@@ -1,3 +1,11 @@
+ucc-pxe-boot (8.0.0-3) unstable; urgency=medium
+
+  * Bug #41602: Rename ucc/pxe/predicteablenicnames to
+    ucc/pxe/traditionalinterfacenames to keep ucr module code simple
+  * Added ucc/pxe/traditionalinterfacenames to ucr module
+
+ -- Erik Damrose <damrose@univention.de>  Thu, 30 Jun 2016 16:24:32 +0200
+
 ucc-pxe-boot (8.0.0-2) unstable; urgency=medium
 
   * Bug #41602: Deactivate predictable network interface nameing support with

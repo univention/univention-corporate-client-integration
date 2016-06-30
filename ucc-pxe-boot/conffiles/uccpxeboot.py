@@ -76,13 +76,18 @@ def update_parameter(line, changes, var, parameter):
 				line = line + ' %s=%s' % (parameter, new)
 	return line
 
+
 def handler(baseConfig, changes):
+
+	with open('/tmp/ucrout', 'a') as f:
+		f.write('new run\n')
 
 	for line in input(glob(pattern), inplace = True):
 		line = line.strip('\n')
 		if 'APPEND root=' in line:
 			line = update_flag(line, changes, baseConfig, "ucc/pxe/bootsplash", "splash")
 			line = update_flag(line, changes, baseConfig, "ucc/pxe/quiet", "quiet")
+			line = update_flag(line, changes, baseConfig, "ucc/pxe/traditionalinterfacenames", "net.ifnames=0 biosdevname=0")
 			line = update_parameter(line, changes, "ucc/pxe/timezone", "timezone")
 			line = update_parameter(line, changes, "ucc/pxe/loglevel", "loglevel")
 			line = update_parameter(line, changes, "ucc/pxe/vga", "vga")
@@ -90,4 +95,7 @@ def handler(baseConfig, changes):
 			line = update_parameter(line, changes, "locale/default", "locale")
 			line = update_append(line, changes)
 			line = update_nfs_root(line, changes)
+			with open('/tmp/ucrout', 'a') as f:
+				f.write('new run 2\n')
+			#line = update_network(line, changes, baseConfig)
 		print line

@@ -4,8 +4,8 @@ Description[en]=Configuration options for logging UCC-client rsyslog-messages (f
 Type=str
 Categories=ucc
 
-[ucc/pxe/predicteablenicnames]
-Description[de]=Wenn auf 'true' gesetzt, werden vorhersagbare Namen für Netzwerkgeräte aktiviert. Da dies mit vielen UCC Standards kollidiert, ist der Wert standardmäßig 'false'.
-Description[en]=If set to 'true', predictable network interface names will be activated. As this collides with UCC default settings, the value is 'false' by default.
+[ucc/pxe/traditionalinterfacenames]
+Description[de]=Wenn auf 'false' gesetzt, werden vorhersagbare Namen für Netzwerkgeräte deaktiviert. Da dies mit vielen UCC Standards kollidiert, ist der Wert standardmäßig 'true'.
+Description[en]=If set to 'false', predictable network interface names will be deactivated. As this collides with UCC default settings, the value is 'true' by default.
 Type=bool
 Categories=ucc
