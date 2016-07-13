@@ -142,12 +142,6 @@ univention-directory-manager settings/ucc_session create "$@" --position "cn=Ses
 
 univention-directory-manager settings/ucc_session create "$@" --position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
 							--ignore_exists \
-							--set name="UCC Terminal Server" \
-							--set session="UCC-remote" \
-							--set description="UCC terminal server session" || die
-
-univention-directory-manager settings/ucc_session create "$@" --position "cn=Session,cn=UCC,cn=univention,$ldap_base" \
-							--ignore_exists \
 							--set name="LXDE" \
 							--set session="LXDE" \
 							--set description="LXDE desktop session" || die
