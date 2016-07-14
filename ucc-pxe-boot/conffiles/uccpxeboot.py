@@ -79,9 +79,6 @@ def update_parameter(line, changes, var, parameter):
 
 def handler(baseConfig, changes):
 
-	with open('/tmp/ucrout', 'a') as f:
-		f.write('new run\n')
-
 	for line in input(glob(pattern), inplace = True):
 		line = line.strip('\n')
 		if 'APPEND root=' in line:
@@ -95,7 +92,4 @@ def handler(baseConfig, changes):
 			line = update_parameter(line, changes, "locale/default", "locale")
 			line = update_append(line, changes)
 			line = update_nfs_root(line, changes)
-			with open('/tmp/ucrout', 'a') as f:
-				f.write('new run 2\n')
-			#line = update_network(line, changes, baseConfig)
 		print line
