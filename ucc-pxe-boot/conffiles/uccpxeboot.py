@@ -78,7 +78,6 @@ def update_parameter(line, changes, var, parameter):
 
 
 def handler(baseConfig, changes):
-
 	for line in input(glob(pattern), inplace = True):
 		line = line.strip('\n')
 		if 'APPEND root=' in line:
