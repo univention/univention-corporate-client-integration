@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE pam_mount SYSTEM "pam_mount.conf.xml.dtd">
+<!--
+	See pam_mount.conf(5) for a description.
+-->
+
+<pam_mount>
+<debug enable="0" />
+<mntoptions allow="nosuid,nodev,loop,encryption,fsck,nonempty,allow_root,allow_other" />
+<mntoptions require="nosuid,nodev" />
+
+<logout wait="5000" hup="yes" term="yes" kill="yes" /> 
+
+<mkmountpoint enable="1" remove="true" />
+
+<!--
+	TODO: Set correct server from which the directory will be mounted
+	Will mount the user's home directory to ~/NetworkStorage on UCC
+-->
+
+<volume fstype="cifs" server="<INSERT_CORRECT_SERVER>" path="%(DOMAIN_USER)" mountpoint="~/NetworkStorage" options="serverino" />
+<cifsmount>mount -t cifs //%(SERVER)/%(VOLUME) %(MNTPT) -o user=%(USER),%(OPTIONS)</cifsmount>
+
+
+</pam_mount>
