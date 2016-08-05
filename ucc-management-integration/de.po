@@ -137,6 +137,14 @@ msgstr "Startimage"
 msgid "Dedicated image server"
 msgstr "Dedizierter Image-Server"
 
+#: modules/computers/ucc.py:308
+msgid "Current image"
+msgstr "Aktuelles Image"
+
+#: modules/computers/ucc.py:308
+msgid "Currently installed image"
+msgstr "Aktuell installiertes Image"
+
 #: modules/computers/ucc.py:309
 msgid ""
 "This optional parameter gives the possibility to define a dedicated image "
