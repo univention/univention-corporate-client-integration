@@ -1,0 +1,3 @@
+<p>The initial setup of a UCC environment for deploying desktops and/or thin clients occurs in the module <a href="javascript:void(0)" onclick="require('umc/app').openModule('uccsetup')">UCC setup</a> after successful installation.</p>
+
+<p>Univention provides preconfigured images for desktops and thin clients. These images are managed with the module  <a href="javascript:void(0)" onclick="require('umc/app').openModule('uccimages')">UCC Images</a>.</p>
