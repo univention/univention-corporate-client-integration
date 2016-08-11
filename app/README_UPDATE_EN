@@ -1,3 +1,6 @@
 <p>
-Please consult the <a href="http://docs.software-univention.de/release-notes-ucc-3.0.html">UCC 3.0 release notes</a> before updating
+Please consult the <a href="http://docs.software-univention.de/release-notes-ucc-3.0.html">UCC 3.0 release notes</a> before updating.
+</p>
+<p>
+Among the release highlights for UCC 3.0 is the switch from KDE to Unity in the desktop image.
 </p>
