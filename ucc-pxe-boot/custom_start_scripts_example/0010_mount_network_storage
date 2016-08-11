@@ -27,4 +27,11 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-cp /usr/lib/univention-initramfs-post-boot-option-check/pam/pam_mount.conf.xml /etc/security/
+# This is a minimal example to show how a file could be installed via the
+# custom start script system. The script just copies a pam_mount config to
+# /etc/security. The config file itself as this script should be adapted to 
+# the specific domain environment in regards to
+# * Server configuration (hostname, etc.)
+# * Error handling
+
+cp /usr/lib/univention-custom-start-scripts/pam/pam_mount.conf.xml /etc/security/
