@@ -1,3 +1,9 @@
+ucc-image-toolkit (5.0.0-12) unstable; urgency=low
+
+  * Bug #41844: Do not install webbrowser-app 
+
+ -- Felix Botner <botner@univention.de>  Thu, 11 Aug 2016 10:36:09 +0200
+
 ucc-image-toolkit (5.0.0-11) unstable; urgency=medium
 
   * Bug #41393: Switch to internal test mirror
