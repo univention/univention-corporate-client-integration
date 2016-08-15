@@ -1,3 +1,9 @@
+ucc-management-integration (4.0.0-6) unstable; urgency=medium
+
+  * Bug #41988: Fix udm module nagios integration
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 15 Aug 2016 14:08:10 +0200
+
 ucc-management-integration (4.0.0-5) unstable; urgency=low
 
   * Bug #33783: added translation

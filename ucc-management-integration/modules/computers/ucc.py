@@ -433,42 +433,10 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	module=module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
-		global options
-		global mapping
-		global property_descriptions
-
-		self.mapping=mapping
-		self.descriptions=property_descriptions
-		self.alloc=[]
-
-		self.ipRequest=0
-
-		self.old_samba_option = False
-
-		self.newPrimaryGroupDn=0
-		self.oldPrimaryGroupDn=0
-
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
-
-		self.options = []
-		if self.oldattr.has_key('objectClass'):
-			ocs=self.oldattr['objectClass']
-			if 'krb5Principal' in ocs and 'krb5KDCEntry' in ocs:
-				self.options.append( 'kerberos' )
-			if 'posixAccount' in ocs:
-				self.options.append( 'posix' )
-			if 'sambaSamAccount' in ocs:
-				self.old_samba_option = True
-				self.options.append( 'samba' )
-		else:
-			self._define_options( options )
-
 		nagios.Support.__init__(self)
 
 		self.modifypassword=0
-
-
-		self.save( )
 
 	def _set_bootvariant_and_partition_flag(self):
 		# boot variant 'repartition' is mapped differently: set repartition flag instead
@@ -712,7 +680,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			#	ml.append(('sambaLMPassword', self.oldattr.get('sambaLMPassword', [''])[0], password_lm))
 
 		# add samba option
-		if 'samba' in self.options and not self.old_samba_option:
+		if self.exists() and self.option_toggled('samba') and 'samba' in self.options:
 			acctFlags=univention.admin.samba.acctFlags(flags={'W':1})
 			if self.s4connector_present:
 				# In this case Samba 4 must create the SID, the s4 connector will sync the
@@ -725,7 +693,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			ml.append(('sambaSID', '', [self.machineSid]))
 			ml.append(('sambaAcctFlags', '', [acctFlags.decode()]))
 			ml.append(('displayName', '', self.info['name']))
-		if not 'samba' in self.options and self.old_samba_option:
+		if self.exists() and self.option_toggled('samba') and 'samba' not in self.options:
 			ocs=self.oldattr.get('objectClass', [])
 			if 'sambaSamAccount' in ocs:
 				ml.insert(0, ('objectClass', 'sambaSamAccount', ''))
