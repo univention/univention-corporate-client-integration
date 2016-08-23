@@ -552,27 +552,28 @@ exit 0
 
 			kernel = os.path.join('/', os.readlink(os.path.join(bootstrap_dir, 'vmlinuz')))
 			initrd = os.path.join('/', os.readlink(os.path.join(bootstrap_dir, 'initrd.img')))
+			interface_naming_opts = "net.ifnames=0 biosdevname=0 "
 
 			grub_cfg = open(os.path.join(boot_dir, 'grub/grub.cfg'), 'w')
 			grub_cfg.write('''
 set timeout=-1
 menuentry 'Univention Corporate Client - Boot from CDROM/USB device (Livesystem)' {
-	linux %(kernel)s ro boot=ucc ucc=overlayfs quiet image=%(image)s
+	linux %(kernel)s ro boot=ucc ucc=overlayfs quiet image=%(image)s %(net)s
 	initrd %(initrd)s
 }
 menuentry 'Univention Corporate Client - Image update check / Initial installation' {
-	linux %(kernel)s ro boot=ucc ucc=rollout root=search quiet image=%(image)s
+	linux %(kernel)s ro boot=ucc ucc=rollout root=search quiet image=%(image)s %(net)s
 	initrd %(initrd)s
 }
 menuentry 'Univention Corporate Client - Image installation with forced repartition' {
-	linux %(kernel)s ro boot=ucc ucc=rollout root=search quiet image=%(image)s repartition=y
+	linux %(kernel)s ro boot=ucc ucc=rollout root=search quiet image=%(image)s %(net)s repartition=y
 	initrd %(initrd)s
 }
 menuentry 'Debug Shell' {
-	linux %(kernel)s ro init=/bin/sh rootdelay=3
+	linux %(kernel)s ro init=/bin/sh %(net)s rootdelay=3
 	initrd %(initrd)s
 }
-			''' % {'kernel': kernel, 'initrd': initrd, 'image': image_name})
+			''' % {'kernel': kernel, 'initrd': initrd, 'image': image_name, 'net': interface_naming_opts})
 			grub_cfg.close()
 
 		# Sync to disk, otherwise not all data is written to the image before the hash is computed
