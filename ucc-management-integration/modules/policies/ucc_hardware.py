@@ -44,6 +44,7 @@ import univention.debug
 translation = univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
 _ = translation.translate
 
+
 class uccClientFixedAttributes(univention.admin.syntax.select):
 	name = 'uccClientFixedAttributes'
 	choices = [
@@ -214,7 +215,6 @@ mapping.register('sec_name', 'univentionCorporateClientSecondaryDisplayName', No
 mapping.register('display-position', 'univentionCorporateClientDisplayPosition', None, univention.admin.mapping.ListToString)
 
 
-
 class object(univention.admin.handlers.simplePolicy):
 	module = module
 
@@ -236,6 +236,7 @@ class object(univention.admin.handlers.simplePolicy):
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyCorporateClientComputer'])]
 
+
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
 	filter = univention.admin.filter.conjunction('&', [
@@ -254,6 +255,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 	except:
 		pass
 	return res
+
 
 def identify(dn, attr, canonical=0):
 	return 'univentionPolicyCorporateClientComputer' in attr.get('objectClass', [])

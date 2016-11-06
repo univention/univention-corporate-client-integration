@@ -40,6 +40,7 @@ import ucc.images as ucc_images
 from univention.lib.i18n import Translation
 _ = Translation('ucc-image-toolkit').translate
 
+
 def parse_args():
 	usage = '''%s [options] -s config_file ''' % sys.argv[0]
 	parser = OptionParser(usage=usage)
@@ -62,6 +63,7 @@ def parse_args():
 
 
 class CLIProgress(ucc_images.Progress):
+
 	def __init__(self):
 		ucc_images.Progress.__init__(self)
 

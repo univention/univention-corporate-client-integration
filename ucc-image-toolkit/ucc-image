@@ -64,6 +64,7 @@ def _run_cmd(cmd_block, fd=sys.stdout, shell=False):
 		raise RuntimeError(msg)
 	return retcode
 
+
 def _stop_services_in_bootstrap(bootstrap_dir, logfile_fd):
 	# Stop all services that may have been started in the chroot
 	try:
@@ -72,6 +73,7 @@ def _stop_services_in_bootstrap(bootstrap_dir, logfile_fd):
 	except RuntimeError:
 		# ignore: If no process was killed, fuser return code will be 1
 		pass
+
 
 def _mount_in_bootstrap(bootstrap_dir, logfile_fd, mount=True):
 
@@ -84,6 +86,7 @@ def _mount_in_bootstrap(bootstrap_dir, logfile_fd, mount=True):
 		for i in ['/proc', '/sys']:
 			cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'umount', i]
 			_run_cmd(cmd_block, logfile_fd)
+
 
 def _copy_system_to_image(options, image_file, bootstrap_dir, workingdir, logfile_fd):
 
@@ -170,6 +173,7 @@ def _cleanup(options, workingdir, bootstrap_dir, logfile_fd):
 
 
 class Parser(ConfigParser.ConfigParser):
+
 	def get(self, section, option, default=None):
 		if not self.has_section(section):
 			return default

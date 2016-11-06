@@ -44,12 +44,13 @@ parser = optparse.OptionParser()
 # 5 Installation of Citrix Receiver failed
 
 
-
 def chroot_cmd(cmd):
 	return subprocess.call('chroot ' + mntpoint + ' ' + cmd, shell=True, stdout=logfile, stderr=logfile)
 
+
 def cmd(cmd):
 	return subprocess.call(cmd, shell=True, stdout=logfile, stderr=logfile)
+
 
 def log(msg, percent=None):
 	print msg
@@ -58,12 +59,14 @@ def log(msg, percent=None):
 		print '_PROGRESS_: %s' % percent
 		sys.stdout.flush()
 
+
 def exit(msg, exit_code):
 	log(msg)
 	if opt.progress:
 		print '_ERROR_: %s' % msg
 		sys.stdout.flush()
 	sys.exit(exit_code)
+
 
 def cleanup():
 	log("Cleaning up")

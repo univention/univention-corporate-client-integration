@@ -58,11 +58,14 @@ _ = Translation('ucc-image-toolkit').translate
 use_univention_debug = True
 
 # short cuts for logging
+
+
 def log_warn(msg):
 	if use_univention_debug:
 		ud.debug(ud.MODULE, ud.WARN, msg)
 	else:
 		sys.stdout.write(_('WARN: %s\n') % msg)
+
 
 def log_error(msg):
 	if use_univention_debug:
@@ -70,15 +73,18 @@ def log_error(msg):
 	else:
 		sys.stdout.write(_('ERROR: %s\n') % msg)
 
+
 def log_process(msg):
 	if use_univention_debug:
 		ud.debug(ud.MODULE, ud.PROCESS, msg)
 	else:
 		sys.stdout.write('%s\n' % msg)
 
+
 def log_info(msg):
 	if use_univention_debug:
 		ud.debug(ud.MODULE, ud.INFO, msg)
+
 
 def _exit(msg, sys_exit=False):
 	if not use_univention_debug and sys_exit:
@@ -303,6 +309,7 @@ def _run_join_script(join_script, username=None, password=None):
 
 
 class Progress(object):
+
 	def __init__(self, max_steps=100):
 		self.progress_file = None
 		self.reset(max_steps)
@@ -393,6 +400,7 @@ class Progress(object):
 
 
 class UCCImage(object):
+
 	def __init__(self, spec_url):
 		if not spec_url.endswith(".spec"):
 			spec_url += '.spec'
@@ -619,7 +627,6 @@ class UCCImage(object):
 		# remove spec file itself
 		_remove(self.spec_file)
 
-
 	def download(self, validate_hash=True, progress=Progress()):
 		'''Download spec file, image file and all other related images. Unpack image if necessary.'''
 
@@ -735,6 +742,8 @@ def is_image_downloading(spec_file):
 
 
 _regWhiteSpace = re.compile(r'\s+')
+
+
 def get_online_ucc_images():
 	'''Get a list of all images that are available online.'''
 

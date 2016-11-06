@@ -35,6 +35,7 @@ from glob import glob
 
 pattern = '/var/lib/univention-client-boot/pxelinux.cfg/*'
 
+
 def update_nfs_root(line, changes):
 	if type(changes.get('ucc/pxe/nfsroot')) == type(()):
 		old, new = changes.get('ucc/pxe/nfsroot', (False, False))
@@ -44,6 +45,7 @@ def update_nfs_root(line, changes):
 				line = line.rstrip()
 				line = line + " nfsroot=%s:/var/lib/univention-client-boot" % new
 	return line
+
 
 def update_append(line, changes):
 	if type(changes.get('ucc/pxe/append')) == type(()):
@@ -56,6 +58,7 @@ def update_append(line, changes):
 				line = line + ' %s' % new
 	return line
 
+
 def update_flag(line, changes, baseConfig, var, flag):
 	if type(changes.get(var)) == type(()):
 		old, new = changes.get(var, ('', ''))
@@ -65,6 +68,7 @@ def update_flag(line, changes, baseConfig, var, flag):
 				line = line.rstrip()
 				line = line + " %s" % flag
 	return line
+
 
 def update_parameter(line, changes, var, parameter):
 	if type(changes.get(var)) == type(()):

@@ -37,6 +37,7 @@ import ucc.images as ucc_images
 from univention.lib.i18n import Translation
 _ = Translation('ucc-image-toolkit').translate
 
+
 def parse_args():
 	parser = OptionParser()
 	parser.add_option("-l", "--list-images", action="store_true", dest="listimg", help="List all UCC images currently stored")

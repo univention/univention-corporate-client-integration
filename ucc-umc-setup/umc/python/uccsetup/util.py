@@ -61,6 +61,7 @@ UCCProgress = ucc_images.Progress
 
 
 class ProgressWrapper(ucc_images.Progress):
+
 	def __init__(self, umc_progress, max_steps, offset):
 		UCCProgress.__init__(self, umc_progress.total)
 		self.umc_progress = umc_progress
@@ -87,6 +88,8 @@ class ProgressWrapper(ucc_images.Progress):
 		self.umc_progress.current = float(steps * self._max_steps) / self.max_steps + self._offset
 
 _bind_callback = None
+
+
 def set_bind_function(bind_callback):
 	global _bind_callback
 	_bind_callback = bind_callback
@@ -376,6 +379,8 @@ def get_citrix_receiver_package_path():
 
 
 _re_progress_split = re.compile(r':\s*')
+
+
 def add_citrix_receiver_to_ucc_image(image_path, debian_package_path, progress):
 	cmd = ['/usr/sbin/ucc-image-add-citrix-receiver', '--progress', '--uccimage', image_path, '--debpackage', debian_package_path]
 	MODULE.info('Calling command: %s' % ' '.join(cmd))

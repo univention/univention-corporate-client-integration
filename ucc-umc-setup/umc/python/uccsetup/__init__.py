@@ -49,6 +49,7 @@ import util
 
 
 class Instance(Base, ProgressMixin):
+
 	def init(self):
 		util.set_bind_function(self.bind_user_connection)
 
@@ -265,7 +266,6 @@ class Instance(Base, ProgressMixin):
 
 			progress_wrapper = util.ProgressWrapper(progress, 30, 70)
 			util.add_citrix_receiver_to_ucc_image(ucc_image_path, util.get_citrix_receiver_package_path(), progress_wrapper)
-
 
 		if hasattr(progress, 'result'):
 			# some error probably occurred -> return the result in the progress

@@ -36,6 +36,7 @@ import univention.admin.syntax
 translation = univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
 _ = translation.translate
 
+
 class uccBoot(univention.admin.syntax.select):
     choices = [
         ('overlayfs', _('Live system')),
@@ -45,6 +46,7 @@ class uccBoot(univention.admin.syntax.select):
         ('repartition', _('Installation with repartitioning and image rollout')),
     ]
 
+
 class uccImage(univention.admin.syntax.UDM_Objects):
 	udm_modules = ('settings/ucc_image', )
 	regex = None
@@ -53,9 +55,11 @@ class uccImage(univention.admin.syntax.UDM_Objects):
 	simple = True
 	empty_value = False
 
+
 class uccSessions(univention.admin.syntax.UDM_Objects):
 	udm_modules = ('settings/ucc_session',)
 	empty_value = True
+
 
 class uccUserFixedAttributes(univention.admin.syntax.select):
 	name = 'slavePackagesFixedAttributes'
@@ -65,14 +69,17 @@ class uccUserFixedAttributes(univention.admin.syntax.select):
 		('univentionCorporateClientUserWindowsTerminalserver', _('Windows terminal server')),
 		]
 
+
 class uccDesktopFixedAttributes(univention.admin.syntax.select):
 	name = 'uccDesktopFixedAttributes'
 	choices = [
 		('environmentVars', _('UCC desktop environment variables'))
 		]
 
+
 class uccDesktopEnvVar(complex):
         subsyntaxes = ((_('Variable'), string), (_('Value'), string))
+
 
 class uccImageServer(UDM_Attribute):
 	udm_module = 'computers/computer'

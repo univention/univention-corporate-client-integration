@@ -47,7 +47,9 @@ _ = Translation('ucc-umc-images').translate
 
 UCCProgress = ucc_images.Progress
 
+
 class ProgressWrapper(ucc_images.Progress):
+
 	def __init__(self, umc_progress):
 		UCCProgress.__init__(self)
 		self.umc_progress = umc_progress
@@ -81,6 +83,7 @@ class ProgressWrapper(ucc_images.Progress):
 
 
 class Instance(Base, ProgressMixin):
+
 	@simple_response
 	def query(self):
 		try:

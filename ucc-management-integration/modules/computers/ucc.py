@@ -507,7 +507,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		if not 'posix' in self.options and not 'kerberos' in self.options:
 			raise univention.admin.uexceptions.invalidOptions(_(' At least posix or kerberos is required.'))
 
-
 		ocs = ['top', 'person', 'univentionHost', 'univentionCorporateClient']
 		al = []
 		if 'kerberos' in self.options:
@@ -707,8 +706,6 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 
 		return ml
 
-
-
 	def cleanup(self):
 		self.open()
 		self.nagios_cleanup()
@@ -725,7 +722,6 @@ def rewrite(filter, mapping):
 		filter.variable = 'aRecord'
 	else:
 		univention.admin.mapping.mapRewrite(filter, mapping)
-
 
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
@@ -757,6 +753,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
 			res.append(object(co, lo, None, dn, attributes=attrs))
 	return res
+
 
 def identify(dn, attr, canonical=0):
 

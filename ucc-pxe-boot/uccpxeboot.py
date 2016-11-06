@@ -43,11 +43,13 @@ import univention.config_registry
 
 pxebase = '/var/lib/univention-client-boot/pxelinux.cfg'
 
+
 def ip_to_hex(ip):
 	if ip.count('.') != 3:
 		return ''
 	o = ip.split('.')
 	return '%02X%02X%02X%02X' % (int(o[0]), int(o[1]), int(o[2]), int(o[3]))
+
 
 def handler(dn, new, old):
 

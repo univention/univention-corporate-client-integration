@@ -41,8 +41,10 @@ description = 'Invalidate the nss passwd cache whenever a user object has been m
 filter = '(objectClass=posixAccount)'
 attributes = ['uid']
 
+
 def handler(dn, new, old):
 	pass
+
 
 def postrun():
 
