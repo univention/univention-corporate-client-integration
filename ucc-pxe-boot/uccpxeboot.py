@@ -38,7 +38,11 @@ filter = '(objectClass=univentionCorporateClient)'
 attributes = []
 
 import listener
-import os, re, ldap, string, univention.debug
+import os
+import re
+import ldap
+import string
+import univention.debug
 import univention.config_registry
 
 pxebase = '/var/lib/univention-client-boot/pxelinux.cfg'

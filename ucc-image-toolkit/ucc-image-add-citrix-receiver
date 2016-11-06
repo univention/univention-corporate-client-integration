@@ -31,7 +31,12 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import optparse, tempfile, subprocess, os, sys, commands
+import optparse
+import tempfile
+import subprocess
+import os
+import sys
+import commands
 
 parser = optparse.OptionParser()
 

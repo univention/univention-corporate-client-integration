@@ -30,7 +30,8 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys, string
+import sys
+import string
 sys.path = ['.'] + sys.path
 
 from univention.admin.layout import Tab, Group
