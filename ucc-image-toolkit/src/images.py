@@ -803,5 +803,3 @@ def remove_ucc_image(spec_file):
 	if img.is_other_download_running:
 		raise RuntimeError(_('Another process is currently downloading the UCC image %s.') % img.file)
 	img.remove_files()
-
-

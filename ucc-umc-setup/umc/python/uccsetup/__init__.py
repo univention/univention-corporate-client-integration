@@ -272,4 +272,3 @@ class Instance(Base, ProgressMixin):
 			return progress.result
 
 		return {'success': True}
-

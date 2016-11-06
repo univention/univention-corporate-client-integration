@@ -156,4 +156,3 @@ class Instance(Base, ProgressMixin):
 			raise UMC_CommandError(_('Unexpected error: %s') % exc)
 
 		return True
-

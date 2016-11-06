@@ -75,7 +75,7 @@ def handler(dn, new, old):
 
 		cn = new['cn'][0]
 		univention.debug.debug(univention.debug.LISTENER, univention.debug.INFO, 'PXE: writing configuration for host %s' % cn)
-		
+
 		if 'univentionCorporateClientBootVariant' in new \
 				and new.get('univentionCorporateClientBootVariant')[0] == "localboot":
 			pxeconfig = \
@@ -83,7 +83,7 @@ def handler(dn, new, old):
 DEFAULT local
 LABEL local
 LOCALBOOT 0
-''' 
+'''
 		else:
 			image = new.get('univentionCorporateClientBootImage', [None])[0]
 			if not image:
@@ -139,7 +139,7 @@ PROMPT 0
 DEFAULT UCC
 IPAPPEND %s
 
-APPEND %s 
+APPEND %s
 
 LABEL UCC
 	KERNEL %s
@@ -160,4 +160,3 @@ LABEL UCC
 			f.close()
 		finally:
 			listener.unsetuid()
-

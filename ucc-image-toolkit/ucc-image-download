@@ -93,4 +93,3 @@ if __name__ == "__main__":
 	ucc_images.use_univention_debug = False
 	spec_file, validate_hash, interactive_rootpw, debug_level = parse_args()
 	ucc_images.download_ucc_image(spec_file, validate_hash=validate_hash, interactive_rootpw=interactive_rootpw, progress=CLIProgress())
-

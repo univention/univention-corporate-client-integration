@@ -187,7 +187,7 @@ class object(univention.admin.handlers.simplePolicy):
 		self.descriptions = property_descriptions
 
 		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes)
-		
+
 		self.save()
 
 	def _post_unmap(self, info, values):
@@ -240,7 +240,7 @@ class object(univention.admin.handlers.simplePolicy):
 
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyCorporateClientDesktop'])]
-	
+
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
@@ -264,5 +264,3 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 def identify(dn, attr, canonical=0):
 	return 'univentionPolicyCorporateClientDesktop' in attr.get('objectClass', [])
-
-

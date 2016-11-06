@@ -69,7 +69,7 @@ if __name__ == '__main__':
 	if len(users) < 1:
 		print 'Abort: Did not found any LDAP user.'
 		sys.exit(1)
-	
+
 	# Write to a temporary file
 	(fdtemp, fdname) = tempfile.mkstemp()
 	fd = os.fdopen(fdtemp, 'w')
@@ -93,4 +93,3 @@ if __name__ == '__main__':
 		print 'The file %s was created.' % options.file
 
 	sys.exit(0)
-

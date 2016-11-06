@@ -64,5 +64,3 @@ if __name__ == "__main__":
 			print _('Finished.')
 		except (IOError, OSError) as exc:
 			ucc_images.log_error(_('Image data could not be removed: %s') % exc)
-
-

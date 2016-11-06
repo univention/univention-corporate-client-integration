@@ -141,4 +141,3 @@ if subprocess.call(cmd, shell=True):
 	exit("Generation of hash value failed", 6)
 
 log("Done", 100)
-

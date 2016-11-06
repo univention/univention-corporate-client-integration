@@ -419,4 +419,3 @@ def remove_citrix_receiver_package():
 			os.remove(ipath)
 		except (OSError, IOError) as exc:
 			MODULE.warn('Could not remove file %s, but ignoring error: %s' % (ipath, exc))
-

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Univention Corporate Client
-#  UDM policy for thin client session 
+#  UDM policy for thin client session
 #
 # Copyright (C) 2010-2016 Univention GmbH
 #
@@ -145,4 +145,3 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 def identify(dn, attr, canonical=0):
 	return 'univentionCorporateClientSession' in attr.get('objectClass', [])
-
