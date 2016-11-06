@@ -35,7 +35,7 @@ from glob import glob
 
 pattern = '/var/lib/univention-client-boot/pxelinux.cfg/*'
 
-def update_nfs_root (line, changes):
+def update_nfs_root(line, changes):
 	if type(changes.get('ucc/pxe/nfsroot')) == type(()):
 		old, new = changes.get('ucc/pxe/nfsroot', (False, False))
 		if not old == new:
@@ -78,7 +78,7 @@ def update_parameter(line, changes, var, parameter):
 
 
 def handler(baseConfig, changes):
-	for line in input(glob(pattern), inplace = True):
+	for line in input(glob(pattern), inplace=True):
 		line = line.strip('\n')
 		if 'APPEND root=' in line:
 			line = update_flag(line, changes, baseConfig, "ucc/pxe/bootsplash", "splash")

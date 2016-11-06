@@ -38,21 +38,21 @@ import univention.admin.syntax
 import univention.admin.localization
 import univention.admin.uexceptions
 
-translation=univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
+_ = translation.translate
 
 module = 'settings/ucc_image'
 
 childs = 0
 short_description = _('UCC images')
 long_description = ''
-operations = [ 'search', 'edit', 'add', 'remove' ]
-superordinate='settings/cn'
+operations = ['search', 'edit', 'add', 'remove']
+superordinate = 'settings/cn'
 
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description= _('Image name'),
-			long_description= _('Name of the image'),
+			short_description=_('Image name'),
+			long_description=_('Name of the image'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -61,8 +61,8 @@ property_descriptions={
 			identifies=1
 		),
 	'description': univention.admin.property(
-			short_description= _('Description'),
-			long_description= _('Description of image'),
+			short_description=_('Description'),
+			long_description=_('Description of image'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -71,8 +71,8 @@ property_descriptions={
 			identifies=0
 		),
 	'server': univention.admin.property(
-			short_description= _('Server'),
-			long_description= _('The image is available on these servers'),
+			short_description=_('Server'),
+			long_description=_('The image is available on these servers'),
 			syntax=univention.admin.syntax.UCS_Server,
 			multivalue=1,
 			options=[],
@@ -84,36 +84,36 @@ property_descriptions={
 
 
 layout = [
-	Tab(_('General'),_('UCC image'), layout = [
-		Group( _( 'General' ), layout = [
+	Tab(_('General'), _('UCC image'), layout=[
+		Group(_('General'), layout=[
 			'name',
 			'description',
 			'server'
-                        ] ),
-                ] )
+                        ]),
+                ])
 ]
 
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'univentionCorporateClientImageName', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('server', 'univentionCorporateClientImageServer')
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
-		self.mapping=mapping
-		self.descriptions=property_descriptions
+		self.co = co
+		self.lo = lo
+		self.dn = dn
+		self.position = position
+		self._exists = 0
+		self.mapping = mapping
+		self.descriptions = property_descriptions
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
 
@@ -121,22 +121,22 @@ class object(univention.admin.handlers.simpleLdap):
 		return self._exists
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', [ 'univentionCorporateClientImage' ] ) ]
+		return [('objectClass', ['univentionCorporateClientImage'])]
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 				univention.admin.filter.expression('objectClass', 'univentionCorporateClientImage'),
 				])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
 		res.append(object(co, lo, None, dn))
 	return res

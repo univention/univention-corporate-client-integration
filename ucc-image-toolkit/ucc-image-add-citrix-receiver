@@ -98,7 +98,7 @@ if not os.path.exists(opt.deb):
 	print "DEB file file " + opt.deb + ' not found.'
 	sys.exit(3)
 
-mntpoint=tempfile.mkdtemp()
+mntpoint = tempfile.mkdtemp()
 
 logfile = open("/var/log/univention/citrix-install.log", "w", 0)
 log("Adding Citrix Receiver to the UCC image, see /var/log/univention/citrix-install.log for more details")
@@ -133,7 +133,7 @@ cmd('sync')
 cleanup()
 
 log("Generating hash value", 80)
-cmd = 'md5sum "%s" | sed -ne "s| .*||p" > "%s" ' % (opt.image, opt.image+".md5")
+cmd = 'md5sum "%s" | sed -ne "s| .*||p" > "%s" ' % (opt.image, opt.image + ".md5")
 if subprocess.call(cmd, shell=True):
 	exit("Generation of hash value failed", 6)
 

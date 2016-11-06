@@ -38,21 +38,21 @@ import univention.admin.syntax
 import univention.admin.localization
 import univention.admin.uexceptions
 
-translation=univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
+_ = translation.translate
 
 module = 'settings/ucc_session'
 
 childs = 0
 short_description = _('UCC session script')
 long_description = ''
-operations = [ 'search', 'edit', 'add', 'remove' ]
-superordinate='settings/cn'
+operations = ['search', 'edit', 'add', 'remove']
+superordinate = 'settings/cn'
 
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
-			short_description= _('Name'),
-			long_description= _('Name'),
+			short_description=_('Name'),
+			long_description=_('Name'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -61,8 +61,8 @@ property_descriptions={
 			identifies=1
 		),
 	'description': univention.admin.property(
-			short_description= _('Description'),
-			long_description= _('Description of session'),
+			short_description=_('Description'),
+			long_description=_('Description of session'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -71,8 +71,8 @@ property_descriptions={
 			identifies=0
 		),
 	'session': univention.admin.property(
-			short_description= _('Session to start'),
-			long_description= _('Session to start by display manager'),
+			short_description=_('Session to start'),
+			long_description=_('Session to start by display manager'),
 			syntax=univention.admin.syntax.string,
 			multivalue=0,
 			options=[],
@@ -84,36 +84,36 @@ property_descriptions={
 
 
 layout = [
-	Tab(_('General'),_('UCC session script'), layout = [
-		Group( _( 'General' ), layout = [
+	Tab(_('General'), _('UCC session script'), layout=[
+		Group(_('General'), layout=[
 			'name',
 			'description',
 			'session'
-                        ] ),
-                ] )
+                        ]),
+                ])
 ]
 
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'univentionCorporateClientSessionName', None, univention.admin.mapping.ListToString)
 mapping.register('description', 'description', None, univention.admin.mapping.ListToString)
 mapping.register('session', 'univentionCorporateClientSessionScript', None, univention.admin.mapping.ListToString)
 
 
 class object(univention.admin.handlers.simpleLdap):
-	module=module
+	module = module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
-		self.co=co
-		self.lo=lo
-		self.dn=dn
-		self.position=position
-		self._exists=0
-		self.mapping=mapping
-		self.descriptions=property_descriptions
+		self.co = co
+		self.lo = lo
+		self.dn = dn
+		self.position = position
+		self._exists = 0
+		self.mapping = mapping
+		self.descriptions = property_descriptions
 
 		univention.admin.handlers.simpleLdap.__init__(self, co, lo, position, dn, superordinate)
 
@@ -121,22 +121,22 @@ class object(univention.admin.handlers.simpleLdap):
 		return self._exists
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', [ 'univentionCorporateClientSession' ] ) ]
+		return [('objectClass', ['univentionCorporateClientSession'])]
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 				univention.admin.filter.expression('objectClass', 'univentionCorporateClientSession'),
 				])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
 		res.append(object(co, lo, None, dn))
 	return res

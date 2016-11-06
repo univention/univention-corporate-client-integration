@@ -41,8 +41,8 @@ def parse_args():
 	parser = OptionParser()
 	parser.add_option("-l", "--list-images", action="store_true", dest="listimg", help="List all UCC images currently stored")
 	parser.add_option("-r", "--remove-image", action="store", dest="removeimg", help="Name of UCC image to be removed (name of spec file in dir, e.g. ucc-desktop.spec")
-	parser.add_option( '-d', '--debug', action = 'store', type = 'int', dest = 'debug', default = 2,
-		help = 'if given than debugging is activated and set to the specified level [default: %default]' )
+	parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=2,
+		help='if given than debugging is activated and set to the specified level [default: %default]')
 	(options, args) = parser.parse_args()
 	return (options.listimg, options.removeimg, options.debug)
 

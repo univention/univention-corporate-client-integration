@@ -33,11 +33,11 @@
 import univention.admin.localization
 import univention.admin.syntax
 
-translation=univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
+_ = translation.translate
 
 class uccBoot(univention.admin.syntax.select):
-    choices=[
+    choices = [
         ('overlayfs', _('Live system')),
         ('localboot', _('Local boot')),
         ('none', _('Image boot without update check')),
@@ -46,7 +46,7 @@ class uccBoot(univention.admin.syntax.select):
     ]
 
 class uccImage(univention.admin.syntax.UDM_Objects):
-	udm_modules = ( 'settings/ucc_image', )
+	udm_modules = ('settings/ucc_image', )
 	regex = None
 	key = '%(name)s'
 	label = '%(name)s'
@@ -58,21 +58,21 @@ class uccSessions(univention.admin.syntax.UDM_Objects):
 	empty_value = True
 
 class uccUserFixedAttributes(univention.admin.syntax.select):
-	name='slavePackagesFixedAttributes'
-	choices=[
-		('univentionCorporateClientUserSession',_('Force this session for user logins')),
-		('univentionCorporateClientUserWindowsDomain',_('Windows domain')),
-		('univentionCorporateClientUserWindowsTerminalserver',_('Windows terminal server')),
+	name = 'slavePackagesFixedAttributes'
+	choices = [
+		('univentionCorporateClientUserSession', _('Force this session for user logins')),
+		('univentionCorporateClientUserWindowsDomain', _('Windows domain')),
+		('univentionCorporateClientUserWindowsTerminalserver', _('Windows terminal server')),
 		]
 
 class uccDesktopFixedAttributes(univention.admin.syntax.select):
-	name='uccDesktopFixedAttributes'
-	choices=[
+	name = 'uccDesktopFixedAttributes'
+	choices = [
 		('environmentVars', _('UCC desktop environment variables'))
 		]
 
 class uccDesktopEnvVar(complex):
-        subsyntaxes = ( ( _( 'Variable' ), string ), ( _( 'Value' ), string ) )
+        subsyntaxes = ((_('Variable'), string), (_('Value'), string))
 
 class uccImageServer(UDM_Attribute):
 	udm_module = 'computers/computer'

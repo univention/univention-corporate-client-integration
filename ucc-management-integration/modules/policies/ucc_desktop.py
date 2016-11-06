@@ -38,29 +38,29 @@ import univention.admin.localization
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
+_ = translation.translate
 
 class uccDesktopFixedAttributes(univention.admin.syntax.select):
-	name='uccDesktopFixedAttributes'
-	choices=[
-		( 'environmentVars', _('UCC desktop environment variables') )
+	name = 'uccDesktopFixedAttributes'
+	choices = [
+		('environmentVars', _('UCC desktop environment variables'))
 		]
 
-module='policies/ucc_desktop'
-operations=['add','edit','remove','search']
+module = 'policies/ucc_desktop'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc='univentionPolicyCorporateClientDesktop'
-policy_apply_to=["users/user"]
-policy_position_dn_prefix="cn=ucc"
+policy_oc = 'univentionPolicyCorporateClientDesktop'
+policy_apply_to = ["users/user"]
+policy_position_dn_prefix = "cn=ucc"
 
-childs=0
-short_description=_('Policy: UCC desktop settings')
-policy_short_description=_('UCC desktop settings')
-long_description=''
-options={
+childs = 0
+short_description = _('Policy: UCC desktop settings')
+policy_short_description = _('UCC desktop settings')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
 			short_description=_('Name'),
 			long_description='',
@@ -155,105 +155,105 @@ property_descriptions={
 }
 
 layout = [
-	Tab(_('General'),_('Desktop settings'), layout = [
-		Group( _( 'General' ), layout = [
+	Tab(_('General'), _('Desktop settings'), layout=[
+		Group(_('General'), layout=[
 			'name',
 			'environmentVars',
 			'logonScripts',
 			'logoutScripts',
-		] ),
-	] ),
-	Tab(_('Object'),_('Object'), advanced = True, layout = [
-		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
-		[ 'fixedAttributes', "emptyAttributes" ]
-	] ),
+		]),
+	]),
+	Tab(_('Object'), _('Object'), advanced=True, layout=[
+		['requiredObjectClasses', 'prohibitedObjectClasses'],
+		['fixedAttributes', "emptyAttributes"]
+	]),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('logonScripts', 'univentionCorporateClientDesktopLogon')
 mapping.register('logoutScripts', 'univentionCorporateClientDesktopLogout')
 
 class object(univention.admin.handlers.simplePolicy):
-	module=module
+	module = module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes = [] ):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
-		self.mapping=mapping
-		self.descriptions=property_descriptions
+		self.mapping = mapping
+		self.descriptions = property_descriptions
 
-		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes )
+		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes)
 		
 		self.save()
 
-	def _post_unmap( self, info, values ):
-		info[ 'environmentVars' ] = []
+	def _post_unmap(self, info, values):
+		info['environmentVars'] = []
 		for key, value in values.items():
-			if key.startswith( 'univentionCorporateClientDesktopEnv;entry-hex-' ):
-				key_name = key.split( 'univentionCorporateClientDesktopEnv;entry-hex-', 1 )[ 1 ].decode( 'hex' )
-				info[ 'environmentVars' ].append( ( key_name, values[ key ][ 0 ].strip() ) )
+			if key.startswith('univentionCorporateClientDesktopEnv;entry-hex-'):
+				key_name = key.split('univentionCorporateClientDesktopEnv;entry-hex-', 1)[1].decode('hex')
+				info['environmentVars'].append((key_name, values[key][0].strip()))
 		return info
 
-	def _post_map( self, modlist, diff ):
+	def _post_map(self, modlist, diff):
 		for key, old, new in diff:
 			if key == 'environmentVars':
-				old_dict = dict( old )
-				new_dict = dict( new )
+				old_dict = dict(old)
+				new_dict = dict(new)
 				for var, value in old_dict.items():
-					attr_name = 'univentionCorporateClientDesktopEnv;entry-hex-%s' % var.encode( 'hex' )
-					if not var in new_dict: # variable has been removed
-						modlist.append( ( attr_name, value, None ) )
-					elif value != new_dict[ var ]: # value has been changed
-						modlist.append( ( attr_name, value, new_dict[ var ] ) )
+					attr_name = 'univentionCorporateClientDesktopEnv;entry-hex-%s' % var.encode('hex')
+					if not var in new_dict:  # variable has been removed
+						modlist.append((attr_name, value, None))
+					elif value != new_dict[var]:  # value has been changed
+						modlist.append((attr_name, value, new_dict[var]))
 				for var, value in new_dict.items():
-					attr_name = 'univentionCorporateClientDesktopEnv;entry-hex-%s' % var.encode( 'hex' )
-					if var not in old_dict: # variable has been added
-						modlist.append( ( attr_name, None, new_dict[ var ] ) )
+					attr_name = 'univentionCorporateClientDesktopEnv;entry-hex-%s' % var.encode('hex')
+					if var not in old_dict:  # variable has been added
+						modlist.append((attr_name, None, new_dict[var]))
 				break
 
 		return modlist
 
-	def _custom_policy_result_map( self ):
+	def _custom_policy_result_map(self):
 		values = {}
-		self.polinfo_more[ 'environmentVars' ] = []
+		self.polinfo_more['environmentVars'] = []
 		for attr_name, value_dict in self.policy_attrs.items():
-			values[ attr_name ] = value_dict[ 'value' ]
-			if attr_name.startswith( 'univentionCorporateClientDesktopEnv;entry-hex-' ):
-				key_name = attr_name.split( 'univentionCorporateClientDesktopEnv;entry-hex-', 1 )[ 1 ].decode( 'hex' )
-				value_dict[ 'value' ].insert( 0, key_name )
-				self.polinfo_more[ 'environmentVars' ].append( value_dict )
+			values[attr_name] = value_dict['value']
+			if attr_name.startswith('univentionCorporateClientDesktopEnv;entry-hex-'):
+				key_name = attr_name.split('univentionCorporateClientDesktopEnv;entry-hex-', 1)[1].decode('hex')
+				value_dict['value'].insert(0, key_name)
+				self.polinfo_more['environmentVars'].append(value_dict)
 			elif attr_name:
-				self.polinfo_more[ self.mapping.unmapName( attr_name ) ] = value_dict
+				self.polinfo_more[self.mapping.unmapName(attr_name)] = value_dict
 
-		self.polinfo = univention.admin.mapping.mapDict( self.mapping, values )
-		self.polinfo = self._post_unmap( self.polinfo, values )
+		self.polinfo = univention.admin.mapping.mapDict(self.mapping, values)
+		self.polinfo = self._post_unmap(self.polinfo, values)
 
 	def exists(self):
 		return self._exists
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicyCorporateClientDesktop']) ]
+		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyCorporateClientDesktop'])]
 	
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyCorporateClientDesktop')
 		])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn, attrs in lo.search(unicode(filter), base, scope, [], unique, required, timeout, sizelimit):
-			res.append( object( co, lo, None, dn, attributes = attrs ) )
+			res.append(object(co, lo, None, dn, attributes=attrs))
 	except:
 		pass
 	return res

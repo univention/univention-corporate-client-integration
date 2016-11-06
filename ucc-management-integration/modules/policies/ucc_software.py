@@ -31,7 +31,7 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys, string
-sys.path=['.']+sys.path
+sys.path = ['.'] + sys.path
 
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax
@@ -41,23 +41,23 @@ import univention.admin.localization
 
 import univention.debug
 
-translation=univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
-_=translation.translate
+translation = univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
+_ = translation.translate
 
-module='policies/ucc_software'
-operations=['add','edit','remove','search']
+module = 'policies/ucc_software'
+operations = ['add', 'edit', 'remove', 'search']
 
-policy_oc='univentionPolicySoftwareupdates'
-policy_apply_to=["computers/ucc"]
-policy_position_dn_prefix="cn=ucc"
+policy_oc = 'univentionPolicySoftwareupdates'
+policy_apply_to = ["computers/ucc"]
+policy_position_dn_prefix = "cn=ucc"
 
-childs=0
-short_description=_('Policy: UCC software update settings')
-policy_short_description=_('UCC software update settings')
-long_description=''
-options={
+childs = 0
+short_description = _('Policy: UCC software update settings')
+policy_short_description = _('UCC software update settings')
+long_description = ''
+options = {
 }
-property_descriptions={
+property_descriptions = {
 	'name': univention.admin.property(
 			short_description=_('Name'),
 			long_description='',
@@ -150,21 +150,21 @@ property_descriptions={
 		)
 }
 layout = [
-	Tab(_('General'),_('UCC client configuration'), layout = [
-		Group( _( 'General' ), layout = [
+	Tab(_('General'), _('UCC client configuration'), layout=[
+		Group(_('General'), layout=[
 			'name',
 			'uccupdate',
 			'pkginstall',
 			'pkgremove',
-		] ),
-	] ),
-	Tab(_('Object'),_('Object'), advanced = True, layout = [
-		[ 'requiredObjectClasses' , 'prohibitedObjectClasses' ],
-		[ 'fixedAttributes', 'emptyAttributes' ]
-	] ),
+		]),
+	]),
+	Tab(_('Object'), _('Object'), advanced=True, layout=[
+		['requiredObjectClasses', 'prohibitedObjectClasses'],
+		['fixedAttributes', 'emptyAttributes']
+	]),
 ]
 
-mapping=univention.admin.mapping.mapping()
+mapping = univention.admin.mapping.mapping()
 mapping.register('name', 'cn', None, univention.admin.mapping.ListToString)
 mapping.register('uccupdate', 'univentionCorporateClientSoftwareUpdateActivate', None, univention.admin.mapping.ListToString)
 mapping.register('pkgremove', 'univentionCorporateClientSoftwareUpdateRemoveList')
@@ -172,14 +172,14 @@ mapping.register('pkginstall', 'univentionCorporateClientSoftwareUpdateInstallLi
 
 
 class object(univention.admin.handlers.simplePolicy):
-	module=module
+	module = module
 
 	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
 		global mapping
 		global property_descriptions
 
-		self.mapping=mapping
-		self.descriptions=property_descriptions
+		self.mapping = mapping
+		self.descriptions = property_descriptions
 
 		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate)
 
@@ -187,23 +187,23 @@ class object(univention.admin.handlers.simplePolicy):
 		return self._exists
 
 	def _ldap_pre_create(self):
-		self.dn='%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
+		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
-		return [ ('objectClass', ['top', 'univentionPolicy', 'univentionPolicySoftwareupdates']) ]
+		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicySoftwareupdates'])]
 
 def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
 
-	filter=univention.admin.filter.conjunction('&', [
+	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicySoftwareupdates')
 		])
 
 	if filter_s:
-		filter_p=univention.admin.filter.parse(filter_s)
+		filter_p = univention.admin.filter.parse(filter_s)
 		univention.admin.filter.walk(filter_p, univention.admin.mapping.mapRewrite, arg=mapping)
 		filter.expressions.append(filter_p)
 
-	res=[]
+	res = []
 	try:
 		for dn in lo.searchDn(unicode(filter), base, scope, unique, required, timeout, sizelimit):
 			res.append(object(co, lo, None, dn))

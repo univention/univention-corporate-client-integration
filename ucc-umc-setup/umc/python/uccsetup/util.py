@@ -241,10 +241,10 @@ def set_dhcp_service_for_network(network_dn, ldap_connection):
 def _get_policy_object(policy_dns, module_name, ldap_connection):
 	for idn in policy_dns:
 		attrs = ldap_connection.lo.get(idn)
-		matching_modules = udm_modules.identify(idn, attrs, module_base = 'policies/')
-		policy_modules = [ imodule for imodule in matching_modules if imodule.module == module_name ]
+		matching_modules = udm_modules.identify(idn, attrs, module_base='policies/')
+		policy_modules = [imodule for imodule in matching_modules if imodule.module == module_name]
 		if policy_modules:
-			return udm_objects.get(policy_modules[0], None, ldap_connection, None, idn, attributes = attrs)
+			return udm_objects.get(policy_modules[0], None, ldap_connection, None, idn, attributes=attrs)
 	return None
 
 
@@ -379,7 +379,7 @@ _re_progress_split = re.compile(r':\s*')
 def add_citrix_receiver_to_ucc_image(image_path, debian_package_path, progress):
 	cmd = ['/usr/sbin/ucc-image-add-citrix-receiver', '--progress', '--uccimage', image_path, '--debpackage', debian_package_path]
 	MODULE.info('Calling command: %s' % ' '.join(cmd))
-	proc = subprocess.Popen(cmd, stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
+	proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 	while True:
 		line = proc.stdout.readline()
 		MODULE.info('[ucc-image-add-citrix-receiver] %s' % line.strip())

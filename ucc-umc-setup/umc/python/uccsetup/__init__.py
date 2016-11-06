@@ -106,10 +106,10 @@ class Instance(Base, ProgressMixin):
 	def upload_deb(self, request):
 		# make sure that we got a list
 		if not isinstance(request.options, (tuple, list)):
-			raise UMC_Error(_('Expected list of dicts, but got: %s') % str(request.options) )
+			raise UMC_Error(_('Expected list of dicts, but got: %s') % str(request.options))
 		file_info = request.options[0]
 		if not ('tmpfile' in file_info and 'filename' in file_info):
-			raise UMC_Error(_('Invalid upload data, got: %s') % str(file_info) )
+			raise UMC_Error(_('Invalid upload data, got: %s') % str(file_info))
 
 		# check for fake uploads
 		tmpfile = file_info['tmpfile']
@@ -130,7 +130,7 @@ class Instance(Base, ProgressMixin):
 		os.chmod(dest_file, 0644)
 
 		# done
-		self.finished( request.id, None )
+		self.finished(request.id, None)
 
 	@require_password
 	@sanitize(
@@ -165,12 +165,12 @@ class Instance(Base, ProgressMixin):
 	@simple_response(with_progress=True)
 	def apply(self, gateway=None, rdp=None, citrix=None, thinclient=False, fatclient=False, downloadThinClientImage=False, downloadFatClientImage=False, network=None, browser=None, defaultSession=None, progress=None):
 		ldap_connection = util.get_ldap_connection()
-		progress.title =_('Applying UCC configuration settings')
+		progress.title = _('Applying UCC configuration settings')
 		progress.total = 100
 
 		# make sure the citrix receiver debian package has been uploaded
 		if citrix and citrix.get('customReceiver') and not util.get_citrix_receiver_package_path():
-			return {'success': False, 'error':_('The Debian package of the Citrix Receiver could not be found. Please make sure that the file has been uploaded.')}
+			return {'success': False, 'error': _('The Debian package of the Citrix Receiver could not be found. Please make sure that the file has been uploaded.')}
 
 		def _progress(steps, msg):
 			progress.current = steps
@@ -233,7 +233,7 @@ class Instance(Base, ProgressMixin):
 		# query the latest ucc image file
 		thinclient_image, desktop_image = util.get_latest_ucc_images()
 		if not thinclient_image or not desktop_image:
-			return { 'success': False, 'error': _('UCC images cannot be downloaded! Please check your internet connection.') }
+			return {'success': False, 'error': _('UCC images cannot be downloaded! Please check your internet connection.')}
 
 		# download image(s)
 		download_percentage = 60 if citrix else 90

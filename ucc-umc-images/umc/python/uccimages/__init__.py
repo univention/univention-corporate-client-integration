@@ -142,7 +142,7 @@ class Instance(Base, ProgressMixin):
 		ucc_images.download_ucc_image(image, username=self.username, password=self.password, progress=progress_wrapper)
 		if hasattr(progress, 'result'):
 			return progress.result
-		return { 'success': True }
+		return {'success': True}
 
 	@simple_response
 	def remove(self, image=''):

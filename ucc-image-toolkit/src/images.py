@@ -193,7 +193,7 @@ def _get_file_size(filename):
 
 	url = '%s/%s' % (UCC_BASE_URL, filename)
 	request = urllib2.Request(url)
-	request.get_method = lambda : 'HEAD'
+	request.get_method = lambda: 'HEAD'
 	try:
 		response = urllib2.urlopen(request)
 	except urllib2.HTTPError as exc:

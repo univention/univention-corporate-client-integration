@@ -40,7 +40,7 @@ import os
 import tempfile
 
 if __name__ == '__main__':
-	parser = optparse.OptionParser( )
+	parser = optparse.OptionParser()
 	parser.add_option("--file", dest="file", default='/var/cache/ucc/passwd',
 		action="store", help="write result to the given file, default is /var/cache/ucc/passwd")
 	parser.add_option("--verbose", dest="verbose",
@@ -48,7 +48,7 @@ if __name__ == '__main__':
 	(options, args) = parser.parse_args()
 
 	try:
-		lo = univention.uldap.getMachineConnection( ldap_master=False )
+		lo = univention.uldap.getMachineConnection(ldap_master=False)
 	except ldap.SERVER_DOWN:
 		print "Abort: Can't contact LDAP server."
 		sys.exit(1)
