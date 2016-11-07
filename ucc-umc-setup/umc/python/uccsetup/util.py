@@ -39,7 +39,6 @@ from univention.management.console.config import ucr
 from univention.management.console.log import MODULE
 
 import univention.admin.modules as udm_modules
-udm_modules.update()
 import univention.admin.uldap as udm_uldap
 import univention.admin.objects as udm_objects
 import univention.admin.uexceptions as udm_exceptions
@@ -47,6 +46,7 @@ import ucc.images as ucc_images
 
 from univention.lib.i18n import Translation
 _ = Translation('ucc-umc-setup').translate
+udm_modules.update()
 
 UCC_NETWORK_DN = 'cn=ucc-network,cn=networks,%s' % ucr['ldap/base']
 UCC_USER_SESSION_POLICY_DN = 'cn=default-settings,cn=ucc,cn=policies,%s' % ucr['ldap/base']

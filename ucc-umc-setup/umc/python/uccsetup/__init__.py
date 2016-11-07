@@ -42,10 +42,10 @@ import univention.admin.modules as udm_modules
 import ucc.images as ucc_images
 from univention.config_registry import ConfigRegistry
 
+import util
+
 from univention.lib.i18n import Translation
 _ = Translation('ucc-umc-setup').translate
-
-import util
 
 
 class Instance(Base, ProgressMixin):
