@@ -45,7 +45,7 @@ def parse_args():
 	parser = OptionParser(usage=usage)
 
 	parser.add_option("-s", "--specurl", action="store", dest="spec", help="Spec file for the image download (without the URL part of the mirror)")
-	#parser.add_option("-r", "--reload", action="store_true", dest="reload", help="Force reloading of file, do not resume downloads")
+	# parser.add_option("-r", "--reload", action="store_true", dest="reload", help="Force reloading of file, do not resume downloads")
 	parser.add_option("-p", "--set-root-pw-interactive", action="store_true", default=False, dest="rootpw", help="By default the root password from the current system is set in the image. Use this option to set it interactively")
 	parser.add_option("--skip-hash", action="store_true", default=False, dest="skiphash", help="Skip validation of downloaded files")
 	parser.add_option('-d', '--debug', action='store', type='int', dest='debug', default=2,

@@ -586,7 +586,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		self.open()
 		if 'posix' in self.options and self.oldattr.get('uidNumber'):
 			self.uidNum = self.oldattr['uidNumber'][0]
-			#self.uid=self.oldattr['uid'][0]
+			# self.uid=self.oldattr['uid'][0]
 
 	def _ldap_post_remove(self):
 		if 'posix' in self.options:
@@ -672,7 +672,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 			if 'posix' in self.options:
 				password_crypt = "{crypt}%s" % (univention.admin.password.crypt(self['password']))
 				ml.append(('userPassword', self.oldattr.get('userPassword', [''])[0], password_crypt))
-			#The password must be set via net rpc join
+			# The password must be set via net rpc join
 			if 'samba' in self.options:
 				password_nt, password_lm = univention.admin.password.ntlm(self['password'])
 				ml.append(('sambaNTPassword', self.oldattr.get('sambaNTPassword', [''])[0], password_nt))

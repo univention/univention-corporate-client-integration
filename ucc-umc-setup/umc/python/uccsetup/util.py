@@ -141,7 +141,7 @@ def _get_udm_exception_msg(e):
 def _get_dhcp_service_obj(ldap_connection):
 	result = udm_modules.lookup('dhcp/service', None, ldap_connection, scope='sub', base='cn=dhcp,%s' % ucr['ldap/base'])
 	if not result:
-		#TODO: error handling
+		# TODO: error handling
 		MODULE.error('ERROR: Failed to open UDM DHCP service object, maybe the DHCP server component is not installed?')
 		return None
 
@@ -151,7 +151,7 @@ def _get_dhcp_service_obj(ldap_connection):
 def _get_forward_zone(ldap_connection):
 	result = udm_modules.lookup('dns/forward_zone', None, ldap_connection, scope='sub', base='cn=dns,%s' % ucr['ldap/base'])
 	if not result:
-		#TODO: error handling
+		# TODO: error handling
 		MODULE.error('ERROR: Failed to find a DNS forward zone?')
 		return None
 
