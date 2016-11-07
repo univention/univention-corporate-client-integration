@@ -177,10 +177,10 @@ def _get_reverse_zone(address, mask, ldap_connection):
 
 
 def _get_default_network(ldap_connection):
-		network_dn = 'cn=default,cn=networks,%s' % ucr['ldap/base']
-		network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, None, network_dn)
-		network_obj.open()
-		return network_obj
+	network_dn = 'cn=default,cn=networks,%s' % ucr['ldap/base']
+	network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, None, network_dn)
+	network_obj.open()
+	return network_obj
 
 
 def set_network(address, mask, first_ip, last_ip, ldap_connection):

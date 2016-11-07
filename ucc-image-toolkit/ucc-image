@@ -78,8 +78,8 @@ def _stop_services_in_bootstrap(bootstrap_dir, logfile_fd):
 def _mount_in_bootstrap(bootstrap_dir, logfile_fd, mount=True):
 
 	if mount:
-                cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'mount', '-t', 'proc', 'proc', 'proc']
-                _run_cmd(cmd_block, logfile_fd)
+		cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'mount', '-t', 'proc', 'proc', 'proc']
+		_run_cmd(cmd_block, logfile_fd)
 		cmd_block = ['/usr/sbin/chroot', bootstrap_dir, 'mount', '-t', 'sysfs', 'sysfs', 'sys']
 		_run_cmd(cmd_block, logfile_fd)
 	else:
@@ -269,7 +269,7 @@ if __name__ == '__main__':
 		targetdir = options.targetdir
 	else:
 		targetdir = workingdir
-		_remove_tempdir = False 	# Do not remove workingdir if we leave the image there
+		_remove_tempdir = False		# Do not remove workingdir if we leave the image there
 
 	if not os.path.exists(targetdir):
 		os.mkdir(targetdir)
@@ -609,7 +609,7 @@ menuentry 'Debug Shell' {
 		if exitcode == 0:
 			if options.compress:
 				print "Compressing image"
-                # Use /usr/bin/xz -0 to speed up compression significantly for tests
+				# Use /usr/bin/xz -0 to speed up compression significantly for tests
 				subprocess.call("/usr/bin/xz -v " + image_file, shell=True)
 				image_name = image_name + ".xz"
 				image_file = os.path.join(workingdir, image_name)

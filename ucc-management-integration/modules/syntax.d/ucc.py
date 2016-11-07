@@ -38,13 +38,13 @@ _ = translation.translate
 
 
 class uccBoot(univention.admin.syntax.select):
-    choices = [
-        ('overlayfs', _('Live system')),
-        ('localboot', _('Local boot')),
-        ('none', _('Image boot without update check')),
-        ('rollout', _('Image boot with update check')),
-        ('repartition', _('Installation with repartitioning and image rollout')),
-    ]
+	choices = [
+	    ('overlayfs', _('Live system')),
+	    ('localboot', _('Local boot')),
+	    ('none', _('Image boot without update check')),
+	    ('rollout', _('Image boot with update check')),
+	    ('repartition', _('Installation with repartitioning and image rollout')),
+	]
 
 
 class uccImage(univention.admin.syntax.UDM_Objects):
@@ -78,7 +78,7 @@ class uccDesktopFixedAttributes(univention.admin.syntax.select):
 
 
 class uccDesktopEnvVar(complex):
-        subsyntaxes = ((_('Variable'), string), (_('Value'), string))
+	subsyntaxes = ((_('Variable'), string), (_('Value'), string))
 
 
 class uccImageServer(UDM_Attribute):
