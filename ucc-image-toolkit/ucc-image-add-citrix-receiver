@@ -36,7 +36,6 @@ import tempfile
 import subprocess
 import os
 import sys
-import commands
 
 parser = optparse.OptionParser()
 

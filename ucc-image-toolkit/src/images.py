@@ -42,7 +42,6 @@ import hashlib
 import lzma
 import httplib
 import urllib2
-import urlparse
 import contextlib
 import re
 import psutil

@@ -31,7 +31,6 @@
 # <http://www.gnu.org/licenses/>.
 
 import sys
-import string
 sys.path = ['.'] + sys.path
 
 from univention.admin.layout import Tab, Group

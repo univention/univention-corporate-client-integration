@@ -39,7 +39,6 @@ attributes = []
 
 import listener
 import os
-import re
 import ldap
 import string
 import univention.debug

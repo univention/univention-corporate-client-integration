@@ -33,7 +33,6 @@
 
 from optparse import OptionParser
 import sys
-import os
 
 import univention.debug as ud
 import ucc.images as ucc_images
