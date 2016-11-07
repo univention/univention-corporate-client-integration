@@ -46,7 +46,7 @@ class uccDesktopFixedAttributes(univention.admin.syntax.select):
 	name = 'uccDesktopFixedAttributes'
 	choices = [
 		('environmentVars', _('UCC desktop environment variables'))
-		]
+	]
 
 module = 'policies/ucc_desktop'
 operations = ['add', 'edit', 'remove', 'search']
@@ -72,7 +72,7 @@ property_descriptions = {
 			required=1,
 			may_change=0,
 			identifies=1,
-		),
+	),
 	'environmentVars': univention.admin.property(
 			short_description=_('UCC desktop environment variables'),
 			long_description='',
@@ -82,7 +82,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0,
-		),
+	),
 	'logonScripts': univention.admin.property(
 			short_description=_('Desktop Logon scripts'),
 			long_description='',
@@ -92,7 +92,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'logoutScripts': univention.admin.property(
 			short_description=_('Desktop Logout scripts'),
 			long_description='',
@@ -102,7 +102,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'requiredObjectClasses': univention.admin.property(
 			short_description=_('Required object classes'),
 			long_description='',
@@ -112,7 +112,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'prohibitedObjectClasses': univention.admin.property(
 			short_description=_('Excluded object classes'),
 			long_description='',
@@ -122,7 +122,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'fixedAttributes': univention.admin.property(
 			short_description=_('Fixed attributes'),
 			long_description='',
@@ -132,7 +132,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'emptyAttributes': univention.admin.property(
 			short_description=_('Empty attributes'),
 			long_description='',
@@ -142,7 +142,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'filler': univention.admin.property(
 			short_description='',
 			long_description='',
@@ -152,7 +152,7 @@ property_descriptions = {
 			may_change=1,
 			identifies=0,
 			dontsearch=1
-		)
+	)
 }
 
 layout = [
@@ -246,7 +246,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyCorporateClientDesktop')
-		])
+	])
 
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)

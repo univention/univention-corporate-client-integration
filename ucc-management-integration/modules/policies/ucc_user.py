@@ -64,7 +64,7 @@ property_descriptions = {
 			required=1,
 			may_change=0,
 			identifies=1,
-		),
+	),
 	'session': univention.admin.property(
 			short_description=_('Force this session for user logins'),
 			long_description=_('This UCC session will be during login and no user selection is made'),
@@ -74,7 +74,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'windowsDomain': univention.admin.property(
 			short_description=_('Windows domain for RDP sessions'),
 			long_description=_('This windows domain will be used for RDP user logons.'),
@@ -84,7 +84,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'windowsTerminalserver': univention.admin.property(
 			short_description=_('RDP terminal server'),
 			long_description=_('This server will be used for user logon to RDP terminal services.'),
@@ -94,7 +94,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'uccTerminalserver': univention.admin.property(
 			short_description=_('UCC 1.0 terminal server (not used for UCC 2 clients)'),
 			long_description=_('This UCC terminal server will be used for user logons to UCC terminal servers using X11 forwarding. In UCC 2 this is no longer supported and XRDP should be used instead.'),
@@ -104,7 +104,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'requiredObjectClasses': univention.admin.property(
 			short_description=_('Required object classes'),
 			long_description='',
@@ -114,7 +114,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'prohibitedObjectClasses': univention.admin.property(
 			short_description=_('Excluded object classes'),
 			long_description='',
@@ -124,7 +124,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'fixedAttributes': univention.admin.property(
 			short_description=_('Fixed attributes'),
 			long_description='',
@@ -134,7 +134,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'emptyAttributes': univention.admin.property(
 			short_description=_('Empty attributes'),
 			long_description='',
@@ -144,7 +144,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'filler': univention.admin.property(
 			short_description='',
 			long_description='',
@@ -154,7 +154,7 @@ property_descriptions = {
 			may_change=1,
 			identifies=0,
 			dontsearch=1
-		)
+	)
 }
 layout = [
 	Tab(_('General'), _('UCC user session'), layout=[
@@ -205,7 +205,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyCorporateClientUser')
-		])
+	])
 
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)

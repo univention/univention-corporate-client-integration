@@ -68,7 +68,7 @@ property_descriptions = {
 			required=1,
 			may_change=0,
 			identifies=1,
-		),
+	),
 	'uccupdate': univention.admin.property(
 			short_description=_('Install available software updates'),
 			long_description=_('If this option is set all available software updates for this UCC client are installed at the next system start'),
@@ -78,7 +78,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'pkgremove': univention.admin.property(
 			short_description=_('Packages to be removed'),
 			long_description=_('The packages configured in this policy will be removed on the next system start'),
@@ -88,7 +88,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'pkginstall': univention.admin.property(
 			short_description=_('Packages to be installed'),
 			long_description=_('The packages configured in this policy will be installed on the next system start'),
@@ -98,7 +98,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'requiredObjectClasses': univention.admin.property(
 			short_description=_('Required object classes'),
 			long_description='',
@@ -108,7 +108,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'prohibitedObjectClasses': univention.admin.property(
 			short_description=_('Excluded object classes'),
 			long_description='',
@@ -118,7 +118,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'fixedAttributes': univention.admin.property(
 			short_description=_('Fixed attributes'),
 			long_description='',
@@ -128,7 +128,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'emptyAttributes': univention.admin.property(
 			short_description=_('Empty attributes'),
 			long_description='',
@@ -138,7 +138,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'filler': univention.admin.property(
 			short_description='',
 			long_description='',
@@ -148,7 +148,7 @@ property_descriptions = {
 			may_change=1,
 			identifies=0,
 			dontsearch=1
-		)
+	)
 }
 layout = [
 	Tab(_('General'), _('UCC client configuration'), layout=[
@@ -198,7 +198,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicySoftwareupdates')
-		])
+	])
 
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)

@@ -67,14 +67,14 @@ class uccUserFixedAttributes(univention.admin.syntax.select):
 		('univentionCorporateClientUserSession', _('Force this session for user logins')),
 		('univentionCorporateClientUserWindowsDomain', _('Windows domain')),
 		('univentionCorporateClientUserWindowsTerminalserver', _('Windows terminal server')),
-		]
+	]
 
 
 class uccDesktopFixedAttributes(univention.admin.syntax.select):
 	name = 'uccDesktopFixedAttributes'
 	choices = [
 		('environmentVars', _('UCC desktop environment variables'))
-		]
+	]
 
 
 class uccDesktopEnvVar(complex):

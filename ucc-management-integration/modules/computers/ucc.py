@@ -57,16 +57,16 @@ options = {
 	'posix': univention.admin.option(
 			short_description=_('Posix account'),
 			default=1
-		),
+	),
 	'kerberos': univention.admin.option(
 			short_description=_('Kerberos principal'),
 			default=1
-		),
+	),
 	'samba': univention.admin.option(
 			short_description=_('Samba account'),
 			editable=1,
 			default=1
-		)
+	)
 }
 
 property_descriptions = {
@@ -80,7 +80,7 @@ property_descriptions = {
 			required=1,
 			may_change=1,
 			identifies=1
-		),
+	),
 	'description': univention.admin.property(
 			short_description=_('Description'),
 			long_description='',
@@ -90,7 +90,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'operatingSystem': univention.admin.property(
 			short_description=_('Operating system'),
 			long_description='',
@@ -99,7 +99,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'operatingSystemVersion': univention.admin.property(
 			short_description=_('Operating system version'),
 			long_description='',
@@ -108,7 +108,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'domain': univention.admin.property(
 			short_description=_('Domain'),
 			long_description='',
@@ -118,7 +118,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'mac': univention.admin.property(
 			short_description=_('MAC address'),
 			long_description='',
@@ -129,7 +129,7 @@ property_descriptions = {
 			required=1,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'network': univention.admin.property(
 			short_description=_('Network'),
 			long_description='',
@@ -139,7 +139,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'ip': univention.admin.property(
 			short_description=_('IP address'),
 			long_description='',
@@ -150,7 +150,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'dnsEntryZoneForward': univention.admin.property(
 			short_description=_('Forward zone for DNS entry'),
 			long_description='',
@@ -161,7 +161,7 @@ property_descriptions = {
 			may_change=1,
 			dontsearch=1,
 			identifies=0
-		),
+	),
 	'dnsEntryZoneReverse': univention.admin.property(
 			short_description=_('Reverse zone for DNS entry'),
 			long_description='',
@@ -172,7 +172,7 @@ property_descriptions = {
 			may_change=1,
 			dontsearch=1,
 			identifies=0
-		),
+	),
 	'dnsEntryZoneAlias': univention.admin.property(
 			short_description=_('Zone for DNS alias'),
 			long_description='',
@@ -183,7 +183,7 @@ property_descriptions = {
 			may_change=1,
 			dontsearch=1,
 			identifies=0
-		),
+	),
 	'dnsAlias': univention.admin.property(
 			short_description=_('DNS alias'),
 			long_description='',
@@ -193,7 +193,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'dhcpEntryZone': univention.admin.property(
 			short_description=_('DHCP service'),
 			long_description='',
@@ -204,7 +204,7 @@ property_descriptions = {
 			may_change=1,
 			dontsearch=1,
 			identifies=0
-		),
+	),
 	'password': univention.admin.property(
 			short_description=_('Password'),
 			long_description='',
@@ -215,7 +215,7 @@ property_descriptions = {
 			may_change=1,
 			identifies=0,
 			dontsearch=1
-		),
+	),
 	'unixhome': univention.admin.property(
 			short_description=_('Unix home directory'),
 			long_description='',
@@ -226,7 +226,7 @@ property_descriptions = {
 			may_change=1,
 			identifies=0,
 			default=('/dev/null', [])
-		),
+	),
 	'shell': univention.admin.property(
 			short_description=_('Login shell'),
 			long_description='',
@@ -237,7 +237,7 @@ property_descriptions = {
 			may_change=1,
 			identifies=0,
 			default=('/bin/bash', [])
-		),
+	),
 	'primaryGroup': univention.admin.property(
 			short_description=_('Primary group'),
 			long_description='',
@@ -248,7 +248,7 @@ property_descriptions = {
 			dontsearch=1,
 			may_change=1,
 			identifies=0,
-		),
+	),
 	'inventoryNumber': univention.admin.property(
 			short_description=_('Inventory number'),
 			long_description='',
@@ -258,7 +258,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'groups': univention.admin.property(
 			short_description=_('Groups'),
 			long_description='',
@@ -269,7 +269,7 @@ property_descriptions = {
 			may_change=1,
 			dontsearch=1,
 			identifies=0
-		),
+	),
 	'boot': univention.admin.property(
 			short_description=_('Boot variant'),
 			long_description=_('Boot variant of this client'),
@@ -281,7 +281,7 @@ property_descriptions = {
 			identifies=0,
 			default=('overlayfs', []),
 			size='Two'
-		),
+	),
 	'repartitioning': univention.admin.property(
 			short_description=_('Repartitioning for installed systems'),
 			long_description=_('Force repartitioning for installed systems'),
@@ -292,7 +292,7 @@ property_descriptions = {
 			may_change=1,
 			identifies=0,
 			default=('FALSE', [])
-		),
+	),
 	'image': univention.admin.property(
 			short_description=_('Image'),
 			long_description=_('Image to boot'),
@@ -303,7 +303,7 @@ property_descriptions = {
 			may_change=1,
 			identifies=0,
 			size='Two'
-		),
+	),
 	'currentImage': univention.admin.property(
 			short_description=_('Current image'),
 			long_description=_('Currently installed image'),
@@ -315,7 +315,7 @@ property_descriptions = {
 			identifies=0,
 			size='Two',
 			editable=0,
-		),
+	),
 	'imageServer': univention.admin.property(
 		short_description=_('Dedicated image server'),
 		long_description=_('This optional parameter gives the possibility to define a dedicated image server for installing/update the UCC client.'),
@@ -336,7 +336,7 @@ property_descriptions = {
 			may_change=1,
 			identifies=0,
 			size='Two'
-		),
+	),
 	'service': univention.admin.property(
 			short_description=_('Service'),
 			long_description='',
@@ -346,7 +346,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'sambaRID': univention.admin.property(
 			short_description=_('Relative ID'),
 			long_description='',
@@ -357,7 +357,7 @@ property_descriptions = {
 			dontsearch=1,
 			identifies=0,
 			options=['samba']
-		),
+	),
 }
 
 layout = [
@@ -378,7 +378,7 @@ layout = [
 		Group(_('DHCP'), layout=[
 			'dhcpEntryZone'
 		]),
-		]),
+	]),
 	Tab(_('Images'), _('Images'), advanced=False, layout=[
 		Group(_('Image settings'), layout=[
 			'boot',
@@ -387,23 +387,23 @@ layout = [
 			'bootParameter',
 			'imageServer',
 		]),
-		]),
+	]),
 	Tab(_('Account'), _('Account'), advanced=True, layout=[
 		'password',
 		'primaryGroup'
-		]),
+	]),
 	Tab(_('Unix account'), _('Unix account settings'), advanced=True, layout=[
 		['unixhome', 'shell']
-		]),
+	]),
 	Tab(_('Services'), _('Services'), advanced=True, layout=[
 		'service',
-		]),
+	]),
 	Tab(_('Groups'), _('Group memberships'), advanced=True, layout=[
 		'groups',
-		]),
+	]),
 	Tab(_('DNS alias'), _('Alias DNS entry'), advanced=True, layout=[
 		'dnsEntryZoneAlias'
-		]),
+	]),
 ]
 
 mapping = univention.admin.mapping.mapping()
@@ -741,9 +741,9 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 				univention.admin.filter.conjunction('&', [
 					univention.admin.filter.expression('objectClass', 'krb5KDCEntry'),
 					univention.admin.filter.expression('objectClass', 'krb5Principal'),
-					])
 				])
 			])
+		])
 
 		if filter_s:
 			filter_p = univention.admin.filter.parse(filter_s)

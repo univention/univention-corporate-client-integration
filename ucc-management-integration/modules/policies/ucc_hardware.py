@@ -50,7 +50,7 @@ class uccClientFixedAttributes(univention.admin.syntax.select):
 	name = 'uccClientFixedAttributes'
 	choices = [
 		('univentionCorporateClientComputerLocalStorage', _('Allow access to local mass storage')),
-		]
+	]
 
 module = 'policies/ucc_computer'
 operations = ['add', 'edit', 'remove', 'search']
@@ -75,7 +75,7 @@ property_descriptions = {
 			required=1,
 			may_change=0,
 			identifies=1,
-		),
+	),
 	'massstorage': univention.admin.property(
 			short_description=_('Allow access to local mass storage'),
 			long_description=_('This settings configures, whether access to local mass storage is enabled if a UCC system is used as a thin client'),
@@ -85,7 +85,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'prim_res': univention.admin.property(
 			short_description=_('Resolution of primary display'),
 			long_description=_('The resolution in pixels (XxY) of the primary display, if left blank the detection is done automatically'),
@@ -95,7 +95,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'sec_res': univention.admin.property(
 			short_description=_('Resolution of secondary display'),
 			long_description=_('The resolution in pixels (XxY) of the secondary display, if left blank the detection is done automatically'),
@@ -105,7 +105,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'prim_name': univention.admin.property(
 			short_description=_('Name of primary display'),
 			long_description=_('The X name of the primary display device (can be queried with xrandr -q)'),
@@ -115,7 +115,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'sec_name': univention.admin.property(
 			short_description=_('Name of secondary display'),
 			long_description=_('The X name of the secondary display device (can be queried with xrandr -q)'),
@@ -125,7 +125,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'display-position': univention.admin.property(
 			short_description=_('Position of secondary display relative to the primary'),
 			long_description='',
@@ -136,7 +136,7 @@ property_descriptions = {
 			may_change=1,
 			identifies=0,
 			default=('', [])
-		),
+	),
 	'requiredObjectClasses': univention.admin.property(
 			short_description=_('Required object classes'),
 			long_description='',
@@ -146,7 +146,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'prohibitedObjectClasses': univention.admin.property(
 			short_description=_('Excluded object classes'),
 			long_description='',
@@ -156,7 +156,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'fixedAttributes': univention.admin.property(
 			short_description=_('Fixed attributes'),
 			long_description='',
@@ -166,7 +166,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'emptyAttributes': univention.admin.property(
 			short_description=_('Empty attributes'),
 			long_description='',
@@ -176,7 +176,7 @@ property_descriptions = {
 			required=0,
 			may_change=1,
 			identifies=0
-		),
+	),
 	'filler': univention.admin.property(
 			short_description='',
 			long_description='',
@@ -186,7 +186,7 @@ property_descriptions = {
 			may_change=1,
 			identifies=0,
 			dontsearch=1
-		)
+	)
 }
 layout = [
 	Tab(_('General'), _('UCC client configuration'), layout=[
@@ -242,7 +242,7 @@ def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0,
 
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyCorporateClientComputer')
-		])
+	])
 
 	if filter_s:
 		filter_p = univention.admin.filter.parse(filter_s)
