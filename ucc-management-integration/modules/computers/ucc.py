@@ -512,7 +512,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 		if 'kerberos' in self.options:
 			domain = univention.admin.uldap.domain(self.lo, self.position)
 			realm = domain.getKerberosRealm()
-			if self.info.has_key('domain') and self.info['domain']:
+			if 'domain' in self.info and self.info['domain']:
 				kerberos_domain = self.info['domain']
 			else:
 				kerberos_domain = domain.getKerberosRealm()
@@ -610,7 +610,7 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	def krb5_principal(self):
 		domain = univention.admin.uldap.domain(self.lo, self.position)
 		realm = domain.getKerberosRealm()
-		if self.info.has_key('domain') and self.info['domain']:
+		if 'domain' in self.info and self.info['domain']:
 			kerberos_domain = self.info['domain']
 		else:
 			kerberos_domain = domain.getKerberosRealm()
