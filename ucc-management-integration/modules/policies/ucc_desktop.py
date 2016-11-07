@@ -205,7 +205,7 @@ class object(univention.admin.handlers.simplePolicy):
 				new_dict = dict(new)
 				for var, value in old_dict.items():
 					attr_name = 'univentionCorporateClientDesktopEnv;entry-hex-%s' % var.encode('hex')
-					if not var in new_dict:  # variable has been removed
+					if var not in new_dict:  # variable has been removed
 						modlist.append((attr_name, value, None))
 					elif value != new_dict[var]:  # value has been changed
 						modlist.append((attr_name, value, new_dict[var]))

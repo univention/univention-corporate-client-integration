@@ -287,7 +287,7 @@ def _open_container_policy(container_dn, policy_type, policy_dn, ldap_connection
 		policy_obj.create()
 
 	# make sure that the policy is set at the container
-	if container_dn and not policy_obj.dn in container_obj.policies:
+	if container_dn and policy_obj.dn not in container_obj.policies:
 		container_obj.policies.append(policy_obj.dn)
 		container_obj.modify()
 
