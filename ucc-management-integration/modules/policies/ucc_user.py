@@ -59,101 +59,101 @@ property_descriptions = {
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 	),
 	'session': univention.admin.property(
 			short_description=_('Force this session for user logins'),
 			long_description=_('This UCC session will be during login and no user selection is made'),
 			syntax=univention.admin.syntax.uccSessions,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'windowsDomain': univention.admin.property(
 			short_description=_('Windows domain for RDP sessions'),
 			long_description=_('This windows domain will be used for RDP user logons.'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'windowsTerminalserver': univention.admin.property(
 			short_description=_('RDP terminal server'),
 			long_description=_('This server will be used for user logon to RDP terminal services.'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'uccTerminalserver': univention.admin.property(
 			short_description=_('UCC 1.0 terminal server (not used for UCC 2 clients)'),
 			long_description=_('This UCC terminal server will be used for user logons to UCC terminal servers using X11 forwarding. In UCC 2 this is no longer supported and XRDP should be used instead.'),
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'requiredObjectClasses': univention.admin.property(
 			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'prohibitedObjectClasses': univention.admin.property(
 			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'fixedAttributes': univention.admin.property(
 			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=univention.admin.syntax.uccUserFixedAttributes,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'emptyAttributes': univention.admin.property(
 			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=univention.admin.syntax.uccUserFixedAttributes,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'filler': univention.admin.property(
 			short_description='',
 			long_description='',
 			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
+			multivalue=False,
+			required=False,
+			may_change=True,
+			identifies=False,
+			dontsearch=True
 	)
 }
 layout = [
@@ -201,7 +201,7 @@ class object(univention.admin.handlers.simplePolicy):
 		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyCorporateClientUser'])]
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyCorporateClientUser')

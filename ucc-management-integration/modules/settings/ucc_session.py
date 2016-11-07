@@ -53,31 +53,31 @@ property_descriptions = {
 			short_description=_('Name'),
 			long_description=_('Name'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=1,
-			identifies=1
+			required=True,
+			may_change=True,
+			identifies=True
 	),
 	'description': univention.admin.property(
 			short_description=_('Description'),
 			long_description=_('Description of session'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'session': univention.admin.property(
 			short_description=_('Session to start'),
 			long_description=_('Session to start by display manager'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 }
 
@@ -126,7 +126,7 @@ class object(univention.admin.handlers.simpleLdap):
 		return [('objectClass', ['univentionCorporateClientSession'])]
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionCorporateClientSession'),
 	])

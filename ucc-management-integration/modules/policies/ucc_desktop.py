@@ -66,92 +66,92 @@ property_descriptions = {
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.policyName,
-			multivalue=0,
-			include_in_default_search=1,
+			multivalue=False,
+			include_in_default_search=True,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 	),
 	'environmentVars': univention.admin.property(
 			short_description=_('UCC desktop environment variables'),
 			long_description='',
 			syntax=univention.admin.syntax.uccDesktopEnvVar,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0,
+			required=False,
+			may_change=True,
+			identifies=False,
 	),
 	'logonScripts': univention.admin.property(
 			short_description=_('Desktop Logon scripts'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'logoutScripts': univention.admin.property(
 			short_description=_('Desktop Logout scripts'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'requiredObjectClasses': univention.admin.property(
 			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'prohibitedObjectClasses': univention.admin.property(
 			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'fixedAttributes': univention.admin.property(
 			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=uccDesktopFixedAttributes,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'emptyAttributes': univention.admin.property(
 			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=uccDesktopFixedAttributes,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'filler': univention.admin.property(
 			short_description='',
 			long_description='',
 			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
+			multivalue=False,
+			required=False,
+			may_change=True,
+			identifies=False,
+			dontsearch=True
 	)
 }
 
@@ -242,7 +242,7 @@ class object(univention.admin.handlers.simplePolicy):
 		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyCorporateClientDesktop'])]
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyCorporateClientDesktop')

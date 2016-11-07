@@ -69,122 +69,122 @@ property_descriptions = {
 			short_description=_('Name'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=1,
-			may_change=0,
-			identifies=1,
+			required=True,
+			may_change=False,
+			identifies=True,
 	),
 	'massstorage': univention.admin.property(
 			short_description=_('Allow access to local mass storage'),
 			long_description=_('This settings configures, whether access to local mass storage is enabled if a UCC system is used as a thin client'),
 			syntax=univention.admin.syntax.boolean,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'prim_res': univention.admin.property(
 			short_description=_('Resolution of primary display'),
 			long_description=_('The resolution in pixels (XxY) of the primary display, if left blank the detection is done automatically'),
 			syntax=univention.admin.syntax.XResolution,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'sec_res': univention.admin.property(
 			short_description=_('Resolution of secondary display'),
 			long_description=_('The resolution in pixels (XxY) of the secondary display, if left blank the detection is done automatically'),
 			syntax=univention.admin.syntax.XResolution,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'prim_name': univention.admin.property(
 			short_description=_('Name of primary display'),
 			long_description=_('The X name of the primary display device (can be queried with xrandr -q)'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'sec_name': univention.admin.property(
 			short_description=_('Name of secondary display'),
 			long_description=_('The X name of the secondary display device (can be queried with xrandr -q)'),
 			syntax=univention.admin.syntax.string,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'display-position': univention.admin.property(
 			short_description=_('Position of secondary display relative to the primary'),
 			long_description='',
 			syntax=univention.admin.syntax.XDisplayPosition,
-			multivalue=0,
+			multivalue=False,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0,
+			required=False,
+			may_change=True,
+			identifies=False,
 			default=('', [])
 	),
 	'requiredObjectClasses': univention.admin.property(
 			short_description=_('Required object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'prohibitedObjectClasses': univention.admin.property(
 			short_description=_('Excluded object classes'),
 			long_description='',
 			syntax=univention.admin.syntax.string,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'fixedAttributes': univention.admin.property(
 			short_description=_('Fixed attributes'),
 			long_description='',
 			syntax=uccClientFixedAttributes,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'emptyAttributes': univention.admin.property(
 			short_description=_('Empty attributes'),
 			long_description='',
 			syntax=uccClientFixedAttributes,
-			multivalue=1,
+			multivalue=True,
 			options=[],
-			required=0,
-			may_change=1,
-			identifies=0
+			required=False,
+			may_change=True,
+			identifies=False
 	),
 	'filler': univention.admin.property(
 			short_description='',
 			long_description='',
 			syntax=univention.admin.syntax.none,
-			multivalue=0,
-			required=0,
-			may_change=1,
-			identifies=0,
-			dontsearch=1
+			multivalue=False,
+			required=False,
+			may_change=True,
+			identifies=False,
+			dontsearch=True
 	)
 }
 layout = [
@@ -237,7 +237,7 @@ class object(univention.admin.handlers.simplePolicy):
 		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyCorporateClientComputer'])]
 
 
-def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=0, required=0, timeout=-1, sizelimit=0):
+def lookup(co, lo, filter_s, base='', superordinate=None, scope='sub', unique=False, required=False, timeout=-1, sizelimit=0):
 
 	filter = univention.admin.filter.conjunction('&', [
 		univention.admin.filter.expression('objectClass', 'univentionPolicyCorporateClientComputer')
