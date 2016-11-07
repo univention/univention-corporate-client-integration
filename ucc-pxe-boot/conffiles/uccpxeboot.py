@@ -37,7 +37,7 @@ pattern = '/var/lib/univention-client-boot/pxelinux.cfg/*'
 
 
 def update_nfs_root(line, changes):
-	if type(changes.get('ucc/pxe/nfsroot')) == type(()):
+	if isinstance(changes.get('ucc/pxe/nfsroot'), type(())):
 		old, new = changes.get('ucc/pxe/nfsroot', (False, False))
 		if not old == new:
 			line = re.sub("(^| )nfsroot=[^:]+:/var/lib/univention-client-boot($| )", " ", line)
@@ -48,7 +48,7 @@ def update_nfs_root(line, changes):
 
 
 def update_append(line, changes):
-	if type(changes.get('ucc/pxe/append')) == type(()):
+	if isinstance(changes.get('ucc/pxe/append'), type(())):
 		old, new = changes.get('ucc/pxe/append', ("", ""))
 		if not old == new:
 			line = re.sub('(^| )%s($| )' % old, " ", line)
@@ -60,7 +60,7 @@ def update_append(line, changes):
 
 
 def update_flag(line, changes, baseConfig, var, flag):
-	if type(changes.get(var)) == type(()):
+	if isinstance(changes.get(var), type(())):
 		old, new = changes.get(var, ('', ''))
 		if not old == new:
 			line = re.sub("(^| )%s($| )" % flag, " ", line)
@@ -71,7 +71,7 @@ def update_flag(line, changes, baseConfig, var, flag):
 
 
 def update_parameter(line, changes, var, parameter):
-	if type(changes.get(var)) == type(()):
+	if isinstance(changes.get(var), type(())):
 		old, new = changes.get(var, ('', ''))
 		if not old == new:
 			line = re.sub("(^| )%s=[^ ]+($| )" % parameter, " ", line)
