@@ -1,4 +1,4 @@
-ucc-umc-setup (6.0.0-5) unstable; urgency=medium
+ucc-umc-setup (6.0.1-1) unstable; urgency=medium
 
   * Bug #43532: Adapt to UDM changes in UCS 4.2: Catch new exception
 
