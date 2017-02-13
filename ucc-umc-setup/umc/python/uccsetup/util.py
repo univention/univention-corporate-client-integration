@@ -87,6 +87,7 @@ class ProgressWrapper(ucc_images.Progress):
 		UCCProgress.advance(self, steps, substeps)
 		self.umc_progress.current = float(steps * self._max_steps) / self.max_steps + self._offset
 
+
 _bind_callback = None
 
 
@@ -247,7 +248,10 @@ def _get_policy_object(policy_dns, module_name, ldap_connection):
 		matching_modules = udm_modules.identify(idn, attrs, module_base='policies/')
 		policy_modules = [imodule for imodule in matching_modules if imodule.module == module_name]
 		if policy_modules:
-			return udm_objects.get(policy_modules[0], None, ldap_connection, None, idn, attributes=attrs)
+			try:
+				return udm_objects.get(policy_modules[0], None, ldap_connection, None, idn, attributes=attrs)
+			except udm_exceptions.noObject:
+				return None
 	return None
 
 
@@ -266,8 +270,12 @@ def _open_container_policy(container_dn, policy_type, policy_dn, ldap_connection
 		policy_obj.open()
 	else:
 		# try to open the policy with the given DN
-		policy_obj = udm_objects.get(udm_modules.get(policy_type), None, ldap_connection, None, policy_dn)
-		if not policy_obj.exists():
+		policy_obj = None
+		try:
+			policy_obj = udm_objects.get(udm_modules.get(policy_type), None, ldap_connection, None, policy_dn)
+		except udm_exceptions.noObject:
+			pass
+		if not policy_obj:
 			# create policy
 			name = udm_uldap.explodeDn(policy_dn, True)[0]
 			path = policy_dn.split(',', 1)[1]

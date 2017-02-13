@@ -1,3 +1,9 @@
+ucc-umc-setup (6.0.0-5) unstable; urgency=medium
+
+  * Bug #43532: Adapt to UDM changes in UCS 4.2: Catch new exception
+
+ -- Erik Damrose <damrose@univention.de>  Mon, 13 Feb 2017 14:29:04 +0100
+
 ucc-umc-setup (6.0.0-4) unstable; urgency=medium
 
   * Bug #41936: Changed german translation
