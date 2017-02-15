@@ -1,3 +1,9 @@
+ucc-umc-setup (6.0.1-2) unstable; urgency=medium
+
+  * Bug #43532: Fix udm calls, fix DN parsing
+
+ -- Erik Damrose <damrose@univention.de>  Wed, 15 Feb 2017 14:15:41 +0100
+
 ucc-umc-setup (6.0.1-1) unstable; urgency=medium
 
   * Bug #43532: Adapt to UDM changes in UCS 4.2: Catch new exception

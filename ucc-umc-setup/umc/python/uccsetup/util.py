@@ -186,16 +186,18 @@ def _get_default_network(ldap_connection):
 
 def set_network(address, mask, first_ip, last_ip, ldap_connection):
 	# open network object
-	network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, None, UCC_NETWORK_DN)
-
-	if network_obj.exists():
+	try:
+		network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, None, UCC_NETWORK_DN)
+	except udm_exceptions.noObject:
+		pass
+	else:
 		# remove network object if already existing
 		network_obj.remove()
-		network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, None, UCC_NETWORK_DN)
+		network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, None)
 
 	# create network
-	name = udm_uldap.explodeDn(UCC_NETWORK_DN, True)[0]
-	path = UCC_NETWORK_DN.split(',', 1)[1]
+	name = ldap.dn.str2dn(UCC_NETWORK_DN)[0][0][1]
+	path = ldap_connection.parentDn(UCC_NETWORK_DN)
 	network_obj = udm_objects.get(udm_modules.get('networks/network'), None, ldap_connection, udm_uldap.position(path))
 	network_obj.open()
 
@@ -251,7 +253,7 @@ def _get_policy_object(policy_dns, module_name, ldap_connection):
 			try:
 				return udm_objects.get(policy_modules[0], None, ldap_connection, None, idn, attributes=attrs)
 			except udm_exceptions.noObject:
-				return None
+				continue
 	return None
 
 
@@ -270,15 +272,12 @@ def _open_container_policy(container_dn, policy_type, policy_dn, ldap_connection
 		policy_obj.open()
 	else:
 		# try to open the policy with the given DN
-		policy_obj = None
 		try:
 			policy_obj = udm_objects.get(udm_modules.get(policy_type), None, ldap_connection, None, policy_dn)
 		except udm_exceptions.noObject:
-			pass
-		if not policy_obj:
 			# create policy
-			name = udm_uldap.explodeDn(policy_dn, True)[0]
-			path = policy_dn.split(',', 1)[1]
+			name = ldap.dn.str2dn(policy_dn)[0][0][1]
+			path = ldap_connection.parentDn(policy_dn)
 			policy_obj = udm_objects.get(udm_modules.get(policy_type), None, ldap_connection, udm_uldap.position(path))
 			policy_obj.open()
 			policy_obj['name'] = name
