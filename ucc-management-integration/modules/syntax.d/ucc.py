@@ -31,23 +31,23 @@
 # <http://www.gnu.org/licenses/>.
 
 import univention.admin.localization
-import univention.admin.syntax
+from univention.admin.syntax import string, select, UDM_Objects, UDM_Attribute
 
 translation = univention.admin.localization.translation('univention.admin.handlers.ucc-policies')
 _ = translation.translate
 
 
-class uccBoot(univention.admin.syntax.select):
+class uccBoot(select):
 	choices = [
-	    ('overlayfs', _('Live system')),
-	    ('localboot', _('Local boot')),
-	    ('none', _('Image boot without update check')),
-	    ('rollout', _('Image boot with update check')),
-	    ('repartition', _('Installation with repartitioning and image rollout')),
+		('overlayfs', _('Live system')),
+		('localboot', _('Local boot')),
+		('none', _('Image boot without update check')),
+		('rollout', _('Image boot with update check')),
+		('repartition', _('Installation with repartitioning and image rollout')),
 	]
 
 
-class uccImage(univention.admin.syntax.UDM_Objects):
+class uccImage(UDM_Objects):
 	udm_modules = ('settings/ucc_image', )
 	regex = None
 	key = '%(name)s'
@@ -56,12 +56,12 @@ class uccImage(univention.admin.syntax.UDM_Objects):
 	empty_value = False
 
 
-class uccSessions(univention.admin.syntax.UDM_Objects):
+class uccSessions(UDM_Objects):
 	udm_modules = ('settings/ucc_session',)
 	empty_value = True
 
 
-class uccUserFixedAttributes(univention.admin.syntax.select):
+class uccUserFixedAttributes(select):
 	name = 'slavePackagesFixedAttributes'
 	choices = [
 		('univentionCorporateClientUserSession', _('Force this session for user logins')),
@@ -70,7 +70,7 @@ class uccUserFixedAttributes(univention.admin.syntax.select):
 	]
 
 
-class uccDesktopFixedAttributes(univention.admin.syntax.select):
+class uccDesktopFixedAttributes(select):
 	name = 'uccDesktopFixedAttributes'
 	choices = [
 		('environmentVars', _('UCC desktop environment variables'))

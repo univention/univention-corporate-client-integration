@@ -432,7 +432,7 @@ nagios.addPropertiesMappingOptionsAndLayout(property_descriptions, mapping, opti
 class object(univention.admin.handlers.simpleComputer, nagios.Support):
 	module = module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
+	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=None):
 		univention.admin.handlers.simpleComputer.__init__(self, co, lo, position, dn, superordinate, attributes)
 		nagios.Support.__init__(self)
 
@@ -649,10 +649,9 @@ class object(univention.admin.handlers.simpleComputer, nagios.Support):
 				requested_uid = "%s$" % self['name']
 				try:
 					self.uid = univention.admin.allocators.request(self.lo, self.position, 'uid', value=requested_uid)
-				except Exception, e:
+				except Exception:
 					self.cancel()
 					raise univention.admin.uexceptions.uidAlreadyUsed, ': %s' % requested_uid
-					return []
 
 				self.alloc.append(('uid', self.uid))
 

@@ -225,6 +225,8 @@ def _install_opener():
 		proxy = urllib2.ProxyHandler(proxies)
 		opener = urllib2.build_opener(proxy)
 		urllib2.install_opener(opener)
+
+
 _install_opener()
 
 
@@ -504,16 +506,16 @@ class UCCImage(object):
 
 			# see whether process exists
 			pid = int(parts[0])
-			proc = psutil.Process(pid)
+			psutil.Process(pid)
 
 			# make sure that last modification time is at least 5 min ago
 			file_mod_time = os.stat(progress_file_path).st_mtime
 			last_time = (time.time() - file_mod_time) / 60  # time in minutes
 			return last_time < 5
-		except psutil.NoSuchProcess as exc:
+		except psutil.NoSuchProcess:
 			# process is not running anymore
 			pass
-		except ValueError as exc:
+		except ValueError:
 			# wrong format, probably PID
 			pass
 		except (IOError, OSError) as exc:
@@ -664,7 +666,7 @@ class UCCImage(object):
 			progress.finish()
 
 			self._fix_access_rights()
-		except Exception as exc:
+		except Exception:
 			# remove already partly downloaded files
 			self.remove_files()
 			# re-raise exception

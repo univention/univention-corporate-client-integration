@@ -179,17 +179,6 @@ mapping.register('logoutScripts', 'univentionCorporateClientDesktopLogout')
 class object(univention.admin.handlers.simplePolicy):
 	module = module
 
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		global mapping
-		global property_descriptions
-
-		self.mapping = mapping
-		self.descriptions = property_descriptions
-
-		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate, attributes)
-
-		self.save()
-
 	def _post_unmap(self, info, values):
 		info['environmentVars'] = []
 		for key, value in values.items():
@@ -231,12 +220,6 @@ class object(univention.admin.handlers.simplePolicy):
 
 		self.polinfo = univention.admin.mapping.mapDict(self.mapping, values)
 		self.polinfo = self._post_unmap(self.polinfo, values)
-
-	def exists(self):
-		return self._exists
-
-	def _ldap_pre_create(self):
-		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicyCorporateClientDesktop'])]

@@ -30,9 +30,6 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-import sys
-sys.path = ['.'] + sys.path
-
 from univention.admin.layout import Tab, Group
 import univention.admin.syntax
 import univention.admin.filter
@@ -173,21 +170,6 @@ mapping.register('pkginstall', 'univentionCorporateClientSoftwareUpdateInstallLi
 
 class object(univention.admin.handlers.simplePolicy):
 	module = module
-
-	def __init__(self, co, lo, position, dn='', superordinate=None, attributes=[]):
-		global mapping
-		global property_descriptions
-
-		self.mapping = mapping
-		self.descriptions = property_descriptions
-
-		univention.admin.handlers.simplePolicy.__init__(self, co, lo, position, dn, superordinate)
-
-	def exists(self):
-		return self._exists
-
-	def _ldap_pre_create(self):
-		self.dn = '%s=%s,%s' % (mapping.mapName('name'), mapping.mapValue('name', self.info['name']), self.position.getDn())
 
 	def _ldap_addlist(self):
 		return [('objectClass', ['top', 'univentionPolicy', 'univentionPolicySoftwareupdates'])]

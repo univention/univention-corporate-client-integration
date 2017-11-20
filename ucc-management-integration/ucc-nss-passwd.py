@@ -31,7 +31,7 @@
 # /usr/share/common-licenses/AGPL-3; if not, see
 # <http://www.gnu.org/licenses/>.
 
-__package__ = ''		# workaround for PEP 366
+from __future__ import absolute_import
 import listener
 import univention.config_registry
 import univention.debug
@@ -56,5 +56,3 @@ def postrun():
 		param = ['ldap-passwd-to-file.py']
 		listener.run('/usr/lib/ucc-management-integration/ldap-passwd-to-file.py', param, uid=0)
 		listener.unsetuid()
-
-	return
