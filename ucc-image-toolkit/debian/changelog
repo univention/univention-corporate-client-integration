@@ -1,3 +1,10 @@
+ucc-image-toolkit (6.0.0-1) unstable; urgency=medium
+
+  * Bug #46007: Version bump for UCS 4.3
+  * Bug #46007: Adapt psutil interface
+
+ -- Erik Damrose <damrose@univention.de>  Tue, 06 Mar 2018 16:11:43 +0100
+
 ucc-image-toolkit (5.0.0-17) unstable; urgency=medium
 
   * Bug #42093: Set network kernel options

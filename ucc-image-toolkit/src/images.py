@@ -128,7 +128,7 @@ def _free_disk_space(path):
 
 
 def _physical_memory():
-	return (psutil.used_phymem() + psutil.avail_phymem())
+	return psutil.virtual_memory().total
 
 
 def _sha256(filepath, progress=_dummy_progress):
